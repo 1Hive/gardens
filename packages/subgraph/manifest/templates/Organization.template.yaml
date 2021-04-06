@@ -4,8 +4,6 @@
   network: {{network}}
   source:
     abi: Kernel
-    address: '{{address}}'
-    startBlock: {{startBlock}}
   mapping:
     kind: ethereum/events
     apiVersion: 0.0.1

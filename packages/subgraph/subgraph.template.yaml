@@ -6,7 +6,8 @@ repository: https://github.com/1hive/honey-pot
 schema:
   file: ./schema.graphql
 dataSources:
-{{> Organization.template.yaml}}
+{{> OrganizationFactory.template.yaml}}
 templates:
+{{> Organization.template.yaml}}
 {{> ConvictionVoting.template.yaml}}
 {{> DandelionVoting.template.yaml}}

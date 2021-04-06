@@ -1,0 +1,21 @@
+# Kernel
+- kind: ethereum/contract
+  name: Kernel
+  network: {{network}}
+  source:
+    abi: Kernel
+    address: '{{address}}'
+    startBlock: {{startBlock}}
+  mapping:
+    kind: ethereum/events
+    apiVersion: 0.0.1
+    language: wasm/assemblyscript
+    entities:
+      - Organization
+    abis:
+      - name: Organization
+        file: ./abis/HoneyPotTemplate.json
+    eventHandlers:
+      - event: DaoCreated(address)
+        handler: handleDaoCreated
+    file: ./src/Kernel.ts

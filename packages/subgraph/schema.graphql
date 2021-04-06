@@ -1,3 +1,7 @@
+type Organization @entity {
+  id: ID!
+}
+
 type Config @entity {
   id: ID!
   conviction: ConvictionConfig

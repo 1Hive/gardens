@@ -9,6 +9,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const { deployer } = await getNamedAccounts();
 
+  console.log('hre.network ', hre.network)
   const { AragonID, DAOFactory, ENS, MiniMeFactory } = Config.Bases[hre.network.name];
 
   await deploy("HoneyPotTemplate", {

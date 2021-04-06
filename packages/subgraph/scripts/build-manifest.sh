@@ -1,10 +1,14 @@
 #!/bin/bash
-
-if [ "$STAGING" ]
-then
-  FILE=$NETWORK'-staging.json'
-else
-  FILE=$NETWORK'.json'
+if [ "$NETWORK" ]
+then 
+  if [ "$STAGING" ]
+  then
+    FILE=$NETWORK'-staging.json'
+  else
+    FILE=$NETWORK'.json'
+  fi
+else  
+  FILE='xdai.json'
 fi
 
 DATA=manifest/data/$FILE

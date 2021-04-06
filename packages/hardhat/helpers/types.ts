@@ -16,3 +16,7 @@ export enum EthereumNetworkNames {
   main = "main",
   xdai = "xdai",
 }
+
+export enum eLocalHostNetwork {
+  localhost = "localhost",
+}

@@ -85,10 +85,10 @@ const config: HardhatUserConfig = {
     hardhat: {
       gas: 12450000,
       gasPrice: 8000000000,
-      allowUnlimitedContractSize: true,
+      //allowUnlimitedContractSize: true,
       forking: {
         url: "https://xdai-archive.blockscout.com",
-        blockNumber: 15032477,
+        blockNumber: 15456020,
       },
     },
     localhost: {
@@ -134,7 +134,7 @@ const config: HardhatUserConfig = {
       },
     },
     xdai: {
-      url: "https://rpc.xdaichain.com/",
+      url: "https://xdai.1hive.org/",
       gasPrice: 1000000000,
       accounts: {
         mnemonic: mnemonic(),

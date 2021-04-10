@@ -11,7 +11,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const { AragonID, DAOFactory, ENS, MiniMeFactory } = Config.Bases[hre.network.name];
 
-  await deploy("HoneyPotTemplate", {
+  await deploy("GardensTemplate", {
     from: deployer,
     args: [DAOFactory, ENS, MiniMeFactory, AragonID],
     log: true,

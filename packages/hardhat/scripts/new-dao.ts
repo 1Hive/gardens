@@ -135,8 +135,6 @@ export default async function main(log = console.log): Promise<any> {
       { gasLimit: 9500000 }
     );
 
-    await tx.wait();
-
     const daoAddress = await getAddress("DeployDao", gardensTemplate, tx.hash);
 
     log(`Tx one completed: Gardens DAO (${daoAddress}) created.`);
@@ -152,8 +150,6 @@ export default async function main(log = console.log): Promise<any> {
     )
 
     log(`Tx tokenholders completed.`);
-
-    await tx.wait();
   }
 
   const createDaoTxTwo = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
@@ -167,8 +163,6 @@ export default async function main(log = console.log): Promise<any> {
     );
 
     log(`Tx two completed.`);
-
-    await tx.wait();
   };
 
   const createDaoTxThree = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
@@ -183,8 +177,6 @@ export default async function main(log = console.log): Promise<any> {
       [actionAmount, challangeAmount],
       { gasLimit: 9500000 }
     );
-
-    await tx.wait();
 
     log(`Tx three completed.`);
   };

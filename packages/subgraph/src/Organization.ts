@@ -1,12 +1,13 @@
 import {
-    DaoCreated as DaoCreatedEvent
+    Organization,
+    OrganizationCreated as OrganizationCreatedEvent
 } from '../generated/templates/Organization/Organization'
 
 import {
     Organization as OrganizationEntity,
 } from '../../generated/schema'
 
-export function handleDaoCreated(event: DaoCreatedEvent): void {
+export function handleOrganizationCreated(event: OrganizationCreatedEvent): void {
     let id = event.params.address.toHexString()
     let organization = OrganizationEntity.load(id)
 
@@ -15,6 +16,6 @@ export function handleDaoCreated(event: DaoCreatedEvent): void {
         organization.createdAt = event.block.timestamp
         organization.save()
     }
-    return
 
+    Organization.create(event.params.address)
 }

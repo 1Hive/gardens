@@ -13,9 +13,9 @@
     entities:
       - Organization
     abis:
-      - name: Organization
+      - name: HoneyPotTemplate
         file: ./abis/HoneyPotTemplate.json
     eventHandlers:
-      - event: DaoCreated(address)
-        handler: handleDaoCreated
+      - event: organizationCreated(address)
+        handler: handleOrganizationCreated
     file: ./src/Kernel.ts

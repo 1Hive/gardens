@@ -3,7 +3,7 @@
   name: Kernel
   network: {{network}}
   source:
-    abi: Kernel
+    abi: OrganizationFactory
     address: '{{address}}'
     startBlock: {{startBlock}}
   mapping:

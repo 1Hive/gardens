@@ -1,11 +1,20 @@
-import {getProposalEntity} from "./helpers";
-import {STATUS_EXECUTED, STATUS_EXECUTED_NUM} from "./statuses";
+import {
+    DaoCreated as DaoCreatedEvent
+} from '../generated/templates/Organization/Organization'
 
-export function handleDaoCreated(event: DaoCreated): void {
-    let proposal = getProposalEntity(event.address, event.params.id)
-    proposal.status = STATUS_EXECUTED
-    proposal.statusInt = STATUS_EXECUTED_NUM
-    proposal.executedAt = event.block.timestamp
+import {
+    Organization as OrganizationEntity,
+} from '../../generated/schema'
 
-    proposal.save()
+export function handleDaoCreated(event: DaoCreatedEvent): void {
+    let id = event.params.address.toHexString()
+    let organization = OrganizationEntity.load(id)
+
+    if(!organization) {
+        organization = new OrganizationEntity(id)
+        organization.createdAt = event.block.timestamp
+        organization.save()
+    }
+    return
+
 }

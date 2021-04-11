@@ -1,5 +1,6 @@
 type Organization @entity {
   id: ID!
+  createdAt: BigInt!
 }
 
 type Config @entity {

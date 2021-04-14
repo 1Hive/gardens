@@ -49,8 +49,8 @@
     "typechain": "^4.0.2"
   },
   "scripts": {
-    "chain": "hardhat node",
-    "fork": "MAINNET_FORK=true hardhat node",
+    "chain": "hardhat node --watch --export ./contractsInfo.json",
+    "fork": "hardhat node --fork https://mainnet.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad",
     "console:fork": "MAINNET_FORK=true hardhat console",
     "test": "hardhat test",
     "test:gas": "REPORT_GAS=true hardhat test",

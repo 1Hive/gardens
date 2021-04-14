@@ -3,10 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "build": "./scripts/build-graph.sh",
-    "build:rinkeby": "NETWORK=rinkeby yarn build",
-    "build:mainnet": "NETWORK=mainnet yarn build",
-    "build:xdai": "NETWORK=xdai yarn build",
-    "codegen": "./scripts/codegen.sh",
+    "codegen": "graph codegen",
     "deploy": "./scripts/deploy.sh",
     "deploy:rinkeby": "NETWORK=rinkeby yarn deploy",
     "deploy:mainnet": "NETWORK=mainnet yarn deploy",

@@ -1,0 +1,269 @@
+{
+  "name": "localhost",
+  "chainId": "31337",
+  "contracts": {
+    "HoneyPotTemplate": {
+      "address": "0xE87ad3430514e95C99Dd8Fee5c658534AD7a9999",
+      "abi": [
+        {
+          "constant": false,
+          "inputs": [
+            {
+              "name": "_arbitrator",
+              "type": "address"
+            },
+            {
+              "name": "_setAppFeesCashier",
+              "type": "bool"
+            },
+            {
+              "name": "_title",
+              "type": "string"
+            },
+            {
+              "name": "_content",
+              "type": "bytes"
+            },
+            {
+              "name": "_stakingFactory",
+              "type": "address"
+            },
+            {
+              "name": "_feeToken",
+              "type": "address"
+            },
+            {
+              "name": "_challengeDuration",
+              "type": "uint64"
+            },
+            {
+              "name": "_convictionVotingFees",
+              "type": "uint256[2]"
+            }
+          ],
+          "name": "createDaoTxThree",
+          "outputs": [],
+          "payable": false,
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "constant": false,
+          "inputs": [
+            {
+              "name": "_voteToken",
+              "type": "address"
+            },
+            {
+              "name": "_disputableVotingSettings",
+              "type": "uint64[7]"
+            },
+            {
+              "name": "_1hiveContext",
+              "type": "bytes32"
+            },
+            {
+              "name": "_verifiers",
+              "type": "address[]"
+            },
+            {
+              "name": "_brightIdSettings",
+              "type": "uint256[3]"
+            }
+          ],
+          "name": "createDaoTxOne",
+          "outputs": [],
+          "payable": false,
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "constant": false,
+          "inputs": [
+            {
+              "name": "_issuanceSettings",
+              "type": "uint256[2]"
+            },
+            {
+              "name": "_stableToken",
+              "type": "address"
+            },
+            {
+              "name": "_setupAddresses",
+              "type": "address[2]"
+            },
+            {
+              "name": "_convictionSettings",
+              "type": "uint64[4]"
+            }
+          ],
+          "name": "createDaoTxTwo",
+          "outputs": [],
+          "payable": false,
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "name": "_daoFactory",
+              "type": "address"
+            },
+            {
+              "name": "_ens",
+              "type": "address"
+            },
+            {
+              "name": "_miniMeFactory",
+              "type": "address"
+            },
+            {
+              "name": "_aragonID",
+              "type": "address"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "disputableVoting",
+              "type": "address"
+            }
+          ],
+          "name": "DisputableVotingAddress",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "voteToken",
+              "type": "address"
+            }
+          ],
+          "name": "VoteToken",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "agentAddress",
+              "type": "address"
+            }
+          ],
+          "name": "AgentAddress",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "hookedTokenManagerAddress",
+              "type": "address"
+            }
+          ],
+          "name": "HookedTokenManagerAddress",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "convictionVoting",
+              "type": "address"
+            }
+          ],
+          "name": "ConvictionVotingAddress",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "brightIdRegister",
+              "type": "address"
+            }
+          ],
+          "name": "BrightIdRegisterAddress",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "agreement",
+              "type": "address"
+            }
+          ],
+          "name": "AgreementAddress",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "dao",
+              "type": "address"
+            }
+          ],
+          "name": "DeployDao",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "dao",
+              "type": "address"
+            }
+          ],
+          "name": "SetupDao",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "token",
+              "type": "address"
+            }
+          ],
+          "name": "DeployToken",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "appProxy",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "appId",
+              "type": "bytes32"
+            }
+          ],
+          "name": "InstalledApp",
+          "type": "event"
+        }
+      ]
+    }
+  }
+}

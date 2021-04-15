@@ -1,25 +1,30 @@
-import { IHoneypotConnector, ProposalData, StakeHistoryData, SupporterData } from '../types'
+import {
+  IGardenConnector,
+  ProposalData,
+  StakeHistoryData,
+  SupporterData,
+} from "../types";
 
 export default class StakeHistory {
-  #connector: IHoneypotConnector
+  #connector: IGardenConnector;
 
-  readonly id: string
-  readonly entity: SupporterData
-  readonly proposal: ProposalData
-  readonly tokensStaked: string
-  readonly totalTokensStaked: string
-  readonly time: string
-  readonly conviction: string
+  readonly id: string;
+  readonly entity: SupporterData;
+  readonly proposal: ProposalData;
+  readonly tokensStaked: string;
+  readonly totalTokensStaked: string;
+  readonly time: string;
+  readonly conviction: string;
 
-  constructor(data: StakeHistoryData, connector: IHoneypotConnector) {
-    this.#connector = connector
+  constructor(data: StakeHistoryData, connector: IGardenConnector) {
+    this.#connector = connector;
 
-    this.id = data.id
-    this.entity = data.entity
-    this.proposal = data.proposal
-    this.tokensStaked = data.tokensStaked
-    this.totalTokensStaked = data.totalTokensStaked
-    this.time = data.time
-    this.conviction = data.conviction
+    this.id = data.id;
+    this.entity = data.entity;
+    this.proposal = data.proposal;
+    this.tokensStaked = data.tokensStaked;
+    this.totalTokensStaked = data.totalTokensStaked;
+    this.time = data.time;
+    this.conviction = data.conviction;
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "connect-honey-pot-example",
+  "name": "connect-garden-example",
   "main": "dist/index.js",
   "version": "0.2.0",
   "private": true,
@@ -11,7 +11,7 @@
     "start": "ts-node ."
   },
   "dependencies": {
-    "@1hive/connect-honey-pot": "link:..",
+    "@1hive/connect-garden": "link:..",
     "@aragon/connect": "0.7.0",
     "@aragon/connect-core": "0.7.0",
     "@aragon/connect-thegraph": "0.7.0"

@@ -1,32 +1,37 @@
-
-import { Organization } from '@aragon/connect-core'
-import HonyePot from './models/Honeypot'
-import HoneyPotConnectorTheGraph, {
+import { Organization } from "@aragon/connect-core";
+import Garden from "./models/Garden";
+import GardenConnectorTheGraph, {
   pollIntervalFromChainId,
   subgraphUrlFromChainId,
-} from './thegraph/connector'
+} from "./thegraph/connector";
 
 type Config = {
-  subgraphUrl: string
-  pollInterval?: number
-}
+  subgraphUrl: string;
+  pollInterval?: number;
+};
 
-export default function connectHoneypot(organization: Organization, config?: Config) {
-  const { network, orgConnector } = organization.connection
+export default function connectGarden(
+  organization: Organization,
+  config?: Config
+) {
+  const { network, orgConnector } = organization.connection;
 
   const subgraphUrl =
-    config?.subgraphUrl ?? subgraphUrlFromChainId(network.chainId) ?? undefined
+    config?.subgraphUrl ?? subgraphUrlFromChainId(network.chainId) ?? undefined;
 
-  let pollInterval
-  if (orgConnector.name === 'thegraph') {
-    pollInterval = 
-      config?.pollInterval ?? pollIntervalFromChainId(network.chainId) ??  orgConnector.config?.pollInterval ?? undefined
+  let pollInterval;
+  if (orgConnector.name === "thegraph") {
+    pollInterval =
+      config?.pollInterval ??
+      pollIntervalFromChainId(network.chainId) ??
+      orgConnector.config?.pollInterval ??
+      undefined;
   }
 
-  const HoneyPotConnector = new HoneyPotConnectorTheGraph({
+  const GardenConnector = new GardenConnectorTheGraph({
     pollInterval,
     subgraphUrl,
-  })
+  });
 
-  return new HonyePot(HoneyPotConnector, organization.address)
+  return new Garden(GardenConnector, organization.address);
 }

@@ -1,18 +1,22 @@
-import { ConfigData, ConvictionConfigData, IHoneypotConnector, VotingConfigData } from '../types'
+import {
+  ConfigData,
+  ConvictionConfigData,
+  IGardenConnector,
+  VotingConfigData,
+} from "../types";
 
 export default class Config {
-  #connector: IHoneypotConnector
+  #connector: IGardenConnector;
 
-  readonly id: string
-  readonly conviction: ConvictionConfigData
-  readonly voting: VotingConfigData
+  readonly id: string;
+  readonly conviction: ConvictionConfigData;
+  readonly voting: VotingConfigData;
 
+  constructor(data: ConfigData, connector: IGardenConnector) {
+    this.#connector = connector;
 
-  constructor(data: ConfigData, connector: IHoneypotConnector) {
-    this.#connector = connector
-
-    this.id = data.id
-    this.conviction = data.conviction
-    this.voting = data.voting
+    this.id = data.id;
+    this.conviction = data.conviction;
+    this.voting = data.voting;
   }
 }

@@ -1,12 +1,30 @@
 {
   "extends": [
     "eslint:recommended",
+    "plugin:prettier/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended"
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint"
   ],
   "parser": "@typescript-eslint/parser",
-  "plugins": ["@typescript-eslint"],
+  "env": { "es6": true },
+  "plugins": ["@typescript-eslint", "prettier"],
+  "parserOptions": {
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
   "rules": {
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true,
+        "semi": false,
+        "trailingComma": "es5",
+        "bracketSpacing": true,
+        "jsxBracketSameLine": false,
+        "tabSize": 2
+      }
+    ],
     "@typescript-eslint/member-delimiter-style": [
       "error",
       {

@@ -4,9 +4,8 @@ import CollateralRequirement from './models/CollateralRequirement'
 import Proposal from './models/Proposal'
 import Supporter from './models/Supporter'
 
-
-export const ALL_PROPOSAL_TYPES = [0, 1, 2]     // [Suggestion, Proposal, Decision]
-export const ALL_PROPOSAL_STATUSES = [0, 1, 2]  // [Active, Cancelled, Executed]
+export const ALL_PROPOSAL_TYPES = [0, 1, 2] // [Suggestion, Proposal, Decision]
+export const ALL_PROPOSAL_STATUSES = [0, 1, 2] // [Active, Cancelled, Executed]
 
 export type SubscriptionHandler = { unsubscribe: () => void }
 
@@ -113,7 +112,7 @@ export interface ProposalData {
   quietEndingSnapshotSupport?: string
   script?: string
   isAccepted?: boolean
-  castVotes?: CastData[] 
+  castVotes?: CastData[]
 
   //Dispute data
   actionId: string
@@ -128,7 +127,6 @@ export interface ProposalData {
   pauseDuration: string
   submitterArbitratorFeeId: string
   challengerArbitratorFeeId: string
-  
 }
 
 export interface SupporterData {
@@ -162,46 +160,31 @@ export interface ArbitratorFeeData {
 
 export interface IGardenConnector {
   disconnect(): Promise<void>
-  config(
-    id: string
-  ): Promise<Config>
-  onConfig(
-    id: string, 
-    callback: Function
-  ): SubscriptionHandler
-  proposal(
-    id: string
-  ): Promise<Proposal>
-  onProposal(
-    id: string,
-    callback: Function
-  ): SubscriptionHandler
+  config(id: string): Promise<Config>
+  onConfig(id: string, callback: Function): SubscriptionHandler
+  proposal(id: string): Promise<Proposal>
+  onProposal(id: string, callback: Function): SubscriptionHandler
   proposals(
     first: number,
     skip: number,
-    orderBy: string, 
+    orderBy: string,
     orderDirection: string,
     types: number[],
     statuses: number[],
-    metadata: string,
+    metadata: string
   ): Promise<Proposal[]>
   onProposals(
     first: number,
     skip: number,
-    orderBy: string, 
+    orderBy: string,
     orderDirection: string,
     types: number[],
     statuses: number[],
     metadata: string,
     callback: Function
   ): SubscriptionHandler
-  supporter(
-    address: string
-  ): Promise<Supporter>
-  onSupporter(
-    address: string,
-    callback: Function
-  ): SubscriptionHandler
+  supporter(address: string): Promise<Supporter>
+  onSupporter(address: string, callback: Function): SubscriptionHandler
   collateralRequirement(voteId: string): Promise<CollateralRequirement>
   onCollateralRequirement(
     voteId: string,

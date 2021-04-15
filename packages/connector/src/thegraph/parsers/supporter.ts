@@ -1,31 +1,31 @@
-import { QueryResult } from "@aragon/connect-thegraph";
-import Supporter from "../../models/Supporter";
+import { QueryResult } from '@aragon/connect-thegraph'
+import Supporter from '../../models/Supporter'
 import {
   CastData,
   IGardenConnector,
   StakeData,
   StakeHistoryData,
   SupporterData,
-} from "../../types";
+} from '../../types'
 
 export function parseSupporter(
   result: QueryResult,
   connector: any
 ): SupporterData | null {
-  const supporter = result.data.supporter;
+  const supporter = result.data.supporter
 
   if (!supporter) {
-    return null;
+    return null
   }
 
   // For votes (decisions)
-  const casts = supporter.casts.map((cast: CastData) => cast);
+  const casts = supporter.casts.map((cast: CastData) => cast)
 
   // For proposals (suggestions and proposals)
-  const stakes = supporter.stakes.map((stake: StakeData) => stake);
+  const stakes = supporter.stakes.map((stake: StakeData) => stake)
   const stakesHistory = supporter.stakesHistory.map(
     (stake: StakeHistoryData) => stake
-  );
+  )
 
   return new Supporter(
     {
@@ -35,5 +35,5 @@ export function parseSupporter(
       stakesHistory,
     },
     connector
-  );
+  )
 }

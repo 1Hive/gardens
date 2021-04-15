@@ -3,20 +3,20 @@ import {
   ConvictionConfigData,
   IGardenConnector,
   VotingConfigData,
-} from "../types";
+} from '../types'
 
 export default class Config {
-  #connector: IGardenConnector;
+  #connector: IGardenConnector
 
-  readonly id: string;
-  readonly conviction: ConvictionConfigData;
-  readonly voting: VotingConfigData;
+  readonly id: string
+  readonly conviction: ConvictionConfigData
+  readonly voting: VotingConfigData
 
   constructor(data: ConfigData, connector: IGardenConnector) {
-    this.#connector = connector;
+    this.#connector = connector
 
-    this.id = data.id;
-    this.conviction = data.conviction;
-    this.voting = data.voting;
+    this.id = data.id
+    this.conviction = data.conviction
+    this.voting = data.voting
   }
 }

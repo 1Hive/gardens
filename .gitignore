@@ -8,8 +8,10 @@ packages/hardhat/*.txt
 **/node_modules
 packages/hardhat/artifacts
 packages/hardhat/deployments
-packages/react-app/src/contracts
-packages/react-app/public/aragon-ui
+# submodule
+packages/react-app
+# packages/react-app/src/contracts
+# packages/react-app/public/aragon-ui
 packages/hardhat/cache
 packages/hardhat/typechain
 packages/hardhat/coverage/

@@ -12,7 +12,7 @@
   "scripts": {
     "prepare": "yarn submodule:get",
     "submodule:get": "git submodule add -f https://github.com/1Hive/honey-pot packages/react-app && yarn submodule:install",
-    "submodule:install": "git submodule foreach 'git checkout -b gardens' && git submodule foreach yarn install",
+    "submodule:install": "git submodule foreach 'git checkout gardens' && git submodule foreach yarn install",
     "react-app:build": "yarn workspace @gardens/react-app build --max-old-space-size=12288",
     "react-app:eject": "yarn workspace @gardens/react-app eject",
     "react-app:start": "yarn workspace @gardens/react-app start",

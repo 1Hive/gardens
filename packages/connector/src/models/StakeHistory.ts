@@ -1,7 +1,12 @@
-import { IHoneypotConnector, ProposalData, StakeHistoryData, SupporterData } from '../types'
+import {
+  IGardenConnector,
+  ProposalData,
+  StakeHistoryData,
+  SupporterData,
+} from '../types'
 
 export default class StakeHistory {
-  #connector: IHoneypotConnector
+  #connector: IGardenConnector
 
   readonly id: string
   readonly entity: SupporterData
@@ -11,7 +16,7 @@ export default class StakeHistory {
   readonly time: string
   readonly conviction: string
 
-  constructor(data: StakeHistoryData, connector: IHoneypotConnector) {
+  constructor(data: StakeHistoryData, connector: IGardenConnector) {
     this.#connector = connector
 
     this.id = data.id

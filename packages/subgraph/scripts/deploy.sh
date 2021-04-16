@@ -16,7 +16,7 @@ else
   SUBGRAPH_EXT=""
 fi
 
-echo Deploying subgraph 1hive/disputable-honey-pot${SUBGRAPH_EXT}
+echo Deploying subgraph 1hive/gardens${SUBGRAPH_EXT}
 
 # Deploy subgraph
-graph deploy 1hive/disputable-honey-pot${SUBGRAPH_EXT} --ipfs ${IPFS_NODE} --node ${GRAPH_NODE} --access-token ${GRAPHKEY}
+graph deploy 1hive/gardens${SUBGRAPH_EXT} --ipfs ${IPFS_NODE} --node ${GRAPH_NODE} --access-token ${GRAPHKEY}

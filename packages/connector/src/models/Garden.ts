@@ -5,16 +5,16 @@ import {
   Address,
   ALL_PROPOSAL_STATUSES,
   ALL_PROPOSAL_TYPES,
-  IHoneypotConnector,
-  SubscriptionHandler, 
+  IGardenConnector,
+  SubscriptionHandler,
 } from '../types'
 import { buildProposalId } from '../helpers'
 
-export default class Honeypot {
+export default class Garden {
   #address: Address
-  #connector: IHoneypotConnector
+  #connector: IGardenConnector
 
-  constructor(connector: IHoneypotConnector, address: Address) {
+  constructor(connector: IGardenConnector, address: Address) {
     this.#connector = connector
     this.#address = address
   }
@@ -25,8 +25,8 @@ export default class Honeypot {
 
   config(): Promise<Config> {
     return this.#connector.config(this.#address)
-  } 
-  
+  }
+
   onConfig(callback: Function): SubscriptionHandler {
     return this.#connector.onConfig(this.#address, callback)
   }
@@ -36,47 +36,63 @@ export default class Honeypot {
     return this.#connector.proposal(proposalId)
   }
 
-  onProposal({ number = '', appAddress = ''  } = {}, callback: Function): SubscriptionHandler {
+  onProposal(
+    { number = '', appAddress = '' } = {},
+    callback: Function
+  ): SubscriptionHandler {
     const proposalId = buildProposalId(parseInt(number), appAddress)
     return this.#connector.onProposal(proposalId, callback)
   }
-  
-  async proposals(
-    { 
+
+  async proposals({
+    first = 1000,
+    skip = 0,
+    orderBy = 'createdAt',
+    orderDirection = 'desc',
+    types = ALL_PROPOSAL_TYPES,
+    statuses = ALL_PROPOSAL_STATUSES,
+    metadata = '',
+  } = {}): Promise<Proposal[]> {
+    return this.#connector.proposals(
+      first,
+      skip,
+      orderBy,
+      orderDirection,
+      types,
+      statuses,
+      metadata
+    )
+  }
+
+  onProposals(
+    {
       first = 1000,
       skip = 0,
       orderBy = 'createdAt',
       orderDirection = 'desc',
       types = ALL_PROPOSAL_TYPES,
       statuses = ALL_PROPOSAL_STATUSES,
-      metadata = ""
-    } = {}): Promise<Proposal[]> {
-    return this.#connector.proposals(first, skip, orderBy, orderDirection, types, statuses, metadata)
-  }
-
-  onProposals(
-    { 
-      first = 1000,
-      skip = 0, 
-      orderBy = 'createdAt', 
-      orderDirection = 'desc', 
-      types = ALL_PROPOSAL_TYPES, 
-      statuses = ALL_PROPOSAL_STATUSES,
-      metadata = ""
+      metadata = '',
     } = {},
     callback: Function
   ): SubscriptionHandler {
-    return this.#connector.onProposals(first, skip, orderBy, orderDirection, types, statuses, metadata, callback)
+    return this.#connector.onProposals(
+      first,
+      skip,
+      orderBy,
+      orderDirection,
+      types,
+      statuses,
+      metadata,
+      callback
+    )
   }
-  
+
   async supporter({ id = '' } = {}): Promise<Supporter> {
     return this.#connector.supporter(id)
   }
 
-  onSupporter(
-    { id = '' } = {},
-    callback: Function
-  ): SubscriptionHandler {
+  onSupporter({ id = '' } = {}, callback: Function): SubscriptionHandler {
     return this.#connector.onSupporter(id, callback)
   }
 }

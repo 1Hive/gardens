@@ -1,14 +1,18 @@
-import { ConfigData, ConvictionConfigData, IHoneypotConnector, VotingConfigData } from '../types'
+import {
+  ConfigData,
+  ConvictionConfigData,
+  IGardenConnector,
+  VotingConfigData,
+} from '../types'
 
 export default class Config {
-  #connector: IHoneypotConnector
+  #connector: IGardenConnector
 
   readonly id: string
   readonly conviction: ConvictionConfigData
   readonly voting: VotingConfigData
 
-
-  constructor(data: ConfigData, connector: IHoneypotConnector) {
+  constructor(data: ConfigData, connector: IGardenConnector) {
     this.#connector = connector
 
     this.id = data.id

@@ -1,7 +1,6 @@
-
 import { Organization } from '@aragon/connect-core'
-import HonyePot from './models/Honeypot'
-import HoneyPotConnectorTheGraph, {
+import Garden from './models/Garden'
+import GardenConnectorTheGraph, {
   pollIntervalFromChainId,
   subgraphUrlFromChainId,
 } from './thegraph/connector'
@@ -11,7 +10,10 @@ type Config = {
   pollInterval?: number
 }
 
-export default function connectHoneypot(organization: Organization, config?: Config) {
+export default function connectGarden(
+  organization: Organization,
+  config?: Config
+) {
   const { network, orgConnector } = organization.connection
 
   const subgraphUrl =
@@ -19,14 +21,17 @@ export default function connectHoneypot(organization: Organization, config?: Con
 
   let pollInterval
   if (orgConnector.name === 'thegraph') {
-    pollInterval = 
-      config?.pollInterval ?? pollIntervalFromChainId(network.chainId) ??  orgConnector.config?.pollInterval ?? undefined
+    pollInterval =
+      config?.pollInterval ??
+      pollIntervalFromChainId(network.chainId) ??
+      orgConnector.config?.pollInterval ??
+      undefined
   }
 
-  const HoneyPotConnector = new HoneyPotConnectorTheGraph({
+  const GardenConnector = new GardenConnectorTheGraph({
     pollInterval,
     subgraphUrl,
   })
 
-  return new HonyePot(HoneyPotConnector, organization.address)
+  return new Garden(GardenConnector, organization.address)
 }

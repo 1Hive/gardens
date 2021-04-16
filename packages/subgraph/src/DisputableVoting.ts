@@ -48,7 +48,7 @@ export function handleNewSetting(event: NewSettingEvent): void {
   )
 
   const daoAddress = votingApp.kernel()
-  const honeyPotConfig = loadOrCreateConfig(daoAddress)
+  const gardenConfig = loadOrCreateConfig(daoAddress)
 
   votingConfig.settingId = event.params.settingId
   votingConfig.voteTime = settingData.value0
@@ -66,8 +66,8 @@ export function handleNewSetting(event: NewSettingEvent): void {
   }
   votingConfig.save()
 
-  honeyPotConfig.voting = currentSettingId
-  honeyPotConfig.save()
+  gardenConfig.voting = currentSettingId
+  gardenConfig.save()
 }
 
 export function handleStartVote(event: StartVoteEvent): void {

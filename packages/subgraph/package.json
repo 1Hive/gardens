@@ -1,5 +1,5 @@
 {
-  "name": "@gardens/subgraph",
+  "name": "disputable-honey-pot",
   "version": "0.1.0",
   "scripts": {
     "build": "./scripts/build-graph.sh",
@@ -14,20 +14,17 @@
     "deploy:rinkeby": "NETWORK=rinkeby yarn deploy",
     "deploy:mainnet": "NETWORK=mainnet yarn deploy",
     "deploy:xdai": "NETWORK=xdai yarn deploy",
-    "create-local": "graph create --node http://localhost:8020/ scaffold-eth/your-contract",
-    "remove-local": "graph remove --node http://localhost:8020/ scaffold-eth/your-contract",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 scaffold-eth/your-contract",
     "manifest": "./scripts/build-manifest.sh",
     "manifest:rinkeby": "NETWORK=rinkeby yarn manifest",
     "manifest:mainnet": "NETWORK=mainnet yarn manifest",
     "manifest:xdai": "NETWORK=xdai yarn manifest"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.20.0",
-    "@graphprotocol/graph-ts": "^0.20.0",
-    "@typescript-eslint/eslint-plugin": "^4.1.1",
-    "@typescript-eslint/parser": "^4.1.1",
-    "eslint": "^7.9.0"
+    "@graphprotocol/graph-cli": "^0.18.0",
+    "@graphprotocol/graph-ts": "^0.18.0",
+    "@typescript-eslint/eslint-plugin": "^4.6.0",
+    "@typescript-eslint/parser": "^4.6.0",
+    "eslint": "^7.12.1"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",

@@ -1,0 +1,4 @@
+[submodule "packages/react-app"]
+	path = packages/react-app
+	url = https://github.com/1Hive/honey-pot
+	branch = gardens

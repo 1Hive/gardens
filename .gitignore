@@ -9,8 +9,10 @@ packages/hardhat/*.txt
 packages/hardhat/artifacts
 packages/hardhat/deployments/localhost
 packages/hardhat/deployments/**/solcInputs
-packages/react-app/src/contracts
-packages/react-app/public/aragon-ui
+# submodule
+packages/react-app
+# packages/react-app/src/contracts
+# packages/react-app/public/aragon-ui
 packages/hardhat/cache
 packages/hardhat/typechain
 packages/hardhat/coverage/

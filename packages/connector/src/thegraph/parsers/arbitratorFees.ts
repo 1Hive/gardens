@@ -1,10 +1,10 @@
 import { QueryResult } from '@aragon/connect-thegraph'
-
 import ArbitratorFee from '../../models/ArbitratorFee'
+import { IGardenConnector } from 'src/types'
 
 export function parseArbitratorFee(
   result: QueryResult,
-  connector: any
+  connector: IGardenConnector
 ): ArbitratorFee | null {
   const arbitratorFee = result.data.arbitratorFee
 

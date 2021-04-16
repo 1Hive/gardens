@@ -10,7 +10,7 @@ import {
 
 export function parseSupporter(
   result: QueryResult,
-  connector: any
+  connector: IGardenConnector
 ): SupporterData | null {
   const supporter = result.data.supporter
 

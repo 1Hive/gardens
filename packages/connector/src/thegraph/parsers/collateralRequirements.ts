@@ -1,10 +1,10 @@
 import { QueryResult } from '@aragon/connect-thegraph'
-
+import { IGardenConnector } from 'src/types'
 import CollateralRequirement from '../../models/CollateralRequirement'
 
 export function parseCollateralRequirement(
   result: QueryResult,
-  connector: any
+  connector: IGardenConnector
 ): CollateralRequirement | null {
   const proposal = result.data.proposal
 

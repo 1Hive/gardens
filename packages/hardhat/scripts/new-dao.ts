@@ -5,7 +5,7 @@ import { GardensTemplate, Kernel } from "../typechain";
 
 const { deployments } = hre;
 
-const network = hre.network.name !== 'localhost' ? hre.network.name :  'xdai'
+const network = hre.network.name === 'localhost' ? 'xdai' : hre.network.name
 const blockTime = network === "rinkeby" ? 15 : network === "mainnet" ? 13 : 5; // 15 rinkeby, 13 mainnet, 5 xdai
 
 console.log(`Every ${blockTime}s a new block is mined in ${network}.`);
@@ -76,12 +76,13 @@ const transform = params => ({
   decay: Math.floor((1 / 2) ** (1 / (params.halfLifeHours * ONE_HOUR / blockTime)) * CONVICTION_VOTING_ONE_HUNDRED_PERCENT),
   maxRatio: Math.floor(params.maxRatio * CONVICTION_VOTING_ONE_HUNDRED_PERCENT),
   weight: Math.floor(params.maxRatio ** 2 * params.minThreshold * CONVICTION_VOTING_ONE_HUNDRED_PERCENT),
-  minEffectiveSupply: Math.floor(params.minEffectiveSupply * ONE_HUNDRED_PERCENT).toString(),
+  minThresholdStakePercentage: Math.floor(params.minActiveStakePct * ONE_HUNDRED_PERCENT).toString(),
   challangeDuration: Math.floor(params.challangeDurationDays * ONE_DAY),
   actionAmount: Math.floor(params.actionAmount * ONE_TOKEN).toString(),
   challangeAmount: Math.floor(params.challangeAmount * ONE_TOKEN).toString(),
   stableTokenAddress: params.stableTokenAddress,
   stableTokenOracle: params.stableTokenOracle,
+  daoId: params.daoId || 'gardens' + Math.floor(Math.random() * 100000),
   arbitrator: params.arbitrator,
   setAppFeesCashier: params.setAppFeesCashier,
   agreementTitle: params.agreementTitle,
@@ -111,7 +112,8 @@ export default async function main(log = console.log): Promise<any> {
     decay,
     maxRatio,
     weight,
-    minEffectiveSupply,
+    minThresholdStakePercentage,
+    daoId,
     arbitrator,
     setAppFeesCashier,
     agreementTitle,
@@ -122,8 +124,6 @@ export default async function main(log = console.log): Promise<any> {
     actionAmount,
     challangeAmount
   } = transform(await import(`../params-${network}.json`));
-
-  console.log(transform(await import(`../params-${network}.json`)))
 
   const createDaoTxOne = async (gardensTemplate: GardensTemplate, log: Function): Promise<string> => {
     const tx = await gardensTemplate.createDaoTxOne(
@@ -150,7 +150,7 @@ export default async function main(log = console.log): Promise<any> {
   };
 
   const createTokenholders = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
-    const tx = await gardensTemplate.createTokenholders(
+    await gardensTemplate.createTokenholders(
       holders,
       stakes,
       { gasLimit: 9500000 }
@@ -161,11 +161,11 @@ export default async function main(log = console.log): Promise<any> {
 
   const createDaoTxTwo = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
 
-    const tx = await gardensTemplate.createDaoTxTwo(
+    await gardensTemplate.createDaoTxTwo(
       [issuanceTargetRatio, issuanceMaxAdjustmentPerSecond],
       stableTokenAddress,
       stableTokenOracle,
-      [decay, maxRatio, weight, minEffectiveSupply],
+      [decay, maxRatio, weight, minThresholdStakePercentage],
       { gasLimit: 9500000 }
     );
 
@@ -173,7 +173,8 @@ export default async function main(log = console.log): Promise<any> {
   };
 
   const createDaoTxThree = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
-    const tx = await gardensTemplate.createDaoTxThree(
+    await gardensTemplate.createDaoTxThree(
+      daoId,
       arbitrator,
       setAppFeesCashier,
       agreementTitle,
@@ -206,6 +207,15 @@ export default async function main(log = console.log): Promise<any> {
       gardensTemplate.DISPUTABLE_VOTING_APP_ID(),
     ])
   )
+
+  log({
+    daoAddress,
+    convictionVotingAddress,
+    tokenManagerAddress,
+    issuanceAddress,
+    agreementAddress,
+    votingAddress,
+  })
 
   return {
     daoAddress,

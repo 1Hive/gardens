@@ -53,6 +53,9 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
     /**
      * @dev Create the DAO and initialise the basic apps necessary for gardens
+     * @param _voteTokenName DAO governance new token name
+     * @param _voteTokenSymbol DAO governance new token symbol
+     * @param _fundingPoolStake Initial amount of tokens in the funding pool
      * @param _disputableVotingSettings Array of [voteDuration, voteSupportRequired, voteMinAcceptanceQuorum, voteDelegatedVotingPeriod,
      *    voteQuietEndingPeriod, voteQuietEndingExtension, voteExecutionDelay] to set up the voting app of the organization
      */
@@ -98,6 +101,11 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         );
     }
 
+    /**
+     * @dev Add tokenholders, only accessible between the first and second createDao transactions
+     * @param _holders List of initial tokenholder addresses
+     * @param _stakes List of intial tokenholder amounts
+     */
     function createTokenholders(
         address[] _holders,
         uint256[] _stakes
@@ -111,6 +119,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     /**
      * @dev Add and initialise issuance and conviction voting
      * @param _issuanceSettings Array of issuance settings: [targetRatio, maxAdjustmentRatioPerSecond]
+     * @param _stableToken Stable token address for conviction voting proposals with stable request amounts
      * @param _stableTokenOracle Stable token oracle address
      * @param _convictionSettings array of conviction settings: [decay, max_ratio, weight, min_threshold_stake_percentage]
      */
@@ -188,8 +197,18 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
     /**
      * @dev Add, initialise and activate the agreement
+     * @param _id DAO id
+     * @param _arbitrator Address of the IArbitrator that will be used to resolve disputes
+     * @param _setAppFeesCashier Whether to integrate with the IArbitrator's fee cashier
+     * @param _title String indicating a short description
+     * @param _content Link to a human-readable text that describes the initial rules for the Agreement
+     * @param _stakingFactory Staking factory for finding each collateral token's staking pool
+     * @param _feeToken ERC20 token used for the arbitration fees
+     * @param _challengeDuration Challenge duration, during which the submitter can raise a dispute
+     * @param _fees Array of fees setings: [actionFee, challangeFee]
      */
     function createDaoTxThree(
+        string _id,
         address _arbitrator,
         bool _setAppFeesCashier,
         string _title,
@@ -197,7 +216,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         address _stakingFactory,
         address _feeToken,
         uint64 _challengeDuration,
-        uint256[2] _convictionVotingFees
+        uint256[2] _fees
     ) public {
         require(
             senderDeployedContracts[msg.sender]
@@ -242,15 +261,15 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             disputableVoting,
             _feeToken,
             _challengeDuration,
-            _convictionVotingFees[0],
-            _convictionVotingFees[1]
+            _fees[0],
+            _fees[1]
         );
         agreement.activate(
             convictionVoting,
             _feeToken,
             _challengeDuration,
-            _convictionVotingFees[0],
-            _convictionVotingFees[1]
+            _fees[0],
+            _fees[1]
         );
         _removePermissionFromTemplate(
             acl,
@@ -259,8 +278,8 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         );
 
         _transferRootPermissionsFromTemplateAndFinalizeDAO(dao, msg.sender);
-        //        _validateId(_id);
-        //        _registerID(_id, dao);
+        _validateId(_id);
+        _registerID(_id, dao);
 
         _deleteStoredContracts();
     }

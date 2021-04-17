@@ -19,6 +19,12 @@ const ONE_HOUR = 60 * ONE_MINUTE
 const ONE_DAY = 24 * ONE_HOUR
 const ONE_YEAR = 365 * ONE_DAY
 
+/**
+ * Get proxies from a deployed DAO
+ * @param daoAddress Address of the DAO
+ * @param appIds List of appIds
+ * @returns Returns an object of the form { [appId]: proxy | proxy[] }
+ */
 const getApps = async (daoAddress: string, appIds: string[]): Promise<string[]> => {
   const dao = (await ethers.getContractAt("Kernel", daoAddress)) as Kernel;
   const apps = await dao.queryFilter(dao.filters.NewAppProxy(null, null, null))
@@ -38,14 +44,15 @@ const gardensTemplateAddress = async (): Promise<string> => (await deployments.g
 const getGardensTemplate = async (signer: Signer): Promise<GardensTemplate> =>
   (await ethers.getContractAt("GardensTemplate", await gardensTemplateAddress(), signer)) as GardensTemplate;
 
-const getAddress = async (selectedFilter: string, contract: Contract, transactionHash: string): Promise<string> => {
+const getEventArgument = async (selectedFilter: string, arg: number | string, contract: Contract, transactionHash: string): Promise<string> => {
   return new Promise((resolve, reject) => {
     const filter = contract.filters[selectedFilter]();
 
-    contract.on(filter, (contractAddress, event) => {
+    contract.on(filter, (...args) => {
+      const event = args.pop()
       if (event.transactionHash === transactionHash) {
         contract.removeAllListeners(filter);
-        resolve(contractAddress);
+        resolve(event.args[arg]);
       }
     });
   });
@@ -135,7 +142,7 @@ export default async function main(log = console.log): Promise<any> {
       { gasLimit: 9500000 }
     );
 
-    const daoAddress = await getAddress("DeployDao", gardensTemplate, tx.hash);
+    const daoAddress = await getEventArgument("DeployDao", "dao", gardensTemplate, tx.hash);
 
     log(`Tx one completed: Gardens DAO (${daoAddress}) created.`);
 

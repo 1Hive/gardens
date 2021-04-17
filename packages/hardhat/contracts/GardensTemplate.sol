@@ -11,9 +11,9 @@ import {
 } from "./external/IConvictionVoting.sol";
 import "./external/Agreement.sol";
 import "./external/DisputableVoting.sol";
-import "./appIds/AppIdsRinkeby.sol";
+import "./appIds/AppIdsXDai.sol";
 
-contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
+contract GardensTemplate is BaseTemplate, AppIdsXDai {
     string private constant ERROR_MISSING_MEMBERS = "MISSING_MEMBERS";
     string private constant ERROR_BAD_VOTE_SETTINGS = "BAD_SETTINGS";
     string private constant ERROR_NO_CACHE = "NO_CACHE";

@@ -1,0 +1,33 @@
+{
+  "orgTokenName": "Garden",
+  "orgTokenSymbol": "GDN",
+  "seeds": {
+    "0xb4124cEB3451635DAcedd11767f004d8a28c6eE7": 2.5,
+    "0x8401Eb5ff34cc943f096A32EF3d5113FEbE8D4Eb": 1
+  },
+  "fundingPoolStake": 100,
+  "voteSupportRequired": 0.5,
+  "voteMinAcceptanceQuorum": 0.1,
+  "issuanceTargetRatio": 0.3,
+  "issuanceMaxAdjustmentPerYear": 0.1,
+  "halfLifeHours": 48,
+  "maxRatio": 0.1,
+  "minThreshold": 0.025,
+  "minActiveStakePct": 0.2,
+  "setAppFeesCashier": false,
+  "agreementTitle": "1Hive Community Covenant",
+  "agreementContent": "ipfs:QmfWppqC55Xc7PU48vei2XvVAuH76z2rNFF7JMUhjVM5xV",
+  "challangeDurationDays": 3,
+  "actionAmount": 0.1,
+  "challangeAmount": 0.1,
+  "voteDurationDays": 5,
+  "delegatedVotingPeriodDays": 2,
+  "voteQuietEndingPeriodDays": 1,
+  "voteQuietEndingExtensionDays": 0.5,
+  "voteExecutionDelayDays": 1,
+  "arbitrator": "0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85",
+  "stakingFactory": "0xe71331AEf803BaeC606423B105e4d1C85f012C00",
+  "feeToken": "0x71850b7e9ee3f13ab46d67167341e4bdc905eef9",
+  "stableTokenAddress": "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d",
+  "stableTokenOracle": "0x6f38D112b13eda1E3abAFC61E296Be2E27F15071"
+}

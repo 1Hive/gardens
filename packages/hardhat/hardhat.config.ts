@@ -85,10 +85,10 @@ const config: HardhatUserConfig = {
     hardhat: {
       gas: 12450000,
       gasPrice: 8000000000,
-      allowUnlimitedContractSize: true,
+      //allowUnlimitedContractSize: true,
       forking: {
         url: "https://xdai-archive.blockscout.com",
-        blockNumber: 15032477,
+        blockNumber: 15456020,
       },
     },
     localhost: {
@@ -105,6 +105,7 @@ const config: HardhatUserConfig = {
     },
     rinkeby: {
       url: "https://rinkeby.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", //<---- YOUR INFURA ID! (or it won't work)
+      gasPrice: 1000000000,
       accounts: {
         mnemonic: mnemonic(),
       },
@@ -134,7 +135,7 @@ const config: HardhatUserConfig = {
       },
     },
     xdai: {
-      url: "https://rpc.xdaichain.com/",
+      url: "https://xdai.1hive.org/",
       gasPrice: 1000000000,
       accounts: {
         mnemonic: mnemonic(),

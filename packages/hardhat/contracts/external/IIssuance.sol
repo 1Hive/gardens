@@ -9,5 +9,5 @@ contract IIssuance {
         address _commonPoolVault,
         uint256 _targetRatio,
         uint256 _maxAdjustmentRatioPerSecond
-    );
+    ) external;
 }

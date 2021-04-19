@@ -1,14 +1,18 @@
 /* eslint no-use-before-define: "warn" */
 import fs from "fs";
 import chalk from "chalk";
-import { config, ethers, tenderly, run } from "hardhat";
+import hre, { config, ethers, tenderly, run } from "hardhat";
 import { utils } from "ethers";
 import R from "ramda";
+
+import deployTemplate from "../deploy/template";
 
 const main = async () => {
   console.log("\n\n 📡 Deploying...\n");
 
-  const yourContract = await deploy("YourContract"); // <-- add in constructor args like line 19 vvvv
+  await deployTemplate(hre)
+
+  // const yourContract = await deploy("YourContract"); // <-- add in constructor args like line 19 vvvv
 
   //const yourContract = await ethers.getContractAt('YourContract', "0xaAC799eC2d00C013f1F11c37E654e59B0429DF6A") //<-- if you want to instantiate a version of a contract at a specific address!
   //const secondContract = await deploy("SecondContract")

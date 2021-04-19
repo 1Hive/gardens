@@ -1,5 +1,5 @@
 {
-  "name": "disputable-honey-pot",
+  "name": "gardens",
   "version": "0.1.0",
   "scripts": {
     "build": "./scripts/build-graph.sh",

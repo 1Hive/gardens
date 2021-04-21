@@ -34,7 +34,7 @@ $ yarn run node
 
 ```
 $ cd packages/hardhat
-$ npx hardhat run scripts/new-dao.js --network localhost
+$ npx hardhat run scripts/new-dao.ts --network localhost
 ```
 
 ## Rinkeby/xDAI deployment
@@ -55,7 +55,7 @@ $ yarn
 
 ```
 $ cd packages/hardhat
-$ npx hardhat run scripts/new-dao.js --network rinkeby # or --network xdai
+$ npx hardhat run scripts/new-dao.ts --network rinkeby # or --network xdai
 ```
 
 5. Copy the output DAO address into this URL and open it in a web browser:

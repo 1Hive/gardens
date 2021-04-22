@@ -15,5 +15,20 @@
         "startBlock": 8386353
       }
     ]
-  }
+  },
+  "agreementAppIds": [
+    {
+      "id": "agreement-1hive.open.aragonpm.eth"
+    }
+  ],
+  "convictionVotingAppIds": [
+    {
+      "id": "disputable-conviction-voting.open.aragonpm.eth"
+    }
+  ],
+  "votingAppIds": [
+    { 
+      "id": "disputable-voting.precedence-campaign.aragonpm.eth"
+    }
+  ]
 }

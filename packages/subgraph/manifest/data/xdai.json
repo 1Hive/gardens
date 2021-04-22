@@ -9,5 +9,20 @@
       }
     ],
     "OrganizationTemplates": []
-  }
+  },
+  "agreementAppIds": [
+    {
+      "id": "agreement.open.aragonpm.eth"
+    }
+  ],
+  "convictionVotingAppIds": [
+    {
+      "id": "disputable-conviction-voting.open.aragonpm.eth"
+    }
+  ],
+  "votingAppIds": [
+    { 
+      "id": "disputable-voting.open.aragonpm.eth"
+    }
+  ]
 }

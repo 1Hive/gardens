@@ -53,11 +53,13 @@ const config: HardhatUserConfig = {
   // (you will need to restart the `yarn run start` dev server after editing the .env)
 
   solidity: {
-    compilers: [
-      {
-        version: "0.4.24",
-      },
-    ],
+    version: "0.4.24",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 10000
+      }
+    }
   },
   mocha: {
     timeout: 0,
@@ -106,6 +108,7 @@ const config: HardhatUserConfig = {
     rinkeby: {
       url: "https://rinkeby.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", //<---- YOUR INFURA ID! (or it won't work)
       gasPrice: 1000000000,
+      gas: 10000000,
       accounts: {
         mnemonic: mnemonic(),
       },

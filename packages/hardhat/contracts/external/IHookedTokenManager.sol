@@ -11,7 +11,7 @@ contract IHookedTokenManager {
     bytes32 public constant BURN_ROLE = keccak256("BURN_ROLE");
     bytes32 public constant SET_HOOK_ROLE = keccak256("SET_HOOK_ROLE");
 
-    function initialize(address _token, bool _transferable, uint256 _maxAccountTokens) external;
+    function initialize(address _token, address _wrappableToken, bool _transferable, uint256 _maxAccountTokens) external;
 
     function changeTokenController(address _newController) external;
 

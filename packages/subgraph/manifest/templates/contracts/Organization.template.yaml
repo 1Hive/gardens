@@ -1,5 +1,6 @@
 # Kernel
 - kind: ethereum/contract
+  name: {{name}}
   name: Kernel
   network: {{network}}
   source:

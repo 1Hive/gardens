@@ -1,4 +1,4 @@
-type Organization @entitiy {
+type Organization @entity {
   id: ID!
   createdAt: BigInt!
   config: Config!

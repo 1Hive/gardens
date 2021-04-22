@@ -1,5 +1,5 @@
 # Organization templates
 {{#dataSources.OrganizationTemplates}}
-  {{> OrganizationTemplate.template.yaml}}
+  {{> GardensTemplate.template.yaml}}
 {{/dataSources.OrganizationTemplates}}
 # /Organization templates

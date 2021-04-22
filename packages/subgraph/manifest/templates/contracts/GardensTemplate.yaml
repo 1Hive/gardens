@@ -3,7 +3,7 @@
   name: {{name}}
   network: {{network}}
   source:
-    abi: DAOTemplate
+    abi: GardensTemplate
     address: '{{address}}'
     startBlock: {{startBlock}}
   mapping:
@@ -13,8 +13,8 @@
     entities:
       - NoEnt
     abis:
-      - name: OrganizationTemplate
-        file: ./abis/OrganizationTemplate.json
+      - name: GardensTemplate
+        file: ./abis/GardensTemplate.json
       - name: Kernel
         file: ./abis/Kernel.json
     eventHandlers:
@@ -26,4 +26,4 @@
         handler: handleDeployToken
       - event: InstalledApp(address,bytes32)
         handler: handleInstalledApp
-    file: ./src/OrganizationTemplate.ts
+    file: ./src/GardensTemplate.ts

@@ -1,5 +1,5 @@
-# Honey pot Subgraph
+# Gardens Subgraph
 
-Subgraph for Honey-pot frontend.
+Subgraph for Gardens frontend.
 
-Indexed data from conviction voting and dandelion voting apps.
+Indexed data from DAOs created through GardensTemplate.

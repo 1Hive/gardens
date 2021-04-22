@@ -1,27 +1,36 @@
 import { GraphQLWrapper, QueryResult } from '@aragon/connect-thegraph'
 
-import { IHoneypotConnector, SubscriptionHandler } from '../types'
+import { IGardenConnector, SubscriptionHandler } from '../types'
+import ArbitratorFee from '../models/ArbitratorFee'
+import CollateralRequirement from '../models/CollateralRequirement'
 import Config from '../models/Config'
 import Proposal from '../models/Proposal'
 import Supporter from '../models/Supporter'
 import * as queries from './queries'
-import { parseConfig, parseProposal, parseProposals, parseSupporter  } from './parsers'
+import {
+  parseArbitratorFee,
+  parseCollateralRequirement,
+  parseConfig,
+  parseProposal,
+  parseProposals,
+  parseSupporter,
+} from './parsers'
 
 const BLOCK_TIMES = new Map([
-  [1, 13],  // mainnet
-  [4, 14],  // rinkeby
-  [100, 5], // xdai 
+  [1, 13], // mainnet
+  [4, 14], // rinkeby
+  [100, 5], // xdai
 ])
 
 export function subgraphUrlFromChainId(chainId: number) {
   if (chainId === 1) {
-    return 'https://api.thegraph.com/subgraphs/name/1hive/honey-pot-mainnet'
+    return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-mainnet'
   }
   if (chainId === 4) {
-    return 'https://api.thegraph.com/subgraphs/name/1hive/honey-pot-rinkeby'
+    return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-staging'
   }
   if (chainId === 100) {
-    return 'https://api.thegraph.com/subgraphs/name/1hive/honey-pot-xdai'
+    return 'https://api.thegraph.com/subgraphs/name/1hive/gardens'
   }
   return null
 }
@@ -31,22 +40,18 @@ export function pollIntervalFromChainId(chainId: number) {
   return blockTime ? blockTime * 1000 : null
 }
 
-type HoneypotConnectorTheGraphConfig = {
+type GardenConnectorTheGraphConfig = {
   pollInterval?: number
   subgraphUrl?: string
   verbose?: boolean
 }
 
-
-export default class HoneypotConnectorTheGraph
-  implements IHoneypotConnector {
+export default class GardenConnectorTheGraph implements IGardenConnector {
   #gql: GraphQLWrapper
 
-  constructor(config: HoneypotConnectorTheGraphConfig) {
+  constructor(config: GardenConnectorTheGraphConfig) {
     if (!config.subgraphUrl) {
-      throw new Error(
-        'Honeypot connector requires subgraphUrl to be passed.'
-      )
+      throw new Error('Garden connector requires subgraphUrl to be passed.')
     }
     this.#gql = new GraphQLWrapper(config.subgraphUrl, {
       pollInterval: config.pollInterval,
@@ -58,7 +63,6 @@ export default class HoneypotConnectorTheGraph
     this.#gql.close()
   }
 
-  
   async config(id: string): Promise<Config> {
     return this.#gql.performQueryWithParser(
       queries.CONFIG('query'),
@@ -76,9 +80,7 @@ export default class HoneypotConnectorTheGraph
     )
   }
 
-  async proposal(
-    id: string,
-  ): Promise<Proposal> {
+  async proposal(id: string): Promise<Proposal> {
     return this.#gql.performQueryWithParser(
       queries.PROPOSAL('query'),
       { id },
@@ -86,10 +88,7 @@ export default class HoneypotConnectorTheGraph
     )
   }
 
-  onProposal(
-    id: string,
-    callback: Function
-  ): SubscriptionHandler {
+  onProposal(id: string, callback: Function): SubscriptionHandler {
     return this.#gql.subscribeToQueryWithParser(
       queries.PROPOSAL('subscription'),
       { id },
@@ -97,7 +96,7 @@ export default class HoneypotConnectorTheGraph
       (result: QueryResult) => parseProposal(result, this)
     )
   }
-  
+
   async proposals(
     first: number,
     skip: number,
@@ -109,7 +108,15 @@ export default class HoneypotConnectorTheGraph
   ): Promise<Proposal[]> {
     return this.#gql.performQueryWithParser(
       queries.ALL_PROPOSALS('query'),
-      { first, skip, orderBy, orderDirection, proposalTypes: types, statuses, metadata },
+      {
+        first,
+        skip,
+        orderBy,
+        orderDirection,
+        proposalTypes: types,
+        statuses,
+        metadata,
+      },
       (result: QueryResult) => parseProposals(result, this)
     )
   }
@@ -117,7 +124,7 @@ export default class HoneypotConnectorTheGraph
   onProposals(
     first: number,
     skip: number,
-    orderBy: string, 
+    orderBy: string,
     orderDirection: string,
     types: number[],
     statuses: number[],
@@ -126,7 +133,15 @@ export default class HoneypotConnectorTheGraph
   ): SubscriptionHandler {
     return this.#gql.subscribeToQueryWithParser(
       queries.ALL_PROPOSALS('subscription'),
-      { first, skip, orderBy, orderDirection, proposalTypes: types, statuses, metadata },
+      {
+        first,
+        skip,
+        orderBy,
+        orderDirection,
+        proposalTypes: types,
+        statuses,
+        metadata,
+      },
       callback,
       (result: QueryResult) => parseProposals(result, this)
     )
@@ -140,15 +155,54 @@ export default class HoneypotConnectorTheGraph
     )
   }
 
-  onSupporter(
-    id: string,
-    callback: Function
-  ): SubscriptionHandler {
+  onSupporter(id: string, callback: Function): SubscriptionHandler {
     return this.#gql.subscribeToQueryWithParser(
       queries.SUPPORTER('subscription'),
       { id },
       callback,
       (result: QueryResult) => parseSupporter(result, this)
+    )
+  }
+
+  async collateralRequirement(
+    proposalId: string
+  ): Promise<CollateralRequirement> {
+    return this.#gql.performQueryWithParser<CollateralRequirement>(
+      queries.COLLATERAL_REQUIREMENT('query'),
+      { proposalId },
+      (result: QueryResult) => parseCollateralRequirement(result, this)
+    )
+  }
+
+  onCollateralRequirement(
+    proposalId: string,
+    callback: Function
+  ): SubscriptionHandler {
+    return this.#gql.subscribeToQueryWithParser<CollateralRequirement>(
+      queries.COLLATERAL_REQUIREMENT('subscription'),
+      { proposalId },
+      callback,
+      (result: QueryResult) => parseCollateralRequirement(result, this)
+    )
+  }
+
+  async arbitratorFee(arbitratorFeeId: string): Promise<ArbitratorFee | null> {
+    return this.#gql.performQueryWithParser<ArbitratorFee | null>(
+      queries.ARBITRATOR_FEE('query'),
+      { arbitratorFeeId },
+      (result: QueryResult) => parseArbitratorFee(result, this)
+    )
+  }
+
+  onArbitratorFee(
+    arbitratorFeeId: string,
+    callback: Function
+  ): SubscriptionHandler {
+    return this.#gql.subscribeToQueryWithParser<ArbitratorFee | null>(
+      queries.ARBITRATOR_FEE('subscription'),
+      { arbitratorFeeId },
+      callback,
+      (result: QueryResult) => parseArbitratorFee(result, this)
     )
   }
 }

@@ -1,9 +1,11 @@
+import ArbitratorFee from './models/ArbitratorFee'
 import Config from './models/Config'
+import CollateralRequirement from './models/CollateralRequirement'
 import Proposal from './models/Proposal'
 import Supporter from './models/Supporter'
 
-export const ALL_PROPOSAL_TYPES = [0, 1, 2]     // [Suggestion, Proposal, Decision]
-export const ALL_PROPOSAL_STATUSES = [0, 1, 2]  // [Active, Cancelled, Executed]
+export const ALL_PROPOSAL_TYPES = [0, 1, 2] // [Suggestion, Proposal, Decision]
+export const ALL_PROPOSAL_STATUSES = [0, 1, 2] // [Active, Cancelled, Executed]
 
 export type SubscriptionHandler = { unsubscribe: () => void }
 
@@ -32,16 +34,23 @@ export interface ConvictionConfigData {
   maxStakedProposals: number
   minThresholdStakePercentage: string
   totalStaked: string
+  stableToken: TokenData
+  stableTokenOracle: string
+  contractPaused: boolean
 }
 
 export interface VotingConfigData {
   id: string
   token: TokenData
+  configId: string
+  voteTime: string
   supportRequiredPct: string
-  minAcceptQuorumPct: string
-  durationBlocks: string
-  bufferBlocks: string
-  executionDelayBlocks: string
+  minimumAcceptanceQuorumPct: string
+  delegatedVotingPeriod: string
+  quietEndingPeriod: string
+  quietEndingExtension: string
+  executionDelay: string
+  createdAt: string
 }
 
 export interface StakeData {
@@ -81,78 +90,109 @@ export interface ProposalData {
   type: string
   createdAt: string
   executedAt: string
+  metadata?: string
 
   // proposal data
-  name?: string
   link?: string
   stakes?: StakeData[]
   stakesHistory?: StakeHistoryData[]
   beneficiary?: string
   requestedAmount?: string
   totalTokensStaked?: string
+  stable?: boolean
 
   // Voting data
-  metadata?: string
-  startBlock?: string
-  executionBlock?: string
+  setting?: VotingConfigData
+  startDate?: string
+  totalPower: string
   snapshotBlock?: string
-  supportRequiredPct?: string
-  minAcceptQuorum?: string
-  yea?: string
-  nay?: string
-  votingPower?: string
+  yeas?: string
+  nays?: string
+  quietEndingExtensionDuration?: string
+  quietEndingSnapshotSupport?: string
   script?: string
-  casts?: CastData[] 
+  isAccepted?: boolean
+  castVotes?: CastData[]
+
+  //Dispute data
+  actionId: string
+  challengeId: string
+  challenger: string
+  challengeEndDate: string
+  disputeId: string
+  settledAt: string
+  settlementOffer: string
+  disputedAt: string
+  pausedAt: string
+  pauseDuration: string
+  submitterArbitratorFeeId: string
+  challengerArbitratorFeeId: string
 }
 
 export interface SupporterData {
   id: string
   address: string
+  representative: string
   casts: CastData[]
   stakes: StakeData[]
   stakesHistory: StakeHistoryData[]
 }
 
-export interface IHoneypotConnector {
+export interface CollateralRequirementData {
+  id: string
+  proposalId: string
+  tokenId: string
+  tokenDecimals: string
+  tokenSymbol: string
+  actionAmount: string
+  challengeAmount: string
+  challengeDuration: string
+}
+
+export interface ArbitratorFeeData {
+  id: string
+  proposalId: string
+  tokenId: string
+  tokenDecimals: string
+  tokenSymbol: string
+  amount: string
+}
+
+export interface IGardenConnector {
   disconnect(): Promise<void>
-  config(
-    id: string
-  ): Promise<Config>
-  onConfig(
-    id: string, 
-    callback: Function
-  ): SubscriptionHandler
-  proposal(
-    id: string
-  ): Promise<Proposal>
-  onProposal(
-    id: string,
-    callback: Function
-  ): SubscriptionHandler
+  config(id: string): Promise<Config>
+  onConfig(id: string, callback: Function): SubscriptionHandler
+  proposal(id: string): Promise<Proposal>
+  onProposal(id: string, callback: Function): SubscriptionHandler
   proposals(
     first: number,
     skip: number,
-    orderBy: string, 
+    orderBy: string,
     orderDirection: string,
     types: number[],
     statuses: number[],
-    metadata: string,
+    metadata: string
   ): Promise<Proposal[]>
   onProposals(
     first: number,
     skip: number,
-    orderBy: string, 
+    orderBy: string,
     orderDirection: string,
     types: number[],
     statuses: number[],
     metadata: string,
     callback: Function
   ): SubscriptionHandler
-  supporter(
-    address: string
-  ): Promise<Supporter>
-  onSupporter(
-    address: string,
+  supporter(address: string): Promise<Supporter>
+  onSupporter(address: string, callback: Function): SubscriptionHandler
+  collateralRequirement(voteId: string): Promise<CollateralRequirement>
+  onCollateralRequirement(
+    voteId: string,
+    callback: Function
+  ): SubscriptionHandler
+  arbitratorFee(arbitratorFeeId: string): Promise<ArbitratorFee | null>
+  onArbitratorFee(
+    arbitratorFeeId: string,
     callback: Function
   ): SubscriptionHandler
 }

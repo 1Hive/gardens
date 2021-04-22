@@ -1,9 +1,9 @@
 import { connect } from '@aragon/connect'
-import connectHoneypot, {
+import connectGarden, {
   Config,
   Proposal,
   Supporter,
-} from '@1hive/connect-honey-pot'
+} from '@1hive/connect-garden'
 
 const ORG_ADDRESS = '0xe9869a0bbc8fb8c61b7d81c33fa2ba84871b3b0e'
 
@@ -50,24 +50,24 @@ async function main(): Promise<void> {
   const org = await connect(ORG_ADDRESS, 'thegraph', { network: 100 })
   console.log('\n##################Organization:', org, `(${org.address})`)
 
-  const honeypot = await connectHoneypot(org)
+  const garden = await connectGarden(org)
 
-  if (!honeypot) {
-    console.log('\nNo honeypot instance found')
+  if (!garden) {
+    console.log('\nNo Garden instance found')
     return
   }
 
-  const config = await honeypot.config()
+  const config = await garden.config()
   console.log(`\n#################Config:`)
   describeConfig(config)
   console.log(`\n`)
 
-  const proposals = await honeypot.proposals({ first: 10, metadata: 'fa' })
+  const proposals = await garden.proposals({ first: 10, metadata: 'fa' })
   console.log(`\n#################Proposals:`)
   proposals.map(describeProposal)
   console.log(`\n`)
 
-  const proposal = await honeypot.proposal({
+  const proposal = await garden.proposal({
     number: '1',
     appAddress: '0x00f9092e5806628d7a44e496c503cec608e64f1f',
   })
@@ -76,7 +76,7 @@ async function main(): Promise<void> {
   console.log(`\n`)
 
   // console.log(`#####Subscriptions\n\n`)
-  // honeypot.onProposals({}, (err: any, proposals) => {
+  // garden.onProposals({}, (err: any, proposals) => {
   //   console.log('proposals', proposals)
   //   if (err || !proposals) {
   //     return
@@ -85,7 +85,7 @@ async function main(): Promise<void> {
   //   proposals.map(describeProposal)
   // })
 
-  // honeypot.onConfig((err: any, config) => {
+  // garden.onConfig((err: any, config) => {
   //   console.log('config', config)
   //   if (err || !config) {
   //     return
@@ -95,7 +95,7 @@ async function main(): Promise<void> {
   // })
 }
 
-main().catch(err => {
+main().catch((err) => {
   console.error('')
   console.error(err)
   console.log(

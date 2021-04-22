@@ -7,7 +7,7 @@ schema:
   file: ./schema.graphql
 dataSources:
 {{> Organizations.yaml}}
-{{> OrganizationTemplates.yaml}}
+{{> GardensTemplates.yaml}}
 templates:
 {{> Agreement.template.yaml}}
 {{> ConvictionVoting.template.yaml}}

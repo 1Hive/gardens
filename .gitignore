@@ -7,7 +7,8 @@ packages/hardhat/*.txt
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 **/node_modules
 packages/hardhat/artifacts
-packages/hardhat/deployments
+packages/hardhat/deployments/localhost
+packages/hardhat/deployments/**/solcInputs
 # submodule
 packages/react-app
 # packages/react-app/src/contracts

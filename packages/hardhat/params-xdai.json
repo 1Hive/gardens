@@ -13,7 +13,7 @@
   "halfLifeHours": 48,
   "maxRatio": 0.1,
   "minThreshold": 0.025,
-  "minEffectiveSupply": 0.2,
+  "minActiveStakePct": 0.2,
   "setAppFeesCashier": false,
   "agreementTitle": "1Hive Community Covenant",
   "agreementContent": "ipfs:QmfWppqC55Xc7PU48vei2XvVAuH76z2rNFF7JMUhjVM5xV",

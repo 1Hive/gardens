@@ -43,7 +43,7 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
     IHoneyswapRouter public honeyswapRouter;
     ERC20 public honeyToken;
     address public stableToken;
-    IPriceOracle public priceOracle;
+    IPriceOracle public honeyPriceOracle;
 
     constructor(
         DAOFactory _daoFactory,
@@ -53,14 +53,14 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
         IHoneyswapRouter _honeyswapRouter,
         ERC20 _honeyToken,
         address _stableToken,
-        IPriceOracle _priceOracle
+        IPriceOracle _honeyPriceOracle
     ) public BaseTemplate(_daoFactory, _ens, _miniMeFactory, _aragonID) {
         _ensureAragonIdIsValid(_aragonID);
         _ensureMiniMeFactoryIsValid(_miniMeFactory);
         honeyswapRouter = _honeyswapRouter;
         honeyToken = _honeyToken;
         stableToken = _stableToken;
-        priceOracle = _priceOracle;
+        honeyPriceOracle = _honeyPriceOracle;
     }
 
     // New DAO functions //
@@ -99,7 +99,7 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
             hookedTokenManager.mint(address(this), _gardenTokenLiquidity);
             gardenToken.approve(address(honeyswapRouter), _gardenTokenLiquidity);
 
-            uint256 honeyLiquidityToAdd = priceOracle.consult(stableToken, XDAI_IN_HNY_REQUIRED_FOR_NEW_TOKEN, honeyToken);
+            uint256 honeyLiquidityToAdd = honeyPriceOracle.consult(stableToken, XDAI_IN_HNY_REQUIRED_FOR_NEW_TOKEN, honeyToken);
             honeyToken.transferFrom(msg.sender, address(this), honeyLiquidityToAdd);
             honeyToken.approve(address(honeyswapRouter), honeyLiquidityToAdd);
 

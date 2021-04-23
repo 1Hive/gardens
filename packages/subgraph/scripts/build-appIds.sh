@@ -12,4 +12,4 @@ DATA=manifest/data/$FILE
 echo 'Generating appIds from data file: '$DATA
 cat $DATA
 
-mustache $DATA src/kernel.template.ts > src/kernel.ts
+mustache $DATA src/appIds.template.ts > src/appIds.ts

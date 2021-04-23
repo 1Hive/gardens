@@ -63,4 +63,4 @@ typings/
 generated
 subgraph.yaml
 build
-src/kernel.ts
+src/appIds.ts

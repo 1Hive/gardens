@@ -98,6 +98,7 @@ export default class GardenConnectorTheGraph implements IGardenConnector {
   }
 
   async proposals(
+    orgAddress: string,
     first: number,
     skip: number,
     orderBy: string,
@@ -109,6 +110,7 @@ export default class GardenConnectorTheGraph implements IGardenConnector {
     return this.#gql.performQueryWithParser(
       queries.ALL_PROPOSALS('query'),
       {
+        orgAddress,
         first,
         skip,
         orderBy,
@@ -122,6 +124,7 @@ export default class GardenConnectorTheGraph implements IGardenConnector {
   }
 
   onProposals(
+    orgAddress: string,
     first: number,
     skip: number,
     orderBy: string,
@@ -134,6 +137,7 @@ export default class GardenConnectorTheGraph implements IGardenConnector {
     return this.#gql.subscribeToQueryWithParser(
       queries.ALL_PROPOSALS('subscription'),
       {
+        orgAddress,
         first,
         skip,
         orderBy,

@@ -54,6 +54,7 @@ export default class Garden {
     metadata = '',
   } = {}): Promise<Proposal[]> {
     return this.#connector.proposals(
+      this.#address,
       first,
       skip,
       orderBy,
@@ -77,6 +78,7 @@ export default class Garden {
     callback: Function
   ): SubscriptionHandler {
     return this.#connector.onProposals(
+      this.#address,
       first,
       skip,
       orderBy,

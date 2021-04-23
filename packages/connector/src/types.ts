@@ -165,6 +165,7 @@ export interface IGardenConnector {
   proposal(id: string): Promise<Proposal>
   onProposal(id: string, callback: Function): SubscriptionHandler
   proposals(
+    orgAddress: string,
     first: number,
     skip: number,
     orderBy: string,
@@ -174,6 +175,7 @@ export interface IGardenConnector {
     metadata: string
   ): Promise<Proposal[]>
   onProposals(
+    orgAddress: string,
     first: number,
     skip: number,
     orderBy: string,

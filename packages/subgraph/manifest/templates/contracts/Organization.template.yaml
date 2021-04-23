@@ -1,11 +1,15 @@
 # Kernel
 - kind: ethereum/contract
-  name: {{name}}
+  name: Kernel
   network: {{network}}
   source:
     abi: Kernel
+   {{#address}}
     address: '{{address}}'
+    {{/address}}
+    {{#startBlock}}
     startBlock: {{startBlock}}
+    {{/startBlock}}
   mapping:
     kind: ethereum/events
     apiVersion: 0.0.1

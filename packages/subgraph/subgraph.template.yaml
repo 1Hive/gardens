@@ -12,3 +12,4 @@ templates:
 {{> Agreement.template.yaml}}
 {{> ConvictionVoting.template.yaml}}
 {{> DisputableVoting.template.yaml}}
+{{> Organization.template.yaml}}

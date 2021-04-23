@@ -2,6 +2,7 @@ import { Address, BigInt } from '@graphprotocol/graph-ts'
 import { MiniMeToken as MiniMeTokenContract } from '../../generated/templates/ConvictionVoting/MiniMeToken'
 import {
   Config as ConfigEntity,
+  Organization as OrganizationEntity,
   Proposal as ProposalEntity,
   Supporter as SupporterEntity,
   Token as TokenEntity,
@@ -42,6 +43,26 @@ export function loadOrCreateConfig(orgAddress: Address): ConfigEntity | null {
   }
 
   return config
+}
+
+/// /// Organization entity //////
+export function loadOrCreateOrg(orgAddress: Address, timestamp: BigInt): OrganizationEntity | null {
+  let id = orgAddress.toHexString()
+  let organization = OrganizationEntity.load(id)
+
+
+  if (organization === null) {
+    let config = loadOrCreateConfig(orgAddress)
+    organization = new OrganizationEntity(id)
+    organization.createdAt = timestamp
+    organization.config = config.id
+    organization.proposals = []
+    
+    organization.save()
+  }
+
+
+  return organization
 }
 
 /// /// Supporter Entity //////

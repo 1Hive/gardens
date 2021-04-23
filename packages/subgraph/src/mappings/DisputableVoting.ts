@@ -1,6 +1,6 @@
 import { BigInt, Address } from '@graphprotocol/graph-ts'
-import { MiniMeToken as ERC20Contract } from '../generated/templates/DisputableVoting/MiniMeToken'
-import { Agreement as AgreementContract } from '../generated/templates/Agreement/Agreement'
+import { MiniMeToken as ERC20Contract } from '../../generated/templates/DisputableVoting/MiniMeToken'
+import { Agreement as AgreementContract } from '../../generated/templates/Agreement/Agreement'
 import {
   DisputableVoting as VotingContract,
   NewSetting as NewSettingEvent,
@@ -12,7 +12,7 @@ import {
   ExecuteVote as ExecuteVoteEvent,
   QuietEndingExtendVote as QuietEndingExtendVoteEvent,
   ChangeRepresentative as ChangeRepresentativeEvent,
-} from '../generated/templates/DisputableVoting/DisputableVoting'
+} from '../../generated/templates/DisputableVoting/DisputableVoting'
 
 import {
   castVoterState,
@@ -27,10 +27,10 @@ import {
   loadOrCreateSupporter,
   loadTokenData,
   populateVoteCollateralData,
-} from './helpers/index'
+} from '../helpers/index'
 
-import { PROPOSAL_TYPE_DECISION, PROPOSAL_TYPE_DECISION_NUM } from './types'
-import { STATUS_SETTLED, STATUS_SETTLED_NUM } from './statuses'
+import { PROPOSAL_TYPE_DECISION, PROPOSAL_TYPE_DECISION_NUM } from '../types'
+import { STATUS_SETTLED, STATUS_SETTLED_NUM } from '../statuses'
 
 /* eslint-disable @typescript-eslint/no-use-before-define */
 

@@ -26,4 +26,4 @@
         handler: handleDeployToken
       - event: InstalledApp(address,bytes32)
         handler: handleInstalledApp
-    file: ./src/GardensTemplate.ts
+    file: ./src/mappings/GardensTemplate.ts

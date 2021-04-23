@@ -2,24 +2,24 @@ import { Address, BigInt } from '@graphprotocol/graph-ts'
 import {
   ArbitratorFee as ArbitratorFeeEntity,
   Proposal as ProposalEntity,
-} from '../generated/schema'
+} from '../../generated/schema'
 import {
   Agreement as AgreementContract,
   ActionDisputed as ActionDisputedEvent,
   ActionSettled as ActionSettledEvent,
   ActionChallenged as ActionChallengedEvent,
-} from '../generated/templates/Agreement/Agreement'
+} from '../../generated/templates/Agreement/Agreement'
 import {
   getProposalEntity,
   getProposalEntityId,
   loadTokenData,
-} from './helpers/index'
+} from '../helpers/index'
 import {
   STATUS_DISPUTED,
   STATUS_DISPUTED_NUM,
   STATUS_SETTLED,
   STATUS_SETTLED_NUM,
-} from './statuses'
+} from '../statuses'
 
 /* eslint-disable @typescript-eslint/no-use-before-define */
 

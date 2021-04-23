@@ -12,9 +12,9 @@ import {
   ProposalRejected as ProposalRejectedEvent,
   StakeAdded as StakeAddedEvent,
   StakeWithdrawn as StakeWithdrawnEvent,
-} from '../generated/templates/ConvictionVoting/ConvictionVoting'
-import { Agreement as AgreementContract } from '../generated/templates/Agreement/Agreement'
-import { Proposal as ProposalEntity } from '../generated/schema'
+} from '../../generated/templates/ConvictionVoting/ConvictionVoting'
+import { Agreement as AgreementContract } from '../../generated/templates/Agreement/Agreement'
+import { Proposal as ProposalEntity } from '../../generated/schema'
 import {
   getConvictionConfigEntity,
   getProposalEntity,
@@ -23,7 +23,7 @@ import {
   loadOrCreateSupporter,
   populateCollateralData,
   populateProposalDataFromEvent,
-} from './helpers'
+} from '../helpers'
 import {
   STATUS_ACTIVE,
   STATUS_ACTIVE_NUM,
@@ -33,7 +33,7 @@ import {
   STATUS_CHALLENGED_NUM,
   STATUS_EXECUTED,
   STATUS_EXECUTED_NUM,
-} from './statuses'
+} from '../statuses'
 import {
   PROPOSAL_TYPE_PROPOSAL,
   PROPOSAL_TYPE_PROPOSAL_NUM,
@@ -41,7 +41,7 @@ import {
   PROPOSAL_TYPE_SUGGESTION_NUM,
   STAKE_TYPE_ADD,
   STAKE_TYPE_WITHDRAW,
-} from './types'
+} from '../types'
 
 export function handleConfigChanged(
   event: ConvictionSettingsChangedEvent

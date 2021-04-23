@@ -33,4 +33,4 @@
     eventHandlers:
       - event: NewAppProxy(address,bool,bytes32)
         handler: handleNewAppProxy
-    file: ./src/Kernel.ts
+    file: ./src/mappings/Kernel.ts

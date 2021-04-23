@@ -1,5 +1,5 @@
-import { NewAppProxy as NewAppProxyEvent } from '../generated/Kernel/Kernel'
-import { processApp, processOrg } from './processors'  
+import { NewAppProxy as NewAppProxyEvent } from '../../generated/Kernel/Kernel'
+import { processApp, processOrg } from '../processors'  
 
 export function handleNewAppProxy(event: NewAppProxyEvent): void {
   processOrg(event.address, event.block.timestamp)

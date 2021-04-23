@@ -2,7 +2,7 @@
 # yarn lockfile v1
 
 
-"@1hive/connect-honey-pot@link:..":
+"@1hive/connect-garden@link:..":
   version "0.0.0"
   uid ""
 

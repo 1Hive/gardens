@@ -56,8 +56,8 @@ export function loadOrCreateOrg(orgAddress: Address, timestamp: BigInt): Organiz
     organization = new OrganizationEntity(id)
     organization.createdAt = timestamp
     organization.config = config.id
-    organization.proposals = []
     
+    config.save()
     organization.save()
   }
 

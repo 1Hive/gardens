@@ -48,7 +48,7 @@ export function handleNewSetting(event: NewSettingEvent): void {
   )
 
   const daoAddress = votingApp.kernel()
-  const gardenConfig = loadOrCreateConfig(daoAddress)
+  const config = loadOrCreateConfig(daoAddress)
 
   votingConfig.settingId = event.params.settingId
   votingConfig.voteTime = settingData.value0
@@ -66,16 +66,17 @@ export function handleNewSetting(event: NewSettingEvent): void {
   }
   votingConfig.save()
 
-  gardenConfig.voting = currentSettingId
-  gardenConfig.save()
+  config.voting = currentSettingId
+  config.save()
 }
 
 export function handleStartVote(event: StartVoteEvent): void {
   const votingApp = VotingContract.bind(event.address)
-  const proposal = getProposalEntity(event.address, event.params.voteId)
-
   const voteData = votingApp.getVote(event.params.voteId)
+  const organization = votingApp.kernel()
 
+  const proposal = getProposalEntity(event.address, event.params.voteId)
+  proposal.organization = organization.toHexString()
   proposal.type = PROPOSAL_TYPE_DECISION
   proposal.typeInt = PROPOSAL_TYPE_DECISION_NUM
   proposal.creator = event.params.creator

@@ -57,9 +57,12 @@ export function handleConfigChanged(
 }
 
 export function handleProposalAdded(event: ProposalAddedEvent): void {
-  const proposal = getProposalEntity(event.address, event.params.id)
+  const convictionVotingApp = ConvictionVotingContract.bind(event.address)
+  const organization = convictionVotingApp.kernel()
 
+  const proposal = getProposalEntity(event.address, event.params.id)
   populateProposalDataFromEvent(proposal, event)
+  proposal.organization = organization.toHexString()
 
   if (event.params.amount.gt(BigInt.fromI32(0))) {
     proposal.type = PROPOSAL_TYPE_PROPOSAL

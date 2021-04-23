@@ -2,6 +2,7 @@ import { Address, BigInt } from '@graphprotocol/graph-ts'
 import { MiniMeToken as MiniMeTokenContract } from '../../generated/templates/ConvictionVoting/MiniMeToken'
 import {
   Config as ConfigEntity,
+  Organization as OrganizationEntity,
   Proposal as ProposalEntity,
   Supporter as SupporterEntity,
   Token as TokenEntity,
@@ -44,9 +45,29 @@ export function loadOrCreateConfig(orgAddress: Address): ConfigEntity | null {
   return config
 }
 
+/// /// Organization entity //////
+export function loadOrCreateOrg(orgAddress: Address, timestamp: BigInt): OrganizationEntity | null {
+  let id = orgAddress.toHexString()
+  let organization = OrganizationEntity.load(id)
+
+
+  if (organization === null) {
+    let config = loadOrCreateConfig(orgAddress)
+    organization = new OrganizationEntity(id)
+    organization.createdAt = timestamp
+    organization.config = config.id
+    
+    config.save()
+    organization.save()
+  }
+
+
+  return organization
+}
+
 /// /// Supporter Entity //////
-export function loadOrCreateSupporter(address: Address): SupporterEntity {
-  const id = address.toHexString()
+export function loadOrCreateSupporter(address: Address, orgAddress: Address): SupporterEntity {
+  const id = getSupporterEntityId(address, orgAddress)
   let supporter = SupporterEntity.load(id)
 
   if (supporter === null) {
@@ -55,6 +76,18 @@ export function loadOrCreateSupporter(address: Address): SupporterEntity {
   }
   return supporter!
 }
+
+export function getSupporterEntityId(
+  address: Address,
+  orgAddress: Address
+): string {
+  return (
+    address.toHexString() +
+    '-org:' +
+    orgAddress.toHexString()
+  )
+}
+
 
 /// /// Proposal Entity //////
 export function getProposalEntityId(

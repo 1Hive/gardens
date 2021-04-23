@@ -40,4 +40,4 @@
         handler: handleProposalRejected
       - event: ContractPaused(bool)
         handler: handleContractPaused
-    file: ./src/ConvictionVoting.ts
+    file: ./src/mappings/ConvictionVoting.ts

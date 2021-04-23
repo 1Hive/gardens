@@ -63,3 +63,4 @@ typings/
 generated
 subgraph.yaml
 build
+src/appIds.ts

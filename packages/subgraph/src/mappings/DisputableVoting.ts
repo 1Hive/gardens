@@ -1,6 +1,6 @@
 import { BigInt, Address } from '@graphprotocol/graph-ts'
-import { MiniMeToken as ERC20Contract } from '../generated/templates/DisputableVoting/MiniMeToken'
-import { Agreement as AgreementContract } from '../generated/templates/Agreement/Agreement'
+import { MiniMeToken as ERC20Contract } from '../../generated/templates/DisputableVoting/MiniMeToken'
+import { Agreement as AgreementContract } from '../../generated/templates/Agreement/Agreement'
 import {
   DisputableVoting as VotingContract,
   NewSetting as NewSettingEvent,
@@ -12,7 +12,7 @@ import {
   ExecuteVote as ExecuteVoteEvent,
   QuietEndingExtendVote as QuietEndingExtendVoteEvent,
   ChangeRepresentative as ChangeRepresentativeEvent,
-} from '../generated/templates/DisputableVoting/DisputableVoting'
+} from '../../generated/templates/DisputableVoting/DisputableVoting'
 
 import {
   castVoterState,
@@ -27,10 +27,10 @@ import {
   loadOrCreateSupporter,
   loadTokenData,
   populateVoteCollateralData,
-} from './helpers/index'
+} from '../helpers/index'
 
-import { PROPOSAL_TYPE_DECISION, PROPOSAL_TYPE_DECISION_NUM } from './types'
-import { STATUS_SETTLED, STATUS_SETTLED_NUM } from './statuses'
+import { PROPOSAL_TYPE_DECISION, PROPOSAL_TYPE_DECISION_NUM } from '../types'
+import { STATUS_SETTLED, STATUS_SETTLED_NUM } from '../statuses'
 
 /* eslint-disable @typescript-eslint/no-use-before-define */
 
@@ -48,7 +48,7 @@ export function handleNewSetting(event: NewSettingEvent): void {
   )
 
   const daoAddress = votingApp.kernel()
-  const gardenConfig = loadOrCreateConfig(daoAddress)
+  const config = loadOrCreateConfig(daoAddress)
 
   votingConfig.settingId = event.params.settingId
   votingConfig.voteTime = settingData.value0
@@ -66,16 +66,17 @@ export function handleNewSetting(event: NewSettingEvent): void {
   }
   votingConfig.save()
 
-  gardenConfig.voting = currentSettingId
-  gardenConfig.save()
+  config.voting = currentSettingId
+  config.save()
 }
 
 export function handleStartVote(event: StartVoteEvent): void {
   const votingApp = VotingContract.bind(event.address)
-  const proposal = getProposalEntity(event.address, event.params.voteId)
-
   const voteData = votingApp.getVote(event.params.voteId)
+  const organization = votingApp.kernel()
 
+  const proposal = getProposalEntity(event.address, event.params.voteId)
+  proposal.organization = organization.toHexString()
   proposal.type = PROPOSAL_TYPE_DECISION
   proposal.typeInt = PROPOSAL_TYPE_DECISION_NUM
   proposal.creator = event.params.creator
@@ -120,11 +121,11 @@ export function handleStartVote(event: StartVoteEvent): void {
 
 export function handleCastVote(event: CastVoteEvent): void {
   updateVoteState(event.address, event.params.voteId)
+  const proposal = getProposalEntity(event.address, event.params.voteId)
 
-  const voter = loadOrCreateSupporter(event.params.voter)
+  const voter = loadOrCreateSupporter(event.params.voter, Address.fromString(proposal.organization))
 
   const votingApp = VotingContract.bind(event.address)
-  const proposal = getProposalEntity(event.address, event.params.voteId)
   const miniMeToken = ERC20Contract.bind(votingApp.token())
 
   voter.proposal = proposal.id
@@ -185,7 +186,10 @@ export function handleQuietEndingExtendVote(
 export function handleChangeRepresentative(
   event: ChangeRepresentativeEvent
 ): void {
-  const voter = loadOrCreateSupporter(event.params.voter)
+  const votingApp = VotingContract.bind(event.address)
+  const organization = votingApp.kernel()
+
+  const voter = loadOrCreateSupporter(event.params.voter, organization)
   voter.representative = event.params.representative
   voter.save()
 }

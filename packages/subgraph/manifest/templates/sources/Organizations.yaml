@@ -1,0 +1,5 @@
+# Organizations
+{{#dataSources.Organizations}}
+  {{> Organization.template.yaml}}
+{{/dataSources.Organizations}}
+# /Organizations

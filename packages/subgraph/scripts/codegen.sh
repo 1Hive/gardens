@@ -3,6 +3,8 @@
 # Exit script as soon as a command fails.
 set -o errexit
 
+
+./scripts/build-appIds.sh
 # Create manifest
 yarn manifest
 

@@ -1,6 +1,34 @@
 {
   "network": "rinkeby",
-  "address": "0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a",
-  "startBlock": "7887667",
-  "orgName": "Disputable Honeypot DAO"
+  "dataSources": {
+    "Organizations": [
+      {
+        "address": "0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a",
+        "name": "Honeypot DAO",
+        "startBlock": "7887667"
+      }
+    ],
+    "OrganizationTemplates": [
+      {
+        "address": "0x6A03abA06b65f6bcF637b60D47dbBce940756d5b",
+        "name": "gardens-template@1.0.0",
+        "startBlock": 8386353
+      }
+    ]
+  },
+  "agreementAppIds": [
+    {
+      "id": "0x41dd0b999b443a19321f2f34fe8078d1af95a1487b49af4c2ca57fb9e3e5331e", "name": "agreement-1hive.open.aragonpm.eth"
+    }
+  ],
+  "convictionVotingAppIds": [
+    {
+      "id": "0xca60629a22f03bcad7738fee1a6f0c5863eb89463621b40566a6799b82cbe184", "name": "disputable-conviction-voting.open.aragonpm.eth"
+    }
+  ],
+  "votingAppIds": [
+    { 
+      "id": "0x39aa9e500efe56efda203714d12c78959ecbf71223162614ab5b56eaba014145", "name": "disputable-voting.precedence-campaign.aragonpm.eth"
+    }
+  ]
 }

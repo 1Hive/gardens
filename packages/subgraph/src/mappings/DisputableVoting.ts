@@ -123,7 +123,7 @@ export function handleCastVote(event: CastVoteEvent): void {
   updateVoteState(event.address, event.params.voteId)
   const proposal = getProposalEntity(event.address, event.params.voteId)
 
-  const voter = loadOrCreateSupporter(event.params.voter, Address.fromHexString(proposal.organization))
+  const voter = loadOrCreateSupporter(event.params.voter, Address.fromString(proposal.organization))
 
   const votingApp = VotingContract.bind(event.address)
   const miniMeToken = ERC20Contract.bind(votingApp.token())

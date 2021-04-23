@@ -8,7 +8,7 @@ import {
   IGardenConnector,
   SubscriptionHandler,
 } from '../types'
-import { buildProposalId } from '../helpers'
+import { buildProposalId, buildSupporterId } from '../helpers'
 
 export default class Garden {
   #address: Address
@@ -91,10 +91,12 @@ export default class Garden {
   }
 
   async supporter({ id = '' } = {}): Promise<Supporter> {
-    return this.#connector.supporter(id)
+    const supporterId = buildSupporterId(id, this.#address)
+    return this.#connector.supporter(supporterId)
   }
 
   onSupporter({ id = '' } = {}, callback: Function): SubscriptionHandler {
-    return this.#connector.onSupporter(id, callback)
+    const supporterId = buildSupporterId(id, this.#address)
+    return this.#connector.onSupporter(supporterId, callback)
   }
 }

@@ -121,11 +121,11 @@ export function handleStartVote(event: StartVoteEvent): void {
 
 export function handleCastVote(event: CastVoteEvent): void {
   updateVoteState(event.address, event.params.voteId)
+  const proposal = getProposalEntity(event.address, event.params.voteId)
 
-  const voter = loadOrCreateSupporter(event.params.voter)
+  const voter = loadOrCreateSupporter(event.params.voter, Address.fromHexString(proposal.organization))
 
   const votingApp = VotingContract.bind(event.address)
-  const proposal = getProposalEntity(event.address, event.params.voteId)
   const miniMeToken = ERC20Contract.bind(votingApp.token())
 
   voter.proposal = proposal.id
@@ -186,7 +186,10 @@ export function handleQuietEndingExtendVote(
 export function handleChangeRepresentative(
   event: ChangeRepresentativeEvent
 ): void {
-  const voter = loadOrCreateSupporter(event.params.voter)
+  const votingApp = VotingContract.bind(event.address)
+  const organization = votingApp.kernel()
+
+  const voter = loadOrCreateSupporter(event.params.voter, organization)
   voter.representative = event.params.representative
   voter.save()
 }

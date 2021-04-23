@@ -66,8 +66,8 @@ export function loadOrCreateOrg(orgAddress: Address, timestamp: BigInt): Organiz
 }
 
 /// /// Supporter Entity //////
-export function loadOrCreateSupporter(address: Address): SupporterEntity {
-  const id = address.toHexString()
+export function loadOrCreateSupporter(address: Address, orgAddress: Address): SupporterEntity {
+  const id = getSupporterEntityId(address, orgAddress)
   let supporter = SupporterEntity.load(id)
 
   if (supporter === null) {
@@ -76,6 +76,18 @@ export function loadOrCreateSupporter(address: Address): SupporterEntity {
   }
   return supporter!
 }
+
+export function getSupporterEntityId(
+  address: Address,
+  orgAddress: Address
+): string {
+  return (
+    address.toHexString() +
+    '-org:' +
+    orgAddress.toHexString()
+  )
+}
+
 
 /// /// Proposal Entity //////
 export function getProposalEntityId(

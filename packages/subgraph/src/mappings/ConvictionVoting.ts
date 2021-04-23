@@ -237,7 +237,7 @@ function _updateProposalStakes(
   tokensStaked: BigInt,
   timestamp: BigInt
 ): void {
-  const supporter = loadOrCreateSupporter(entity)
+  const supporter = loadOrCreateSupporter(entity, Address.fromHexString(proposal.organization))
   supporter.proposal = proposal.id
   supporter.save()
 

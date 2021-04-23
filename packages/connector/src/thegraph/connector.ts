@@ -27,7 +27,7 @@ export function subgraphUrlFromChainId(chainId: number) {
     return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-mainnet'
   }
   if (chainId === 4) {
-    return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-staging'
+    return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-rinkeby'
   }
   if (chainId === 100) {
     return 'https://api.thegraph.com/subgraphs/name/1hive/gardens'

@@ -62,9 +62,10 @@ export const CONFIG = (type: string) => gql`
 `
 
 export const ALL_PROPOSALS = (type: string) => gql`
-  ${type} Proposals($first: Int!, $skip: Int!, $proposalTypes: [Int]!, $statuses: [Int]!, $metadata: String! $orderBy: String!, $orderDirection: String!) {
-    proposals(where: { typeInt_in: $proposalTypes, statusInt_in: $statuses, metadata_contains: $metadata },  first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
+  ${type} Proposals($orgAddress: String!, $first: Int!, $skip: Int!, $proposalTypes: [Int]!, $statuses: [Int]!, $metadata: String! $orderBy: String!, $orderDirection: String!) {
+    proposals(where: { organization: $orgAddress, typeInt_in: $proposalTypes, statusInt_in: $statuses, metadata_contains: $metadata },  first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
       id
+      organization
       number
       creator
       status

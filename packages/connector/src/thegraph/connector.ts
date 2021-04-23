@@ -27,7 +27,7 @@ export function subgraphUrlFromChainId(chainId: number) {
     return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-mainnet'
   }
   if (chainId === 4) {
-    return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-staging'
+    return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-rinkeby'
   }
   if (chainId === 100) {
     return 'https://api.thegraph.com/subgraphs/name/1hive/gardens'
@@ -98,6 +98,7 @@ export default class GardenConnectorTheGraph implements IGardenConnector {
   }
 
   async proposals(
+    orgAddress: string,
     first: number,
     skip: number,
     orderBy: string,
@@ -109,6 +110,7 @@ export default class GardenConnectorTheGraph implements IGardenConnector {
     return this.#gql.performQueryWithParser(
       queries.ALL_PROPOSALS('query'),
       {
+        orgAddress,
         first,
         skip,
         orderBy,
@@ -122,6 +124,7 @@ export default class GardenConnectorTheGraph implements IGardenConnector {
   }
 
   onProposals(
+    orgAddress: string,
     first: number,
     skip: number,
     orderBy: string,
@@ -134,6 +137,7 @@ export default class GardenConnectorTheGraph implements IGardenConnector {
     return this.#gql.subscribeToQueryWithParser(
       queries.ALL_PROPOSALS('subscription'),
       {
+        orgAddress,
         first,
         skip,
         orderBy,

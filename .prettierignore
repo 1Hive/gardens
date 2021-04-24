@@ -1,3 +1,4 @@
 .github/workflows
 manifest
 subgraph.template.yaml
+appIds.template.ts

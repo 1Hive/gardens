@@ -6,8 +6,8 @@ import GardenConnectorTheGraph, {
 } from './thegraph/connector'
 
 type Config = {
-  subgraphUrl: string
   pollInterval?: number
+  subgraphUrl: string
 }
 
 export default function connectGarden(

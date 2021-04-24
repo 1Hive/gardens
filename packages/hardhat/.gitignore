@@ -1,0 +1,7 @@
+artifacts
+cache
+deployments/localhost
+deployments/**/solcInputs
+tenderly.yaml
+typechain
+*.txt

@@ -7,8 +7,8 @@ import {
   IConvictionVoting,
   MiniMeToken,
 } from "../typechain";
+import { utf8ToHex } from "web3-utils";
 
-// const { utf8ToHex } = require("web3-utils");
 const overrides = {
   gasLimit: 9500000,
 };
@@ -56,7 +56,7 @@ export default async function main(): Promise<any> {
     feeTokenAddress,
     stakingFactoryAddress,
     arbitratorAddress,
-  } = await import(`./config/mock-${network.name}.json`);
+  } = await import(`../config/mock-${network.name}.json`);
 
   const agreementArtifact = await import(
     "@1hive/apps-agreement/artifacts/Agreement.json"
@@ -282,10 +282,8 @@ export default async function main(): Promise<any> {
 
 async function newVote(agreement, voting, context) {
   console.log("Creating vote action...");
-  const receipt = await voting.newVote(
-    EMPTY_CALLS_SCRIPT,
-    ethers.utils.formatBytes32String(context)
-  );
+  const response = await voting.newVote(EMPTY_CALLS_SCRIPT, utf8ToHex(context));
+  const receipt = await response.wait();
   const actionId = await getEventArgument(
     "ActionSubmitted",
     "actionId",
@@ -304,14 +302,15 @@ async function newProposal(
   context
 ) {
   console.log("Creating action/proposal...");
-  const addProposalReceipt = await convictionVoting.addProposal(
+  const addProposalRsponse = await convictionVoting.addProposal(
     title,
-    ethers.utils.formatBytes32String(context),
+    utf8ToHex(context),
     REQUESTED_AMOUNT,
     false,
     beneficiary.address,
     overrides
   );
+  const addProposalReceipt = await addProposalRsponse.wait();
   const actionId = await getEventArgument(
     "ActionSubmitted",
     "actionId",

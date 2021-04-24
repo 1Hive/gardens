@@ -1,17 +1,8 @@
 import { QueryResult } from '@aragon/connect-thegraph'
 import Supporter from '../../models/Supporter'
-import {
-  CastData,
-  IGardenConnector,
-  StakeData,
-  StakeHistoryData,
-  SupporterData,
-} from '../../types'
+import { CastData, IGardenConnector, StakeData, StakeHistoryData, SupporterData } from '../../types'
 
-export function parseSupporter(
-  result: QueryResult,
-  connector: IGardenConnector
-): SupporterData | null {
+export function parseSupporter(result: QueryResult, connector: IGardenConnector): SupporterData | null {
   const supporter = result.data.supporter
 
   if (!supporter) {
@@ -23,9 +14,7 @@ export function parseSupporter(
 
   // For proposals (suggestions and proposals)
   const stakes = supporter.stakes.map((stake: StakeData) => stake)
-  const stakesHistory = supporter.stakesHistory.map(
-    (stake: StakeHistoryData) => stake
-  )
+  const stakesHistory = supporter.stakesHistory.map((stake: StakeHistoryData) => stake)
 
   return new Supporter(
     {

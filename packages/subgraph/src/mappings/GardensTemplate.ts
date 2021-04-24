@@ -14,8 +14,6 @@ export function handleDeployDao(event: DeployDaoEvent): void {
 
 export function handleSetupDao(event: SetupDaoEvent): void {}
 
-export function handleDeployToken(event: DeployTokenEvent): void{}
+export function handleDeployToken(event: DeployTokenEvent): void {}
 
-export function handleInstalledApp(event: InstalledAppEvent): void {
-  
-}
+export function handleInstalledApp(event: InstalledAppEvent): void {}

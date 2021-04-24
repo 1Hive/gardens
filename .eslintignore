@@ -1,0 +1,20 @@
+docker
+example
+
+# generated
+node_modules
+dist
+
+# hardhat
+coverage
+artifacts
+abi
+cache
+deployments
+typechain
+
+# subgraph
+abis
+build
+generated
+manifest

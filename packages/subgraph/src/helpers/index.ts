@@ -50,17 +50,15 @@ export function loadOrCreateOrg(orgAddress: Address, timestamp: BigInt): Organiz
   let id = orgAddress.toHexString()
   let organization = OrganizationEntity.load(id)
 
-
   if (organization === null) {
     let config = loadOrCreateConfig(orgAddress)
     organization = new OrganizationEntity(id)
     organization.createdAt = timestamp
     organization.config = config.id
-    
+
     config.save()
     organization.save()
   }
-
 
   return organization
 }
@@ -77,35 +75,16 @@ export function loadOrCreateSupporter(address: Address, orgAddress: Address): Su
   return supporter!
 }
 
-export function getSupporterEntityId(
-  address: Address,
-  orgAddress: Address
-): string {
-  return (
-    address.toHexString() +
-    '-org:' +
-    orgAddress.toHexString()
-  )
+export function getSupporterEntityId(address: Address, orgAddress: Address): string {
+  return address.toHexString() + '-org:' + orgAddress.toHexString()
 }
-
 
 /// /// Proposal Entity //////
-export function getProposalEntityId(
-  appAddress: Address,
-  proposalId: BigInt
-): string {
-  return (
-    'appAddress:' +
-    appAddress.toHexString() +
-    '-proposalId:' +
-    proposalId.toHexString()
-  )
+export function getProposalEntityId(appAddress: Address, proposalId: BigInt): string {
+  return 'appAddress:' + appAddress.toHexString() + '-proposalId:' + proposalId.toHexString()
 }
 
-export function getProposalEntity(
-  appAddress: Address,
-  proposalId: BigInt
-): ProposalEntity | null {
+export function getProposalEntity(appAddress: Address, proposalId: BigInt): ProposalEntity | null {
   const proposalEntityId = getProposalEntityId(appAddress, proposalId)
 
   let proposal = ProposalEntity.load(proposalEntityId)
@@ -116,9 +95,7 @@ export function getProposalEntity(
     proposal.statusInt = STATUS_ACTIVE_NUM
     proposal.weight = BigInt.fromI32(0)
     proposal.challengeId = BigInt.fromI32(0)
-    proposal.challenger = Address.fromString(
-      '0x0000000000000000000000000000000000000000'
-    )
+    proposal.challenger = Address.fromString('0x0000000000000000000000000000000000000000')
     proposal.challengeEndDate = BigInt.fromI32(0)
     proposal.snapshotBlock = BigInt.fromI32(0) // needed because of required value on Voting data
     proposal.settledAt = BigInt.fromI32(0)

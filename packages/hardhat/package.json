@@ -3,6 +3,26 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "chain": "hardhat node",
+    "fork": "MAINNET_FORK=true hardhat node",
+    "console:fork": "MAINNET_FORK=true hardhat console",
+    "test": "hardhat test",
+    "test:gas": "REPORT_GAS=true hardhat test",
+    "compile": "hardhat compile",
+    "deploy": "hardhat run scripts/deploy.ts",
+    "postdeploy": "hardhat run scripts/publish.ts",
+    "coverage": "hardhat coverage --network coverage --temp artifacts",
+    "watch": "node scripts/watch.js",
+    "accounts": "hardhat accounts",
+    "balance": "hardhat balance",
+    "send": "hardhat send",
+    "generate": "hardhat generate",
+    "account": "hardhat account",
+    "clean": "node ../../node_modules/rimraf/bin.js abi artifacts cache typechain",
+    "lint": "eslint --ext .ts,.js,.json,.md,.sol",
+    "lint:fix": "eslint --ext .ts,.js,.json,.md,.sol --fix"
+  },
   "devDependencies": {
     "@aragon/contract-helpers-test": "^0.1.0",
     "@types/chai": "^4.2.14",
@@ -10,21 +30,12 @@
     "@types/node": "^14.14.22",
     "@types/ramda": "^0.27.38",
     "chai": "^4.2.0",
-    "eslint": "^7.5.0",
-    "eslint-config-airbnb": "^18.2.0",
-    "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-babel": "^5.3.1",
-    "eslint-plugin-prettier": "^3.1.4",
     "hardhat-abi-exporter": "^2.2.1",
     "hardhat-deploy": "^0.7.0-beta.50",
     "hardhat-gas-reporter": "^1.0.4",
     "openzeppelin-solidity": "2.0.1",
-    "prettier": "^2.2.1",
-    "prettier-plugin-solidity": "^1.0.0-beta.5",
-    "solidity-coverage": "^0.7.16",
-    "ts-generator": "^0.1.1",
-    "ts-node": "^9.1.1",
-    "typescript": "^4.2.2"
+    "prettier-plugin-solidity": "^1.0.0-beta.10",
+    "solidity-coverage": "^0.7.16"
   },
   "dependencies": {
     "@1hive/apps-brightid-register": "^0.1.7",
@@ -48,22 +59,5 @@
     "qrcode-terminal": "^0.12.0",
     "ramda": "^0.27.1",
     "typechain": "^4.0.2"
-  },
-  "scripts": {
-    "chain": "hardhat node",
-    "fork": "MAINNET_FORK=true hardhat node",
-    "console:fork": "MAINNET_FORK=true hardhat console",
-    "test": "hardhat test",
-    "test:gas": "REPORT_GAS=true hardhat test",
-    "compile": "hardhat compile",
-    "deploy": "hardhat run scripts/deploy.ts",
-    "postdeploy": "hardhat run scripts/publish.ts",
-    "coverage": "hardhat coverage --network coverage --temp artifacts",
-    "watch": "node scripts/watch.js",
-    "accounts": "hardhat accounts",
-    "balance": "hardhat balance",
-    "send": "hardhat send",
-    "generate": "hardhat generate",
-    "account": "hardhat account"
   }
 }

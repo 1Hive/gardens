@@ -10,7 +10,6 @@
   ],
   "private": true,
   "scripts": {
-    "prepare": "yarn submodule:get",
     "submodule:get": "git submodule add -f https://github.com/1Hive/honey-pot packages/react-app && yarn submodule:install",
     "submodule:install": "git submodule foreach 'git checkout gardens' && git submodule foreach yarn install",
     "react-app:build": "yarn workspace @gardens/react-app build --max-old-space-size=12288",
@@ -51,7 +50,10 @@
     "graph-ship-local": "yarn graph-prepare && yarn graph-codegen && yarn graph-deploy-local",
     "deploy-and-graph": "yarn deploy && yarn graph-ship-local",
     "theme": "yarn workspace @gardens/react-app theme",
-    "watch-theme": "yarn workspace @gardens/react-app watch"
+    "watch-theme": "yarn workspace @gardens/react-app watch",
+    "clean": "wsrun --exclude-missing clean",
+    "lint": "wsrun --exclude-missing --serial lint",
+    "lint:fix": "wsrun --exclude-missing --stages lint:fix"
   },
   "workspaces": {
     "packages": [
@@ -63,5 +65,16 @@
       "**/hardhat",
       "**/hardhat/**"
     ]
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.22.0",
+    "@typescript-eslint/parser": "^4.22.0",
+    "eslint": "^7.25.0",
+    "eslint-config-prettier": "^8.2.0",
+    "prettier": "^2.2.1",
+    "prettier-plugin-solidity": "^1.0.0-beta.10",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.2.4",
+    "wsrun": "^5.2.4"
   }
 }

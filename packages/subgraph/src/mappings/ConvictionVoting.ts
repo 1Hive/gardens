@@ -43,15 +43,12 @@ import {
   STAKE_TYPE_WITHDRAW,
 } from '../types'
 
-export function handleConfigChanged(
-  event: ConvictionSettingsChangedEvent
-): void {
+export function handleConfigChanged(event: ConvictionSettingsChangedEvent): void {
   const convictionConfig = getConvictionConfigEntity(event.address)
   convictionConfig.decay = event.params.decay
   convictionConfig.maxRatio = event.params.maxRatio
   convictionConfig.weight = event.params.weight
-  convictionConfig.minThresholdStakePercentage =
-    event.params.minThresholdStakePercentage
+  convictionConfig.minThresholdStakePercentage = event.params.minThresholdStakePercentage
 
   convictionConfig.save()
 }
@@ -125,11 +122,7 @@ export function handleProposalCancelled(event: ProposalCancelledEvent): void {
 }
 
 export function handleProposalPaused(event: ProposalPausedEvent): void {
-  _onProposalPaused(
-    event.address,
-    event.params.challengeId,
-    event.params.proposalId
-  )
+  _onProposalPaused(event.address, event.params.challengeId, event.params.proposalId)
 }
 
 export function handleProposalResumed(event: ProposalResumedEvent): void {
@@ -148,15 +141,9 @@ export function handleContractPaused(event: ContractPausedEvent): void {
   convictionConfig.save()
 }
 
-function _onProposalPaused(
-  appAddress: Address,
-  challengeId: BigInt,
-  proposalId: BigInt
-): void {
+function _onProposalPaused(appAddress: Address, challengeId: BigInt, proposalId: BigInt): void {
   const convictionVotingApp = ConvictionVotingContract.bind(appAddress)
-  const agreementApp = AgreementContract.bind(
-    convictionVotingApp.getAgreement()
-  )
+  const agreementApp = AgreementContract.bind(convictionVotingApp.getAgreement())
   const challengeData = agreementApp.getChallenge(challengeId)
   const proposal = getProposalEntity(appAddress, proposalId)
   proposal.challenger = challengeData.value1
@@ -216,16 +203,7 @@ function _onNewStake(
   proposal.weight = conviction
 
   _updateProposalStakes(proposal, type, entity, tokensStaked, timestamp)
-  _updateStakeHistory(
-    proposal,
-    type,
-    entity,
-    tokensStaked,
-    totalTokensStaked,
-    conviction,
-    blockNumber,
-    timestamp
-  )
+  _updateStakeHistory(proposal, type, entity, tokensStaked, totalTokensStaked, conviction, blockNumber, timestamp)
 
   proposal.save()
 }

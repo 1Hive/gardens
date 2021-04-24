@@ -1,25 +1,13 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts'
-import {
-  ArbitratorFee as ArbitratorFeeEntity,
-  Proposal as ProposalEntity,
-} from '../../generated/schema'
+import { ArbitratorFee as ArbitratorFeeEntity, Proposal as ProposalEntity } from '../../generated/schema'
 import {
   Agreement as AgreementContract,
   ActionDisputed as ActionDisputedEvent,
   ActionSettled as ActionSettledEvent,
   ActionChallenged as ActionChallengedEvent,
 } from '../../generated/templates/Agreement/Agreement'
-import {
-  getProposalEntity,
-  getProposalEntityId,
-  loadTokenData,
-} from '../helpers/index'
-import {
-  STATUS_DISPUTED,
-  STATUS_DISPUTED_NUM,
-  STATUS_SETTLED,
-  STATUS_SETTLED_NUM,
-} from '../statuses'
+import { getProposalEntity, getProposalEntityId, loadTokenData } from '../helpers/index'
+import { STATUS_DISPUTED, STATUS_DISPUTED_NUM, STATUS_SETTLED, STATUS_SETTLED_NUM } from '../statuses'
 
 /* eslint-disable @typescript-eslint/no-use-before-define */
 
@@ -35,9 +23,7 @@ export function handleActionDisputed(event: ActionDisputedEvent): void {
   proposal.disputedAt = event.block.timestamp
 
   const submitterArbitratorFeeId = proposal.id + '-submitter'
-  const challengeArbitratorFeesData = agreementApp.getChallengeArbitratorFees(
-    event.params.challengeId
-  )
+  const challengeArbitratorFeesData = agreementApp.getChallengeArbitratorFees(event.params.challengeId)
   createArbitratorFee(
     proposal.id,
     submitterArbitratorFeeId,
@@ -66,9 +52,7 @@ export function handleActionChallenged(event: ActionChallengedEvent): void {
   const proposalId = getProposalEntityId(actionData.value0, actionData.value1)
 
   const challengerArbitratorFeeId = proposalId + '-challenger'
-  const challengeArbitratorFeesData = agreementApp.getChallengeArbitratorFees(
-    event.params.challengeId
-  )
+  const challengeArbitratorFeesData = agreementApp.getChallengeArbitratorFees(event.params.challengeId)
   createArbitratorFee(
     proposalId,
     challengerArbitratorFeeId,
@@ -84,12 +68,7 @@ export function handleActionChallenged(event: ActionChallengedEvent): void {
   proposal.save()
 }
 
-function createArbitratorFee(
-  proposalId: string,
-  id: string,
-  feeToken: Address,
-  feeAmount: BigInt
-): void {
+function createArbitratorFee(proposalId: string, id: string, feeToken: Address, feeAmount: BigInt): void {
   const arbitratorFee = new ArbitratorFeeEntity(id)
   arbitratorFee.proposal = proposalId
   arbitratorFee.amount = feeAmount

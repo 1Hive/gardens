@@ -1,19 +1,9 @@
 import { QueryResult } from '@aragon/connect-thegraph'
 import Proposal from '../../models/Proposal'
 import VotingConfig from '../../models/VotingConfig'
-import {
-  CastData,
-  IGardenConnector,
-  ProposalData,
-  StakeData,
-  StakeHistoryData,
-  VotingConfigData,
-} from '../../types'
+import { CastData, IGardenConnector, ProposalData, StakeData, StakeHistoryData, VotingConfigData } from '../../types'
 
-export function parseProposals(
-  result: QueryResult,
-  connector: IGardenConnector
-): Proposal[] {
+export function parseProposals(result: QueryResult, connector: IGardenConnector): Proposal[] {
   const proposals = result.data.proposals
 
   if (!proposals) {
@@ -26,9 +16,7 @@ export function parseProposals(
 
     // For proposals (discussions and proposals)
     const stakes = proposal.stakes?.map((stake: StakeData) => stake)
-    const stakesHistory = proposal.stakesHistory?.map(
-      (stake: StakeHistoryData) => stake
-    )
+    const stakesHistory = proposal.stakesHistory?.map((stake: StakeHistoryData) => stake)
 
     let setting = null
 
@@ -51,10 +39,7 @@ export function parseProposals(
   })
 }
 
-export function parseProposal(
-  result: QueryResult,
-  connector: IGardenConnector
-): Proposal {
+export function parseProposal(result: QueryResult, connector: IGardenConnector): Proposal {
   const proposal = result.data.proposal
 
   if (!proposal) {
@@ -66,9 +51,7 @@ export function parseProposal(
 
   // For proposals (suggestions and proposals)
   const stakes = proposal.stakes?.map((stake: StakeData) => stake)
-  const stakesHistory = proposal.stakesHistory?.map(
-    (stake: StakeHistoryData) => stake
-  )
+  const stakesHistory = proposal.stakesHistory?.map((stake: StakeHistoryData) => stake)
 
   let setting = null
 

@@ -3,11 +3,7 @@ import { loadOrCreateOrg } from './helpers'
 import { onAppTemplateCreated } from './hooks'
 import { AGREEMENT_APPIDS, CONVICTION_VOTING_APPIDS, VOTING_APPIDS } from './appIds'
 
-export function processApp(
-  orgAddress: Address,
-  appAddress: Address,
-  appId: string
-): void {
+export function processApp(orgAddress: Address, appAddress: Address, appId: string): void {
   let template: string
 
   if (VOTING_APPIDS.includes(appId)) {

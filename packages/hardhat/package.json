@@ -37,6 +37,7 @@
     "solidity-coverage": "^0.7.16"
   },
   "dependencies": {
+    "@1hive/apps-agreement": "^0.1.0",
     "@1hive/apps-brightid-register": "^0.1.7",
     "@aragon/apps-shared-minime": "^1.0.0",
     "@aragon/apps-vault": "^4.1.0",

@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import hre, { ethers } from "hardhat";
-import { Contract } from "@ethersproject/contracts";
 import { Signer } from "@ethersproject/abstract-signer";
 import { GardensTemplate, Kernel } from "../typechain";
+import { getEventArgument } from "../helpers/events";
 
 const { deployments } = hre;
 
@@ -59,25 +60,6 @@ const getGardensTemplate = async (signer: Signer): Promise<GardensTemplate> =>
     await gardensTemplateAddress(),
     signer
   )) as GardensTemplate;
-
-const getEventArgument = async (
-  selectedFilter: string,
-  arg: number | string,
-  contract: Contract,
-  transactionHash: string
-): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const filter = contract.filters[selectedFilter]();
-
-    contract.on(filter, (...args) => {
-      const event = args.pop();
-      if (event.transactionHash === transactionHash) {
-        contract.removeAllListeners(filter);
-        resolve(event.args[arg]);
-      }
-    });
-  });
-};
 
 const transform = (params) => ({
   orgTokenName: params.orgTokenName,
@@ -165,7 +147,7 @@ export default async function main(log = console.log): Promise<any> {
     challangeDuration,
     actionAmount,
     challangeAmount,
-  } = transform(await import(`../params-${network}.json`));
+  } = transform(await import(`../config/params-${network}.json`));
 
   const createDaoTxOne = async (
     gardensTemplate: GardensTemplate,

@@ -2,6 +2,14 @@
 # yarn lockfile v1
 
 
+"@1hive/apps-agreement@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@1hive/apps-agreement/-/apps-agreement-0.1.0.tgz#1a21c5850d39a36e7166eaa7931909ce0bab9fab"
+  integrity sha512-0BlJyCTMJzGmeTMRPOy/Funf1v08bbmJGYJTaQvCmMq9Pcsl5bHeZj/fQXBfkvrgMo1/zzxlRJ0sKw6gxTvqIg==
+  dependencies:
+    "@aragon/os" "5.0.0-rc.0"
+    "@aragon/staking" "0.3.2"
+
 "@1hive/apps-brightid-register@^0.1.7":
   version "0.1.7"
   resolved "https://registry.yarnpkg.com/@1hive/apps-brightid-register/-/apps-brightid-register-0.1.7.tgz#7131c19eeebd86de5d083a012183e4ca33aabd05"
@@ -139,6 +147,11 @@
     truffle-hdwallet-provider "0.0.3"
     truffle-hdwallet-provider-privkey "0.3.0"
 
+"@aragon/os@5.0.0-rc.0", "@aragon/os@^5.0.0-rc.0":
+  version "5.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@aragon/os/-/os-5.0.0-rc.0.tgz#a4e68fc452aebf59b7976d7f763b71da714f4b2e"
+  integrity sha512-jqSxL5f4k7fHT6EyROZCi8oXG1ZBzIXbaStfQFokhZVKtLN0yXayOz5WukVaHrllRUQLtWcrSAXHnx6P6WGLkA==
+
 "@aragon/os@^4.0.0":
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/@aragon/os/-/os-4.4.0.tgz#af3e80b11f71209f86dba8b2b3f37a4b025aff7b"
@@ -149,15 +162,15 @@
     mkdirp "^0.5.1"
     truffle-flattener "^1.2.9"
 
-"@aragon/os@^5.0.0-rc.0":
-  version "5.0.0-rc.0"
-  resolved "https://registry.yarnpkg.com/@aragon/os/-/os-5.0.0-rc.0.tgz#a4e68fc452aebf59b7976d7f763b71da714f4b2e"
-  integrity sha512-jqSxL5f4k7fHT6EyROZCi8oXG1ZBzIXbaStfQFokhZVKtLN0yXayOz5WukVaHrllRUQLtWcrSAXHnx6P6WGLkA==
-
 "@aragon/ppf-contracts@1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@aragon/ppf-contracts/-/ppf-contracts-1.2.0.tgz#d2339481fe21436f349eabf39ca1264aded702e8"
   integrity sha512-9U0v/GR2Q62psB8sWk3UCsiyxS4LDqAWOmJqVrRtncKph1reF4PnKSOgKsI1Gncyp9Dk9+ZTkIspGGpYSjApBg==
+
+"@aragon/staking@0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@aragon/staking/-/staking-0.3.2.tgz#03a11e49c6b9d145b6837afe95a984e4fd57497b"
+  integrity sha512-rhQQh+y2AFIq5KP5Xe8vpGaixDPFdyMTOVyfEsSa+o37XRPgezR/muhqCGQ8pv06dNS7mpY65z6LLt/5hCkHFw==
 
 "@aragon/templates-shared@1.0.0":
   version "1.0.0"
@@ -1883,6 +1896,11 @@ are-we-there-yet@~1.1.2:
     delegates "^1.0.0"
     readable-stream "^2.0.6"
 
+arg@^4.1.0:
+  version "4.1.3"
+  resolved "https://registry.yarnpkg.com/arg/-/arg-4.1.3.tgz#269fc7ad5b8e42cb63c896d5666017261c144089"
+  integrity sha512-58S9QDqG0Xx27YwPSt9fJxivjYl432YCwfDMfZ+71RAqUrZef7LrKQZ3LHLOwCS4FLNBplP533Zx895SeOCHvA==
+
 argparse@^1.0.7:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/argparse/-/argparse-1.0.10.tgz#bcd6791ea5ae09725e17e5ad988134cd40b3d911"
@@ -3581,6 +3599,11 @@ create-hmac@^1.1.0, create-hmac@^1.1.4, create-hmac@^1.1.7:
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
 
+create-require@^1.1.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/create-require/-/create-require-1.1.1.tgz#c1d7e8f1e5f6cfc9ff65f9cd352d37348756c333"
+  integrity sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==
+
 cross-fetch@^2.1.0, cross-fetch@^2.1.1:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-2.2.3.tgz#e8a0b3c54598136e037f8650f8e823ccdfac198e"
@@ -3878,6 +3901,11 @@ diff@3.5.0:
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/diff/-/diff-3.5.0.tgz#800c0dd1e0a8bfbc95835c202ad220fe317e5a12"
   integrity sha512-A46qtFgd+g7pDZinpnwiRJtxbC1hpgf0uzP3iG89scHk0AUC7A1TGxf5OiiOUv/JMZR8GOt8hL900hV0bOy5xA==
+
+diff@^4.0.1:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/diff/-/diff-4.0.2.tgz#60f3aecb89d5fae520c11aa19efc2bb982aade7d"
+  integrity sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==
 
 diffie-hellman@^5.0.0:
   version "5.0.3"
@@ -7689,6 +7717,11 @@ mafmt@^7.0.0:
   dependencies:
     multiaddr "^7.3.0"
 
+make-error@^1.1.1:
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/make-error/-/make-error-1.3.6.tgz#2eb2e37ea9b67c4891f684a1394799af484cf7a2"
+  integrity sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw==
+
 map-age-cleaner@^0.1.1:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/map-age-cleaner/-/map-age-cleaner-0.1.3.tgz#7d583a7306434c055fe474b0f45078e6e1b4b92a"
@@ -10190,7 +10223,7 @@ source-map-support@^0.4.15:
   dependencies:
     source-map "^0.5.6"
 
-source-map-support@^0.5.11, source-map-support@^0.5.13:
+source-map-support@^0.5.11, source-map-support@^0.5.13, source-map-support@^0.5.17:
   version "0.5.19"
   resolved "https://registry.yarnpkg.com/source-map-support/-/source-map-support-0.5.19.tgz#a98b62f86dcaf4f67399648c085291ab9e8fed61"
   integrity sha512-Wonm7zOCIJzBGQdB+thsPar0kYuCIzYvxZwlBa87yi/Mdjv7Tip2cyVbLj5o0cFPN4EVkuTwb3GDDyUx2DGnGw==
@@ -10864,6 +10897,18 @@ ts-generator@^0.1.1:
     prettier "^2.1.2"
     resolve "^1.8.1"
     ts-essentials "^1.0.0"
+
+ts-node@^9.1.1:
+  version "9.1.1"
+  resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-9.1.1.tgz#51a9a450a3e959401bda5f004a72d54b936d376d"
+  integrity sha512-hPlt7ZACERQGf03M253ytLY3dHbGNGrAq9qIHWUY9XHYl1z7wYngSr3OQ5xmui8o2AaxsONxIzjafLUiWBo1Fg==
+  dependencies:
+    arg "^4.1.0"
+    create-require "^1.1.0"
+    diff "^4.0.1"
+    make-error "^1.1.1"
+    source-map-support "^0.5.17"
+    yn "3.1.1"
 
 ts-toolbelt@^6.15.1:
   version "6.15.5"
@@ -12228,3 +12273,8 @@ yargs@^4.7.1:
     window-size "^0.2.0"
     y18n "^3.2.1"
     yargs-parser "^2.4.1"
+
+yn@3.1.1:
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/yn/-/yn-3.1.1.tgz#1e87401a09d767c1d5eab26a6e4c185182d2eb50"
+  integrity sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==

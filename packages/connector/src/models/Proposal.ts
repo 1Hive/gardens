@@ -10,6 +10,7 @@ import {
   ProposalData,
   SubscriptionHandler,
   VotingConfigData,
+  FunctionCallback,
 } from '../types'
 
 export default class Proposal {
@@ -113,7 +114,7 @@ export default class Proposal {
     return this.#connector.collateralRequirement(this.id)
   }
 
-  onCollateralRequirement(callback?: Function): SubscriptionHandler {
+  onCollateralRequirement(callback?: FunctionCallback): SubscriptionHandler {
     return subscription<CollateralRequirement>(callback, (callback) =>
       this.#connector.onCollateralRequirement(this.id, callback)
     )
@@ -123,12 +124,9 @@ export default class Proposal {
     return this.#connector.arbitratorFee(this.submitterArbitratorFeeId || '')
   }
 
-  onSubmitterArbitratorFee(callback?: Function): SubscriptionHandler {
+  onSubmitterArbitratorFee(callback?: FunctionCallback): SubscriptionHandler {
     return subscription<ArbitratorFee | null>(callback, (callback) =>
-      this.#connector.onArbitratorFee(
-        this.submitterArbitratorFeeId || '',
-        callback
-      )
+      this.#connector.onArbitratorFee(this.submitterArbitratorFeeId || '', callback)
     )
   }
 
@@ -136,12 +134,9 @@ export default class Proposal {
     return this.#connector.arbitratorFee(this.challengerArbitratorFeeId || '')
   }
 
-  onChallengerArbitratorFee(callback?: Function): SubscriptionHandler {
+  onChallengerArbitratorFee(callback?: FunctionCallback): SubscriptionHandler {
     return subscription<ArbitratorFee | null>(callback, (callback) =>
-      this.#connector.onArbitratorFee(
-        this.challengerArbitratorFeeId || '',
-        callback
-      )
+      this.#connector.onArbitratorFee(this.challengerArbitratorFeeId || '', callback)
     )
   }
 }

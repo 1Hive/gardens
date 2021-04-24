@@ -10,9 +10,9 @@
     ],
     "OrganizationTemplates": [
       {
-        "address": "0x6A03abA06b65f6bcF637b60D47dbBce940756d5b",
+        "address": "0x60e21D199CB4638939973F93FB376fd45ec20eC6",
         "name": "gardens-template@1.0.0",
-        "startBlock": 8386353
+        "startBlock": 8466044
       }
     ]
   },
@@ -27,6 +27,9 @@
     }
   ],
   "votingAppIds": [
+    { 
+      "id": "0x39aa9e500efe56efda203714d12c78959ecbf71223162614ab5b56eaba014145", "name": "disputable-voting.precedence-campaign.aragonpm.eth"
+    },
     { 
       "id": "0x39aa9e500efe56efda203714d12c78959ecbf71223162614ab5b56eaba014145", "name": "disputable-voting.precedence-campaign.aragonpm.eth"
     }

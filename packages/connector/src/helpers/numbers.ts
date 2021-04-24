@@ -26,8 +26,6 @@ export const formatBn = (
   }
 
   const integer = formattedNumber.substring(0, decimalPosition)
-  const roundedDecimals = Math.round(
-    parseInt(decimals) / 10 ** (decimalsLength - formattedDecimals)
-  )
+  const roundedDecimals = Math.round(parseInt(decimals) / 10 ** (decimalsLength - formattedDecimals))
   return `${integer}.${roundedDecimals}`
 }

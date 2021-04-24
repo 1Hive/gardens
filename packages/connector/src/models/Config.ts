@@ -1,9 +1,4 @@
-import {
-  ConfigData,
-  ConvictionConfigData,
-  IGardenConnector,
-  VotingConfigData,
-} from '../types'
+import { ConfigData, ConvictionConfigData, IGardenConnector, VotingConfigData } from '../types'
 
 export default class Config {
   #connector: IGardenConnector

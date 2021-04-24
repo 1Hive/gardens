@@ -6,8 +6,17 @@ import { assertBn } from "@aragon/contract-helpers-test/src/asserts";
 
 import { default as newHatch, HatchContext } from "../scripts/new-hatch";
 import { BigNumber } from "@ethersproject/bignumber";
-import { getStateByKey, STATE_CLOSED, STATE_FUNDING, STATE_GOAL_REACHED } from "./helpers/hatch-states";
-import { HATCH_ERRORS, IMPACT_HOURS_ERRORS, TOKEN_ERRORS } from "./helpers/errors";
+import {
+  getStateByKey,
+  STATE_CLOSED,
+  STATE_FUNDING,
+  STATE_GOAL_REACHED,
+} from "./helpers/hatch-states";
+import {
+  HATCH_ERRORS,
+  IMPACT_HOURS_ERRORS,
+  TOKEN_ERRORS,
+} from "./helpers/errors";
 import { calculateRewards } from "./helpers/helpers";
 
 use(solidity);
@@ -38,7 +47,10 @@ describe("Hatch Flow", () => {
       let tx;
       const maxGoalContribution = await hatchContext.hatch.maxGoal();
 
-      tx = await hatchContext.contributionToken.approve(hatchContext.hatch.address, maxGoalContribution);
+      tx = await hatchContext.contributionToken.approve(
+        hatchContext.hatch.address,
+        maxGoalContribution
+      );
 
       await tx.wait();
 
@@ -56,7 +68,9 @@ describe("Hatch Flow", () => {
       await tx.wait();
 
       assertBn(
-        await hatchContext.contributionToken.balanceOf(hatchContext.hatch.address),
+        await hatchContext.contributionToken.balanceOf(
+          hatchContext.hatch.address
+        ),
         maxGoalContribution,
         HATCH_ERRORS.ERROR_CONTRIBUTION_NOT_MADE
       );
@@ -71,11 +85,20 @@ describe("Hatch Flow", () => {
     it("claims the impact hours for all contributors", async () => {
       const totalRaised = await hatchContext.hatch.totalRaised();
       const totalIH = await hatchContext.impactHoursClonedToken.totalSupply();
-      const totalIHRewards = await calculateRewards(hatchContext.impactHours, totalRaised, totalIH);
-      const expectedHatchTokens = await hatchContext.hatch.contributionToTokens(totalIHRewards);
+      const totalIHRewards = await calculateRewards(
+        hatchContext.impactHours,
+        totalRaised,
+        totalIH
+      );
+      const expectedHatchTokens = await hatchContext.hatch.contributionToTokens(
+        totalIHRewards
+      );
       const hatchTokenTotalSupply = await hatchContext.hatchToken.totalSupply();
 
-      await claimRewards(hatchContext.impactHours, hatchContext.impactHoursToken);
+      await claimRewards(
+        hatchContext.impactHours,
+        hatchContext.impactHoursToken
+      );
 
       assert.isTrue(
         hatchTokenTotalSupply
@@ -97,7 +120,11 @@ describe("Hatch Flow", () => {
 
       await tx.wait();
 
-      assert.equal(getStateByKey(await hatchContext.hatch.state()), STATE_CLOSED, HATCH_ERRORS.ERROR_HATCH_NOT_CLOSED);
+      assert.equal(
+        getStateByKey(await hatchContext.hatch.state()),
+        STATE_CLOSED,
+        HATCH_ERRORS.ERROR_HATCH_NOT_CLOSED
+      );
     });
   });
 

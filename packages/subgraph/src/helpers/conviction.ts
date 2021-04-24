@@ -16,9 +16,7 @@ function getConvictionConfigEntityId(appAddress: Address): string {
   return appAddress.toHexString()
 }
 
-export function getConvictionConfigEntity(
-  appAddress: Address
-): ConvictionConfigEntity | null {
+export function getConvictionConfigEntity(appAddress: Address): ConvictionConfigEntity | null {
   const configEntityId = getConvictionConfigEntityId(appAddress)
 
   let config = ConvictionConfigEntity.load(configEntityId)
@@ -30,10 +28,7 @@ export function getConvictionConfigEntity(
   return config
 }
 
-export function loadConvictionConfig(
-  orgAddress: Address,
-  appAddress: Address
-): void {
+export function loadConvictionConfig(orgAddress: Address, appAddress: Address): void {
   // General org config
   const config = loadOrCreateConfig(orgAddress)
 
@@ -65,9 +60,7 @@ export function loadConvictionConfig(
   convictionConfig.maxRatio = convictionVoting.maxRatio()
   convictionConfig.pctBase = convictionVoting.D()
   convictionConfig.totalStaked = convictionVoting.totalStaked()
-  convictionConfig.maxStakedProposals = convictionVoting
-    .MAX_STAKED_PROPOSALS()
-    .toI32()
+  convictionConfig.maxStakedProposals = convictionVoting.MAX_STAKED_PROPOSALS().toI32()
   convictionConfig.minThresholdStakePercentage = convictionVoting.minThresholdStakePercentage()
   convictionConfig.contractPaused = false
   convictionConfig.stableTokenOracle = convictionVoting.stableTokenOracle()
@@ -83,10 +76,7 @@ export function getStakeEntityId(proposalId: string, entity: Bytes): string {
   return proposalId + '-entity:' + entity.toHexString()
 }
 
-export function getStakeEntity(
-  proposal: ProposalEntity | null,
-  entity: Bytes
-): StakeEntity | null {
+export function getStakeEntity(proposal: ProposalEntity | null, entity: Bytes): StakeEntity | null {
   const stakeId = getStakeEntityId(proposal.id, entity)
 
   let stake = StakeEntity.load(stakeId)
@@ -100,18 +90,8 @@ export function getStakeEntity(
 }
 
 /// /// Stake History entity //////
-export function getStakeHistoryEntityId(
-  proposalId: string,
-  entity: Bytes,
-  timestamp: BigInt
-): string {
-  return (
-    proposalId +
-    '-entity:' +
-    entity.toHexString() +
-    '-time:' +
-    timestamp.toString()
-  )
+export function getStakeHistoryEntityId(proposalId: string, entity: Bytes, timestamp: BigInt): string {
+  return proposalId + '-entity:' + entity.toHexString() + '-time:' + timestamp.toString()
 }
 
 export function getStakeHistoryEntity(
@@ -119,11 +99,7 @@ export function getStakeHistoryEntity(
   entity: Bytes,
   blockNumber: BigInt
 ): StakeHistoryEntity | null {
-  const stakeHistoryId = getStakeHistoryEntityId(
-    proposal.id,
-    entity,
-    blockNumber
-  )
+  const stakeHistoryId = getStakeHistoryEntityId(proposal.id, entity, blockNumber)
 
   const stakeHistory = new StakeHistoryEntity(stakeHistoryId)
   stakeHistory.proposal = proposal.id
@@ -139,10 +115,7 @@ export function getOrgAddress(appAddress: Address): Address {
 }
 
 /// /// Proposal entity //////
-export function populateProposalDataFromEvent(
-  proposal: ProposalEntity | null,
-  event: ProposalAddedEvent
-): void {
+export function populateProposalDataFromEvent(proposal: ProposalEntity | null, event: ProposalAddedEvent): void {
   proposal.metadata = event.params.title
   proposal.link = event.params.link.toString()
   proposal.requestedAmount = event.params.amount

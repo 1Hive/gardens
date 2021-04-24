@@ -9,7 +9,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const { deployer } = await getNamedAccounts();
 
-  const { AragonID, DAOFactory, ENS, MiniMeFactory } = Config.Bases[hre.network.name];
+  const { AragonID, DAOFactory, ENS, MiniMeFactory } = Config.Bases[
+    hre.network.name
+  ];
 
   await deploy("GardensTemplate", {
     from: deployer,

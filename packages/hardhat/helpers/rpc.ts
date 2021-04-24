@@ -52,7 +52,8 @@ export const increase = async (duration: string | BigNumber) => {
     duration = ethers.BigNumber.from(duration);
   }
 
-  if (duration.isNegative()) throw Error(`Cannot increase time by a negative amount (${duration})`);
+  if (duration.isNegative())
+    throw Error(`Cannot increase time by a negative amount (${duration})`);
 
   await hre.network.provider.request({
     method: "evm_increaseTime",

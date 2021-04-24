@@ -29,9 +29,6 @@
   "votingAppIds": [
     { 
       "id": "0x39aa9e500efe56efda203714d12c78959ecbf71223162614ab5b56eaba014145", "name": "disputable-voting.precedence-campaign.aragonpm.eth"
-    },
-    { 
-      "id": "0x39aa9e500efe56efda203714d12c78959ecbf71223162614ab5b56eaba014145", "name": "disputable-voting.precedence-campaign.aragonpm.eth"
     }
   ]
 }

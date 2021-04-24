@@ -8,8 +8,7 @@ type Config = {
 }
 
 export async function getGardens(config: Config, { first = 1000 }) {
-  const subgraphUrl =
-    config?.subgraphUrl ?? subgraphUrlFromChainId(config.network) ?? undefined
+  const subgraphUrl = config?.subgraphUrl ?? subgraphUrlFromChainId(config.network) ?? undefined
 
   if (!subgraphUrl) {
     throw new Error('subgraphUrl required to be passed.')

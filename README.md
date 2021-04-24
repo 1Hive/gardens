@@ -7,6 +7,7 @@
 ---
 
 This is a monorepo with the following packages:
+
 - Honey-template smart contracts under `packages/hardhat`
 - Honey-pot interface under `packages/react-app`
 - Honey-pot subgraph under `packages/subgraph`

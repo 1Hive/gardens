@@ -7,6 +7,8 @@ import Supporter from './models/Supporter'
 export const ALL_PROPOSAL_TYPES = [0, 1, 2] // [Suggestion, Proposal, Decision]
 export const ALL_PROPOSAL_STATUSES = [0, 1, 2] // [Active, Cancelled, Executed]
 
+export type FunctionCallback = <T = unknown, R = unknown>(args?: T) => R
+
 export type SubscriptionHandler = { unsubscribe: () => void }
 
 export type Address = string
@@ -161,9 +163,9 @@ export interface ArbitratorFeeData {
 export interface IGardenConnector {
   disconnect(): Promise<void>
   config(id: string): Promise<Config>
-  onConfig(id: string, callback: Function): SubscriptionHandler
+  onConfig(id: string, callback: FunctionCallback): SubscriptionHandler
   proposal(id: string): Promise<Proposal>
-  onProposal(id: string, callback: Function): SubscriptionHandler
+  onProposal(id: string, callback: FunctionCallback): SubscriptionHandler
   proposals(
     orgAddress: string,
     first: number,
@@ -183,18 +185,12 @@ export interface IGardenConnector {
     types: number[],
     statuses: number[],
     metadata: string,
-    callback: Function
+    callback: FunctionCallback
   ): SubscriptionHandler
   supporter(address: string): Promise<Supporter>
-  onSupporter(address: string, callback: Function): SubscriptionHandler
+  onSupporter(address: string, callback: FunctionCallback): SubscriptionHandler
   collateralRequirement(voteId: string): Promise<CollateralRequirement>
-  onCollateralRequirement(
-    voteId: string,
-    callback: Function
-  ): SubscriptionHandler
+  onCollateralRequirement(voteId: string, callback: FunctionCallback): SubscriptionHandler
   arbitratorFee(arbitratorFeeId: string): Promise<ArbitratorFee | null>
-  onArbitratorFee(
-    arbitratorFeeId: string,
-    callback: Function
-  ): SubscriptionHandler
+  onArbitratorFee(arbitratorFeeId: string, callback: FunctionCallback): SubscriptionHandler
 }

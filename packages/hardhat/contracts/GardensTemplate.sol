@@ -10,6 +10,8 @@ import "./appIds/AppIdsRinkeby.sol";
 import "./external/DetailedERC20.sol";
 import "./external/IHoneyswapRouter.sol";
 import "./external/IPriceOracle.sol";
+import "./external/ICollateralRequirementUpdaterFactory.sol"; // This lives in the agreements repo
+import "./external/IIncentivisedPriceOracleFactory.sol"; // This lives in the uniswap-v2-periphery/contracts/examples repo (it should be moved to its own repo)
 
 contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
     string private constant ERROR_MISSING_MEMBERS = "MISSING_MEMBERS";
@@ -44,6 +46,8 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
     ERC20 public honeyToken;
     address public stableToken;
     IPriceOracle public honeyPriceOracle;
+    ICollateralRequirementUpdaterFactory public collateralRequirementUpdaterFactory;
+    IIncentivisedPriceOracleFactory public incentivisedPriceOracleFactory;
 
     constructor(
         DAOFactory _daoFactory,
@@ -53,7 +57,9 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
         IHoneyswapRouter _honeyswapRouter,
         ERC20 _honeyToken,
         address _stableToken,
-        IPriceOracle _honeyPriceOracle
+        IPriceOracle _honeyPriceOracle,
+        ICollateralRequirementUpdaterFactory _collateralRequirementUpdaterFactory,
+        IIncentivisedPriceOracleFactory _incentivisedPriceOracleFactory
     ) public BaseTemplate(_daoFactory, _ens, _miniMeFactory, _aragonID) {
         _ensureAragonIdIsValid(_aragonID);
         _ensureMiniMeFactoryIsValid(_miniMeFactory);
@@ -61,6 +67,8 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
         honeyToken = _honeyToken;
         stableToken = _stableToken;
         honeyPriceOracle = _honeyPriceOracle;
+        collateralRequirementUpdaterFactory = _collateralRequirementUpdaterFactory;
+        incentivisedPriceOracleFactory = _incentivisedPriceOracleFactory;
     }
 
     // New DAO functions //

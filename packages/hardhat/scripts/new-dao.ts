@@ -86,11 +86,9 @@ const transform = params => ({
     stableTokenOracle: params.stableTokenOracle,
     daoId: params.daoId || 'gardens' + Math.floor(Math.random() * 100000),
     arbitrator: params.arbitrator,
-    setAppFeesCashier: params.setAppFeesCashier,
     agreementTitle: params.agreementTitle,
     agreementContent: params.agreementContent,
     stakingFactory: params.stakingFactory,
-    feeToken: params.feeToken,
 })
 
 export default async function main(log = console.log): Promise<any> {
@@ -119,19 +117,16 @@ export default async function main(log = console.log): Promise<any> {
         minThresholdStakePercentage,
         daoId,
         arbitrator,
-        setAppFeesCashier,
         agreementTitle,
         agreementContent,
         stakingFactory,
-        feeToken,
         challangeDuration,
         actionAmount,
         challangeAmount
     } = transform(await import(`../params-${network}.json`));
 
     const createDaoTxOne = async (gardensTemplate: GardensTemplate, log: Function): Promise<string> => {
-
-        const tx = await gardensTemplate.createDaoTxOne(
+        const createDaoTxOneTx = await gardensTemplate.createDaoTxOne(
             existingToken,
             orgTokenName,
             orgTokenSymbol,
@@ -148,51 +143,46 @@ export default async function main(log = console.log): Promise<any> {
             ],
             {gasLimit: 9500000}
         );
-
-        const daoAddress = await getEventArgument("DeployDao", "dao", gardensTemplate, tx.hash);
-
+        const daoAddress = await getEventArgument("DeployDao", "dao", gardensTemplate, createDaoTxOneTx.hash);
+        await createDaoTxOneTx.wait(1)
         log(`Tx one completed: Gardens DAO (${daoAddress}) created.`);
-
         return daoAddress
     };
 
     const createTokenholders = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
-        await gardensTemplate.createTokenholders(
+        const createTokenHoldersTx = await gardensTemplate.createTokenHolders(
             holders,
             stakes,
             {gasLimit: 9500000}
         )
-
-        log(`Tx tokenholders completed.`);
+        await createTokenHoldersTx.wait(1)
+        log(`Tx create token holders completed.`);
     }
 
     const createDaoTxTwo = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
-
-        await gardensTemplate.createDaoTxTwo(
+        const createDaoTxTwoTx = await gardensTemplate.createDaoTxTwo(
             [issuanceTargetRatio, issuanceMaxAdjustmentPerSecond],
             stableTokenAddress,
             stableTokenOracle,
             [decay, maxRatio, weight, minThresholdStakePercentage],
             {gasLimit: 9500000}
         );
-
+        await createDaoTxTwoTx.wait(1)
         log(`Tx two completed.`);
     };
 
     const createDaoTxThree = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
-        await gardensTemplate.createDaoTxThree(
+        const createDaoTxThreeTx = await gardensTemplate.createDaoTxThree(
             daoId,
             arbitrator,
-            setAppFeesCashier,
             agreementTitle,
             ethers.utils.toUtf8Bytes(agreementContent),
             stakingFactory,
-            feeToken,
             challangeDuration,
             [actionAmount, challangeAmount],
             {gasLimit: 9500000}
         );
-
+        await createDaoTxThreeTx.wait(1)
         log(`Tx three completed.`);
     };
 
@@ -200,7 +190,7 @@ export default async function main(log = console.log): Promise<any> {
     const gardensTemplate = await getGardensTemplate(appManager)
 
     const daoAddress = await createDaoTxOne(gardensTemplate, log);
-    await createTokenholders(gardensTemplate, log)
+    // await createTokenholders(gardensTemplate, log)
     await createDaoTxTwo(gardensTemplate, log);
     await createDaoTxThree(gardensTemplate, log);
 
@@ -215,23 +205,8 @@ export default async function main(log = console.log): Promise<any> {
         ])
     )
 
-    log({
-        daoAddress,
-        convictionVotingAddress,
-        tokenManagerAddress,
-        issuanceAddress,
-        agreementAddress,
-        votingAddress,
-    })
-
-    return {
-        daoAddress,
-        convictionVotingAddress,
-        tokenManagerAddress,
-        issuanceAddress,
-        agreementAddress,
-        votingAddress,
-    }
+    log({daoAddress, convictionVotingAddress, tokenManagerAddress, issuanceAddress, agreementAddress, votingAddress,})
+    return {daoAddress, convictionVotingAddress, tokenManagerAddress, issuanceAddress, agreementAddress, votingAddress}
 }
 
 // We recommend this pattern to be able to use async/await everywhere

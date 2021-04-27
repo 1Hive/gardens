@@ -57,6 +57,7 @@
     "compile": "hardhat compile",
     "deploy": "hardhat run scripts/deploy.ts",
     "postdeploy": "hardhat run scripts/publish.ts",
+    "newdao": "hardhat run scripts/new-dao.ts",
     "coverage": "hardhat coverage --network coverage --temp artifacts",
     "watch": "node scripts/watch.js",
     "accounts": "hardhat accounts",

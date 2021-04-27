@@ -109,9 +109,7 @@ const config: HardhatUserConfig = {
       url: "https://rinkeby.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", //<---- YOUR INFURA ID! (or it won't work)
       gasPrice: 1000000000,
       gas: 10000000,
-      accounts: {
-        mnemonic: mnemonic(),
-      },
+      accounts: [process.env.ETH_KEY],
     },
     kovan: {
       url: "https://kovan.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad", //<---- YOUR INFURA ID! (or it won't work)
@@ -140,9 +138,7 @@ const config: HardhatUserConfig = {
     xdai: {
       url: "https://xdai.1hive.org/",
       gasPrice: 1000000000,
-      accounts: {
-        mnemonic: mnemonic(),
-      },
+      accounts: [process.env.ETH_KEY],
     },
     matic: {
       url: "https://rpc-mainnet.maticvigil.com/",

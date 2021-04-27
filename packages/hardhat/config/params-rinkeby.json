@@ -2,8 +2,8 @@
   "orgTokenName": "Garden",
   "orgTokenSymbol": "GDN",
   "seeds": {
-    "0x668714a122cc867ac9cba09fed4a305cdce34a3b": 2.5,
-    "0xD6afE73383Fde0244CA17A8428eB68C9ae5B6092": 1
+    "0x668714a122cc867ac9cba09fed4a305cdce34a3b": 500,
+    "0xD6afE73383Fde0244CA17A8428eB68C9ae5B6092": 350
   },
   "fundingPoolStake": 100,
   "voteSupportRequired": 0.5,

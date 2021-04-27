@@ -50,12 +50,15 @@ export default async function main(): Promise<any> {
   const [beneficiary, challenger] = await ethers.getSigners();
 
   const {
+    arbitrator: arbitratorAddress,
+    feeToken: feeTokenAddress,
+    stakingFactory: stakingFactoryAddress,
+  } = await import(`../config/params-${network.name}.json`);
+
+  const {
     agreementAddress,
     convictionVotingAddress,
     disputableVotingAddress,
-    feeTokenAddress,
-    stakingFactoryAddress,
-    arbitratorAddress,
   } = await import(`../config/mock-${network.name}.json`);
 
   const agreementArtifact = await import(
@@ -128,6 +131,7 @@ export default async function main(): Promise<any> {
     console.log(`Staking to stake manager...`);
     await staking.stake(STAKE_AMOUNT, ethers.constants.HashZero, overrides);
   }
+
   if (
     (
       await staking.getLock(beneficiary.address, agreement.address)
@@ -359,7 +363,7 @@ async function challenge(
 
   console.log(
     "Challenger:",
-    challenger.address.address,
+    challenger.address,
     "Fee amount:",
     feeAmount.toString(),
     "Balance: ",

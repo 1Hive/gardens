@@ -1,9 +1,6 @@
 {
-  "daoAddress": "0x1191B571a5Dc2772d581cEc51DA3bb2DB4E37BD8",
-  "convictionVotingAddress": "0x4dc7b306287a407394d9fcc67f8e28bdbfe704c9",
-  "agreementAddress": "0xd330300f0cfc4e36a2085eab07c2479a485c1680",
-  "disputableVotingAddress": "0x7179d40492d066fd1dfa66ad5b957ffff735e5dc",
-  "feeTokenAddress": "0x3050E20FAbE19f8576865811c9F28e85b96Fa4f9",
-  "stakingFactoryAddress": "0xE376a7bbD20Ba75616D6a9d0A8468195a5d695FC",
-  "arbitratorAddress": "0x35e7433141D5f7f2EB7081186f5284dCDD2ccacE"
+  "daoAddress": "0xec2445C0ed499215463A6AdF9474ec3606D2080f",
+  "convictionVotingAddress": "0xc803100d3191f7325e5bae90be7c372a20f0dffc",
+  "agreementAddress": "0xb5a49a935c67df1d8beddb6b51491ad8ce44ed9f",
+  "disputableVotingAddress": "0x5076268a5a83d7ea3cCe236F665Be87Abc515ee9"
 }

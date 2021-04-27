@@ -1,7 +1,8 @@
 import hre, {ethers} from "hardhat";
 import {Contract} from "@ethersproject/contracts";
 import {Signer} from "@ethersproject/abstract-signer";
-import {GardensTemplate, Kernel} from "../typechain";
+import {GardensTemplate, ERC20Detailed, Kernel} from "../typechain";
+import {BigNumber} from "ethers";
 
 const {deployments} = hre;
 
@@ -39,10 +40,15 @@ const getApps = async (daoAddress: string, appIds: string[]): Promise<string[]> 
     return appIds.map(appId => apps[appId])
 }
 
-const gardensTemplateAddress = async (): Promise<string> => (await deployments.get("GardensTemplate")).address;
+const getGardensTemplate = async (signer: Signer): Promise<GardensTemplate> => {
+    const gardensTemplateAddress = (await deployments.get("GardensTemplate")).address
+    return (await ethers.getContractAt("GardensTemplate", gardensTemplateAddress, signer)) as GardensTemplate
+}
 
-const getGardensTemplate = async (signer: Signer): Promise<GardensTemplate> =>
-    (await ethers.getContractAt("GardensTemplate", await gardensTemplateAddress(), signer)) as GardensTemplate;
+const getHoneyToken = async (signer: Signer, gardensTemplate: GardensTemplate) => {
+    const honeyTokenAddress = await gardensTemplate.honeyToken()
+    return (await ethers.getContractAt("ERC20Detailed", honeyTokenAddress, signer)) as ERC20Detailed;
+}
 
 const getEventArgument = async (selectedFilter: string, arg: number | string, contract: Contract, transactionHash: string): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -56,7 +62,7 @@ const getEventArgument = async (selectedFilter: string, arg: number | string, co
             }
         });
     });
-};
+}
 
 const transform = params => ({
     orgTokenName: params.orgTokenName,
@@ -123,7 +129,22 @@ export default async function main(log = console.log): Promise<any> {
         challangeDuration,
         actionAmount,
         challangeAmount
-    } = transform(await import(`../params-${network}.json`));
+    } = transform(await import(`../params-${network}.json`))
+    const mainAccount = (await ethers.getSigners())[0]
+
+    const approveHoneyPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
+        const honeyToken = await getHoneyToken(mainAccount, gardensTemplate)
+        const currentAllowance = await honeyToken.allowance(mainAccount.address, gardensTemplate.address)
+        if (currentAllowance.gt(BigNumber.from(0))) {
+            const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, BigNumber.from(0))
+            await approveHoneyPaymentTx.wait(1)
+            log(`Pre unapproval for gardens payment made.`)
+        }
+        const approvalAmount = BigNumber.from(100).pow(BigNumber.from(18))
+        const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, approvalAmount)
+        await approveHoneyPaymentTx.wait(1)
+        log(`Approval for gardens payment made.`)
+    }
 
     const createDaoTxOne = async (gardensTemplate: GardensTemplate, log: Function): Promise<string> => {
         const createDaoTxOneTx = await gardensTemplate.createDaoTxOne(
@@ -142,10 +163,10 @@ export default async function main(log = console.log): Promise<any> {
                 voteExecutionDelay
             ],
             {gasLimit: 9500000}
-        );
+        )
         const daoAddress = await getEventArgument("DeployDao", "dao", gardensTemplate, createDaoTxOneTx.hash);
         await createDaoTxOneTx.wait(1)
-        log(`Tx one completed: Gardens DAO (${daoAddress}) created.`);
+        log(`Tx one completed: Gardens DAO (${daoAddress}) created.`)
         return daoAddress
     };
 
@@ -156,7 +177,7 @@ export default async function main(log = console.log): Promise<any> {
             {gasLimit: 9500000}
         )
         await createTokenHoldersTx.wait(1)
-        log(`Tx create token holders completed.`);
+        log(`Tx create token holders completed.`)
     }
 
     const createDaoTxTwo = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
@@ -183,16 +204,16 @@ export default async function main(log = console.log): Promise<any> {
             {gasLimit: 9500000}
         );
         await createDaoTxThreeTx.wait(1)
-        log(`Tx three completed.`);
+        log(`Tx three completed.`)
     };
 
-    const appManager = await ethers.getSigners()[0];
-    const gardensTemplate = await getGardensTemplate(appManager)
+    const gardensTemplate = await getGardensTemplate(mainAccount)
 
-    const daoAddress = await createDaoTxOne(gardensTemplate, log);
-    // await createTokenholders(gardensTemplate, log)
-    await createDaoTxTwo(gardensTemplate, log);
-    await createDaoTxThree(gardensTemplate, log);
+    await approveHoneyPayment(gardensTemplate, log)
+    const daoAddress = await createDaoTxOne(gardensTemplate, log)
+    await createTokenholders(gardensTemplate, log)
+    await createDaoTxTwo(gardensTemplate, log)
+    await createDaoTxThree(gardensTemplate, log)
 
     const [convictionVotingAddress, tokenManagerAddress, issuanceAddress, agreementAddress, votingAddress] = await getApps(
         daoAddress,
@@ -205,7 +226,7 @@ export default async function main(log = console.log): Promise<any> {
         ])
     )
 
-    log({daoAddress, convictionVotingAddress, tokenManagerAddress, issuanceAddress, agreementAddress, votingAddress,})
+    log({daoAddress, convictionVotingAddress, tokenManagerAddress, issuanceAddress, agreementAddress, votingAddress})
     return {daoAddress, convictionVotingAddress, tokenManagerAddress, issuanceAddress, agreementAddress, votingAddress}
 }
 
@@ -214,6 +235,6 @@ export default async function main(log = console.log): Promise<any> {
 main()
     .then(() => process.exit(0))
     .catch((error) => {
-        console.error(error);
-        process.exit(1);
+        console.error(error)
+        process.exit(1)
     });

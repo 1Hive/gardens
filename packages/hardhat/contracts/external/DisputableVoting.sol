@@ -6,8 +6,8 @@ pragma solidity 0.4.24;
 
 import "@aragon/apps-shared-minime/contracts/MiniMeToken.sol";
 
-interface DisputableVoting {
 
+interface DisputableVoting {
     function SET_AGREEMENT_ROLE() external pure returns (bytes32);
     function CREATE_VOTES_ROLE() external pure returns (bytes32);
     function CHALLENGE_ROLE() external pure returns (bytes32);

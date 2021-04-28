@@ -5,7 +5,6 @@
 pragma solidity 0.4.24;
 
 interface Agreement {
-
     function CHANGE_AGREEMENT_ROLE() external pure returns (bytes32);
     function MANAGE_DISPUTABLE_ROLE() external pure returns (bytes32);
 

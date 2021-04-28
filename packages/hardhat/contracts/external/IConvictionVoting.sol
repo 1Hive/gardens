@@ -31,4 +31,7 @@ contract IConvictionVoting {
         bool _stableRequestAmount,
         address _beneficiary
     ) external;
+
+    function stableTokenOracle() public returns (address);
+
 }

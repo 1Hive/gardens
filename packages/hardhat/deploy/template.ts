@@ -9,11 +9,15 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   const { deployer } = await getNamedAccounts();
 
-  const { AragonID, DAOFactory, ENS, MiniMeFactory, HoneyswapRouter, HoneyToken, StableToken, PriceOracle } = Config.Bases[hre.network.name];
+  const {
+    AragonID, DAOFactory, ENS, MiniMeFactory, HoneyswapRouter, HoneyToken, StableToken, HoneyPriceOracle,
+    PriceOracleFactory, CollateralRequirementUpdaterFactory, UniswapV2Factory, Arbitrator, StakingFactory
+  } = Config.Bases[hre.network.name];
 
   await deploy("GardensTemplate", {
     from: deployer,
-    args: [DAOFactory, ENS, MiniMeFactory, AragonID, HoneyswapRouter, HoneyToken, StableToken, PriceOracle],
+    args: [DAOFactory, ENS, MiniMeFactory, AragonID, HoneyswapRouter, HoneyToken, StableToken, HoneyPriceOracle,
+      PriceOracleFactory, CollateralRequirementUpdaterFactory, UniswapV2Factory, Arbitrator, StakingFactory],
     log: true,
     deterministicDeployment: true,
   });

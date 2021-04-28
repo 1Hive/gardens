@@ -70,7 +70,7 @@ const transform = params => ({
     holders: Object.entries(params.seeds).map(e => e[0]),
     stakes: Object.entries(params.seeds).map(e => Math.floor(e[1] as number * ONE_TOKEN).toString()),
     existingToken: params.existingToken,
-    fundingPoolStake: Math.floor(params.fundingPoolStake * ONE_TOKEN).toString(),
+    commonPoolAmount: Math.floor(params.commonPoolAmount * ONE_TOKEN).toString(),
     gardenTokenLiquidity: Math.floor(params.gardenTokenLiquidity * ONE_TOKEN).toString(),
     voteSupportRequired: Math.floor(params.voteSupportRequired * ONE_HUNDRED_PERCENT).toString(),
     voteMinAcceptanceQuorum: Math.floor(params.voteMinAcceptanceQuorum * ONE_HUNDRED_PERCENT).toString(),
@@ -85,16 +85,14 @@ const transform = params => ({
     maxRatio: Math.floor(params.maxRatio * CONVICTION_VOTING_ONE_HUNDRED_PERCENT),
     weight: Math.floor(params.maxRatio ** 2 * params.minThreshold * CONVICTION_VOTING_ONE_HUNDRED_PERCENT),
     minThresholdStakePercentage: Math.floor(params.minActiveStakePct * ONE_HUNDRED_PERCENT).toString(),
-    challangeDuration: Math.floor(params.challangeDurationDays * ONE_DAY),
+    challengeDuration: Math.floor(params.challengeDurationDays * ONE_DAY),
     actionAmount: Math.floor(params.actionAmount * ONE_TOKEN).toString(),
-    challangeAmount: Math.floor(params.challangeAmount * ONE_TOKEN).toString(),
-    stableTokenAddress: params.stableTokenAddress,
-    stableTokenOracle: params.stableTokenOracle,
+    challengeAmount: Math.floor(params.challengeAmount * ONE_TOKEN).toString(),
+    actionAmountStable: Math.floor(params.actionAmountStable * ONE_TOKEN).toString(),
+    challengeAmountStable: Math.floor(params.challengeAmountStable * ONE_TOKEN).toString(),
     daoId: params.daoId || 'gardens' + Math.floor(Math.random() * 100000),
-    arbitrator: params.arbitrator,
     agreementTitle: params.agreementTitle,
     agreementContent: params.agreementContent,
-    stakingFactory: params.stakingFactory,
 })
 
 export default async function main(log = console.log): Promise<any> {
@@ -104,7 +102,7 @@ export default async function main(log = console.log): Promise<any> {
         holders,
         stakes,
         existingToken,
-        fundingPoolStake,
+        commonPoolAmount,
         gardenTokenLiquidity,
         voteDuration,
         voteSupportRequired,
@@ -115,20 +113,18 @@ export default async function main(log = console.log): Promise<any> {
         voteExecutionDelay,
         issuanceTargetRatio,
         issuanceMaxAdjustmentPerSecond,
-        stableTokenAddress,
-        stableTokenOracle,
         decay,
         maxRatio,
         weight,
         minThresholdStakePercentage,
         daoId,
-        arbitrator,
         agreementTitle,
         agreementContent,
-        stakingFactory,
-        challangeDuration,
+        challengeDuration,
         actionAmount,
-        challangeAmount
+        challengeAmount,
+        actionAmountStable,
+        challengeAmountStable
     } = transform(await import(`../params-${network}.json`))
     const mainAccount = (await ethers.getSigners())[0]
 
@@ -151,7 +147,7 @@ export default async function main(log = console.log): Promise<any> {
             existingToken,
             orgTokenName,
             orgTokenSymbol,
-            fundingPoolStake,
+            commonPoolAmount,
             gardenTokenLiquidity,
             [
                 voteDuration,
@@ -183,8 +179,6 @@ export default async function main(log = console.log): Promise<any> {
     const createDaoTxTwo = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
         const createDaoTxTwoTx = await gardensTemplate.createDaoTxTwo(
             [issuanceTargetRatio, issuanceMaxAdjustmentPerSecond],
-            stableTokenAddress,
-            stableTokenOracle,
             [decay, maxRatio, weight, minThresholdStakePercentage],
             {gasLimit: 9500000}
         );
@@ -195,12 +189,12 @@ export default async function main(log = console.log): Promise<any> {
     const createDaoTxThree = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
         const createDaoTxThreeTx = await gardensTemplate.createDaoTxThree(
             daoId,
-            arbitrator,
             agreementTitle,
             ethers.utils.toUtf8Bytes(agreementContent),
-            stakingFactory,
-            challangeDuration,
-            [actionAmount, challangeAmount],
+            challengeDuration,
+            [actionAmount, challengeAmount],
+            [actionAmountStable, actionAmountStable],
+            [challengeAmountStable, challengeAmountStable],
             {gasLimit: 9500000}
         );
         await createDaoTxThreeTx.wait(1)

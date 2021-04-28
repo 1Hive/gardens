@@ -1,4 +1,4 @@
-pragma solidity ^0.4.0;
+pragma solidity ^0.4.24;
 
 contract IHookedTokenManager {
 
@@ -18,6 +18,8 @@ contract IHookedTokenManager {
     function mint(address _receiver, uint256 _amount) external;
 
     function token() public returns (address);
+
+    function wrappableToken() public returns (address);
 
     function registerHook(address _hook) external returns (uint256);
 

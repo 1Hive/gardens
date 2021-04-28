@@ -10,8 +10,10 @@ import "./appIds/AppIdsRinkeby.sol";
 import "./external/DetailedERC20.sol";
 import "./external/IHoneyswapRouter.sol";
 import "./external/IPriceOracle.sol";
-import "./external/ICollateralRequirementUpdaterFactory.sol"; // This lives in the agreements repo
 import "./external/IIncentivisedPriceOracleFactory.sol"; // This lives in the uniswap-v2-periphery/contracts/examples repo (it should be moved to its own repo)
+import "./external/ICollateralRequirementUpdaterFactory.sol"; // This lives in the agreements repo
+import "./external/ICollateralRequirementUpdater.sol"; // This lives in the agreements repo
+import "./external/IUniswapV2Factory.sol";
 
 contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
     string private constant ERROR_MISSING_MEMBERS = "MISSING_MEMBERS";
@@ -25,6 +27,9 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
     uint256 private constant TOKEN_MAX_PER_ACCOUNT = uint256(-1);
     address private constant ANY_ENTITY = address(-1);
     uint8 private constant ORACLE_PARAM_ID = 203;
+    uint256 public constant AVERAGE_PRICE_PERIOD = 86400; // 24 hours
+    uint8 public constant UPDATE_FREQUENCY = 3; // 3 times within price period
+    uint256 public constant UPDATE_PERCENT_REWARD = 2e16; // 2% reward per update call
     address private constant BURN_ADDRESS = 0x000000000000000000000000000000000000dEaD;
     uint256 public constant XDAI_IN_HNY_REQUIRED_FOR_NEW_TOKEN = 100e18;
     enum Op {NONE, EQ, NEQ, GT, LT, GTE, LTE, RET, NOT, AND, OR, XOR, IF_ELSE}
@@ -41,13 +46,19 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
         IConvictionVoting convictionVoting;
     }
 
+    address[] private disputables; // Used to prevent stack too deep error
+    address[] private collateralTokens; // Used to prevent stack too deep error
+
     mapping(address => DeployedContracts) internal senderDeployedContracts;
     IHoneyswapRouter public honeyswapRouter;
     ERC20 public honeyToken;
     address public stableToken;
     IPriceOracle public honeyPriceOracle;
-    ICollateralRequirementUpdaterFactory public collateralRequirementUpdaterFactory;
     IIncentivisedPriceOracleFactory public incentivisedPriceOracleFactory;
+    ICollateralRequirementUpdaterFactory public collateralRequirementUpdaterFactory;
+    IUniswapV2Factory public uniswapFactory;
+    address public arbitrator;
+    address public stakingFactory;
 
     constructor(
         DAOFactory _daoFactory,
@@ -58,8 +69,11 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
         ERC20 _honeyToken,
         address _stableToken,
         IPriceOracle _honeyPriceOracle,
+        IIncentivisedPriceOracleFactory _incentivisedPriceOracleFactory,
         ICollateralRequirementUpdaterFactory _collateralRequirementUpdaterFactory,
-        IIncentivisedPriceOracleFactory _incentivisedPriceOracleFactory
+        IUniswapV2Factory _uniswapFactory,
+        address _arbitrator,
+        address _stakingFactory
     ) public BaseTemplate(_daoFactory, _ens, _miniMeFactory, _aragonID) {
         _ensureAragonIdIsValid(_aragonID);
         _ensureMiniMeFactoryIsValid(_miniMeFactory);
@@ -67,8 +81,11 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
         honeyToken = _honeyToken;
         stableToken = _stableToken;
         honeyPriceOracle = _honeyPriceOracle;
-        collateralRequirementUpdaterFactory = _collateralRequirementUpdaterFactory;
         incentivisedPriceOracleFactory = _incentivisedPriceOracleFactory;
+        collateralRequirementUpdaterFactory = _collateralRequirementUpdaterFactory;
+        uniswapFactory = _uniswapFactory;
+        arbitrator = _arbitrator;
+        stakingFactory = _stakingFactory;
     }
 
     // New DAO functions //
@@ -137,14 +154,10 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
     /**
      * @dev Add and initialise issuance and conviction voting
      * @param _issuanceSettings Array of issuance settings: [targetRatio, maxAdjustmentRatioPerSecond]
-     * @param _stableToken Stable token address for conviction voting proposals with stable request amounts
-     * @param _stableTokenOracle Stable token oracle address
      * @param _convictionSettings array of conviction settings: [decay, max_ratio, weight, min_threshold_stake_percentage]
      */
     function createDaoTxTwo(
         uint256[2] _issuanceSettings,
-        ERC20 _stableToken,
-        address _stableTokenOracle,
         uint64[4] _convictionSettings
     ) public {
         require(senderDeployedContracts[msg.sender].dao != address(0), ERROR_NO_CACHE);
@@ -155,22 +168,30 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
             DisputableVoting disputableVoting,
             Agent commonPoolAgent,
             IHookedTokenManager hookedTokenManager,,
-            DetailedERC20 existingToken
         ) = _getDeployedContractsTxOne();
 
-        if (existingToken == address(0)) {
+        if (hookedTokenManager.wrappableToken() == address(0)) { // if existingToken == address(0)
             _removePermissionFromTemplate(acl, hookedTokenManager, hookedTokenManager.MINT_ROLE());
             IIssuance issuance = _installIssuance(dao, hookedTokenManager, commonPoolAgent, _issuanceSettings);
             _createIssuancePermissions(acl, issuance, disputableVoting);
             _createHookedTokenManagerPermissions(acl, disputableVoting, hookedTokenManager, issuance);
         }
 
+        address incentivisedPriceOracle = incentivisedPriceOracleFactory.newIncentivisedPriceOracle(
+            uniswapFactory,
+            AVERAGE_PRICE_PERIOD,
+            UPDATE_FREQUENCY,
+            hookedTokenManager.token(),
+            UPDATE_PERCENT_REWARD,
+            uniswapFactory.getPair(stableToken, hookedTokenManager.token())
+        );
+
         IConvictionVoting convictionVoting = _installConvictionVoting(
             dao,
             MiniMeToken(hookedTokenManager.token()),
-            existingToken,
-            _stableToken,
-            _stableTokenOracle,
+            hookedTokenManager.wrappableToken(),
+            stableToken,
+            incentivisedPriceOracle,
             commonPoolAgent,
             _convictionSettings
         );
@@ -186,22 +207,22 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
 
     /**
      * @dev Add, initialise and activate the agreement
-     * @param _id DAO id
-     * @param _arbitrator Address of the IArbitrator that will be used to resolve disputes
+     * @param _daoId The ENS ID assigned to this DAO
      * @param _title String indicating a short description
      * @param _content Link to a human-readable text that describes the initial rules for the Agreement
-     * @param _stakingFactory Staking factory for finding each collateral token's staking pool
      * @param _challengeDuration Challenge duration, during which the submitter can raise a dispute
-     * @param _fees Array of fees setings: [actionFee, challangeFee]
+     * @param _initialFees Array of fees settings: [actionFee, challangeFee]
+     * @param _actionAmountsStable The action amount specified as a stable value (eg in xdai)
+     * @param _challengeAmountsStable The challenge amount specified as a stable value (eg in xdai)
      */
     function createDaoTxThree(
-        string _id,
-        address _arbitrator,
+        string _daoId,
         string _title,
         bytes memory _content,
-        address _stakingFactory,
         uint64 _challengeDuration,
-        uint256[2] _fees
+        uint256[2] _initialFees,
+        uint256[] _actionAmountsStable,
+        uint256[] _challengeAmountsStable
     ) public {
         require(senderDeployedContracts[msg.sender].hookedTokenManager.hasInitialized(), ERROR_NO_CACHE);
 
@@ -209,14 +230,34 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
         IConvictionVoting convictionVoting = _getDeployedContractsTxTwo();
 
         Agreement agreement =
-            _installAgreementApp(dao, _arbitrator, _title, _content, _stakingFactory);
+            _installAgreementApp(dao, arbitrator, _title, _content, stakingFactory);
         _createAgreementPermissions(acl, agreement, disputableVoting, disputableVoting);
         acl.createPermission(agreement, disputableVoting, disputableVoting.SET_AGREEMENT_ROLE(), disputableVoting);
         acl.createPermission(agreement, convictionVoting, convictionVoting.SET_AGREEMENT_ROLE(), disputableVoting);
 
-        agreement.activate(disputableVoting, gardenToken, _challengeDuration, _fees[0], _fees[1]);
-        agreement.activate(convictionVoting, gardenToken, _challengeDuration, _fees[0], _fees[1]);
+        agreement.activate(disputableVoting, gardenToken, _challengeDuration, _initialFees[0], _initialFees[1]);
+        agreement.activate(convictionVoting, gardenToken, _challengeDuration, _initialFees[0], _initialFees[1]);
         _removePermissionFromTemplate(acl, agreement, agreement.MANAGE_DISPUTABLE_ROLE());
+
+        delete disputables;
+        disputables.push(disputableVoting);
+        disputables.push(convictionVoting);
+
+        delete collateralTokens;
+        collateralTokens.push(gardenToken);
+        collateralTokens.push(gardenToken);
+
+        ICollateralRequirementUpdater collateralRequirementUpdater = collateralRequirementUpdaterFactory.newCollateralRequirementUpdater(
+            agreement,
+            disputables,
+            collateralTokens,
+            _actionAmountsStable,
+            _challengeAmountsStable,
+            convictionVoting.stableTokenOracle(),
+            stableToken
+        );
+        collateralRequirementUpdater.transferOwnership(disputableVoting);
+        acl.createPermission(collateralRequirementUpdater, agreement, agreement.MANAGE_DISPUTABLE_ROLE(), disputableVoting);
 
         _transferRootPermissionsFromTemplateAndFinalizeDAO(dao, address(disputableVoting));
 //        _validateId(_id);
@@ -277,8 +318,8 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
     function _installConvictionVoting(
         Kernel _dao,
         MiniMeToken _stakeToken,
-        DetailedERC20 _requestToken,
-        ERC20 _stableToken,
+        address _requestToken,
+        address _stableToken,
         address _stableTokenOracle,
         Agent _agent,
         uint64[4] _convictionSettings

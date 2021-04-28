@@ -15,7 +15,7 @@ export const Config = {
       CollateralRequirementUpdaterFactory: "",
       UniswapV2Factory: "0xA818b4F111Ccac7AA31D0BCc0806d64F2E0737D7",
       Arbitrator: "0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85",
-      StakingFactory: "0xe71331AEf803BaeC606423B105e4d1C85f012C00"
+      StakingFactory: "0xe71331AEf803BaeC606423B105e4d1C85f012C00",
     },
     [eEthereumNetwork.rinkeby]: {
       AragonID: "0x3665e7bFd4D3254AE7796779800f5b603c43C60D",
@@ -27,10 +27,11 @@ export const Config = {
       StableToken: "0x531eab8bb6a2359fe52ca5d308d85776549a0af9",
       HoneyPriceOracle: "0xa87F58dBBE3A4D01d7F776e02b4dd3237f598095",
       PriceOracleFactory: "0xC37B12c6d8ab6336947920e9c2F4f5777F2C3450",
-      CollateralRequirementUpdaterFactory: "0x4c4B2EE79D42d21E76045b0d7B2f9DD0e951F4Ed",
+      CollateralRequirementUpdaterFactory:
+        "0x4c4B2EE79D42d21E76045b0d7B2f9DD0e951F4Ed",
       UniswapV2Factory: "0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f",
       Arbitrator: "0x35e7433141D5f7f2EB7081186f5284dCDD2ccacE",
-      StakingFactory: "0xE376a7bbD20Ba75616D6a9d0A8468195a5d695FC"
+      StakingFactory: "0xE376a7bbD20Ba75616D6a9d0A8468195a5d695FC",
     },
 
     //Using xdai data to use the fork functionality on localhost

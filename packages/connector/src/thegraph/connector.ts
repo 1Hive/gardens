@@ -1,6 +1,6 @@
 import { GraphQLWrapper, QueryResult } from '@aragon/connect-thegraph'
 
-import { IGardenConnector, SubscriptionHandler } from '../types'
+import { FunctionCallback, IGardenConnector, SubscriptionHandler } from '../types'
 import ArbitratorFee from '../models/ArbitratorFee'
 import CollateralRequirement from '../models/CollateralRequirement'
 import Config from '../models/Config'
@@ -27,7 +27,7 @@ export function subgraphUrlFromChainId(chainId: number) {
     return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-mainnet'
   }
   if (chainId === 4) {
-    return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-staging'
+    return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-rinkeby'
   }
   if (chainId === 100) {
     return 'https://api.thegraph.com/subgraphs/name/1hive/gardens'
@@ -64,14 +64,12 @@ export default class GardenConnectorTheGraph implements IGardenConnector {
   }
 
   async config(id: string): Promise<Config> {
-    return this.#gql.performQueryWithParser(
-      queries.CONFIG('query'),
-      { id },
-      (result: QueryResult) => parseConfig(result, this)
+    return this.#gql.performQueryWithParser(queries.CONFIG('query'), { id }, (result: QueryResult) =>
+      parseConfig(result, this)
     )
   }
 
-  onConfig(id: string, callback: Function): SubscriptionHandler {
+  onConfig(id: string, callback: FunctionCallback): SubscriptionHandler {
     return this.#gql.subscribeToQueryWithParser(
       queries.CONFIG('subscription'),
       { id },
@@ -81,14 +79,12 @@ export default class GardenConnectorTheGraph implements IGardenConnector {
   }
 
   async proposal(id: string): Promise<Proposal> {
-    return this.#gql.performQueryWithParser(
-      queries.PROPOSAL('query'),
-      { id },
-      (result: QueryResult) => parseProposal(result, this)
+    return this.#gql.performQueryWithParser(queries.PROPOSAL('query'), { id }, (result: QueryResult) =>
+      parseProposal(result, this)
     )
   }
 
-  onProposal(id: string, callback: Function): SubscriptionHandler {
+  onProposal(id: string, callback: FunctionCallback): SubscriptionHandler {
     return this.#gql.subscribeToQueryWithParser(
       queries.PROPOSAL('subscription'),
       { id },
@@ -98,6 +94,7 @@ export default class GardenConnectorTheGraph implements IGardenConnector {
   }
 
   async proposals(
+    orgAddress: string,
     first: number,
     skip: number,
     orderBy: string,
@@ -109,6 +106,7 @@ export default class GardenConnectorTheGraph implements IGardenConnector {
     return this.#gql.performQueryWithParser(
       queries.ALL_PROPOSALS('query'),
       {
+        orgAddress,
         first,
         skip,
         orderBy,
@@ -122,6 +120,7 @@ export default class GardenConnectorTheGraph implements IGardenConnector {
   }
 
   onProposals(
+    orgAddress: string,
     first: number,
     skip: number,
     orderBy: string,
@@ -129,11 +128,12 @@ export default class GardenConnectorTheGraph implements IGardenConnector {
     types: number[],
     statuses: number[],
     metadata: string,
-    callback: Function
+    callback: FunctionCallback
   ): SubscriptionHandler {
     return this.#gql.subscribeToQueryWithParser(
       queries.ALL_PROPOSALS('subscription'),
       {
+        orgAddress,
         first,
         skip,
         orderBy,
@@ -148,14 +148,12 @@ export default class GardenConnectorTheGraph implements IGardenConnector {
   }
 
   async supporter(id: string): Promise<Supporter> {
-    return this.#gql.performQueryWithParser(
-      queries.SUPPORTER('query'),
-      { id },
-      (result: QueryResult) => parseSupporter(result, this)
+    return this.#gql.performQueryWithParser(queries.SUPPORTER('query'), { id }, (result: QueryResult) =>
+      parseSupporter(result, this)
     )
   }
 
-  onSupporter(id: string, callback: Function): SubscriptionHandler {
+  onSupporter(id: string, callback: FunctionCallback): SubscriptionHandler {
     return this.#gql.subscribeToQueryWithParser(
       queries.SUPPORTER('subscription'),
       { id },
@@ -164,9 +162,7 @@ export default class GardenConnectorTheGraph implements IGardenConnector {
     )
   }
 
-  async collateralRequirement(
-    proposalId: string
-  ): Promise<CollateralRequirement> {
+  async collateralRequirement(proposalId: string): Promise<CollateralRequirement> {
     return this.#gql.performQueryWithParser<CollateralRequirement>(
       queries.COLLATERAL_REQUIREMENT('query'),
       { proposalId },
@@ -174,10 +170,7 @@ export default class GardenConnectorTheGraph implements IGardenConnector {
     )
   }
 
-  onCollateralRequirement(
-    proposalId: string,
-    callback: Function
-  ): SubscriptionHandler {
+  onCollateralRequirement(proposalId: string, callback: FunctionCallback): SubscriptionHandler {
     return this.#gql.subscribeToQueryWithParser<CollateralRequirement>(
       queries.COLLATERAL_REQUIREMENT('subscription'),
       { proposalId },
@@ -194,10 +187,7 @@ export default class GardenConnectorTheGraph implements IGardenConnector {
     )
   }
 
-  onArbitratorFee(
-    arbitratorFeeId: string,
-    callback: Function
-  ): SubscriptionHandler {
+  onArbitratorFee(arbitratorFeeId: string, callback: FunctionCallback): SubscriptionHandler {
     return this.#gql.subscribeToQueryWithParser<ArbitratorFee | null>(
       queries.ARBITRATOR_FEE('subscription'),
       { arbitratorFeeId },

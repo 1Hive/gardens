@@ -1,6 +1,28 @@
 {
   "network": "xdai",
-  "address": "0x8ccbeab14b5ac4a431fffc39f4bec4089020a155",
-  "startBlock": "14861344",
-  "orgName": "Honeypot DAO"
+  "dataSources": {
+    "Organizations": [
+      {
+        "name": "Honeypot DAO",
+        "address": "0x8ccbeab14b5ac4a431fffc39f4bec4089020a155",
+        "startBlock": "14861344"
+      }
+    ],
+    "OrganizationTemplates": []
+  },
+  "agreementAppIds": [
+    {
+      "id": "0x34c62f3aec3073826f39c2c35e9a1297d9dbf3cc77472283106f09eee9cf47bf", "name": "agreement.open.aragonpm.eth"
+    }
+  ],
+  "convictionVotingAppIds": [
+    {
+      "id": "0xca60629a22f03bcad7738fee1a6f0c5863eb89463621b40566a6799b82cbe184", "name": "disputable-conviction-voting.open.aragonpm.eth"
+    }
+  ],
+  "votingAppIds": [
+    { 
+      "id": "0x705b5084c67966bb8e4640b28bab7a1e51e03d209d84e3a04d2a4f7415f93b34", "name": "disputable-voting.open.aragonpm.eth"
+    }
+  ]
 }

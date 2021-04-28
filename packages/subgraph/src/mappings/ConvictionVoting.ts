@@ -12,9 +12,9 @@ import {
   ProposalRejected as ProposalRejectedEvent,
   StakeAdded as StakeAddedEvent,
   StakeWithdrawn as StakeWithdrawnEvent,
-} from '../generated/templates/ConvictionVoting/ConvictionVoting'
-import { Agreement as AgreementContract } from '../generated/templates/Agreement/Agreement'
-import { Proposal as ProposalEntity } from '../generated/schema'
+} from '../../generated/templates/ConvictionVoting/ConvictionVoting'
+import { Agreement as AgreementContract } from '../../generated/templates/Agreement/Agreement'
+import { Proposal as ProposalEntity } from '../../generated/schema'
 import {
   getConvictionConfigEntity,
   getProposalEntity,
@@ -23,7 +23,7 @@ import {
   loadOrCreateSupporter,
   populateCollateralData,
   populateProposalDataFromEvent,
-} from './helpers'
+} from '../helpers'
 import {
   STATUS_ACTIVE,
   STATUS_ACTIVE_NUM,
@@ -33,7 +33,7 @@ import {
   STATUS_CHALLENGED_NUM,
   STATUS_EXECUTED,
   STATUS_EXECUTED_NUM,
-} from './statuses'
+} from '../statuses'
 import {
   PROPOSAL_TYPE_PROPOSAL,
   PROPOSAL_TYPE_PROPOSAL_NUM,
@@ -41,25 +41,25 @@ import {
   PROPOSAL_TYPE_SUGGESTION_NUM,
   STAKE_TYPE_ADD,
   STAKE_TYPE_WITHDRAW,
-} from './types'
+} from '../types'
 
-export function handleConfigChanged(
-  event: ConvictionSettingsChangedEvent
-): void {
+export function handleConfigChanged(event: ConvictionSettingsChangedEvent): void {
   const convictionConfig = getConvictionConfigEntity(event.address)
   convictionConfig.decay = event.params.decay
   convictionConfig.maxRatio = event.params.maxRatio
   convictionConfig.weight = event.params.weight
-  convictionConfig.minThresholdStakePercentage =
-    event.params.minThresholdStakePercentage
+  convictionConfig.minThresholdStakePercentage = event.params.minThresholdStakePercentage
 
   convictionConfig.save()
 }
 
 export function handleProposalAdded(event: ProposalAddedEvent): void {
-  const proposal = getProposalEntity(event.address, event.params.id)
+  const convictionVotingApp = ConvictionVotingContract.bind(event.address)
+  const organization = convictionVotingApp.kernel()
 
+  const proposal = getProposalEntity(event.address, event.params.id)
   populateProposalDataFromEvent(proposal, event)
+  proposal.organization = organization.toHexString()
 
   if (event.params.amount.gt(BigInt.fromI32(0))) {
     proposal.type = PROPOSAL_TYPE_PROPOSAL
@@ -122,11 +122,7 @@ export function handleProposalCancelled(event: ProposalCancelledEvent): void {
 }
 
 export function handleProposalPaused(event: ProposalPausedEvent): void {
-  _onProposalPaused(
-    event.address,
-    event.params.challengeId,
-    event.params.proposalId
-  )
+  _onProposalPaused(event.address, event.params.challengeId, event.params.proposalId)
 }
 
 export function handleProposalResumed(event: ProposalResumedEvent): void {
@@ -145,15 +141,9 @@ export function handleContractPaused(event: ContractPausedEvent): void {
   convictionConfig.save()
 }
 
-function _onProposalPaused(
-  appAddress: Address,
-  challengeId: BigInt,
-  proposalId: BigInt
-): void {
+function _onProposalPaused(appAddress: Address, challengeId: BigInt, proposalId: BigInt): void {
   const convictionVotingApp = ConvictionVotingContract.bind(appAddress)
-  const agreementApp = AgreementContract.bind(
-    convictionVotingApp.getAgreement()
-  )
+  const agreementApp = AgreementContract.bind(convictionVotingApp.getAgreement())
   const challengeData = agreementApp.getChallenge(challengeId)
   const proposal = getProposalEntity(appAddress, proposalId)
   proposal.challenger = challengeData.value1
@@ -213,16 +203,7 @@ function _onNewStake(
   proposal.weight = conviction
 
   _updateProposalStakes(proposal, type, entity, tokensStaked, timestamp)
-  _updateStakeHistory(
-    proposal,
-    type,
-    entity,
-    tokensStaked,
-    totalTokensStaked,
-    conviction,
-    blockNumber,
-    timestamp
-  )
+  _updateStakeHistory(proposal, type, entity, tokensStaked, totalTokensStaked, conviction, blockNumber, timestamp)
 
   proposal.save()
 }
@@ -234,7 +215,7 @@ function _updateProposalStakes(
   tokensStaked: BigInt,
   timestamp: BigInt
 ): void {
-  const supporter = loadOrCreateSupporter(entity)
+  const supporter = loadOrCreateSupporter(entity, Address.fromString(proposal.organization))
   supporter.proposal = proposal.id
   supporter.save()
 

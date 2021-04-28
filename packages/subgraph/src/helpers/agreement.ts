@@ -14,19 +14,13 @@ import { loadTokenData } from './'
 
 const ABSTAIN_PROPOSAL_ID = BigInt.fromI32(1)
 
-export function populateCollateralData(
-  proposal: ProposalEntity | null,
-  event: ProposalAddedEvent
-): void {
+export function populateCollateralData(proposal: ProposalEntity | null, event: ProposalAddedEvent): void {
   if (event.params.id != ABSTAIN_PROPOSAL_ID) {
     const convictionVotingApp = ConvictionVotingContract.bind(event.address)
     const agreementAppAddress = convictionVotingApp.getAgreement()
     const agreementApp = AgreementContract.bind(agreementAppAddress)
     const actionData = agreementApp.getAction(proposal.actionId)
-    const collateralRequirementData = agreementApp.getCollateralRequirement(
-      event.address,
-      actionData.value2
-    )
+    const collateralRequirementData = agreementApp.getCollateralRequirement(event.address, actionData.value2)
     const collateralRequirement = new CollateralRequirementEntity(proposal.id)
 
     collateralRequirement.proposal = proposal.id
@@ -43,18 +37,12 @@ export function populateCollateralData(
   }
 }
 
-export function populateVoteCollateralData(
-  proposal: ProposalEntity | null,
-  event: StartVoteEvent
-): void {
+export function populateVoteCollateralData(proposal: ProposalEntity | null, event: StartVoteEvent): void {
   const convictionVotingApp = ConvictionVotingContract.bind(event.address)
   const agreementAppAddress = convictionVotingApp.getAgreement()
   const agreementApp = AgreementContract.bind(agreementAppAddress)
   const actionData = agreementApp.getAction(proposal.actionId)
-  const collateralRequirementData = agreementApp.getCollateralRequirement(
-    event.address,
-    actionData.value2
-  )
+  const collateralRequirementData = agreementApp.getCollateralRequirement(event.address, actionData.value2)
   const collateralRequirement = new CollateralRequirementEntity(proposal.id)
 
   collateralRequirement.proposal = proposal.id

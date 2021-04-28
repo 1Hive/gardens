@@ -5,10 +5,11 @@ import {
   Address,
   ALL_PROPOSAL_STATUSES,
   ALL_PROPOSAL_TYPES,
+  FunctionCallback,
   IGardenConnector,
   SubscriptionHandler,
 } from '../types'
-import { buildProposalId } from '../helpers'
+import { buildProposalId, buildSupporterId } from '../helpers'
 
 export default class Garden {
   #address: Address
@@ -27,7 +28,7 @@ export default class Garden {
     return this.#connector.config(this.#address)
   }
 
-  onConfig(callback: Function): SubscriptionHandler {
+  onConfig(callback: FunctionCallback): SubscriptionHandler {
     return this.#connector.onConfig(this.#address, callback)
   }
 
@@ -36,10 +37,7 @@ export default class Garden {
     return this.#connector.proposal(proposalId)
   }
 
-  onProposal(
-    { number = '', appAddress = '' } = {},
-    callback: Function
-  ): SubscriptionHandler {
+  onProposal({ number = '', appAddress = '' } = {}, callback: FunctionCallback): SubscriptionHandler {
     const proposalId = buildProposalId(parseInt(number), appAddress)
     return this.#connector.onProposal(proposalId, callback)
   }
@@ -53,15 +51,7 @@ export default class Garden {
     statuses = ALL_PROPOSAL_STATUSES,
     metadata = '',
   } = {}): Promise<Proposal[]> {
-    return this.#connector.proposals(
-      first,
-      skip,
-      orderBy,
-      orderDirection,
-      types,
-      statuses,
-      metadata
-    )
+    return this.#connector.proposals(this.#address, first, skip, orderBy, orderDirection, types, statuses, metadata)
   }
 
   onProposals(
@@ -74,9 +64,10 @@ export default class Garden {
       statuses = ALL_PROPOSAL_STATUSES,
       metadata = '',
     } = {},
-    callback: Function
+    callback: FunctionCallback
   ): SubscriptionHandler {
     return this.#connector.onProposals(
+      this.#address,
       first,
       skip,
       orderBy,
@@ -89,10 +80,12 @@ export default class Garden {
   }
 
   async supporter({ id = '' } = {}): Promise<Supporter> {
-    return this.#connector.supporter(id)
+    const supporterId = buildSupporterId(id, this.#address)
+    return this.#connector.supporter(supporterId)
   }
 
-  onSupporter({ id = '' } = {}, callback: Function): SubscriptionHandler {
-    return this.#connector.onSupporter(id, callback)
+  onSupporter({ id = '' } = {}, callback: FunctionCallback): SubscriptionHandler {
+    const supporterId = buildSupporterId(id, this.#address)
+    return this.#connector.onSupporter(supporterId, callback)
   }
 }

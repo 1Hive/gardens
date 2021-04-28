@@ -1,5 +1,14 @@
 import gql from 'graphql-tag'
 
+export const ORGANIZATIONS = gql`
+  query Organizations($first: Int!) {
+    organizations(first: $first) {
+      id
+      createdAt
+    }
+  }
+`
+
 // TODO: Filters
 export const CONFIG = (type: string) => gql`
   ${type} Config($id: ID!) {
@@ -62,9 +71,10 @@ export const CONFIG = (type: string) => gql`
 `
 
 export const ALL_PROPOSALS = (type: string) => gql`
-  ${type} Proposals($first: Int!, $skip: Int!, $proposalTypes: [Int]!, $statuses: [Int]!, $metadata: String! $orderBy: String!, $orderDirection: String!) {
-    proposals(where: { typeInt_in: $proposalTypes, statusInt_in: $statuses, metadata_contains: $metadata },  first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
+  ${type} Proposals($orgAddress: String!, $first: Int!, $skip: Int!, $proposalTypes: [Int]!, $statuses: [Int]!, $metadata: String! $orderBy: String!, $orderDirection: String!) {
+    proposals(where: { organization: $orgAddress, typeInt_in: $proposalTypes, statusInt_in: $statuses, metadata_contains: $metadata },  first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
       id
+      organization
       number
       creator
       status

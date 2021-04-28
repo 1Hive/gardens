@@ -1,0 +1,29 @@
+# OrganizationTemplate
+- kind: ethereum/contract
+  name: GardensTemplate
+  network: {{network}}
+  source:
+    abi: GardensTemplate
+    address: '{{address}}'
+    startBlock: {{startBlock}}
+  mapping:
+    kind: ethereum/events
+    apiVersion: 0.0.1
+    language: wasm/assemblyscript
+    entities:
+      - NoEnt
+    abis:
+      - name: GardensTemplate
+        file: ./abis/GardensTemplate.json
+      - name: Kernel
+        file: ./abis/Kernel.json
+    eventHandlers:
+      - event: DeployDao(address)
+        handler: handleDeployDao
+      - event: SetupDao(address)
+        handler: handleSetupDao
+      - event: DeployToken(address)
+        handler: handleDeployToken
+      - event: InstalledApp(address,bytes32)
+        handler: handleInstalledApp
+    file: ./src/mappings/GardensTemplate.ts

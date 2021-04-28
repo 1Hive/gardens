@@ -1,11 +1,17 @@
-import { connect } from '@aragon/connect'
-import connectGarden, {
+import { connect, Organization } from '@aragon/connect'
+import {
+  getGardens,
+  connectGarden,
   Config,
   Proposal,
   Supporter,
 } from '@1hive/connect-garden'
 
-const ORG_ADDRESS = '0xe9869a0bbc8fb8c61b7d81c33fa2ba84871b3b0e'
+const ORG_ADDRESS = '0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a'
+type Garden = {
+  id: String
+  createdAt: Number
+}
 
 function proposalId(proposal: Proposal): string {
   return (
@@ -15,6 +21,13 @@ function proposalId(proposal: Proposal): string {
       ' '
     )
   )
+}
+
+function describeGarden(garden: Garden) {
+  console.log(`Organization ${garden.id}`)
+  console.log(`CreatedAt: ${garden.createdAt}`)
+
+  console.log(`\n`)
 }
 
 function describeProposal(proposal: Proposal): void {
@@ -47,7 +60,11 @@ function describeSupporter(supporter: Supporter): void {
 }
 
 async function main(): Promise<void> {
-  const org = await connect(ORG_ADDRESS, 'thegraph', { network: 100 })
+  const gardens = await getGardens({ network: 4 }, {})
+  console.log('\n##################Gardens:')
+  gardens.map(describeGarden)
+
+  const org = await connect(ORG_ADDRESS, 'thegraph', { network: 4 })
   console.log('\n##################Organization:', org, `(${org.address})`)
 
   const garden = await connectGarden(org)
@@ -62,18 +79,18 @@ async function main(): Promise<void> {
   describeConfig(config)
   console.log(`\n`)
 
-  const proposals = await garden.proposals({ first: 10, metadata: 'fa' })
+  const proposals = await garden.proposals({ first: 10 })
   console.log(`\n#################Proposals:`)
   proposals.map(describeProposal)
   console.log(`\n`)
 
-  const proposal = await garden.proposal({
-    number: '1',
-    appAddress: '0x00f9092e5806628d7a44e496c503cec608e64f1f',
-  })
-  console.log(`\n#################Unique Proposal:`)
-  describeProposal(proposal)
-  console.log(`\n`)
+  // const proposal = await garden.proposal({
+  //   number: '1',
+  //   appAddress: '0x00f9092e5806628d7a44e496c503cec608e64f1f',
+  // })
+  // console.log(`\n#################Unique Proposal:`)
+  // describeProposal(proposal)
+  // console.log(`\n`)
 
   // console.log(`#####Subscriptions\n\n`)
   // garden.onProposals({}, (err: any, proposals) => {

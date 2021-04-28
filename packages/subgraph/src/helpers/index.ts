@@ -2,6 +2,7 @@ import { Address, BigInt } from '@graphprotocol/graph-ts'
 import { MiniMeToken as MiniMeTokenContract } from '../../generated/templates/ConvictionVoting/MiniMeToken'
 import {
   Config as ConfigEntity,
+  Organization as OrganizationEntity,
   Proposal as ProposalEntity,
   Supporter as SupporterEntity,
   Token as TokenEntity,
@@ -44,9 +45,27 @@ export function loadOrCreateConfig(orgAddress: Address): ConfigEntity | null {
   return config
 }
 
+/// /// Organization entity //////
+export function loadOrCreateOrg(orgAddress: Address, timestamp: BigInt): OrganizationEntity | null {
+  let id = orgAddress.toHexString()
+  let organization = OrganizationEntity.load(id)
+
+  if (organization === null) {
+    let config = loadOrCreateConfig(orgAddress)
+    organization = new OrganizationEntity(id)
+    organization.createdAt = timestamp
+    organization.config = config.id
+
+    config.save()
+    organization.save()
+  }
+
+  return organization
+}
+
 /// /// Supporter Entity //////
-export function loadOrCreateSupporter(address: Address): SupporterEntity {
-  const id = address.toHexString()
+export function loadOrCreateSupporter(address: Address, orgAddress: Address): SupporterEntity {
+  const id = getSupporterEntityId(address, orgAddress)
   let supporter = SupporterEntity.load(id)
 
   if (supporter === null) {
@@ -56,23 +75,16 @@ export function loadOrCreateSupporter(address: Address): SupporterEntity {
   return supporter!
 }
 
-/// /// Proposal Entity //////
-export function getProposalEntityId(
-  appAddress: Address,
-  proposalId: BigInt
-): string {
-  return (
-    'appAddress:' +
-    appAddress.toHexString() +
-    '-proposalId:' +
-    proposalId.toHexString()
-  )
+export function getSupporterEntityId(address: Address, orgAddress: Address): string {
+  return address.toHexString() + '-org:' + orgAddress.toHexString()
 }
 
-export function getProposalEntity(
-  appAddress: Address,
-  proposalId: BigInt
-): ProposalEntity | null {
+/// /// Proposal Entity //////
+export function getProposalEntityId(appAddress: Address, proposalId: BigInt): string {
+  return 'appAddress:' + appAddress.toHexString() + '-proposalId:' + proposalId.toHexString()
+}
+
+export function getProposalEntity(appAddress: Address, proposalId: BigInt): ProposalEntity | null {
   const proposalEntityId = getProposalEntityId(appAddress, proposalId)
 
   let proposal = ProposalEntity.load(proposalEntityId)
@@ -83,9 +95,7 @@ export function getProposalEntity(
     proposal.statusInt = STATUS_ACTIVE_NUM
     proposal.weight = BigInt.fromI32(0)
     proposal.challengeId = BigInt.fromI32(0)
-    proposal.challenger = Address.fromString(
-      '0x0000000000000000000000000000000000000000'
-    )
+    proposal.challenger = Address.fromString('0x0000000000000000000000000000000000000000')
     proposal.challengeEndDate = BigInt.fromI32(0)
     proposal.snapshotBlock = BigInt.fromI32(0) // needed because of required value on Voting data
     proposal.settledAt = BigInt.fromI32(0)

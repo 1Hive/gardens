@@ -4,8 +4,12 @@
   network: {{network}}
   source:
     abi: Kernel
+   {{#address}}
     address: '{{address}}'
+    {{/address}}
+    {{#startBlock}}
     startBlock: {{startBlock}}
+    {{/startBlock}}
   mapping:
     kind: ethereum/events
     apiVersion: 0.0.1
@@ -29,4 +33,4 @@
     eventHandlers:
       - event: NewAppProxy(address,bool,bytes32)
         handler: handleNewAppProxy
-    file: ./src/Kernel.ts
+    file: ./src/mappings/Kernel.ts

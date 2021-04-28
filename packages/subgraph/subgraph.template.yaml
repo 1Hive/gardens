@@ -6,8 +6,10 @@ repository: https://github.com/1hive/gardens
 schema:
   file: ./schema.graphql
 dataSources:
-{{> Organization.template.yaml}}
+{{> Organizations.yaml}}
+{{> GardensTemplates.yaml}}
 templates:
 {{> Agreement.template.yaml}}
 {{> ConvictionVoting.template.yaml}}
 {{> DisputableVoting.template.yaml}}
+{{> Organization.template.yaml}}

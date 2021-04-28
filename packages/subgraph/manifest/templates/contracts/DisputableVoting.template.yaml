@@ -40,4 +40,4 @@
         handler: handleNewSetting
       - event: ChangeRepresentative(indexed address,indexed address)
         handler: handleChangeRepresentative
-    file: ./src/DisputableVoting.ts
+    file: ./src/mappings/DisputableVoting.ts

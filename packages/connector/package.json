@@ -1,6 +1,6 @@
 {
-  "name": "@gardens/connector",
-  "version": "0.1.2",
+  "name": "@1hive/connect-gardens",
+  "version": "0.0.1",
   "license": "AGPL-3.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -12,27 +12,22 @@
     "build:cjs": "tsc --build ./tsconfig.cjs.json",
     "dev:esm": "yarn build:esm --watch",
     "dev:cjs": "yarn build:cjs --watch",
-    "clean": "rm -rf ./dist ./tsconfig.tsbuildinfo",
-    "lint": "eslint --ext .ts ./src"
+    "clean": "node ../../node_modules/rimraf/bin.js dist tsconfig.tsbuildinfo",
+    "lint": "eslint --ext .ts,.json,.md ./src",
+    "lint:fix": "eslint --ext .ts,.json,.md ./src --fix"
   },
   "files": [
     "dist"
   ],
   "devDependencies": {
-    "@types/react": "^16.9.34",
-    "@typescript-eslint/eslint-plugin": "^2.29.0",
-    "@typescript-eslint/parser": "^2.29.0",
-    "eslint": "^6.8.0",
-    "prettier": "^2.0.5",
-    "ts-node": "^8.10.2",
-    "typescript": "^3.8.3"
+    "@types/react": "^16.9.34"
   },
   "dependencies": {
     "@aragon/connect-core": "0.7.0",
     "@aragon/connect-thegraph": "0.7.0",
     "graphql-tag": "^2.10.3"
   },
-  "description": "Access honey pot data.",
+  "description": "Access gardens data.",
   "keywords": [
     "ethereum",
     "javascript",

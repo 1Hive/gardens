@@ -39,7 +39,7 @@ export const Config = {
       DAOFactory: "0x4037f97fcc94287257e50bd14c7da9cb4df18250",
       ENS: "0xaafca6b0c89521752e559650206d7c925fd0e530",
       MiniMeFactory: "0xf7d36d4d46cda364edc85e5561450183469484c5",
-    }
+    },
   },
 };
 

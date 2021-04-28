@@ -1,10 +1,4 @@
-import {
-  CastData,
-  IGardenConnector,
-  StakeData,
-  StakeHistoryData,
-  SupporterData,
-} from '../types'
+import { CastData, IGardenConnector, StakeData, StakeHistoryData, SupporterData } from '../types'
 
 export default class Supporter implements SupporterData {
   #connector: IGardenConnector

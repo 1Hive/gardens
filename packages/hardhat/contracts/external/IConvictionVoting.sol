@@ -5,16 +5,11 @@ import "@aragon/apps-vault/contracts/Vault.sol";
 
 contract IConvictionVoting {
     bytes32 public constant CHALLENGE_ROLE = keccak256("CHALLENGE_ROLE");
-    bytes32 public constant SET_AGREEMENT_ROLE =
-        keccak256("SET_AGREEMENT_ROLE");
-    bytes32 public constant PAUSE_CONTRACT_ROLE =
-        keccak256("PAUSE_CONTRACT_ROLE");
-    bytes32 public constant UPDATE_SETTINGS_ROLE =
-        keccak256("UPDATE_SETTINGS_ROLE");
-    bytes32 public constant CREATE_PROPOSALS_ROLE =
-        keccak256("CREATE_PROPOSALS_ROLE");
-    bytes32 public constant CANCEL_PROPOSALS_ROLE =
-        keccak256("CANCEL_PROPOSALS_ROLE");
+    bytes32 public constant SET_AGREEMENT_ROLE = keccak256("SET_AGREEMENT_ROLE");
+    bytes32 public constant PAUSE_CONTRACT_ROLE = keccak256("PAUSE_CONTRACT_ROLE");
+    bytes32 public constant UPDATE_SETTINGS_ROLE = keccak256("UPDATE_SETTINGS_ROLE");
+    bytes32 public constant CREATE_PROPOSALS_ROLE = keccak256("CREATE_PROPOSALS_ROLE");
+    bytes32 public constant CANCEL_PROPOSALS_ROLE = keccak256("CANCEL_PROPOSALS_ROLE");
 
     function initialize(
         MiniMeToken _stakeToken,

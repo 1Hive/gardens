@@ -18,8 +18,8 @@ $ yarn
 $ yarn run node
 ```
 
-3. Configure your DAO in `packages/hardhat/params-xdai.json`. 
-   Note that if you specify an `existingToken` then the template will not create a new token. 
+3. Configure your DAO in `packages/hardhat/params-xdai.json`.
+   Note that if you specify an `existingToken` then the template will not create a new token.
    Set this to `0x0000000000000000000000000000000000000000` to create a new token.
 
 4. Deploy the DAO:

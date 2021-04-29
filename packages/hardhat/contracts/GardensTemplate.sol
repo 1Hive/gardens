@@ -6,7 +6,6 @@ import "./external/IIssuance.sol";
 import "./external/IConvictionVoting.sol";
 import "./external/Agreement.sol";
 import "./external/DisputableVoting.sol";
-import "./appIds/AppIdsRinkeby.sol";
 import "./external/DetailedERC20.sol";
 import "./external/IHoneyswapRouter.sol";
 import "./external/IPriceOracle.sol";
@@ -14,8 +13,9 @@ import "./external/IIncentivisedPriceOracleFactory.sol"; // This lives in the un
 import "./external/ICollateralRequirementUpdaterFactory.sol"; // This lives in the agreements repo
 import "./external/ICollateralRequirementUpdater.sol"; // This lives in the agreements repo
 import "./external/IUniswapV2Factory.sol";
+import "./appIds/AppIdsXDai.sol";
 
-contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
+contract GardensTemplate is BaseTemplate, AppIdsXDai {
     string private constant ERROR_MISSING_MEMBERS = "MISSING_MEMBERS";
     string private constant ERROR_BAD_VOTE_SETTINGS = "BAD_SETTINGS";
     string private constant ERROR_EXISTING_TOKEN = "EXISTING_TOKEN";

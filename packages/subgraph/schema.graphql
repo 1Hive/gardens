@@ -2,6 +2,7 @@ type Organization @entity {
   id: ID!
   createdAt: BigInt!
   config: Config!
+  token: Token
   proposals: [Proposal!] @derivedFrom(field: "organization")
 }
 

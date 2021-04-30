@@ -46,7 +46,7 @@ export function loadOrCreateConfig(orgAddress: Address): ConfigEntity | null {
 }
 
 /// /// Organization entity //////
-export function loadOrCreateOrg(orgAddress: Address, timestamp: BigInt): OrganizationEntity | null {
+export function loadOrCreateOrg(orgAddress: Address): OrganizationEntity | null {
   let id = orgAddress.toHexString()
   let organization = OrganizationEntity.load(id)
 
@@ -54,13 +54,10 @@ export function loadOrCreateOrg(orgAddress: Address, timestamp: BigInt): Organiz
   if (organization === null) {
     let config = loadOrCreateConfig(orgAddress)
     organization = new OrganizationEntity(id)
-    organization.createdAt = timestamp
     organization.config = config.id
     
     config.save()
-    organization.save()
   }
-
 
   return organization
 }

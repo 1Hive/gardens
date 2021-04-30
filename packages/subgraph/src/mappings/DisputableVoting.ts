@@ -24,6 +24,7 @@ import {
   isAccepted,
   loadOrCreateCastVote,
   loadOrCreateConfig,
+  loadOrCreateOrg,
   loadOrCreateSupporter,
   loadTokenData,
   populateVoteCollateralData,
@@ -48,8 +49,7 @@ export function handleNewSetting(event: NewSettingEvent): void {
   )
 
   const daoAddress = votingApp.kernel()
-  const config = loadOrCreateConfig(daoAddress)
-
+  
   votingConfig.settingId = event.params.settingId
   votingConfig.voteTime = settingData.value0
   votingConfig.supportRequiredPct = settingData.value1
@@ -63,9 +63,14 @@ export function handleNewSetting(event: NewSettingEvent): void {
   const tokenId = loadTokenData(token)
   if (tokenId) {
     votingConfig.token = token.toHexString()
+
+    // Set token for org
+    const org = loadOrCreateOrg(daoAddress)
+    org.token = token.toHexString()
   }
   votingConfig.save()
-
+  
+  const config = loadOrCreateConfig(daoAddress)
   config.voting = currentSettingId
   config.save()
 }

@@ -25,5 +25,7 @@ export function processApp(
 }
 
 export function processOrg(orgAddress: Address, timestamp: BigInt): void {
-  loadOrCreateOrg(orgAddress, timestamp)
+  let org = loadOrCreateOrg(orgAddress)
+  org.createdAt = timestamp
+  org.save()
 }

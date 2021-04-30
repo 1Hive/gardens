@@ -18,8 +18,8 @@ $ yarn
 $ yarn run node
 ```
 
-3. Configure your DAO in `packages/hardhat/params-xdai.json`. 
-   Note that if you specify an `existingToken` then the template will deploy in byot (bring your own token) mode. 
+3. Configure your DAO in `packages/hardhat/params-xdai.json`.
+   Note that if you specify an `existingToken` then the template will deploy in byot (bring your own token) mode.
    Set this to `0x0000000000000000000000000000000000000000` to create a new token with Issuance and an option to airdrop.
 
 4. Deploy the DAO:

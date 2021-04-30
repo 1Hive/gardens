@@ -12,7 +12,8 @@ export const Config = {
       StableToken: "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d",
       HoneyPriceOracle: "0x6f38D112b13eda1E3abAFC61E296Be2E27F15071",
       PriceOracleFactory: "0x058fAd765f4B33e3Fb9e16B37973EFC00249CbBF",
-      CollateralRequirementUpdaterFactory: "0x186F0bF13D2C1D06eBB296aaE0eaB9A5008f776D",
+      CollateralRequirementUpdaterFactory:
+        "0x186F0bF13D2C1D06eBB296aaE0eaB9A5008f776D",
       UniswapV2Factory: "0xA818b4F111Ccac7AA31D0BCc0806d64F2E0737D7",
       Arbitrator: "0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85",
       StakingFactory: "0xe71331AEf803BaeC606423B105e4d1C85f012C00",
@@ -45,10 +46,11 @@ export const Config = {
       StableToken: "0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d",
       HoneyPriceOracle: "0x6f38D112b13eda1E3abAFC61E296Be2E27F15071",
       PriceOracleFactory: "0x058fAd765f4B33e3Fb9e16B37973EFC00249CbBF",
-      CollateralRequirementUpdaterFactory: "0x186F0bF13D2C1D06eBB296aaE0eaB9A5008f776D",
+      CollateralRequirementUpdaterFactory:
+        "0x186F0bF13D2C1D06eBB296aaE0eaB9A5008f776D",
       UniswapV2Factory: "0xA818b4F111Ccac7AA31D0BCc0806d64F2E0737D7",
       Arbitrator: "0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85",
-      StakingFactory: "0xe71331AEf803BaeC606423B105e4d1C85f012C00"
+      StakingFactory: "0xe71331AEf803BaeC606423B105e4d1C85f012C00",
     },
   },
 };

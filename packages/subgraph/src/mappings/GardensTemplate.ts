@@ -11,7 +11,7 @@ export function handleDeployDao(event: DeployDaoEvent): void {
   let org = loadOrCreateOrg(event.params.dao)
   org.createdAt = event.block.timestamp
   org.save()
-  
+
   KernelTemplate.create(event.params.dao)
 }
 

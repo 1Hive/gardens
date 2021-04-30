@@ -43,7 +43,7 @@ export function handleNewSetting(event: NewSettingEvent): void {
   const votingConfig = getVotingConfigEntity(event.address, event.params.settingId)
 
   const daoAddress = votingApp.kernel()
-  
+
   votingConfig.settingId = event.params.settingId
   votingConfig.voteTime = settingData.value0
   votingConfig.supportRequiredPct = settingData.value1
@@ -64,7 +64,7 @@ export function handleNewSetting(event: NewSettingEvent): void {
     org.save()
   }
   votingConfig.save()
-  
+
   const config = loadOrCreateConfig(daoAddress)
   config.voting = currentSettingId
   config.save()

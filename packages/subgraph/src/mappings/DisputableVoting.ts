@@ -67,6 +67,7 @@ export function handleNewSetting(event: NewSettingEvent): void {
     // Set token for org
     const org = loadOrCreateOrg(daoAddress)
     org.token = token.toHexString()
+    org.save()
   }
   votingConfig.save()
   

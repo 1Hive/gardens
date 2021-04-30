@@ -1,35 +1,19 @@
-packages/subgraph/subgraph.yaml
-packages/subgraph/generated
-packages/subgraph/abis
-packages/hardhat/*.txt
-**/aws.json
-
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-**/node_modules
-packages/hardhat/artifacts
-packages/hardhat/deployments/localhost
-packages/hardhat/deployments/**/solcInputs
 # submodule
 packages/react-app
-# packages/react-app/src/contracts
-# packages/react-app/public/aragon-ui
-packages/hardhat/cache
-packages/hardhat/typechain
-packages/hardhat/coverage/
-packages/hardhat/coverage.json
+
+**/aws.json
 
 docker/**/data
 
-packages/subgraph/config/config.json
-tenderly.yaml
 
 # dependencies
-/node_modules
+node_modules
 /.pnp
 .pnp.js
 
 # testing
 coverage
+coverage.json
 
 # production
 build
@@ -38,9 +22,12 @@ build
 .DS_Store
 .env*
 
-# debug
+# Logs
+logs
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-.idea
+# next.js build output
+.next

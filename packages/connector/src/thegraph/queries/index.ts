@@ -1,5 +1,14 @@
 import gql from 'graphql-tag'
 
+export const ORGANIZATIONS = gql`
+  query Organizations($first: Int!) {
+    organizations(first: $first) {
+      id
+      createdAt
+    }
+  }
+`
+
 // TODO: Filters
 export const CONFIG = (type: string) => gql`
   ${type} Config($id: ID!) {

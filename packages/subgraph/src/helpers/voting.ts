@@ -20,17 +20,11 @@ import {
 } from '../statuses'
 
 /// ///  Voting config entity //////
-export function getVotingConfigEntityId(
-  appAddress: Address,
-  settingId: BigInt
-): string {
+export function getVotingConfigEntityId(appAddress: Address, settingId: BigInt): string {
   return appAddress.toHexString() + '-setting-' + settingId.toString()
 }
 
-export function getVotingConfigEntity(
-  appAddress: Address,
-  settingId: BigInt
-): VotingConfigEntity | null {
+export function getVotingConfigEntity(appAddress: Address, settingId: BigInt): VotingConfigEntity | null {
   const configEntityId = getVotingConfigEntityId(appAddress, settingId)
 
   let config = VotingConfigEntity.load(configEntityId)
@@ -43,17 +37,11 @@ export function getVotingConfigEntity(
 }
 
 /// /// Cast Entity //////
-function getCastEntityId(
-  proposal: ProposalEntity | null,
-  voter: Address
-): string {
+function getCastEntityId(proposal: ProposalEntity | null, voter: Address): string {
   return proposal.id + '-entity:' + voter.toHexString()
 }
 
-export function getCastEntity(
-  proposal: ProposalEntity | null,
-  voter: Address
-): CastVoteEntity | null {
+export function getCastEntity(proposal: ProposalEntity | null, voter: Address): CastVoteEntity | null {
   const castId = getCastEntityId(proposal, voter)
 
   const cast = new CastVoteEntity(castId)
@@ -62,10 +50,7 @@ export function getCastEntity(
   return cast
 }
 
-export function populateCastDataFromEvent(
-  cast: CastVoteEntity | null,
-  event: CastVoteEvent
-): void {
+export function populateCastDataFromEvent(cast: CastVoteEntity | null, event: CastVoteEvent): void {
   cast.entity = event.params.voter.toHexString()
   cast.supports = event.params.supports
   cast.stake = event.params.stake
@@ -115,19 +100,11 @@ export function castVoterState(state: i32): string {
   }
 }
 
-function buildCastVoteId(
-  voting: Address,
-  voteId: BigInt,
-  voter: Address
-): string {
+function buildCastVoteId(voting: Address, voteId: BigInt, voter: Address): string {
   return getProposalEntityId(voting, voteId) + '-cast-' + voter.toHexString()
 }
 
-export function loadOrCreateCastVote(
-  votingAddress: Address,
-  voteId: BigInt,
-  voterAddress: Address
-): CastVoteEntity {
+export function loadOrCreateCastVote(votingAddress: Address, voteId: BigInt, voterAddress: Address): CastVoteEntity {
   const castVoteId = buildCastVoteId(votingAddress, voteId, voterAddress)
   let castVote = CastVoteEntity.load(castVoteId)
   if (castVote === null) {
@@ -137,19 +114,8 @@ export function loadOrCreateCastVote(
   return castVote!
 }
 
-function hasReachedValuePct(
-  value: BigInt,
-  total: BigInt,
-  pct: BigInt,
-  pctBase: BigInt
-): boolean {
-  return (
-    total.notEqual(BigInt.fromI32(0)) &&
-    value
-      .times(pctBase)
-      .div(total)
-      .gt(pct)
-  )
+function hasReachedValuePct(value: BigInt, total: BigInt, pct: BigInt, pctBase: BigInt): boolean {
+  return total.notEqual(BigInt.fromI32(0)) && value.times(pctBase).div(total).gt(pct)
 }
 
 export function isAccepted(
@@ -161,17 +127,7 @@ export function isAccepted(
 ): boolean {
   const setting = VotingConfigEntity.load(settingId)
   return (
-    hasReachedValuePct(
-      yeas,
-      yeas.plus(nays),
-      setting.supportRequiredPct,
-      pctBase
-    ) &&
-    hasReachedValuePct(
-      yeas,
-      totalPower,
-      setting.minimumAcceptanceQuorumPct,
-      pctBase
-    )
+    hasReachedValuePct(yeas, yeas.plus(nays), setting.supportRequiredPct, pctBase) &&
+    hasReachedValuePct(yeas, totalPower, setting.minimumAcceptanceQuorumPct, pctBase)
   )
 }

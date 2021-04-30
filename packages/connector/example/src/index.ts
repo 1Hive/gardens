@@ -1,11 +1,17 @@
-import { connect } from '@aragon/connect'
-import connectGarden, {
+import { connect, Organization } from '@aragon/connect'
+import {
+  getGardens,
+  connectGarden,
   Config,
   Proposal,
   Supporter,
 } from '@1hive/connect-garden'
 
 const ORG_ADDRESS = '0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a'
+type Garden = {
+  id: String
+  createdAt: Number
+}
 
 function proposalId(proposal: Proposal): string {
   return (
@@ -15,6 +21,13 @@ function proposalId(proposal: Proposal): string {
       ' '
     )
   )
+}
+
+function describeGarden(garden: Garden) {
+  console.log(`Organization ${garden.id}`)
+  console.log(`CreatedAt: ${garden.createdAt}`)
+
+  console.log(`\n`)
 }
 
 function describeProposal(proposal: Proposal): void {
@@ -47,6 +60,10 @@ function describeSupporter(supporter: Supporter): void {
 }
 
 async function main(): Promise<void> {
+  const gardens = await getGardens({ network: 4 }, {})
+  console.log('\n##################Gardens:')
+  gardens.map(describeGarden)
+
   const org = await connect(ORG_ADDRESS, 'thegraph', { network: 4 })
   console.log('\n##################Organization:', org, `(${org.address})`)
 

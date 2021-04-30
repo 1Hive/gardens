@@ -1,9 +1,4 @@
-import {
-  IGardenConnector,
-  ProposalData,
-  StakeHistoryData,
-  SupporterData,
-} from '../types'
+import { IGardenConnector, ProposalData, StakeHistoryData, SupporterData } from '../types'
 
 export default class StakeHistory {
   #connector: IGardenConnector

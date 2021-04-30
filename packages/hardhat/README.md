@@ -19,8 +19,8 @@ $ yarn run node
 ```
 
 3. Configure your DAO in `packages/hardhat/params-xdai.json`. 
-   Note that if you specify an `existingToken` then the template will not create a new token. 
-   Set this to `0x0000000000000000000000000000000000000000` to create a new token.
+   Note that if you specify an `existingToken` then the template will deploy in byot (bring your own token) mode. 
+   Set this to `0x0000000000000000000000000000000000000000` to create a new token with Issuance and an option to airdrop.
 
 4. Deploy the DAO:
 
@@ -40,8 +40,8 @@ $ yarn
 ```
 
 2. Configure your DAO in `packages/hardhat/params-rinkeby.json` or `packages/hardhat/params-xdai.json`, depending on the network you want to deploy it.
-   Note that if you specify an `existingToken` then the template will not create a new token.
-   Set this to `0x0000000000000000000000000000000000000000` to create a new token.
+   Note that if you specify an `existingToken` then the template will deploy in byot (bring your own token) mode.
+   Set this to `0x0000000000000000000000000000000000000000` to create a new token with Issuance and an option to airdrop.
 
 3. If you are deploying on Rinkeby, modify the GardensTemplate.sol so it inherits from AppIdsRinkeby.sol instead of AppIdsXDai.sol.
 

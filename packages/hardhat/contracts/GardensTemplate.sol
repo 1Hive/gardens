@@ -6,7 +6,6 @@ import "./external/IIssuance.sol";
 import "./external/IConvictionVoting.sol";
 import "./external/Agreement.sol";
 import "./external/DisputableVoting.sol";
-import "./external/DetailedERC20.sol";
 import "./external/IHoneyswapRouter.sol";
 import "./external/IPriceOracle.sol";
 import "./external/IIncentivisedPriceOracleFactory.sol"; // This lives in the uniswap-v2-periphery/contracts/examples repo (it should be moved to its own repo)
@@ -28,7 +27,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     address private constant ANY_ENTITY = address(-1);
     uint8 private constant ORACLE_PARAM_ID = 203;
     uint256 public constant AVERAGE_PRICE_PERIOD = 86400; // 24 hours
-    uint8 public constant UPDATE_FREQUENCY = 3; // 3 times within price period
+    uint8 public constant UPDATE_FREQUENCY = 8; // 8 times within price period
     uint256 public constant UPDATE_PERCENT_REWARD = 2e16; // 2% reward per update call
     address private constant BURN_ADDRESS = 0x000000000000000000000000000000000000dEaD;
     uint256 public constant XDAI_IN_HNY_REQUIRED_FOR_NEW_TOKEN = 100e18;
@@ -42,7 +41,6 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         IHookedTokenManager hookedTokenManager;
         IIssuance issuance;
         MiniMeToken gardenToken;
-        DetailedERC20 existingToken;
         IConvictionVoting convictionVoting;
     }
 
@@ -101,7 +99,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
      *    voteQuietEndingPeriod, voteQuietEndingExtension, voteExecutionDelay] to set up the voting app of the organization
      */
     function createDaoTxOne(
-        DetailedERC20 _existingToken,
+        ERC20 _existingToken,
         string _gardenTokenName,
         string _gardenTokenSymbol,
         uint256 _commonPoolAmount,
@@ -111,7 +109,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         require(_disputableVotingSettings.length == 7, ERROR_BAD_VOTE_SETTINGS);
 
         (Kernel dao, ACL acl) = _createDAO();
-        DetailedERC20 existingToken = _existingToken; // Prevents stack too deep error
+        ERC20 existingToken = _existingToken; // Prevents stack too deep error
         MiniMeToken gardenToken = _createToken(_gardenTokenName, _gardenTokenSymbol, TOKEN_DECIMALS);
 
         Agent agent = _installDefaultAgentApp(dao);
@@ -135,17 +133,17 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         _createAgentPermissions(acl, agent, disputableVoting, disputableVoting);
         _createEvmScriptsRegistryPermissions(acl, disputableVoting, disputableVoting);
 
-        _storeDeployedContractsTxOne(dao, acl, disputableVoting, agent, hookedTokenManager, gardenToken, existingToken);
+        _storeDeployedContractsTxOne(dao, acl, disputableVoting, agent, hookedTokenManager, gardenToken);
     }
 
     /**
-     * @dev Add tokenholders, only accessible between the first and second createDao transactions.
-     *      Note will fail if called outside those functions due to missing mint permission
+     * @dev Add tokenholders, only accessible between the first and second createDao transactions and no existing
+     *      token was specified. Note will fail if called incorrectly due to missing mint permission.
      * @param _holders List of initial tokenholder addresses
      * @param _stakes List of intial tokenholder amounts
      */
     function createTokenHolders(address[] _holders, uint256[] _stakes) public {
-        (,,,, IHookedTokenManager hookedTokenManager,,) = _getDeployedContractsTxOne();
+        (,,,, IHookedTokenManager hookedTokenManager,) = _getDeployedContractsTxOne();
         for (uint256 i = 0; i < _holders.length; i++) {
             hookedTokenManager.mint(_holders[i], _stakes[i]);
         }
@@ -167,10 +165,10 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             ACL acl,
             DisputableVoting disputableVoting,
             Agent commonPoolAgent,
-            IHookedTokenManager hookedTokenManager,,
+            IHookedTokenManager hookedTokenManager,
         ) = _getDeployedContractsTxOne();
 
-        if (hookedTokenManager.wrappableToken() == address(0)) { // if existingToken == address(0)
+        if (hookedTokenManager.wrappableToken() == address(0)) { // if existingToken == address(0) (prevents stack too deep error)
             _removePermissionFromTemplate(acl, hookedTokenManager, hookedTokenManager.MINT_ROLE());
             IIssuance issuance = _installIssuance(dao, hookedTokenManager, commonPoolAgent, _issuanceSettings);
             _createIssuancePermissions(acl, issuance, disputableVoting);
@@ -181,7 +179,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             uniswapFactory,
             AVERAGE_PRICE_PERIOD,
             UPDATE_FREQUENCY,
-            hookedTokenManager.token(),
+            hookedTokenManager.token(), // existingToken
             UPDATE_PERCENT_REWARD,
             uniswapFactory.getPair(stableToken, hookedTokenManager.token())
         );
@@ -226,7 +224,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     ) public {
         require(senderDeployedContracts[msg.sender].hookedTokenManager.hasInitialized(), ERROR_NO_CACHE);
 
-        (Kernel dao, ACL acl, DisputableVoting disputableVoting, , , MiniMeToken gardenToken,) = _getDeployedContractsTxOne();
+        (Kernel dao, ACL acl, DisputableVoting disputableVoting, , , MiniMeToken gardenToken) = _getDeployedContractsTxOne();
         IConvictionVoting convictionVoting = _getDeployedContractsTxTwo();
 
         Agreement agreement =
@@ -268,7 +266,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
     // App installation/setup functions //
 
-    function _installHookedTokenManagerApp(Kernel _dao, MiniMeToken _gardenToken, DetailedERC20 _existingToken)
+    function _installHookedTokenManagerApp(Kernel _dao, MiniMeToken _gardenToken, ERC20 _existingToken)
         internal
         returns (IHookedTokenManager)
     {
@@ -404,8 +402,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         DisputableVoting _disputableVoting,
         Agent _agent,
         IHookedTokenManager _hookedTokenManager,
-        MiniMeToken _gardenToken,
-        DetailedERC20 _existingToken
+        MiniMeToken _gardenToken
     ) internal {
         DeployedContracts storage deployedContracts = senderDeployedContracts[msg.sender];
         deployedContracts.dao = _dao;
@@ -414,7 +411,6 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         deployedContracts.commonPoolAgent = _agent;
         deployedContracts.hookedTokenManager = _hookedTokenManager;
         deployedContracts.gardenToken = _gardenToken;
-        deployedContracts.existingToken = _existingToken;
     }
 
     function _getDeployedContractsTxOne() internal view
@@ -424,8 +420,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             DisputableVoting,
             Agent,
             IHookedTokenManager,
-            MiniMeToken gardenToken,
-            DetailedERC20 existingToken
+            MiniMeToken gardenToken
         )
     {
         DeployedContracts storage deployedContracts = senderDeployedContracts[msg.sender];
@@ -435,8 +430,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             deployedContracts.disputableVoting,
             deployedContracts.commonPoolAgent,
             deployedContracts.hookedTokenManager,
-            deployedContracts.gardenToken,
-            deployedContracts.existingToken
+            deployedContracts.gardenToken
         );
     }
 

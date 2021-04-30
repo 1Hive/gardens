@@ -6,12 +6,21 @@ const publishDir = "../react-app/src/contracts";
 const graphDir = "../subgraph";
 
 function publishContract(contractName) {
-  console.log(" 💽 Publishing", chalk.cyan(contractName), "to", chalk.gray(publishDir));
+  console.log(
+    " 💽 Publishing",
+    chalk.cyan(contractName),
+    "to",
+    chalk.gray(publishDir)
+  );
   try {
     const contractArtifact = fs
-      .readFileSync(`${hre.config.paths.artifacts}/contracts/${contractName}.sol/${contractName}.json`)
+      .readFileSync(
+        `${hre.config.paths.artifacts}/contracts/${contractName}.sol/${contractName}.json`
+      )
       .toString();
-    const address = fs.readFileSync(`${hre.config.paths.artifacts}/${contractName}.address`).toString();
+    const address = fs
+      .readFileSync(`${hre.config.paths.artifacts}/${contractName}.address`)
+      .toString();
     const contract = JSON.parse(contractArtifact);
     let graphConfigPath = `${graphDir}/config/config.json`;
     let graphConfig;
@@ -27,26 +36,43 @@ function publishContract(contractName) {
 
     graphConfig = JSON.parse(graphConfig);
     graphConfig[contractName + "Address"] = address;
-    fs.writeFileSync(`${publishDir}/${contractName}.address.js`, `module.exports = "${address}";`);
+    fs.writeFileSync(
+      `${publishDir}/${contractName}.address.js`,
+      `module.exports = "${address}";`
+    );
     fs.writeFileSync(
       `${publishDir}/${contractName}.abi.js`,
       `module.exports = ${JSON.stringify(contract.abi, null, 2)};`
     );
-    fs.writeFileSync(`${publishDir}/${contractName}.bytecode.js`, `module.exports = "${contract.bytecode}";`);
+    fs.writeFileSync(
+      `${publishDir}/${contractName}.bytecode.js`,
+      `module.exports = "${contract.bytecode}";`
+    );
 
     const folderPath = graphConfigPath.replace("/config.json", "");
     if (!fs.existsSync(folderPath)) {
       fs.mkdirSync(folderPath);
     }
     fs.writeFileSync(graphConfigPath, JSON.stringify(graphConfig, null, 2));
-    fs.writeFileSync(`${graphDir}/abis/${contractName}.json`, JSON.stringify(contract.abi, null, 2));
+    fs.writeFileSync(
+      `${graphDir}/abis/${contractName}.json`,
+      JSON.stringify(contract.abi, null, 2)
+    );
 
-    console.log(" 📠 Published " + chalk.green(contractName) + " to the frontend.");
+    console.log(
+      " 📠 Published " + chalk.green(contractName) + " to the frontend."
+    );
 
     return true;
   } catch (e) {
     if (e.toString().indexOf("no such file or directory") >= 0) {
-      console.log(chalk.yellow(" ⚠️  Can't publish " + contractName + " yet (make sure it getting deployed)."));
+      console.log(
+        chalk.yellow(
+          " ⚠️  Can't publish " +
+            contractName +
+            " yet (make sure it getting deployed)."
+        )
+      );
     } else {
       console.log(e);
       return false;
@@ -68,7 +94,10 @@ async function main() {
       }
     }
   });
-  fs.writeFileSync(`${publishDir}/contracts.js`, `module.exports = ${JSON.stringify(finalContractList)};`);
+  fs.writeFileSync(
+    `${publishDir}/contracts.js`,
+    `module.exports = ${JSON.stringify(finalContractList)};`
+  );
 }
 main()
   .then(() => process.exit(0))

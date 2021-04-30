@@ -156,7 +156,10 @@ export default async function main(log = console.log): Promise<any> {
     log(`Approval for gardens payment made.`)
   }
 
-  const createDaoTxOne = async (gardensTemplate: GardensTemplate, log: Function): Promise<string> => {
+  const createDaoTxOne = async (
+    gardensTemplate: GardensTemplate,
+    log: Function
+  ): Promise<string> => {
     const createDaoTxOneTx = await gardensTemplate.createDaoTxOne(
       existingToken,
       orgTokenName,
@@ -186,7 +189,10 @@ export default async function main(log = console.log): Promise<any> {
     log(`Tx create token holders completed.`)
   }
 
-  const createDaoTxTwo = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
+  const createDaoTxTwo = async (
+    gardensTemplate: GardensTemplate,
+    log: Function
+  ): Promise<void> => {
     const createDaoTxTwoTx = await gardensTemplate.createDaoTxTwo(
       [issuanceTargetRatio, issuanceMaxAdjustmentPerSecond],
       [decay, maxRatio, weight, minThresholdStakePercentage],
@@ -196,7 +202,10 @@ export default async function main(log = console.log): Promise<any> {
     log(`Tx two completed.`)
   }
 
-  const createDaoTxThree = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
+  const createDaoTxThree = async (
+    gardensTemplate: GardensTemplate,
+    log: Function
+  ): Promise<void> => {
     const createDaoTxThreeTx = await gardensTemplate.createDaoTxThree(
       daoId,
       agreementTitle,
@@ -211,8 +220,8 @@ export default async function main(log = console.log): Promise<any> {
     log(`Tx three completed.`)
   }
 
-  const gardensTemplate = await getGardensTemplate(mainAccount)
-  const createNewToken = existingToken == ZERO_ADDRESS // As opposed bring your own token
+  const gardensTemplate = await getGardensTemplate(mainAccount);
+  const createNewToken = existingToken == ZERO_ADDRESS; // As opposed bring your own token
 
   if (createNewToken) {
     await approveHoneyPayment(gardensTemplate, log)

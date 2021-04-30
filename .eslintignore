@@ -12,7 +12,6 @@ abi
 cache
 deployments
 typechain
-contracts
 
 # subgraph
 abis

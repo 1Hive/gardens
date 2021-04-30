@@ -1,16 +1,16 @@
 /* eslint no-use-before-define: "warn" */
-import fs from "fs";
-import chalk from "chalk";
-import hre, { config, ethers, tenderly, run } from "hardhat";
-import { utils } from "ethers";
-import R from "ramda";
+import fs from 'fs'
+import chalk from 'chalk'
+import hre, { config, ethers, tenderly, run } from 'hardhat'
+import { utils } from 'ethers'
+import R from 'ramda'
 
-import deployTemplate from "../deploy/template";
+import deployTemplate from '../deploy/template'
 
 const main = async () => {
-  console.log("\n\n 📡 Deploying...\n");
+  console.log('\n\n 📡 Deploying...\n')
 
-  await deployTemplate(hre);
+  await deployTemplate(hre)
 
   // const yourContract = await deploy("YourContract"); // <-- add in constructor args like line 19 vvvv
 
@@ -62,58 +62,45 @@ const main = async () => {
   })
   */
 
-  console.log(
-    " 💾  Artifacts (address, abi, and args) saved to: ",
-    chalk.blue("packages/hardhat/artifacts/"),
-    "\n\n"
-  );
-};
+  console.log(' 💾  Artifacts (address, abi, and args) saved to: ', chalk.blue('packages/hardhat/artifacts/'), '\n\n')
+}
 
-const deploy = async (
-  contractName,
-  _args = [],
-  overrides = {},
-  libraries = {}
-) => {
-  console.log(` 🛰  Deploying: ${contractName}`);
+const deploy = async (contractName, _args = [], overrides = {}, libraries = {}) => {
+  console.log(` 🛰  Deploying: ${contractName}`)
 
-  const contractArgs = _args || [];
+  const contractArgs = _args || []
   const contractArtifacts = await ethers.getContractFactory(contractName, {
     libraries: libraries,
-  });
-  const deployed = await contractArtifacts.deploy(...contractArgs, overrides);
-  const encoded = abiEncodeArgs(deployed, contractArgs);
-  fs.writeFileSync(`artifacts/${contractName}.address`, deployed.address);
+  })
+  const deployed = await contractArtifacts.deploy(...contractArgs, overrides)
+  const encoded = abiEncodeArgs(deployed, contractArgs)
+  fs.writeFileSync(`artifacts/${contractName}.address`, deployed.address)
 
-  let extraGasInfo = "";
+  let extraGasInfo = ''
   if (deployed && deployed.deployTransaction) {
-    const gasUsed = deployed.deployTransaction.gasLimit.mul(
-      deployed.deployTransaction.gasPrice
-    );
-    extraGasInfo = `${utils.formatEther(gasUsed)} ETH, tx hash ${
-      deployed.deployTransaction.hash
-    }`;
+    const gasUsed = deployed.deployTransaction.gasLimit.mul(deployed.deployTransaction.gasPrice)
+    extraGasInfo = `${utils.formatEther(gasUsed)} ETH, tx hash ${deployed.deployTransaction.hash}`
   }
 
   console.log(
-    " 📄",
+    ' 📄',
     chalk.cyan(contractName),
-    "deployed to:",
+    'deployed to:',
     chalk.magenta(deployed.address),
     chalk.grey(extraGasInfo)
-  );
-  console.log(" ⛽", chalk.grey(extraGasInfo));
+  )
+  console.log(' ⛽', chalk.grey(extraGasInfo))
 
   await tenderly.persistArtifacts({
     name: contractName,
     address: deployed.address,
-  });
+  })
 
-  if (!encoded || encoded.length <= 2) return deployed;
-  fs.writeFileSync(`artifacts/${contractName}.args`, encoded.slice(2));
+  if (!encoded || encoded.length <= 2) return deployed
+  fs.writeFileSync(`artifacts/${contractName}.args`, encoded.slice(2))
 
-  return deployed;
-};
+  return deployed
+}
 
 // ------ utils -------
 
@@ -122,86 +109,61 @@ const deploy = async (
 // for example, on Etherscan
 const abiEncodeArgs = (deployed, contractArgs) => {
   // not writing abi encoded args if this does not pass
-  if (
-    !contractArgs ||
-    !deployed ||
-    !R.hasPath(["interface", "deploy"], deployed)
-  ) {
-    return "";
+  if (!contractArgs || !deployed || !R.hasPath(['interface', 'deploy'], deployed)) {
+    return ''
   }
-  const encoded = utils.defaultAbiCoder.encode(
-    deployed.interface.deploy.inputs,
-    contractArgs
-  );
-  return encoded;
-};
+  const encoded = utils.defaultAbiCoder.encode(deployed.interface.deploy.inputs, contractArgs)
+  return encoded
+}
 
 // checks if it is a Solidity file
 const isSolidity = (fileName) =>
-  fileName.indexOf(".sol") >= 0 &&
-  fileName.indexOf(".swp") < 0 &&
-  fileName.indexOf(".swap") < 0;
+  fileName.indexOf('.sol') >= 0 && fileName.indexOf('.swp') < 0 && fileName.indexOf('.swap') < 0
 
 const readArgsFile = (contractName) => {
-  let args = [];
+  let args = []
   try {
-    const argsFile = `./contracts/${contractName}.args`;
-    if (!fs.existsSync(argsFile)) return args;
-    args = JSON.parse(fs.readFileSync(argsFile).toString());
+    const argsFile = `./contracts/${contractName}.args`
+    if (!fs.existsSync(argsFile)) return args
+    args = JSON.parse(fs.readFileSync(argsFile).toString())
   } catch (e) {
-    console.log(e);
+    console.log(e)
   }
-  return args;
-};
+  return args
+}
 
 function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms))
 }
 
 // If you want to verify on https://tenderly.co/
 const tenderlyVerify = async ({ contractName, contractAddress }) => {
-  let tenderlyNetworks = [
-    "kovan",
-    "goerli",
-    "mainnet",
-    "rinkeby",
-    "ropsten",
-    "matic",
-    "mumbai",
-    "xDai",
-    "POA",
-  ];
-  let targetNetwork = process.env.HARDHAT_NETWORK || config.defaultNetwork;
+  let tenderlyNetworks = ['kovan', 'goerli', 'mainnet', 'rinkeby', 'ropsten', 'matic', 'mumbai', 'xDai', 'POA']
+  let targetNetwork = process.env.HARDHAT_NETWORK || config.defaultNetwork
 
   if (tenderlyNetworks.includes(targetNetwork)) {
-    console.log(
-      chalk.blue(
-        ` 📁 Attempting tenderly verification of ${contractName} on ${targetNetwork}`
-      )
-    );
+    console.log(chalk.blue(` 📁 Attempting tenderly verification of ${contractName} on ${targetNetwork}`))
 
     await tenderly.persistArtifacts({
       name: contractName,
       address: contractAddress,
-    });
+    })
 
     let verification = await tenderly.verify({
       name: contractName,
       address: contractAddress,
       network: targetNetwork,
-    });
+    })
 
-    return verification;
+    return verification
   } else {
-    console.log(
-      chalk.grey(` 🧐 Contract verification not supported on ${targetNetwork}`)
-    );
+    console.log(chalk.grey(` 🧐 Contract verification not supported on ${targetNetwork}`))
   }
-};
+}
 
 main()
   .then(() => process.exit(0))
   .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+    console.error(error)
+    process.exit(1)
+  })

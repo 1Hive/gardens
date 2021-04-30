@@ -20,6 +20,7 @@ import {
   getProposalEntity,
   getStakeEntity,
   getStakeHistoryEntity,
+  incrementProposalCount,
   loadOrCreateSupporter,
   populateCollateralData,
   populateProposalDataFromEvent,
@@ -59,6 +60,7 @@ export function handleConfigChanged(
 export function handleProposalAdded(event: ProposalAddedEvent): void {
   const convictionVotingApp = ConvictionVotingContract.bind(event.address)
   const organization = convictionVotingApp.kernel()
+  incrementProposalCount(organization)
 
   const proposal = getProposalEntity(event.address, event.params.id)
   populateProposalDataFromEvent(proposal, event)

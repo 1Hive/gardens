@@ -21,6 +21,7 @@ import {
   getProposalEntity,
   getVotingConfigEntity,
   getVotingConfigEntityId,
+  incrementProposalCount,
   isAccepted,
   loadOrCreateCastVote,
   loadOrCreateConfig,
@@ -80,6 +81,7 @@ export function handleStartVote(event: StartVoteEvent): void {
   const votingApp = VotingContract.bind(event.address)
   const voteData = votingApp.getVote(event.params.voteId)
   const organization = votingApp.kernel()
+  incrementProposalCount(organization)
 
   const proposal = getProposalEntity(event.address, event.params.voteId)
   proposal.organization = organization.toHexString()

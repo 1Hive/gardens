@@ -55,6 +55,7 @@ export function loadOrCreateOrg(orgAddress: Address): OrganizationEntity | null 
     let config = loadOrCreateConfig(orgAddress)
     organization = new OrganizationEntity(id)
     organization.config = config.id
+    organization.proposalCount = 0
     
     config.save()
   }
@@ -126,6 +127,12 @@ export function getProposalEntity(
   }
 
   return proposal
+}
+
+export function incrementProposalCount(orgAddress: Address): void {
+  const org = loadOrCreateOrg(orgAddress)
+  org.proposalCount += 1
+  org.save()
 }
 
 // Export local helpers

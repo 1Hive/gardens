@@ -46,18 +46,17 @@ export function loadOrCreateConfig(orgAddress: Address): ConfigEntity | null {
 }
 
 /// /// Organization entity //////
-export function loadOrCreateOrg(orgAddress: Address, timestamp: BigInt): OrganizationEntity | null {
-  let id = orgAddress.toHexString()
+export function loadOrCreateOrg(orgAddress: Address): OrganizationEntity | null {
+  const id = orgAddress.toHexString()
   let organization = OrganizationEntity.load(id)
 
   if (organization === null) {
-    let config = loadOrCreateConfig(orgAddress)
+    const config = loadOrCreateConfig(orgAddress)
     organization = new OrganizationEntity(id)
-    organization.createdAt = timestamp
     organization.config = config.id
+    organization.proposalCount = 0
 
     config.save()
-    organization.save()
   }
 
   return organization
@@ -106,6 +105,12 @@ export function getProposalEntity(appAddress: Address, proposalId: BigInt): Prop
   }
 
   return proposal
+}
+
+export function incrementProposalCount(orgAddress: Address): void {
+  const org = loadOrCreateOrg(orgAddress)
+  org.proposalCount += 1
+  org.save()
 }
 
 // Export local helpers

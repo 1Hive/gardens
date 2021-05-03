@@ -21,9 +21,11 @@ import {
   getProposalEntity,
   getVotingConfigEntity,
   getVotingConfigEntityId,
+  incrementProposalCount,
   isAccepted,
   loadOrCreateCastVote,
   loadOrCreateConfig,
+  loadOrCreateOrg,
   loadOrCreateSupporter,
   loadTokenData,
   populateVoteCollateralData,
@@ -42,7 +44,6 @@ export function handleNewSetting(event: NewSettingEvent): void {
   const votingConfig = getVotingConfigEntity(event.address, event.params.settingId)
 
   const daoAddress = votingApp.kernel()
-  const config = loadOrCreateConfig(daoAddress)
 
   votingConfig.settingId = event.params.settingId
   votingConfig.voteTime = settingData.value0
@@ -57,9 +58,15 @@ export function handleNewSetting(event: NewSettingEvent): void {
   const tokenId = loadTokenData(token)
   if (tokenId) {
     votingConfig.token = token.toHexString()
+
+    // Set token for org
+    const org = loadOrCreateOrg(daoAddress)
+    org.token = token.toHexString()
+    org.save()
   }
   votingConfig.save()
 
+  const config = loadOrCreateConfig(daoAddress)
   config.voting = currentSettingId
   config.save()
 }
@@ -68,6 +75,7 @@ export function handleStartVote(event: StartVoteEvent): void {
   const votingApp = VotingContract.bind(event.address)
   const voteData = votingApp.getVote(event.params.voteId)
   const organization = votingApp.kernel()
+  incrementProposalCount(organization)
 
   const proposal = getProposalEntity(event.address, event.params.voteId)
   proposal.organization = organization.toHexString()

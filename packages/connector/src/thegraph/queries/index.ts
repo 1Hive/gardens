@@ -5,6 +5,13 @@ export const ORGANIZATIONS = gql`
     organizations(first: $first) {
       id
       createdAt
+      proposalCount
+      token {
+        id
+        symbol
+        name
+        decimals
+      }
     }
   }
 `

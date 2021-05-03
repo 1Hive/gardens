@@ -30,5 +30,10 @@
     { 
       "id": "0x39aa9e500efe56efda203714d12c78959ecbf71223162614ab5b56eaba014145", "name": "disputable-voting.precedence-campaign.aragonpm.eth"
     }
+  ],
+  "tokensAppIds": [
+    { 
+      "id": "0x3ccad1fc11d5b14e58c1c53a5138a51f4da8d509831bc505e60bb74d88f8bef5", "name": "wrappable-hooked-token-manager.open.aragonpm.eth"
+    }
   ]
 }

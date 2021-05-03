@@ -1,7 +1,8 @@
 import { Address, BigInt, DataSourceTemplate } from '@graphprotocol/graph-ts'
-import { loadOrCreateOrg } from './helpers'
+import { HookedTokenManager as HookedTokenManagerContract } from '../generated/Kernel/HookedTokenManager'
+import { loadOrCreateOrg, loadTokenData } from './helpers'
 import { onAppTemplateCreated } from './hooks'
-import { AGREEMENT_APPIDS, CONVICTION_VOTING_APPIDS, VOTING_APPIDS } from './appIds'
+import { AGREEMENT_APPIDS, CONVICTION_VOTING_APPIDS, TOKENS_APPIDS, VOTING_APPIDS } from './appIds'
 
 export function processApp(orgAddress: Address, appAddress: Address, appId: string): void {
   let template: string
@@ -12,6 +13,15 @@ export function processApp(orgAddress: Address, appAddress: Address, appId: stri
     template = 'ConvictionVoting'
   } else if (AGREEMENT_APPIDS.includes(appId)) {
     template = 'Agreement'
+  } else if (TOKENS_APPIDS.includes(appId)) {
+    const tokensApp = HookedTokenManagerContract.bind(appAddress)
+    const wrappableTokenAddress = tokensApp.wrappableToken()
+    const tokenId = loadTokenData(wrappableTokenAddress)
+    if (tokenId) {
+      const org = loadOrCreateOrg(orgAddress)
+      org.wrappableToken = wrappableTokenAddress.toHexString()
+      org.save()
+    }
   }
 
   if (template) {
@@ -21,7 +31,7 @@ export function processApp(orgAddress: Address, appAddress: Address, appId: stri
 }
 
 export function processOrg(orgAddress: Address, timestamp: BigInt): void {
-  let org = loadOrCreateOrg(orgAddress)
+  const org = loadOrCreateOrg(orgAddress)
   org.createdAt = timestamp
   org.save()
 }

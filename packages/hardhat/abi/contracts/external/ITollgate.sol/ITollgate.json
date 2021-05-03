@@ -1,0 +1,52 @@
+[
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "CHANGE_DESTINATION_ROLE",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_feeToken",
+        "type": "address"
+      },
+      {
+        "name": "_feeAmount",
+        "type": "uint256"
+      },
+      {
+        "name": "_feeDestination",
+        "type": "address"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "CHANGE_AMOUNT_ROLE",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

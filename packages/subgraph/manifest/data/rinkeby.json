@@ -10,9 +10,9 @@
     ],
     "OrganizationTemplates": [
       {
-        "address": "0x60e21D199CB4638939973F93FB376fd45ec20eC6",
+        "address": "0xa37ae6017AB5558c3A6aAe98558dA971DB097DB2",
         "name": "gardens-template@1.0.0",
-        "startBlock": 8466044
+        "startBlock": 8492342
       }
     ]
   },

@@ -1,22 +1,22 @@
-export type eNetwork = eEthereumNetwork | eXDaiNetwork;
+export type eNetwork = eEthereumNetwork | eXDaiNetwork
 
 export enum eEthereumNetwork {
-  rinkeby = "rinkeby",
-  main = "main",
-  coverage = "coverage",
-  hardhat = "hardhat",
+  rinkeby = 'rinkeby',
+  main = 'main',
+  coverage = 'coverage',
+  hardhat = 'hardhat',
 }
 
 export enum eXDaiNetwork {
-  xdai = "xdai",
+  xdai = 'xdai',
 }
 
 export enum EthereumNetworkNames {
-  rinkeby = "rinkeby",
-  main = "main",
-  xdai = "xdai",
+  rinkeby = 'rinkeby',
+  main = 'main',
+  xdai = 'xdai',
 }
 
 export enum eLocalHostNetwork {
-  localhost = "localhost",
+  localhost = 'localhost',
 }

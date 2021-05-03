@@ -3,6 +3,7 @@ type Organization @entity {
   createdAt: BigInt!
   config: Config!
   token: Token
+  wrappableToken: Token
   proposalCount: Int!
   proposals: [Proposal!] @derivedFrom(field: "organization")
 }

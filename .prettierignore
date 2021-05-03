@@ -1,6 +1,8 @@
 .github/workflows
+abis
 docker
 example
+contracts
 manifest
 subgraph.template.yaml
 appIds.template.ts

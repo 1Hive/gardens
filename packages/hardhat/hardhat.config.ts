@@ -2,14 +2,14 @@ import { utils } from 'ethers'
 import fs from 'fs'
 import chalk from 'chalk'
 
-import "@nomiclabs/hardhat-waffle";
-import "@tenderly/hardhat-tenderly";
-import "@nomiclabs/hardhat-etherscan";
-import "hardhat-abi-exporter";
-import "hardhat-typechain";
-import "hardhat-deploy";
-import "hardhat-gas-reporter";
-import "solidity-coverage";
+import '@nomiclabs/hardhat-waffle'
+import '@tenderly/hardhat-tenderly'
+import '@nomiclabs/hardhat-etherscan'
+import 'hardhat-abi-exporter'
+import 'hardhat-typechain'
+import 'hardhat-deploy'
+import 'hardhat-gas-reporter'
+import 'solidity-coverage'
 
 import { task, HardhatUserConfig } from 'hardhat/config'
 import { HttpNetworkUserConfig } from 'hardhat/types'

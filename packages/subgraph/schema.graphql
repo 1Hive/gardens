@@ -6,6 +6,7 @@ type Organization @entity {
   wrappableToken: Token
   proposalCount: Int!
   proposals: [Proposal!] @derivedFrom(field: "organization")
+  active: Boolean!
 }
 
 type Config @entity {

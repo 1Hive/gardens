@@ -72,17 +72,17 @@ export function loadConvictionConfig(orgAddress: Address, appAddress: Address): 
 }
 
 /// /// Stake entity //////
-export function getStakeEntityId(proposalId: string, entity: Bytes): string {
-  return proposalId + '-entity:' + entity.toHexString()
+export function getStakeEntityId(proposalId: string, entityId: string): string {
+  return proposalId + '-entity:' + entityId
 }
 
-export function getStakeEntity(proposal: ProposalEntity | null, entity: Bytes): StakeEntity | null {
-  const stakeId = getStakeEntityId(proposal.id, entity)
+export function getStakeEntity(proposal: ProposalEntity | null, entityId: string): StakeEntity | null {
+  const stakeId = getStakeEntityId(proposal.id, entityId)
 
   let stake = StakeEntity.load(stakeId)
   if (!stake) {
     stake = new StakeEntity(stakeId)
-    stake.entity = entity.toHexString()
+    stake.entity = entityId
     stake.proposal = proposal.id
   }
 
@@ -90,20 +90,20 @@ export function getStakeEntity(proposal: ProposalEntity | null, entity: Bytes): 
 }
 
 /// /// Stake History entity //////
-export function getStakeHistoryEntityId(proposalId: string, entity: Bytes, timestamp: BigInt): string {
-  return proposalId + '-entity:' + entity.toHexString() + '-time:' + timestamp.toString()
+export function getStakeHistoryEntityId(proposalId: string, entityId: string, timestamp: BigInt): string {
+  return proposalId + '-entity:' + entityId + '-time:' + timestamp.toString()
 }
 
 export function getStakeHistoryEntity(
   proposal: ProposalEntity | null,
-  entity: Bytes,
+  entityId: string,
   blockNumber: BigInt
 ): StakeHistoryEntity | null {
-  const stakeHistoryId = getStakeHistoryEntityId(proposal.id, entity, blockNumber)
+  const stakeHistoryId = getStakeHistoryEntityId(proposal.id, entityId, blockNumber)
 
   const stakeHistory = new StakeHistoryEntity(stakeHistoryId)
   stakeHistory.proposal = proposal.id
-  stakeHistory.entity = entity.toHexString()
+  stakeHistory.entity = entityId
   stakeHistory.time = blockNumber
 
   return stakeHistory

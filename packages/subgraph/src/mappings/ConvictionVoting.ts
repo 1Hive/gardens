@@ -20,6 +20,7 @@ import {
   getProposalEntity,
   getStakeEntity,
   getStakeHistoryEntity,
+  getSupporterEntityId,
   incrementProposalCount,
   loadOrCreateSupporter,
   populateCollateralData,
@@ -221,7 +222,7 @@ function _updateProposalStakes(
   supporter.proposal = proposal.id
   supporter.save()
 
-  const stake = getStakeEntity(proposal, entity)
+  const stake = getStakeEntity(proposal, supporter.id)
   stake.amount = tokensStaked
   stake.createdAt = timestamp
   stake.type = type
@@ -238,7 +239,9 @@ function _updateStakeHistory(
   blockNumber: BigInt,
   timestamp: BigInt
 ): void {
-  const stakeHistory = getStakeHistoryEntity(proposal, entity, blockNumber)
+
+  const supporterId = getSupporterEntityId(entity, Address.fromString(proposal.organization))
+  const stakeHistory = getStakeHistoryEntity(proposal, supporterId, blockNumber)
   stakeHistory.type = type
   stakeHistory.tokensStaked = tokensStaked
   stakeHistory.totalTokensStaked = totalTokensStaked

@@ -12,6 +12,7 @@ type Config @entity {
   id: ID!
   conviction: ConvictionConfig
   voting: VotingConfig
+  tokens: Bytes
 }
 
 type ConvictionConfig @entity {

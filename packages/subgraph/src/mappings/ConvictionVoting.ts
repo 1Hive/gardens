@@ -44,6 +44,7 @@ import {
   STAKE_TYPE_ADD,
   STAKE_TYPE_WITHDRAW,
 } from '../types'
+import { loadWrappableToken } from '../helpers/tokens'
 
 export function handleConfigChanged(event: ConvictionSettingsChangedEvent): void {
   const convictionConfig = getConvictionConfigEntity(event.address)
@@ -53,6 +54,10 @@ export function handleConfigChanged(event: ConvictionSettingsChangedEvent): void
   convictionConfig.minThresholdStakePercentage = event.params.minThresholdStakePercentage
 
   convictionConfig.save()
+
+  // Note: we handle the wrappable token here to make sure the
+  // initialize event was already called for the tokens app
+  loadWrappableToken(event.address)
 }
 
 export function handleProposalAdded(event: ProposalAddedEvent): void {

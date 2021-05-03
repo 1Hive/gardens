@@ -1,6 +1,5 @@
-import { Address, BigInt, DataSourceTemplate } from '@graphprotocol/graph-ts'
-import { HookedTokenManager as HookedTokenManagerContract } from '../generated/Kernel/HookedTokenManager'
-import { loadOrCreateOrg, loadTokenData } from './helpers'
+import { Address, BigInt, Bytes, DataSourceTemplate } from '@graphprotocol/graph-ts'
+import { loadOrCreateConfig, loadOrCreateOrg } from './helpers'
 import { onAppTemplateCreated } from './hooks'
 import { AGREEMENT_APPIDS, CONVICTION_VOTING_APPIDS, TOKENS_APPIDS, VOTING_APPIDS } from './appIds'
 
@@ -14,14 +13,9 @@ export function processApp(orgAddress: Address, appAddress: Address, appId: stri
   } else if (AGREEMENT_APPIDS.includes(appId)) {
     template = 'Agreement'
   } else if (TOKENS_APPIDS.includes(appId)) {
-    const tokensApp = HookedTokenManagerContract.bind(appAddress)
-    const wrappableTokenAddress = tokensApp.wrappableToken()
-    const tokenId = loadTokenData(wrappableTokenAddress)
-    if (tokenId) {
-      const org = loadOrCreateOrg(orgAddress)
-      org.wrappableToken = wrappableTokenAddress.toHexString()
-      org.save()
-    }
+    const orgConfig = loadOrCreateConfig(orgAddress)
+    orgConfig.tokens = appAddress
+    orgConfig.save()
   }
 
   if (template) {

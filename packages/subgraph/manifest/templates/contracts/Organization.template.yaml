@@ -26,8 +26,6 @@
         file: ./abis/ConvictionVoting.json
       - name: DisputableVoting
         file: ./abis/DisputableVoting.json
-      - name: HookedTokenManager
-        file: ./abis/HookedTokenManager.json
       - name: Kernel
         file: ./abis/Kernel.json  
       - name: MiniMeToken

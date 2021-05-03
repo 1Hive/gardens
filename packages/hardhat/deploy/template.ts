@@ -1,13 +1,13 @@
-import { HardhatRuntimeEnvironment } from "hardhat/types";
-import { DeployFunction } from "hardhat-deploy/types";
+import { HardhatRuntimeEnvironment } from 'hardhat/types'
+import { DeployFunction } from 'hardhat-deploy/types'
 
-import { Config } from "../helpers/configuration";
+import { Config } from '../helpers/configuration'
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
-  const { deployments, getNamedAccounts } = hre;
-  const { deploy } = deployments;
+  const { deployments, getNamedAccounts } = hre
+  const { deploy } = deployments
 
-  const { deployer } = await getNamedAccounts();
+  const { deployer } = await getNamedAccounts()
 
   const {
     AragonID,
@@ -23,9 +23,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     UniswapV2Factory,
     Arbitrator,
     StakingFactory,
-  } = Config.Bases[hre.network.name];
+  } = Config.Bases[hre.network.name]
 
-  await deploy("GardensTemplate", {
+  await deploy('GardensTemplate', {
     from: deployer,
     args: [
       DAOFactory,
@@ -44,6 +44,6 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     ],
     log: true,
     deterministicDeployment: true,
-  });
-};
-export default func;
+  })
+}
+export default func

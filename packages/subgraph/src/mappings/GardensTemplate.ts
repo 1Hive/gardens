@@ -8,7 +8,10 @@ import { Kernel as KernelTemplate } from '../../generated/templates'
 import { loadOrCreateOrg } from '../helpers'
 
 export function handleDeployDao(event: DeployDaoEvent): void {
-  loadOrCreateOrg(event.params.dao, event.block.timestamp)
+  let org = loadOrCreateOrg(event.params.dao)
+  org.createdAt = event.block.timestamp
+  org.save()
+
   KernelTemplate.create(event.params.dao)
 }
 

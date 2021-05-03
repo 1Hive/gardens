@@ -1,0 +1,90 @@
+[
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "MANAGE_DISPUTABLE_ROLE",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_arbitrator",
+        "type": "address"
+      },
+      {
+        "name": "_setAppFeesCashier",
+        "type": "bool"
+      },
+      {
+        "name": "_title",
+        "type": "string"
+      },
+      {
+        "name": "_content",
+        "type": "bytes"
+      },
+      {
+        "name": "_stakingFactory",
+        "type": "address"
+      }
+    ],
+    "name": "initialize",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "_disputableAddress",
+        "type": "address"
+      },
+      {
+        "name": "_collateralToken",
+        "type": "address"
+      },
+      {
+        "name": "_challengeDuration",
+        "type": "uint64"
+      },
+      {
+        "name": "_actionAmount",
+        "type": "uint256"
+      },
+      {
+        "name": "_challengeAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "activate",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "CHANGE_AGREEMENT_ROLE",
+    "outputs": [
+      {
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "pure",
+    "type": "function"
+  }
+]

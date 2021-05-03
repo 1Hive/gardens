@@ -1,13 +1,9 @@
 import { Address } from '@graphprotocol/graph-ts'
-import { ConvictionVoting as ConvictionVotingContract } from '../../generated/templates/ConvictionVoting/ConvictionVoting'
 import { HookedTokenManager as HookedTokenManagerContract } from '../../generated/templates/ConvictionVoting/HookedTokenManager'
 import { loadOrCreateConfig, loadOrCreateOrg, loadTokenData } from '.'
 
-export function loadWrappableToken(convictionVotingAddress: Address): void {
-  const convictionVotingApp = ConvictionVotingContract.bind(convictionVotingAddress)
-  const orgAddress = convictionVotingApp.kernel()
+export function loadWrappableToken(orgAddress: Address): void {
   const orgConfig = loadOrCreateConfig(orgAddress)
-
   const tokensApp = HookedTokenManagerContract.bind(orgConfig.tokens as Address)
   const wrappableTokenAddress = tokensApp.wrappableToken()
 

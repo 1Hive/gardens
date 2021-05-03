@@ -33,5 +33,6 @@ export function processApp(orgAddress: Address, appAddress: Address, appId: stri
 export function processOrg(orgAddress: Address, timestamp: BigInt): void {
   const org = loadOrCreateOrg(orgAddress)
   org.createdAt = timestamp
+  org.active = true
   org.save()
 }

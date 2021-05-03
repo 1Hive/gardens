@@ -5,7 +5,7 @@ import {
   Proposal as ProposalEntity,
   VotingConfig as VotingConfigEntity,
 } from '../../generated/schema'
-import { getProposalEntityId } from '.'
+import { getProposalEntityId } from './'
 import {
   STATUS_ACTIVE,
   STATUS_ACTIVE_NUM,

@@ -5,7 +5,7 @@ import chalk from 'chalk'
 import '@nomiclabs/hardhat-waffle'
 import '@tenderly/hardhat-tenderly'
 import '@nomiclabs/hardhat-etherscan'
-import '@typechain/hardhat'
+import 'hardhat-typechain'
 import 'hardhat-deploy'
 import 'hardhat-gas-reporter'
 import 'solidity-coverage'
@@ -53,17 +53,11 @@ const config: HardhatUserConfig = {
   // (you will need to restart the `yarn run start` dev server after editing the .env)
 
   solidity: {
-<<<<<<< HEAD
     version: '0.4.24',
     settings: {
       optimizer: {
         enabled: true,
         runs: 10000,
-=======
-    compilers: [
-      {
-        version: '0.4.24',
->>>>>>> origin/master
       },
     },
   },
@@ -179,11 +173,7 @@ task('fundedwallet', 'Create a wallet (pk) link and fund it with deployer?')
     const randomWallet = ethers.Wallet.createRandom()
     const privateKey = randomWallet._signingKey().privateKey
     console.log('🔐 WALLET Generated as ' + randomWallet.address + '')
-<<<<<<< HEAD
     const url = taskArgs.url ? taskArgs.url : 'http://localhost:3000'
-=======
-    let url = taskArgs.url ? taskArgs.url : 'http://localhost:3000'
->>>>>>> origin/master
 
     let localDeployerMnemonic
     try {
@@ -193,11 +183,7 @@ task('fundedwallet', 'Create a wallet (pk) link and fund it with deployer?')
       /* do nothing - this file isn't always there */
     }
 
-<<<<<<< HEAD
     const amount = taskArgs.amount ? taskArgs.amount : '0.01'
-=======
-    let amount = taskArgs.amount ? taskArgs.amount : '0.01'
->>>>>>> origin/master
     const tx = {
       to: randomWallet.address,
       value: ethers.utils.parseEther(amount),
@@ -209,11 +195,7 @@ task('fundedwallet', 'Create a wallet (pk) link and fund it with deployer?')
       let deployerWallet = ethers.Wallet.fromMnemonic(localDeployerMnemonic)
       deployerWallet = deployerWallet.connect(ethers.provider)
       console.log('💵 Sending ' + amount + ' ETH to ' + randomWallet.address + ' using deployer account')
-<<<<<<< HEAD
       const sendresult = await deployerWallet.sendTransaction(tx)
-=======
-      let sendresult = await deployerWallet.sendTransaction(tx)
->>>>>>> origin/master
       console.log('\n' + url + '/pk#' + privateKey + '\n')
       return
     } else {
@@ -233,20 +215,12 @@ task('generate', 'Create a mnemonic for builder deploys', async (_, { ethers }) 
   const hdwallet = hdkey.fromMasterSeed(seed)
   const wallet_hdpath = "m/44'/60'/0'/0/"
   const account_index = 0
-<<<<<<< HEAD
   const fullPath = wallet_hdpath + account_index
-=======
-  let fullPath = wallet_hdpath + account_index
->>>>>>> origin/master
   if (DEBUG) console.log('fullPath', fullPath)
   const wallet = hdwallet.derivePath(fullPath).getWallet()
   const privateKey = '0x' + wallet._privKey.toString('hex')
   if (DEBUG) console.log('privateKey', privateKey)
-<<<<<<< HEAD
   const EthUtil = require('ethereumjs-util')
-=======
-  var EthUtil = require('ethereumjs-util')
->>>>>>> origin/master
   const address = '0x' + EthUtil.privateToAddress(wallet._privKey).toString('hex')
   console.log('🔐 Account Generated as ' + address + ' and set as mnemonic in packages/hardhat')
   console.log("💬 Use 'yarn run account' to get more information about the deployment account.")
@@ -273,26 +247,17 @@ task('mine', 'Looks for a deployer account that will give leading zeros')
       const hdwallet = hdkey.fromMasterSeed(seed)
       const wallet_hdpath = "m/44'/60'/0'/0/"
       const account_index = 0
-<<<<<<< HEAD
       const fullPath = wallet_hdpath + account_index
-=======
-      let fullPath = wallet_hdpath + account_index
->>>>>>> origin/master
       if (DEBUG) console.log('fullPath', fullPath)
       const wallet = hdwallet.derivePath(fullPath).getWallet()
       const privateKey = '0x' + wallet._privKey.toString('hex')
       if (DEBUG) console.log('privateKey', privateKey)
-<<<<<<< HEAD
       const EthUtil = require('ethereumjs-util')
-=======
-      var EthUtil = require('ethereumjs-util')
->>>>>>> origin/master
       address = '0x' + EthUtil.privateToAddress(wallet._privKey).toString('hex')
 
       const rlp = require('rlp')
       const keccak = require('keccak')
 
-<<<<<<< HEAD
       const nonce = 0x00 //The nonce must be a hex literal!
       const sender = address
 
@@ -300,15 +265,6 @@ task('mine', 'Looks for a deployer account that will give leading zeros')
       const rlp_encoded = rlp.encode(input_arr)
 
       const contract_address_long = keccak('keccak256').update(rlp_encoded).digest('hex')
-=======
-      let nonce = 0x00 //The nonce must be a hex literal!
-      let sender = address
-
-      let input_arr = [sender, nonce]
-      let rlp_encoded = rlp.encode(input_arr)
-
-      let contract_address_long = keccak('keccak256').update(rlp_encoded).digest('hex')
->>>>>>> origin/master
 
       contract_address = contract_address_long.substring(24) //Trim the first 24 characters.
     }
@@ -324,27 +280,18 @@ task('mine', 'Looks for a deployer account that will give leading zeros')
 task('account', 'Get balance informations for the deployment account.', async (_, { ethers }) => {
   const hdkey = require('ethereumjs-wallet/hdkey')
   const bip39 = require('bip39')
-<<<<<<< HEAD
   const mnemonic = fs.readFileSync('./mnemonic.txt').toString().trim()
-=======
-  let mnemonic = fs.readFileSync('./mnemonic.txt').toString().trim()
->>>>>>> origin/master
   if (DEBUG) console.log('mnemonic', mnemonic)
   const seed = await bip39.mnemonicToSeed(mnemonic)
   if (DEBUG) console.log('seed', seed)
   const hdwallet = hdkey.fromMasterSeed(seed)
   const wallet_hdpath = "m/44'/60'/0'/0/"
   const account_index = 0
-<<<<<<< HEAD
   const fullPath = wallet_hdpath + account_index
-=======
-  let fullPath = wallet_hdpath + account_index
->>>>>>> origin/master
   if (DEBUG) console.log('fullPath', fullPath)
   const wallet = hdwallet.derivePath(fullPath).getWallet()
   const privateKey = '0x' + wallet._privKey.toString('hex')
   if (DEBUG) console.log('privateKey', privateKey)
-<<<<<<< HEAD
   const EthUtil = require('ethereumjs-util')
   const address = '0x' + EthUtil.privateToAddress(wallet._privKey).toString('hex')
 
@@ -356,19 +303,6 @@ task('account', 'Get balance informations for the deployment account.', async (_
     try {
       const provider = new ethers.providers.JsonRpcProvider((config.networks[n] as HttpNetworkUserConfig).url)
       const balance = await provider.getBalance(address)
-=======
-  var EthUtil = require('ethereumjs-util')
-  const address = '0x' + EthUtil.privateToAddress(wallet._privKey).toString('hex')
-
-  var qrcode = require('qrcode-terminal')
-  qrcode.generate(address)
-  console.log('‍📬 Deployer Account is ' + address)
-  for (let n in config.networks) {
-    //console.log(config.networks[n],n)
-    try {
-      let provider = new ethers.providers.JsonRpcProvider((config.networks[n] as HttpNetworkUserConfig).url)
-      let balance = await provider.getBalance(address)
->>>>>>> origin/master
       console.log(' -- ' + n + ' --  -- -- 📡 ')
       console.log('   balance: ' + ethers.utils.formatEther(balance))
       console.log('   nonce: ' + (await provider.getTransactionCount(address)))

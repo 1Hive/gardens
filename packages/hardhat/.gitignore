@@ -1,4 +1,5 @@
 artifacts/
+abi/
 cache/
 deployments/localhost
 deployments/**/solcInputs

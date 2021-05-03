@@ -5,7 +5,7 @@ import {
   Organization as OrganizationEntity,
   Proposal as ProposalEntity,
   Supporter as SupporterEntity,
-  Token as TokenEntity
+  Token as TokenEntity,
 } from '../../generated/schema'
 import { STATUS_ACTIVE, STATUS_ACTIVE_NUM } from '../statuses'
 

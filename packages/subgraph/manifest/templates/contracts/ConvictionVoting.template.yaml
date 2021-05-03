@@ -8,6 +8,9 @@
     apiVersion: 0.0.1
     language: wasm/assemblyscript
     entities:
+      - Organization
+      - Token
+      - Config
       - ConvictionConfig
       - Proposal
       - Stake
@@ -17,6 +20,8 @@
         file: ./abis/Agreement.json
       - name: ConvictionVoting
         file: ./abis/ConvictionVoting.json
+      - name: HookedTokenManager
+        file: ./abis/HookedTokenManager.json
       - name: MiniMeToken
         file: ./abis/MiniMeToken.json
     eventHandlers:

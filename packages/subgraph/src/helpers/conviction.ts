@@ -10,6 +10,7 @@ import {
   ProposalAdded as ProposalAddedEvent,
 } from '../../generated/templates/ConvictionVoting/ConvictionVoting'
 import { loadOrCreateConfig, loadTokenData } from '.'
+import { loadWrappableToken } from './tokens'
 
 /// /// Conviction config entity //////
 function getConvictionConfigEntityId(appAddress: Address): string {
@@ -53,6 +54,11 @@ export function loadConvictionConfig(orgAddress: Address, appAddress: Address): 
   if (requestTokenId) {
     convictionConfig.requestToken = requestToken.toHexString()
   }
+
+  // Load wrappable token data
+  // Note we handle the wrappable token here to make sure the
+  // initialize event was already called for the tokens app
+  loadWrappableToken(orgAddress)
 
   // Load conviction params
   convictionConfig.decay = convictionVoting.decay()

@@ -5,7 +5,7 @@ import {
   Organization as OrganizationEntity,
   Proposal as ProposalEntity,
   Supporter as SupporterEntity,
-  Token as TokenEntity,
+  Token as TokenEntity
 } from '../../generated/schema'
 import { STATUS_ACTIVE, STATUS_ACTIVE_NUM } from '../statuses'
 
@@ -47,19 +47,15 @@ export function loadOrCreateConfig(orgAddress: Address): ConfigEntity | null {
 
 /// /// Organization entity //////
 export function loadOrCreateOrg(orgAddress: Address): OrganizationEntity | null {
-  let id = orgAddress.toHexString()
+  const id = orgAddress.toHexString()
   let organization = OrganizationEntity.load(id)
 
   if (organization === null) {
-    let config = loadOrCreateConfig(orgAddress)
+    const config = loadOrCreateConfig(orgAddress)
     organization = new OrganizationEntity(id)
     organization.config = config.id
-<<<<<<< HEAD
     organization.proposalCount = 0
-    
-=======
 
->>>>>>> 333e424a914e362017c5eb6467c77b6bbfdeaaa0
     config.save()
   }
 

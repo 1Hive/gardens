@@ -9,8 +9,10 @@ import {
 
 const ORG_ADDRESS = '0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a'
 type Garden = {
-  id: String
-  createdAt: Number
+  id: String,
+  createdAt: Number,
+  proposalCount: Number,
+  token: Object
 }
 
 function proposalId(proposal: Proposal): string {
@@ -26,6 +28,8 @@ function proposalId(proposal: Proposal): string {
 function describeGarden(garden: Garden) {
   console.log(`Organization ${garden.id}`)
   console.log(`CreatedAt: ${garden.createdAt}`)
+  console.log(`Proposal count: ${garden.proposalCount}`)
+  console.log(`Token: ${JSON.stringify(garden.token, null, 2)}`)
 
   console.log(`\n`)
 }

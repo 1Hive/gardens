@@ -239,7 +239,6 @@ function _updateStakeHistory(
   blockNumber: BigInt,
   timestamp: BigInt
 ): void {
-
   const supporterId = getSupporterEntityId(entity, Address.fromString(proposal.organization))
   const stakeHistory = getStakeHistoryEntity(proposal, supporterId, blockNumber)
   stakeHistory.type = type

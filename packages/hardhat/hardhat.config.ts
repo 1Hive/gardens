@@ -5,8 +5,8 @@ import chalk from 'chalk'
 import '@nomiclabs/hardhat-waffle'
 import '@tenderly/hardhat-tenderly'
 import '@nomiclabs/hardhat-etherscan'
+import '@typechain/hardhat'
 import 'hardhat-abi-exporter'
-import 'hardhat-typechain'
 import 'hardhat-deploy'
 import 'hardhat-gas-reporter'
 import 'solidity-coverage'
@@ -64,10 +64,6 @@ const config: HardhatUserConfig = {
   },
   mocha: {
     timeout: 0,
-  },
-  typechain: {
-    outDir: 'typechain',
-    target: 'ethers-v5',
   },
   etherscan: {
     // Your API key for Etherscan

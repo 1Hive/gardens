@@ -1,5 +1,5 @@
 import { BigInt, Address } from '@graphprotocol/graph-ts'
-import { MiniMeToken as ERC20Contract } from '../../generated/templates/DisputableVoting/MiniMeToken'
+import { MiniMeToken as MiniMeTokenContract } from '../../generated/templates/DisputableVoting/MiniMeToken'
 import { Agreement as AgreementContract } from '../../generated/templates/Agreement/Agreement'
 import {
   DisputableVoting as VotingContract,
@@ -126,7 +126,7 @@ export function handleCastVote(event: CastVoteEvent): void {
   const voter = loadOrCreateSupporter(event.params.voter, Address.fromString(proposal.organization))
 
   const votingApp = VotingContract.bind(event.address)
-  const miniMeToken = ERC20Contract.bind(votingApp.token())
+  const miniMeToken = MiniMeTokenContract.bind(votingApp.token())
 
   voter.proposal = proposal.id
   voter.save()

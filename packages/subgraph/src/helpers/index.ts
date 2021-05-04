@@ -55,7 +55,8 @@ export function loadOrCreateOrg(orgAddress: Address): OrganizationEntity | null 
     organization = new OrganizationEntity(id)
     organization.config = config.id
     organization.proposalCount = 0
-    organization.active = false
+    organization.active = true
+    organization.createdAt = BigInt.fromI32(0)
 
     config.save()
   }

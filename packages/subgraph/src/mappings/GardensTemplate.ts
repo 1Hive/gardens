@@ -10,6 +10,7 @@ import { loadOrCreateOrg } from '../helpers'
 export function handleDeployDao(event: DeployDaoEvent): void {
   const org = loadOrCreateOrg(event.params.dao)
   org.createdAt = event.block.timestamp
+  org.active = false
   org.save()
 
   KernelTemplate.create(event.params.dao)

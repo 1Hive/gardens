@@ -14,7 +14,7 @@ export function processApp(orgAddress: Address, appAddress: Address, appId: stri
     template = 'Agreement'
   } else if (TOKENS_APPIDS.includes(appId)) {
     const orgConfig = loadOrCreateConfig(orgAddress)
-    orgConfig.tokens = appAddress as Bytes
+    orgConfig.tokens = appAddress
     orgConfig.save()
   }
 
@@ -28,6 +28,6 @@ export function processOrg(orgAddress: Address, timestamp: BigInt): void {
   const org = loadOrCreateOrg(orgAddress)
   if (org.createdAt.isZero()) {
     org.createdAt = timestamp
+    org.save()
   }
-  org.save()
 }

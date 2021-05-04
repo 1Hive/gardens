@@ -1,8 +1,7 @@
-artifacts/
-abi/
-cache/
+artifacts
+cache
 deployments/localhost
 deployments/**/solcInputs
 tenderly.yaml
-typechain/
+typechain
 *.txt

@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import hre, { ethers } from 'hardhat'
-import { Contract } from '@ethersproject/contracts'
 import { Signer } from '@ethersproject/abstract-signer'
+import { getEventArgument } from '../helpers/events'
 import { GardensTemplate, ERC20Detailed, Kernel } from '../typechain'
-import { BigNumber } from 'ethers'
+import { BigNumber } from '@ethersproject/bignumber'
 
 const { deployments } = hre
 
@@ -55,25 +56,6 @@ const getGardensTemplate = async (signer: Signer): Promise<GardensTemplate> => {
 const getHoneyToken = async (signer: Signer, gardensTemplate: GardensTemplate) => {
   const honeyTokenAddress = await gardensTemplate.honeyToken()
   return (await ethers.getContractAt('ERC20Detailed', honeyTokenAddress, signer)) as ERC20Detailed
-}
-
-const getEventArgument = async (
-  selectedFilter: string,
-  arg: number | string,
-  contract: Contract,
-  transactionHash: string
-): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const filter = contract.filters[selectedFilter]()
-
-    contract.on(filter, (...args) => {
-      const event = args.pop()
-      if (event.transactionHash === transactionHash) {
-        contract.removeAllListeners(filter)
-        resolve(event.args[arg])
-      }
-    })
-  })
 }
 
 const transform = (params) => ({
@@ -139,7 +121,7 @@ export default async function main(log = console.log): Promise<any> {
     challengeAmount,
     actionAmountStable,
     challengeAmountStable,
-  } = transform(await import(`../params-${network}.json`))
+  } = transform(await import(`../config/params-${network}.json`))
   const mainAccount = (await ethers.getSigners())[0]
 
   const approveHoneyPayment = async (gardensTemplate: GardensTemplate, log: Function) => {

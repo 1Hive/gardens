@@ -2,6 +2,8 @@ import { Address } from '@graphprotocol/graph-ts'
 import { HookedTokenManager as HookedTokenManagerContract } from '../../generated/templates/Kernel/HookedTokenManager'
 import { loadOrCreateConfig, loadOrCreateOrg, loadTokenData } from '.'
 
+const ZERO_ADDRESS = Address.fromHexString("0x0000000000000000000000000000000000000000")
+
 export function loadWrappableToken(orgAddress: Address): void {
   const orgConfig = loadOrCreateConfig(orgAddress)
   if (!orgConfig.tokens) {
@@ -9,12 +11,11 @@ export function loadWrappableToken(orgAddress: Address): void {
   }
 
   const tokensApp = HookedTokenManagerContract.bind(orgConfig.tokens as Address)
-  const result = tokensApp.try_wrappableToken()
-  if (result.reverted) {
+  const wrappableTokenAddress = tokensApp.wrappableToken()
+
+  if (wrappableTokenAddress.equals(ZERO_ADDRESS)) {
     return
   }
-
-  const wrappableTokenAddress = result.value
 
   const tokenId = loadTokenData(wrappableTokenAddress)
   if (tokenId) {

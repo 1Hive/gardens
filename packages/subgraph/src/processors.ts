@@ -1,4 +1,4 @@
-import { Address, BigInt, Bytes, DataSourceTemplate } from '@graphprotocol/graph-ts'
+import { Address, BigInt, DataSourceTemplate } from '@graphprotocol/graph-ts'
 import { loadOrCreateConfig, loadOrCreateOrg } from './helpers'
 import { onAppTemplateCreated } from './hooks'
 import { AGREEMENT_APPIDS, CONVICTION_VOTING_APPIDS, TOKENS_APPIDS, VOTING_APPIDS } from './appIds'

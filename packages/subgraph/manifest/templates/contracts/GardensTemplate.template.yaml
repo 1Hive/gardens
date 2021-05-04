@@ -14,7 +14,7 @@
       - NoEnt
     abis:
       - name: GardensTemplate
-        file: $HARDHAT_MODULE/abi/contracts/GardensTemplate.sol/GardensTemplate.json
+        file: ./abis/GardensTemplate.json
       - name: Kernel
         file: ./abis/Kernel.json
     eventHandlers:

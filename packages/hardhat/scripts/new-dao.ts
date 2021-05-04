@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import hre, { ethers } from 'hardhat'
 import { Signer } from '@ethersproject/abstract-signer'
-import { getEventArgument } from '../helpers/events'
+import { BigNumber } from 'ethers'
+import hre, { ethers } from 'hardhat'
 import { GardensTemplate, ERC20Detailed, Kernel } from '../typechain'
-import { BigNumber } from '@ethersproject/bignumber'
+import { getEventArgument } from '../helpers/events'
 
 const { deployments } = hre
 

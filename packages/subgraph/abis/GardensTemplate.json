@@ -1,266 +1,266 @@
 {
-  "abi":[
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "AGREEMENT_APP_ID",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "CONVICTION_VOTING_APP_ID",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "DISPUTABLE_VOTING_APP_ID",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_voteTokenName",
-        "type": "string"
-      },
-      {
-        "name": "_voteTokenSymbol",
-        "type": "string"
-      },
-      {
-        "name": "_fundingPoolStake",
-        "type": "uint256"
-      },
-      {
-        "name": "_disputableVotingSettings",
-        "type": "uint64[7]"
-      }
-    ],
-    "name": "createDaoTxOne",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "DYNAMIC_ISSUANCE_APP_ID",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_holders",
-        "type": "address[]"
-      },
-      {
-        "name": "_stakes",
-        "type": "uint256[]"
-      }
-    ],
-    "name": "createTokenholders",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_id",
-        "type": "string"
-      },
-      {
-        "name": "_arbitrator",
-        "type": "address"
-      },
-      {
-        "name": "_setAppFeesCashier",
-        "type": "bool"
-      },
-      {
-        "name": "_title",
-        "type": "string"
-      },
-      {
-        "name": "_content",
-        "type": "bytes"
-      },
-      {
-        "name": "_stakingFactory",
-        "type": "address"
-      },
-      {
-        "name": "_feeToken",
-        "type": "address"
-      },
-      {
-        "name": "_challengeDuration",
-        "type": "uint64"
-      },
-      {
-        "name": "_fees",
-        "type": "uint256[2]"
-      }
-    ],
-    "name": "createDaoTxThree",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "_issuanceSettings",
-        "type": "uint256[2]"
-      },
-      {
-        "name": "_stableToken",
-        "type": "address"
-      },
-      {
-        "name": "_stableTokenOracle",
-        "type": "address"
-      },
-      {
-        "name": "_convictionSettings",
-        "type": "uint64[4]"
-      }
-    ],
-    "name": "createDaoTxTwo",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "HOOKED_TOKEN_MANAGER_APP_ID",
-    "outputs": [
-      {
-        "name": "",
-        "type": "bytes32"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "name": "_daoFactory",
-        "type": "address"
-      },
-      {
-        "name": "_ens",
-        "type": "address"
-      },
-      {
-        "name": "_miniMeFactory",
-        "type": "address"
-      },
-      {
-        "name": "_aragonID",
-        "type": "address"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "name": "dao",
-        "type": "address"
-      }
-    ],
-    "name": "DeployDao",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "name": "dao",
-        "type": "address"
-      }
-    ],
-    "name": "SetupDao",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "name": "token",
-        "type": "address"
-      }
-    ],
-    "name": "DeployToken",
-    "type": "event"
-  },
-  {
-    "anonymous": false,
-    "inputs": [
-      {
-        "indexed": false,
-        "name": "appProxy",
-        "type": "address"
-      },
-      {
-        "indexed": false,
-        "name": "appId",
-        "type": "bytes32"
-      }
-    ],
-    "name": "InstalledApp",
-    "type": "event"
-  }
-]
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "AGREEMENT_APP_ID",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "CONVICTION_VOTING_APP_ID",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "DISPUTABLE_VOTING_APP_ID",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_voteTokenName",
+          "type": "string"
+        },
+        {
+          "name": "_voteTokenSymbol",
+          "type": "string"
+        },
+        {
+          "name": "_fundingPoolStake",
+          "type": "uint256"
+        },
+        {
+          "name": "_disputableVotingSettings",
+          "type": "uint64[7]"
+        }
+      ],
+      "name": "createDaoTxOne",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "DYNAMIC_ISSUANCE_APP_ID",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_holders",
+          "type": "address[]"
+        },
+        {
+          "name": "_stakes",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "createTokenholders",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_id",
+          "type": "string"
+        },
+        {
+          "name": "_arbitrator",
+          "type": "address"
+        },
+        {
+          "name": "_setAppFeesCashier",
+          "type": "bool"
+        },
+        {
+          "name": "_title",
+          "type": "string"
+        },
+        {
+          "name": "_content",
+          "type": "bytes"
+        },
+        {
+          "name": "_stakingFactory",
+          "type": "address"
+        },
+        {
+          "name": "_feeToken",
+          "type": "address"
+        },
+        {
+          "name": "_challengeDuration",
+          "type": "uint64"
+        },
+        {
+          "name": "_fees",
+          "type": "uint256[2]"
+        }
+      ],
+      "name": "createDaoTxThree",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_issuanceSettings",
+          "type": "uint256[2]"
+        },
+        {
+          "name": "_stableToken",
+          "type": "address"
+        },
+        {
+          "name": "_stableTokenOracle",
+          "type": "address"
+        },
+        {
+          "name": "_convictionSettings",
+          "type": "uint64[4]"
+        }
+      ],
+      "name": "createDaoTxTwo",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "HOOKED_TOKEN_MANAGER_APP_ID",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_daoFactory",
+          "type": "address"
+        },
+        {
+          "name": "_ens",
+          "type": "address"
+        },
+        {
+          "name": "_miniMeFactory",
+          "type": "address"
+        },
+        {
+          "name": "_aragonID",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "dao",
+          "type": "address"
+        }
+      ],
+      "name": "DeployDao",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "dao",
+          "type": "address"
+        }
+      ],
+      "name": "SetupDao",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "token",
+          "type": "address"
+        }
+      ],
+      "name": "DeployToken",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "appProxy",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "appId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "InstalledApp",
+      "type": "event"
+    }
+  ]
 }

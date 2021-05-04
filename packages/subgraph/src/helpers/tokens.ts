@@ -2,7 +2,7 @@ import { Address } from '@graphprotocol/graph-ts'
 import { HookedTokenManager as HookedTokenManagerContract } from '../../generated/templates/Kernel/HookedTokenManager'
 import { loadOrCreateConfig, loadOrCreateOrg, loadTokenData } from '.'
 
-const ZERO_ADDRESS = Address.fromHexString("0x0000000000000000000000000000000000000000")
+const ZERO_ADDRESS = Address.fromHexString('0x0000000000000000000000000000000000000000')
 
 export function loadWrappableToken(orgAddress: Address): void {
   const orgConfig = loadOrCreateConfig(orgAddress)

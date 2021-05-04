@@ -7,6 +7,7 @@
   },
   "existingToken": "0x0000000000000000000000000000000000000000",
   "commonPoolAmount": 100,
+  "honeyTokenLiquidityInXdai": 100,
   "gardenTokenLiquidity": 100,
   "existingTokenLiquidity": 100,
   "voteSupportRequired": 0.5,

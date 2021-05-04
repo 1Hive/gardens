@@ -77,13 +77,14 @@ const getEventArgument = async (
 }
 
 const transform = (params) => ({
-  orgTokenName: params.orgTokenName,
-  orgTokenSymbol: params.orgTokenSymbol,
+  gardenTokenName: params.gardemTokenName,
+  gardenTokenSymbol: params.gardenTokenSymbol,
   holders: Object.entries(params.seeds).map((e) => e[0]),
   stakes: Object.entries(params.seeds).map((e) => Math.floor((e[1] as number) * ONE_TOKEN).toString()),
   existingToken: params.existingToken,
   commonPoolAmount: Math.floor(params.commonPoolAmount * ONE_TOKEN).toString(),
   gardenTokenLiquidity: Math.floor(params.gardenTokenLiquidity * ONE_TOKEN).toString(),
+  existingTokenLiquidity: Math.floor(params.existingTokenLiquidity * ONE_TOKEN).toString(),
   voteSupportRequired: Math.floor(params.voteSupportRequired * ONE_HUNDRED_PERCENT).toString(),
   voteMinAcceptanceQuorum: Math.floor(params.voteMinAcceptanceQuorum * ONE_HUNDRED_PERCENT).toString(),
   voteDuration: Math.floor(params.voteDurationDays * ONE_DAY),
@@ -111,13 +112,14 @@ const transform = (params) => ({
 
 export default async function main(log = console.log): Promise<any> {
   const {
-    orgTokenName,
-    orgTokenSymbol,
+    gardenTokenName,
+    gardenTokenSymbol,
     holders,
     stakes,
     existingToken,
     commonPoolAmount,
     gardenTokenLiquidity,
+    existingTokenLiquidity,
     voteDuration,
     voteSupportRequired,
     voteMinAcceptanceQuorum,
@@ -142,7 +144,7 @@ export default async function main(log = console.log): Promise<any> {
   } = transform(await import(`../params-${network}.json`))
   const mainAccount = (await ethers.getSigners())[0]
 
-  const approveHoneyPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
+  const approveHnyPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
     const honeyToken = await getHoneyToken(mainAccount, gardensTemplate)
     const currentAllowance = await honeyToken.allowance(mainAccount.address, gardensTemplate.address)
     if (currentAllowance.gt(BigNumber.from(0))) {
@@ -156,13 +158,31 @@ export default async function main(log = console.log): Promise<any> {
     log(`Approval for gardens payment made.`)
   }
 
+  // const approveOgtPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
+  //   const honeyToken = await getHoneyToken(mainAccount, gardensTemplate)
+  //   const currentAllowance = await honeyToken.allowance(mainAccount.address, gardensTemplate.address)
+  //   if (currentAllowance.gt(BigNumber.from(0))) {
+  //     const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, BigNumber.from(0))
+  //     await approveHoneyPaymentTx.wait(1)
+  //     log(`Pre unapproval for gardens payment made.`)
+  //   }
+  //   const approvalAmount = BigNumber.from(100).pow(BigNumber.from(18))
+  //   const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, approvalAmount)
+  //   await approveHoneyPaymentTx.wait(1)
+  //   log(`Approval for gardens payment made.`)
+  // }
+
   const createDaoTxOne = async (gardensTemplate: GardensTemplate, log: Function): Promise<string> => {
+
     const createDaoTxOneTx = await gardensTemplate.createDaoTxOne(
       existingToken,
-      orgTokenName,
-      orgTokenSymbol,
-      commonPoolAmount,
-      gardenTokenLiquidity,
+      gardenTokenName,
+      gardenTokenSymbol,
+      [
+        commonPoolAmount,
+        gardenTokenLiquidity,
+        existingTokenLiquidity
+      ],
       [
         voteDuration,
         voteSupportRequired,
@@ -214,13 +234,9 @@ export default async function main(log = console.log): Promise<any> {
   const gardensTemplate = await getGardensTemplate(mainAccount)
   const createNewToken = existingToken == ZERO_ADDRESS // As opposed bring your own token
 
-  if (createNewToken) {
-    await approveHoneyPayment(gardensTemplate, log)
-  }
+  if (createNewToken) {await approveHnyPayment(gardensTemplate, log)}
   const daoAddress = await createDaoTxOne(gardensTemplate, log)
-  if (createNewToken) {
-    await createTokenholders(gardensTemplate, log)
-  }
+  if (createNewToken) {await createTokenholders(gardensTemplate, log)}
   await createDaoTxTwo(gardensTemplate, log)
   await createDaoTxThree(gardensTemplate, log)
 

@@ -1,6 +1,7 @@
 pragma solidity 0.4.24;
 
 import "@aragon/templates-shared/contracts/BaseTemplate.sol";
+import "@aragon/os/contracts/common/SafeERC20.sol";
 import "./external/IHookedTokenManager.sol";
 import "./external/IIssuance.sol";
 import "./external/IConvictionVoting.sol";
@@ -15,8 +16,12 @@ import "./external/IUniswapV2Factory.sol";
 import "./appIds/AppIdsXDai.sol";
 
 contract GardensTemplate is BaseTemplate, AppIdsXDai {
+
+    using SafeERC20 for ERC20;
+
     string private constant ERROR_MISSING_MEMBERS = "MISSING_MEMBERS";
     string private constant ERROR_BAD_VOTE_SETTINGS = "BAD_SETTINGS";
+    string private constant ERROR_HONEY_DEPOSIT_TOO_LOW = "BAD_HONEY_DEPOSIT_TOO_LOW";
     string private constant ERROR_EXISTING_TOKEN = "EXISTING_TOKEN";
     string private constant ERROR_NO_CACHE = "NO_CACHE";
     string private constant ERROR_NO_TOLLGATE_TOKEN = "NO_TOLLGATE_TOKEN";
@@ -27,10 +32,10 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     address private constant ANY_ENTITY = address(-1);
     uint8 private constant ORACLE_PARAM_ID = 203;
     uint256 public constant AVERAGE_PRICE_PERIOD = 86400; // 24 hours
-    uint8 public constant UPDATE_FREQUENCY = 8; // 8 times within price period
+    uint8 public constant UPDATE_FREQUENCY = 8; // 8 times within price period, once every 3 hours
     uint256 public constant UPDATE_PERCENT_REWARD = 2e16; // 2% reward per update call
     address private constant BURN_ADDRESS = 0x000000000000000000000000000000000000dEaD;
-    uint256 public constant XDAI_IN_HNY_REQUIRED_FOR_NEW_TOKEN = 100e18;
+    uint256 public constant MIN_XDAI_IN_HNY_REQUIRED_FOR_NEW_GARDEN = 100e18;
     enum Op {NONE, EQ, NEQ, GT, LT, GTE, LTE, RET, NOT, AND, OR, XOR, IF_ELSE}
 
     struct DeployedContracts {
@@ -93,8 +98,11 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
      * @param _existingToken An existing token used for the common pool token. Set to address(0) to create a new token.
      * @param _gardenTokenName DAO governance new token name
      * @param _gardenTokenSymbol DAO governance new token symbol
-     * @param _commonPoolAmount Initial amount of tokens in the funding pool. Unused if _existingToken is set.
-     * @param _gardenTokenLiquidity Amount of tokens to use as liquidity, paired with Honey. Unused if _existingToken is set.
+     * @param _initialAmountAndLiquidity Array of [commonPoolAmount, gardenTokenLiquidity, existingTokenLiquidity]
+     *      commonPoolAmount Amount created for the common pool. Unused if _existingToken is set
+     *      honeyTokenLiquidityInXdai Liquidity to add to the HNY/(GDN/_existingToken) pair.
+     *      gardenTokenLiquidity Liquidity to add to the HNY/GDN pair. Unused if _existingToken is set
+     *      existingTokenLiquidity Liquidity to add to the HNY/_existingToken pair. Unused it _existingToken is address(0)
      * @param _disputableVotingSettings Array of [voteDuration, voteSupportRequired, voteMinAcceptanceQuorum, voteDelegatedVotingPeriod,
      *    voteQuietEndingPeriod, voteQuietEndingExtension, voteExecutionDelay] to set up the voting app of the organization
      */
@@ -102,42 +110,47 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         ERC20 _existingToken,
         string _gardenTokenName,
         string _gardenTokenSymbol,
-        uint256 _commonPoolAmount,
-        uint256 _gardenTokenLiquidity,
+        uint256[4] _initialAmountAndLiquidity,
         uint64[7] _disputableVotingSettings
     ) public {
         require(_disputableVotingSettings.length == 7, ERROR_BAD_VOTE_SETTINGS);
+        require(honeyTokenLiquidityInXdai >= MIN_XDAI_IN_HNY_REQUIRED_FOR_NEW_GARDEN, ERROR_HONEY_DEPOSIT_TOO_LOW);
 
         (Kernel dao, ACL acl) = _createDAO();
         ERC20 existingToken = _existingToken; // Prevents stack too deep error
         MiniMeToken gardenToken = _createToken(_gardenTokenName, _gardenTokenSymbol, TOKEN_DECIMALS);
 
         Agent agent = _installDefaultAgentApp(dao);
-        DisputableVoting disputableVoting = _installDisputableVotingApp(dao, gardenToken, _disputableVotingSettings);
         IHookedTokenManager hookedTokenManager = _installHookedTokenManagerApp(dao, gardenToken, existingToken);
-
-        if (existingToken == address(0)) {
-            _createPermissionForTemplate(acl, hookedTokenManager, hookedTokenManager.MINT_ROLE());
-            hookedTokenManager.mint(agent, _commonPoolAmount);
-            hookedTokenManager.mint(address(this), _gardenTokenLiquidity);
-            gardenToken.approve(address(honeyswapRouter), _gardenTokenLiquidity);
-
-            uint256 honeyLiquidityToAdd = honeyPriceOracle.consult(stableToken, XDAI_IN_HNY_REQUIRED_FOR_NEW_TOKEN, honeyToken);
-            honeyToken.transferFrom(msg.sender, address(this), honeyLiquidityToAdd);
-            honeyToken.approve(address(honeyswapRouter), honeyLiquidityToAdd);
-
-            honeyswapRouter.addLiquidity(honeyToken, gardenToken, honeyLiquidityToAdd, _gardenTokenLiquidity, 0, 0, BURN_ADDRESS, now);
-        }
+        DisputableVoting disputableVoting = _installDisputableVotingApp(dao, gardenToken, _disputableVotingSettings);
 
         _createDisputableVotingPermissions(acl, disputableVoting);
         _createAgentPermissions(acl, agent, disputableVoting, disputableVoting);
         _createEvmScriptsRegistryPermissions(acl, disputableVoting, disputableVoting);
 
         _storeDeployedContractsTxOne(dao, acl, disputableVoting, agent, hookedTokenManager, gardenToken);
+
+        uint256 honeyLiquidityToAdd = honeyPriceOracle.consult(stableToken, _initialAmountAndLiquidity[1], honeyToken);
+        honeyToken.safeTransferFrom(msg.sender, address(this), honeyLiquidityToAdd);
+        honeyToken.approve(address(honeyswapRouter), honeyLiquidityToAdd);
+
+        if (existingToken == address(0)) {
+            _createPermissionForTemplate(acl, hookedTokenManager, hookedTokenManager.MINT_ROLE());
+            hookedTokenManager.mint(agent, _initialAmountAndLiquidity[0]);
+            hookedTokenManager.mint(address(this), _initialAmountAndLiquidity[2]);
+            gardenToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[2]);
+
+            honeyswapRouter.addLiquidity(honeyToken, gardenToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[2], 0, 0, BURN_ADDRESS, now);
+        } else {
+            existingToken.safeTransferFrom(msg.sender, address(this), _initialAmountAndLiquidity[3]);
+            existingToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[3]);
+
+            honeyswapRouter.addLiquidity(honeyToken, existingToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[3], 0, 0, BURN_ADDRESS, now);
+        }
     }
 
     /**
-     * @dev Add tokenholders, only accessible between the first and second createDao transactions and no existing
+     * @dev Add tokenholders, only accessible between the first and second createDao transactions and if no existing
      *      token was specified. Note will fail if called incorrectly due to missing mint permission.
      * @param _holders List of initial tokenholder addresses
      * @param _stakes List of intial tokenholder amounts
@@ -151,7 +164,8 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
     /**
      * @dev Add and initialise issuance and conviction voting
-     * @param _issuanceSettings Array of issuance settings: [targetRatio, maxAdjustmentRatioPerSecond]
+     * @param _issuanceSettings Array of issuance settings: [targetRatio, maxAdjustmentRatioPerSecond]. Unused if
+     *        existingToken is set in transaction one.
      * @param _convictionSettings array of conviction settings: [decay, max_ratio, weight, min_threshold_stake_percentage]
      */
     function createDaoTxTwo(
@@ -179,15 +193,15 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             uniswapFactory,
             AVERAGE_PRICE_PERIOD,
             UPDATE_FREQUENCY,
-            hookedTokenManager.token(), // existingToken
+            _getMainToken(hookedTokenManager),
             UPDATE_PERCENT_REWARD,
-            uniswapFactory.getPair(stableToken, hookedTokenManager.token())
+            uniswapFactory.getPair(stableToken, _getMainToken(hookedTokenManager))
         );
 
         IConvictionVoting convictionVoting = _installConvictionVoting(
             dao,
             MiniMeToken(hookedTokenManager.token()),
-            hookedTokenManager.wrappableToken(),
+            _getMainToken(hookedTokenManager),
             stableToken,
             incentivisedPriceOracle,
             commonPoolAgent,
@@ -206,8 +220,8 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     /**
      * @dev Add, initialise and activate the agreement
      * @param _daoId The ENS ID assigned to this DAO
-     * @param _title String indicating a short description
-     * @param _content Link to a human-readable text that describes the initial rules for the Agreement
+     * @param _agreementTitle String indicating a short description
+     * @param _agreementContent Link to a human-readable text that describes the initial rules for the Agreement
      * @param _challengeDuration Challenge duration, during which the submitter can raise a dispute
      * @param _initialFees Array of fees settings: [actionFee, challangeFee]
      * @param _actionAmountsStable The action amount specified as a stable value (eg in xdai)
@@ -215,8 +229,8 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
      */
     function createDaoTxThree(
         string _daoId,
-        string _title,
-        bytes memory _content,
+        string _agreementTitle,
+        bytes memory _agreementContent,
         uint64 _challengeDuration,
         uint256[2] _initialFees,
         uint256[] _actionAmountsStable,
@@ -224,17 +238,17 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     ) public {
         require(senderDeployedContracts[msg.sender].hookedTokenManager.hasInitialized(), ERROR_NO_CACHE);
 
-        (Kernel dao, ACL acl, DisputableVoting disputableVoting, , , MiniMeToken gardenToken) = _getDeployedContractsTxOne();
+        (Kernel dao, ACL acl, DisputableVoting disputableVoting,, IHookedTokenManager hookedTokenManager,) = _getDeployedContractsTxOne();
         IConvictionVoting convictionVoting = _getDeployedContractsTxTwo();
 
         Agreement agreement =
-            _installAgreementApp(dao, arbitrator, _title, _content, stakingFactory);
+            _installAgreementApp(dao, arbitrator, _agreementTitle, _agreementContent, stakingFactory);
         _createAgreementPermissions(acl, agreement, disputableVoting, disputableVoting);
         acl.createPermission(agreement, disputableVoting, disputableVoting.SET_AGREEMENT_ROLE(), disputableVoting);
         acl.createPermission(agreement, convictionVoting, convictionVoting.SET_AGREEMENT_ROLE(), disputableVoting);
 
-        agreement.activate(disputableVoting, gardenToken, _challengeDuration, _initialFees[0], _initialFees[1]);
-        agreement.activate(convictionVoting, gardenToken, _challengeDuration, _initialFees[0], _initialFees[1]);
+        agreement.activate(disputableVoting, _getMainToken(hookedTokenManager), _challengeDuration, _initialFees[0], _initialFees[1]);
+        agreement.activate(convictionVoting, _getMainToken(hookedTokenManager), _challengeDuration, _initialFees[0], _initialFees[1]);
         _removePermissionFromTemplate(acl, agreement, agreement.MANAGE_DISPUTABLE_ROLE());
 
         delete disputables;
@@ -242,8 +256,8 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         disputables.push(convictionVoting);
 
         delete collateralTokens;
-        collateralTokens.push(gardenToken);
-        collateralTokens.push(gardenToken);
+        collateralTokens.push(_getMainToken(hookedTokenManager));
+        collateralTokens.push(_getMainToken(hookedTokenManager));
 
         ICollateralRequirementUpdater collateralRequirementUpdater = collateralRequirementUpdaterFactory.newCollateralRequirementUpdater(
             agreement,
@@ -258,8 +272,8 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         acl.createPermission(collateralRequirementUpdater, agreement, agreement.MANAGE_DISPUTABLE_ROLE(), disputableVoting);
 
         _transferRootPermissionsFromTemplateAndFinalizeDAO(dao, address(disputableVoting));
-//        _validateId(_id);
-//        _registerID(_id, dao);
+        _validateId(_daoId);
+        _registerID(_daoId, dao);
 
         _deleteStoredContracts();
     }
@@ -446,5 +460,11 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
     function _deleteStoredContracts() internal {
         delete senderDeployedContracts[msg.sender];
+    }
+
+    // Misc functions //
+
+    function _getMainToken(IHookedTokenManager hookedTokenManager) internal returns (address) {
+        return hookedTokenManager.wrappableToken() == address(0) ? hookedTokenManager.token() : hookedTokenManager.wrappableToken();
     }
 }

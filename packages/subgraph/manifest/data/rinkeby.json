@@ -5,14 +5,14 @@
       {
         "address": "0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a",
         "name": "Honeypot DAO",
-        "startBlock": "7887667"
+        "startBlock": 7887667
       }
     ],
     "OrganizationTemplates": [
       {
-        "address": "0x17AA650A22f117403AE6dc0dB5219F03790a1dDd",
+        "address": "0x0f846f2C22444d0c68077adfAd8866406f8eA1B0",
         "name": "gardens-template@1.0.0",
-        "startBlock": 8527648
+        "startBlock": 8531952
       }
     ]
   },
@@ -34,7 +34,7 @@
       "id": "0x39aa9e500efe56efda203714d12c78959ecbf71223162614ab5b56eaba014145", "name": "disputable-voting.precedence-campaign.aragonpm.eth"
     },
     { 
-      "id": "0x705b5084c67966bb8e4640b28bab7a1e51e03d209d84e3a04d2a4f7415f93b34", "name": "disputable-voting.aragonpm.eth"
+      "id": "0x705b5084c67966bb8e4640b28bab7a1e51e03d209d84e3a04d2a4f7415f93b34", "name": "disputable-voting.open.aragonpm.eth"
     }
   ],
   "tokensAppIds": [

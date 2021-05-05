@@ -25,9 +25,7 @@
     "openzeppelin-solidity": "2.0.1",
     "qrcode-terminal": "^0.12.0",
     "ramda": "^0.27.1",
-    "solidity-coverage": "^0.7.16",
-    "ts-generator": "^0.1.1",
-    "typechain": "^4.0.2"
+    "solidity-coverage": "^0.7.16"
   },
   "dependencies": {
     "@1hive/apps-agreement": "^0.1.0",

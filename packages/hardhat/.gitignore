@@ -5,3 +5,4 @@ deployments/**/solcInputs
 tenderly.yaml
 typechain
 *.txt
+package-lock.json

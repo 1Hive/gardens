@@ -2,7 +2,7 @@
 import { Signer } from '@ethersproject/abstract-signer'
 import { BigNumber } from 'ethers'
 import hre, { ethers } from 'hardhat'
-import { GardensTemplate, ERC20Detailed, Kernel } from '../typechain'
+import { GardensTemplate, ERC20, Kernel } from '../typechain'
 import { getEventArgument } from '../helpers/events'
 
 const { deployments } = hre
@@ -12,7 +12,9 @@ const blockTime = network === 'rinkeby' ? 15 : network === 'mainnet' ? 13 : 5 //
 
 console.log(`Every ${blockTime}s a new block is mined in ${network}.`)
 
-const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
+const ZERO_ADDRESS = ethers.constants.AddressZero
+// EXISTING_TOKEN_RINKEBY = "0x31c952C47EE29058C0558475bb9E77604C52fE5f" // Not for use here, put in the config.
+// EXISTING_TOKEN_XDAI = "0xa09e33C8dCb1f95f7B79d7fC75a72aaDf69eB319" // Not for use here, put in the config.
 const ONE_HUNDRED_PERCENT = 1e18
 const ISSUANCE_ONE_HUNDRED_PERCENT = 1e10
 const CONVICTION_VOTING_ONE_HUNDRED_PERCENT = 1e7
@@ -55,17 +57,23 @@ const getGardensTemplate = async (signer: Signer): Promise<GardensTemplate> => {
 
 const getHoneyToken = async (signer: Signer, gardensTemplate: GardensTemplate) => {
   const honeyTokenAddress = await gardensTemplate.honeyToken()
-  return (await ethers.getContractAt('ERC20Detailed', honeyTokenAddress, signer)) as ERC20Detailed
+  return (await ethers.getContractAt('ERC20', honeyTokenAddress, signer)) as ERC20
+}
+
+const getOriginalToken = async (signer: Signer, address: string) => {
+  return (await ethers.getContractAt('ERC20', address, signer)) as ERC20
 }
 
 const transform = (params) => ({
-  orgTokenName: params.orgTokenName,
-  orgTokenSymbol: params.orgTokenSymbol,
+  gardenTokenName: params.gardenTokenName,
+  gardenTokenSymbol: params.gardenTokenSymbol,
   holders: Object.entries(params.seeds).map((e) => e[0]),
   stakes: Object.entries(params.seeds).map((e) => Math.floor((e[1] as number) * ONE_TOKEN).toString()),
   existingToken: params.existingToken,
   commonPoolAmount: Math.floor(params.commonPoolAmount * ONE_TOKEN).toString(),
+  honeyTokenLiquidityInXdai: Math.floor(params.honeyTokenLiquidityInXdai * ONE_TOKEN).toString(),
   gardenTokenLiquidity: Math.floor(params.gardenTokenLiquidity * ONE_TOKEN).toString(),
+  existingTokenLiquidity: Math.floor(params.existingTokenLiquidity * ONE_TOKEN).toString(),
   voteSupportRequired: Math.floor(params.voteSupportRequired * ONE_HUNDRED_PERCENT).toString(),
   voteMinAcceptanceQuorum: Math.floor(params.voteMinAcceptanceQuorum * ONE_HUNDRED_PERCENT).toString(),
   voteDuration: Math.floor(params.voteDurationDays * ONE_DAY),
@@ -93,13 +101,15 @@ const transform = (params) => ({
 
 export default async function main(log = console.log): Promise<any> {
   const {
-    orgTokenName,
-    orgTokenSymbol,
+    gardenTokenName,
+    gardenTokenSymbol,
     holders,
     stakes,
     existingToken,
     commonPoolAmount,
+    honeyTokenLiquidityInXdai,
     gardenTokenLiquidity,
+    existingTokenLiquidity,
     voteDuration,
     voteSupportRequired,
     voteMinAcceptanceQuorum,
@@ -122,29 +132,36 @@ export default async function main(log = console.log): Promise<any> {
     actionAmountStable,
     challengeAmountStable,
   } = transform(await import(`../config/params-${network}.json`))
-  const mainAccount = (await ethers.getSigners())[0]
+  const [mainAccount] = await ethers.getSigners()
 
-  const approveHoneyPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
+  const approveHnyPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
     const honeyToken = await getHoneyToken(mainAccount, gardensTemplate)
     const currentAllowance = await honeyToken.allowance(mainAccount.address, gardensTemplate.address)
     if (currentAllowance.gt(BigNumber.from(0))) {
       const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, BigNumber.from(0))
       await approveHoneyPaymentTx.wait(1)
-      log(`Pre unapproval for gardens payment made.`)
+      log(`Pre unapproval for honey payment made.`)
     }
     const approvalAmount = BigNumber.from(100).pow(BigNumber.from(18))
     const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, approvalAmount)
     await approveHoneyPaymentTx.wait(1)
-    log(`Approval for gardens payment made.`)
+    log(`Approval for honey payment made.`)
+  }
+
+  const approveOgtPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
+    const originalToken = await getOriginalToken(mainAccount, existingToken)
+    const approvalAmount = BigNumber.from(100).pow(BigNumber.from(18))
+    const approveOriginalTokenPaymentTx = await originalToken.approve(gardensTemplate.address, approvalAmount)
+    await approveOriginalTokenPaymentTx.wait(1)
+    log(`Approval for original token payment made.`)
   }
 
   const createDaoTxOne = async (gardensTemplate: GardensTemplate, log: Function): Promise<string> => {
     const createDaoTxOneTx = await gardensTemplate.createDaoTxOne(
       existingToken,
-      orgTokenName,
-      orgTokenSymbol,
-      commonPoolAmount,
-      gardenTokenLiquidity,
+      gardenTokenName,
+      gardenTokenSymbol,
+      [commonPoolAmount, honeyTokenLiquidityInXdai, gardenTokenLiquidity, existingTokenLiquidity],
       [
         voteDuration,
         voteSupportRequired,
@@ -196,8 +213,9 @@ export default async function main(log = console.log): Promise<any> {
   const gardensTemplate = await getGardensTemplate(mainAccount)
   const createNewToken = existingToken == ZERO_ADDRESS // As opposed bring your own token
 
-  if (createNewToken) {
-    await approveHoneyPayment(gardensTemplate, log)
+  await approveHnyPayment(gardensTemplate, log)
+  if (!createNewToken) {
+    await approveOgtPayment(gardensTemplate, log)
   }
   const daoAddress = await createDaoTxOne(gardensTemplate, log)
   if (createNewToken) {

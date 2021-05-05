@@ -5,7 +5,7 @@
     "0xb4124cEB3451635DAcedd11767f004d8a28c6eE7": 2.5,
     "0x8401Eb5ff34cc943f096A32EF3d5113FEbE8D4Eb": 1
   },
-  "existingToken": "0x31c952C47EE29058C0558475bb9E77604C52fE5f",
+  "existingToken": "0x0000000000000000000000000000000000000000",
   "commonPoolAmount": 100,
   "honeyTokenLiquidityInXdai": 100,
   "gardenTokenLiquidity": 100,

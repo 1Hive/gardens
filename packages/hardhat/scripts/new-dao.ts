@@ -1,7 +1,7 @@
 import hre, {ethers} from 'hardhat'
 import {Contract} from '@ethersproject/contracts'
 import {Signer} from '@ethersproject/abstract-signer'
-import {GardensTemplate, ERC20Detailed, Kernel} from '../typechain'
+import {GardensTemplate, ERC20, Kernel} from '../typechain'
 import {BigNumber} from 'ethers'
 
 const {deployments} = hre
@@ -11,8 +11,9 @@ const blockTime = network === 'rinkeby' ? 15 : network === 'mainnet' ? 13 : 5 //
 
 console.log(`Every ${blockTime}s a new block is mined in ${network}.`)
 
-const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
+const ZERO_ADDRESS = ethers.constants.AddressZero
 // EXISTING_TOKEN_RINKEBY = "0x31c952C47EE29058C0558475bb9E77604C52fE5f" // Not for use here, put in the config.
+// EXISTING_TOKEN_XDAI = "0xa09e33C8dCb1f95f7B79d7fC75a72aaDf69eB319" // Not for use here, put in the config.
 const ONE_HUNDRED_PERCENT = 1e18
 const ISSUANCE_ONE_HUNDRED_PERCENT = 1e10
 const CONVICTION_VOTING_ONE_HUNDRED_PERCENT = 1e7
@@ -55,11 +56,11 @@ const getGardensTemplate = async (signer: Signer): Promise<GardensTemplate> => {
 
 const getHoneyToken = async (signer: Signer, gardensTemplate: GardensTemplate) => {
   const honeyTokenAddress = await gardensTemplate.honeyToken()
-  return (await ethers.getContractAt('ERC20Detailed', honeyTokenAddress, signer)) as ERC20Detailed
+  return (await ethers.getContractAt('ERC20', honeyTokenAddress, signer)) as ERC20
 }
 
 const getOriginalToken = async (signer: Signer, address: string) => {
-  return (await ethers.getContractAt('ERC20Detailed', address, signer)) as ERC20Detailed
+  return (await ethers.getContractAt('ERC20', address, signer)) as ERC20
 }
 
 const getEventArgument = async (
@@ -149,7 +150,7 @@ export default async function main(log = console.log): Promise<any> {
     actionAmountStable,
     challengeAmountStable,
   } = transform(await import(`../params-${network}.json`))
-  const mainAccount = (await ethers.getSigners())[0]
+  const [mainAccount] = await ethers.getSigners()
 
   const approveHnyPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
     const honeyToken = await getHoneyToken(mainAccount, gardensTemplate)

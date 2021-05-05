@@ -63,6 +63,8 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     address public arbitrator;
     address public stakingFactory;
 
+    event GardenDeployed(address gardenAddress);
+
     constructor(
         DAOFactory _daoFactory,
         ENS _ens,
@@ -98,7 +100,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
      * @param _existingToken An existing token used for the common pool token. Set to address(0) to create a new token.
      * @param _gardenTokenName DAO governance new token name
      * @param _gardenTokenSymbol DAO governance new token symbol
-     * @param _initialAmountAndLiquidity Array of [commonPoolAmount, gardenTokenLiquidity, existingTokenLiquidity]
+     * @param _initialAmountAndLiquidity Array of [commonPoolAmount, honeyTokenLiquidityInXdai, gardenTokenLiquidity, existingTokenLiquidity]
      *      commonPoolAmount Amount created for the common pool. Unused if _existingToken is set
      *      honeyTokenLiquidityInXdai Liquidity to add to the HNY/(GDN/_existingToken) pair.
      *      gardenTokenLiquidity Liquidity to add to the HNY/GDN pair. Unused if _existingToken is set
@@ -269,6 +271,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             stableToken
         );
         collateralRequirementUpdater.transferOwnership(disputableVoting);
+        // Permission necessary to allow collateralRequirementUpdater to update collateral requirements on the agreement
         acl.createPermission(collateralRequirementUpdater, agreement, agreement.MANAGE_DISPUTABLE_ROLE(), disputableVoting);
 
         _transferRootPermissionsFromTemplateAndFinalizeDAO(dao, address(disputableVoting));
@@ -276,6 +279,8 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         _registerID(_daoId, dao);
 
         _deleteStoredContracts();
+
+        emit GardenDeployed(dao);
     }
 
     // App installation/setup functions //

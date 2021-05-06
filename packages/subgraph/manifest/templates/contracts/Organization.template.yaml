@@ -26,10 +26,12 @@
         file: ./abis/ConvictionVoting.json
       - name: DisputableVoting
         file: ./abis/DisputableVoting.json
+      - name: HookedTokenManager
+        file: ./abis/HookedTokenManager.json
       - name: Kernel
         file: ./abis/Kernel.json  
-      - name: MiniMeToken
-        file: ./abis/MiniMeToken.json   
+      - name: ERC20
+        file: ./abis/ERC20.json   
     eventHandlers:
       - event: NewAppProxy(address,bool,bytes32)
         handler: handleNewAppProxy

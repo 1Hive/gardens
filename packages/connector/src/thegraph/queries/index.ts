@@ -2,11 +2,18 @@ import gql from 'graphql-tag'
 
 export const ORGANIZATIONS = gql`
   query Organizations($first: Int!) {
-    organizations(first: $first) {
+    organizations(first: $first, where: { active: true }) {
       id
+      active
       createdAt
       proposalCount
       token {
+        id
+        symbol
+        name
+        decimals
+      }
+      wrappableToken {
         id
         symbol
         name

@@ -9,10 +9,12 @@ import {
 
 const ORG_ADDRESS = '0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a'
 type Garden = {
-  id: String,
-  createdAt: Number,
-  proposalCount: Number,
-  token: Object
+  active: boolean,
+  id: string,
+  createdAt: number,
+  proposalCount: number,
+  token: any,
+  wrappableToken: any,
 }
 
 function proposalId(proposal: Proposal): string {
@@ -27,9 +29,11 @@ function proposalId(proposal: Proposal): string {
 
 function describeGarden(garden: Garden) {
   console.log(`Organization ${garden.id}`)
+  console.log(`Active: ${garden.active}`)
   console.log(`CreatedAt: ${garden.createdAt}`)
   console.log(`Proposal count: ${garden.proposalCount}`)
   console.log(`Token: ${JSON.stringify(garden.token, null, 2)}`)
+  console.log(`Wrappable token: ${garden.wrappableToken ? JSON.stringify(garden.wrappableToken, null, 2): 'No wrappable token'}`)
 
   console.log(`\n`)
 }

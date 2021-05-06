@@ -9,16 +9,18 @@
     language: wasm/assemblyscript
     entities:
       - ConvictionConfig
+      - Organization
       - Proposal
       - Stake
       - StakeHistory
+      - Token
     abis:
       - name: Agreement
         file: ./abis/Agreement.json
       - name: ConvictionVoting
         file: ./abis/ConvictionVoting.json
-      - name: MiniMeToken
-        file: ./abis/MiniMeToken.json
+      - name: ERC20
+        file: ./abis/ERC20.json
     eventHandlers:
       - event: ConvictionSettingsChanged(uint256,uint256,uint256,uint256)
         handler: handleConfigChanged

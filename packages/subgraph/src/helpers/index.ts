@@ -1,5 +1,5 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts'
-import { MiniMeToken as MiniMeTokenContract } from '../../generated/templates/ConvictionVoting/MiniMeToken'
+import { ERC20 as ERC20Contract } from '../../generated/templates/ConvictionVoting/ERC20'
 import {
   Config as ConfigEntity,
   Organization as OrganizationEntity,
@@ -16,7 +16,7 @@ export function loadTokenData(address: Address): string | null {
 
   if (!token) {
     const token = new TokenEntity(id)
-    const tokenContract = MiniMeTokenContract.bind(address)
+    const tokenContract = ERC20Contract.bind(address)
 
     // App could be instantiated without a vault which means request token could be invalid
     const symbol = tokenContract.try_symbol()
@@ -55,6 +55,8 @@ export function loadOrCreateOrg(orgAddress: Address): OrganizationEntity | null 
     organization = new OrganizationEntity(id)
     organization.config = config.id
     organization.proposalCount = 0
+    organization.active = true
+    organization.createdAt = BigInt.fromI32(0)
 
     config.save()
   }

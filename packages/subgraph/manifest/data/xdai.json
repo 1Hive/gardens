@@ -8,7 +8,13 @@
         "startBlock": "14861344"
       }
     ],
-    "OrganizationTemplates": []
+    "OrganizationTemplates": [
+      {
+        "address": "0x3B97CBD0275bCdfe563Efe4f80e44035b479fab8",
+        "name": "gardens-template@1.0.0",
+        "startBlock": 15778398
+      }
+    ]  
   },
   "agreementAppIds": [
     {

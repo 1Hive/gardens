@@ -88,7 +88,9 @@ export const ALL_PROPOSALS = (type: string) => gql`
   ${type} Proposals($orgAddress: String!, $first: Int!, $skip: Int!, $proposalTypes: [Int]!, $statuses: [Int]!, $metadata: String! $orderBy: String!, $orderDirection: String!) {
     proposals(where: { organization: $orgAddress, typeInt_in: $proposalTypes, statusInt_in: $statuses, metadata_contains: $metadata },  first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
       id
-      organization
+      organization {
+        id
+      }
       number
       creator
       status
@@ -102,8 +104,14 @@ export const ALL_PROPOSALS = (type: string) => gql`
       stakes(where: { amount_gt: 0 }, first: 1000, orderBy: createdAt, orderDirection: asc) {
         id
         type
-        entity {
-          id
+        supporter {
+          user {
+            id
+            address
+          }
+          organization {
+            id
+          }
         }
         amount
         createdAt
@@ -111,8 +119,14 @@ export const ALL_PROPOSALS = (type: string) => gql`
       stakesHistory(first: 1000, orderBy: createdAt, orderDirection: asc) {
         id
         type
-        entity {
-          id
+        supporter {
+          user {
+            id
+            address
+          }
+          organization {
+            id
+          }
         }
         tokensStaked
         totalTokensStaked
@@ -197,6 +211,9 @@ export const PROPOSAL = (type: string) => gql`
   ${type} Proposal($id: ID!) {
     proposal(id: $id) {
       id
+      organization {
+        id
+      }
       number
       creator
       status
@@ -210,8 +227,14 @@ export const PROPOSAL = (type: string) => gql`
       stakes(where: { amount_gt: 0 }, first: 1000, orderBy: createdAt, orderDirection: asc) {
         id
         type
-        entity {
-          id
+        supporter {
+          user {
+            id
+            address
+          }
+          organization {
+            id
+          }
         }
         amount
         createdAt
@@ -219,8 +242,14 @@ export const PROPOSAL = (type: string) => gql`
       stakesHistory(first: 1000, orderBy: createdAt, orderDirection: asc) {
         id
         type
-        entity {
-          id
+        supporter {
+          user {
+            id
+            address
+          }
+          organization {
+            id
+          }
         }
         tokensStaked
         totalTokensStaked
@@ -300,11 +329,82 @@ export const PROPOSAL = (type: string) => gql`
   }
 `
 
+export const USER = gql`
+  query User($id: ID!) {
+    user(id: ID!) {
+      id
+      address
+      supports {
+        id
+        user {
+          id
+          address
+        }
+        organization {
+          id
+        }
+        representative
+        # vote casts
+        casts {
+          id
+          supports
+          stake
+          proposal {
+            id
+            number
+            status
+            metadata
+            type
+          }
+          createdAt
+
+        }
+        # proposals stakes
+        stakes(orderBy: createdAt, orderDirection: desc) {
+          id
+          type
+          proposal {
+            id
+            number
+            status
+            metadata
+            type
+          }
+          amount 
+          createdAt
+        }
+        # proposal stakes history
+        stakesHistory(orderBy: createdAt, orderDirection: desc) {
+          id
+          type
+          proposal {
+            id
+            number
+            status
+            metadata
+            type
+          }
+          totalTokensStaked
+          conviction
+          time
+          createdAt
+        }
+      }
+    }
+  }
+`
+
 export const SUPPORTER = (type: string) => gql`
   ${type} Supporter($id: ID!) {
     supporter(id: $id) {
       id
-      address
+      user {
+        id
+        address
+      }
+      organization {
+        id
+      }
       representative
       # vote casts
       casts {

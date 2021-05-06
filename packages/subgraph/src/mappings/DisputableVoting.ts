@@ -114,7 +114,7 @@ export function handleStartVote(event: StartVoteEvent): void {
     settingsId,
     votingApp.PCT_BASE()
   )
-  proposal.save() 
+  proposal.save()
 
   populateVoteCollateralData(proposal, event)
 }

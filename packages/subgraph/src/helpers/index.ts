@@ -6,7 +6,7 @@ import {
   Proposal as ProposalEntity,
   Supporter as SupporterEntity,
   Token as TokenEntity,
-  User as UserEntity
+  User as UserEntity,
 } from '../../generated/schema'
 import { STATUS_ACTIVE, STATUS_ACTIVE_NUM } from '../statuses'
 
@@ -64,7 +64,6 @@ export function loadOrCreateOrg(orgAddress: Address): OrganizationEntity | null 
 
   return organization
 }
-
 
 export function loadOrCreateUser(address: Address): UserEntity | null {
   const userId = address.toHexString()

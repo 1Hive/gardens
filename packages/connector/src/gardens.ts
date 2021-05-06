@@ -26,7 +26,7 @@ export async function getGardens(config: Config, { first = 1000 }: GardenParams)
   return result.data.organizations
 }
 
-export async function getUser(config: Config, { id }: UserParams): Promise<any>  {
+export async function getUser(config: Config, { id }: UserParams): Promise<any> {
   const client = getSubgraphClient(config)
   const result = await client.performQuery(USER, { id })
 
@@ -44,5 +44,5 @@ function getSubgraphClient(config: Config) {
     throw new Error('subgraphUrl required to be passed.')
   }
 
-  return (new GraphQLWrapper(subgraphUrl))
+  return new GraphQLWrapper(subgraphUrl)
 }

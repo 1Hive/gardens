@@ -8,7 +8,7 @@ type Config = {
 }
 
 type GardenParams = {
-  first: number
+  first?: number
 }
 
 type UserParams = {
@@ -44,5 +44,5 @@ function getSubgraphClient(config: Config) {
     throw new Error('subgraphUrl required to be passed.')
   }
 
-  return new GraphQLWrapper(subgraphUrl)
+  return (new GraphQLWrapper(subgraphUrl))
 }

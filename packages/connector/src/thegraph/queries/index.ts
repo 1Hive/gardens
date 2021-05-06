@@ -109,9 +109,6 @@ export const ALL_PROPOSALS = (type: string) => gql`
             id
             address
           }
-          organization {
-            id
-          }
         }
         amount
         createdAt
@@ -123,9 +120,6 @@ export const ALL_PROPOSALS = (type: string) => gql`
           user {
             id
             address
-          }
-          organization {
-            id
           }
         }
         tokensStaked
@@ -166,8 +160,11 @@ export const ALL_PROPOSALS = (type: string) => gql`
       isAccepted
       castVotes {
         id
-        entity {
+        supporter {
           id
+          user {
+            address
+          }
         }
         caster
         supports
@@ -289,8 +286,12 @@ export const PROPOSAL = (type: string) => gql`
       isAccepted
       castVotes {
         id
-        entity {
+        supporter {
           id
+          user {
+            id
+            address
+          }
         }
         caster
         supports
@@ -331,7 +332,7 @@ export const PROPOSAL = (type: string) => gql`
 
 export const USER = gql`
   query User($id: ID!) {
-    user(id: ID!) {
+    user(id: $id) {
       id
       address
       supports {

@@ -49,7 +49,6 @@ export function getCastEntity(proposal: ProposalEntity | null, voter: Address): 
   return cast
 }
 
-
 export function castVoteStatus(state: i32): string {
   switch (state) {
     case 0:
@@ -97,7 +96,11 @@ function buildCastVoteId(voting: Address, voteId: BigInt, voter: Address): strin
   return getProposalEntityId(voting, voteId) + '-cast-' + voter.toHexString()
 }
 
-export function loadOrCreateCastVote(votingAddress: Address, voteId: BigInt, voterAddress: Address): CastVoteEntity | null {
+export function loadOrCreateCastVote(
+  votingAddress: Address,
+  voteId: BigInt,
+  voterAddress: Address
+): CastVoteEntity | null {
   const castVoteId = buildCastVoteId(votingAddress, voteId, voterAddress)
   let castVote = CastVoteEntity.load(castVoteId)
   if (castVote === null) {

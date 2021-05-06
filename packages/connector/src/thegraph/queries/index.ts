@@ -358,7 +358,6 @@ export const USER = gql`
             type
           }
           createdAt
-
         }
         # proposals stakes
         stakes(orderBy: createdAt, orderDirection: desc) {
@@ -371,7 +370,7 @@ export const USER = gql`
             metadata
             type
           }
-          amount 
+          amount
           createdAt
         }
         # proposal stakes history

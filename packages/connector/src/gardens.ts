@@ -16,13 +16,7 @@ type UserParams = {
 }
 
 export async function getGardens(config: Config, { first = 1000 }: GardenParams): Promise<any> {
-  const subgraphUrl = config?.subgraphUrl ?? subgraphUrlFromChainId(config.network) ?? undefined
-
-  if (!subgraphUrl) {
-    throw new Error('subgraphUrl required to be passed.')
-  }
-
-  const client = new GraphQLWrapper(subgraphUrl)
+  const client = getSubgraphClient(config)
   const result = await client.performQuery(ORGANIZATIONS, { first })
 
   if (!result.data.organizations) {
@@ -33,13 +27,7 @@ export async function getGardens(config: Config, { first = 1000 }: GardenParams)
 }
 
 export async function getUser(config: Config, { id }: UserParams): Promise<any>  {
-  const subgraphUrl = config?.subgraphUrl ?? subgraphUrlFromChainId(config.network) ?? undefined
-
-  if (!subgraphUrl) {
-    throw new Error('subgraphUrl required to be passed.')
-  }
-
-  const client = new GraphQLWrapper(subgraphUrl)
+  const client = getSubgraphClient(config)
   const result = await client.performQuery(USER, { id })
 
   if (!result.data.user) {
@@ -47,4 +35,14 @@ export async function getUser(config: Config, { id }: UserParams): Promise<any> 
   }
 
   return result.data.user
+}
+
+function getSubgraphClient(config: Config) {
+  const subgraphUrl = config?.subgraphUrl ?? subgraphUrlFromChainId(config.network) ?? undefined
+
+  if (!subgraphUrl) {
+    throw new Error('subgraphUrl required to be passed.')
+  }
+
+  return new GraphQLWrapper(subgraphUrl)
 }

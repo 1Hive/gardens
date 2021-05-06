@@ -78,17 +78,17 @@ export function loadConvictionConfig(orgAddress: Address, appAddress: Address): 
 }
 
 /// /// Stake entity //////
-export function getStakeEntityId(proposalId: string, entityId: string): string {
-  return proposalId + '-entity:' + entityId
+export function getStakeEntityId(proposalId: string, supporterId: string): string {
+  return proposalId + '-supporter:' + supporterId
 }
 
-export function getStakeEntity(proposal: ProposalEntity | null, entityId: string): StakeEntity | null {
-  const stakeId = getStakeEntityId(proposal.id, entityId)
+export function getStakeEntity(proposal: ProposalEntity | null, supporterId: string): StakeEntity | null {
+  const stakeId = getStakeEntityId(proposal.id, supporterId)
 
   let stake = StakeEntity.load(stakeId)
   if (!stake) {
     stake = new StakeEntity(stakeId)
-    stake.entity = entityId
+    stake.supporter = supporterId
     stake.proposal = proposal.id
   }
 
@@ -96,20 +96,20 @@ export function getStakeEntity(proposal: ProposalEntity | null, entityId: string
 }
 
 /// /// Stake History entity //////
-export function getStakeHistoryEntityId(proposalId: string, entityId: string, timestamp: BigInt): string {
-  return proposalId + '-entity:' + entityId + '-time:' + timestamp.toString()
+export function getStakeHistoryEntityId(proposalId: string, supporterId: string, timestamp: BigInt): string {
+  return proposalId + '-supporter:' + supporterId + '-time:' + timestamp.toString()
 }
 
 export function getStakeHistoryEntity(
   proposal: ProposalEntity | null,
-  entityId: string,
+  supporterId: string,
   blockNumber: BigInt
 ): StakeHistoryEntity | null {
-  const stakeHistoryId = getStakeHistoryEntityId(proposal.id, entityId, blockNumber)
+  const stakeHistoryId = getStakeHistoryEntityId(proposal.id, supporterId, blockNumber)
 
   const stakeHistory = new StakeHistoryEntity(stakeHistoryId)
   stakeHistory.proposal = proposal.id
-  stakeHistory.entity = entityId
+  stakeHistory.supporter = supporterId
   stakeHistory.time = blockNumber
 
   return stakeHistory

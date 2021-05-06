@@ -6,6 +6,7 @@ import {
   Proposal as ProposalEntity,
   Supporter as SupporterEntity,
   Token as TokenEntity,
+  User as UserEntity
 } from '../../generated/schema'
 import { STATUS_ACTIVE, STATUS_ACTIVE_NUM } from '../statuses'
 
@@ -64,16 +65,33 @@ export function loadOrCreateOrg(orgAddress: Address): OrganizationEntity | null 
   return organization
 }
 
-/// /// Supporter Entity //////
-export function loadOrCreateSupporter(address: Address, orgAddress: Address): SupporterEntity {
+
+export function loadOrCreateUser(address: Address): UserEntity | null {
+  const userId = address.toHexString()
+  let user = UserEntity.load(userId)
+
+  if (user === null) {
+    user = new UserEntity(userId)
+    user.address = address
+    user.save()
+  }
+
+  return user
+}
+
+/// /// Organization Support Entity //////
+export function loadOrCreateSupporter(address: Address, orgAddress: Address): SupporterEntity | null {
+  const user = loadOrCreateUser(address)
+
   const id = getSupporterEntityId(address, orgAddress)
   let supporter = SupporterEntity.load(id)
 
   if (supporter === null) {
     supporter = new SupporterEntity(id)
-    supporter.address = address
+    supporter.user = user.id
+    supporter.organization = orgAddress.toHexString()
   }
-  return supporter!
+  return supporter
 }
 
 export function getSupporterEntityId(address: Address, orgAddress: Address): string {

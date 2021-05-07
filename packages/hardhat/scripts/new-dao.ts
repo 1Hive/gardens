@@ -1,10 +1,10 @@
-import hre, {ethers} from 'hardhat'
-import {Contract} from '@ethersproject/contracts'
-import {Signer} from '@ethersproject/abstract-signer'
-import {GardensTemplate, ERC20, Kernel} from '../typechain'
-import {BigNumber} from 'ethers'
+import hre, { ethers } from 'hardhat'
+import { Contract } from '@ethersproject/contracts'
+import { Signer } from '@ethersproject/abstract-signer'
+import { GardensTemplate, ERC20, Kernel } from '../typechain'
+import { BigNumber } from 'ethers'
 
-const {deployments} = hre
+const { deployments } = hre
 
 const network = hre.network.name === 'localhost' ? 'xdai' : hre.network.name
 const blockTime = network === 'rinkeby' ? 15 : network === 'mainnet' ? 13 : 5 // 15 rinkeby, 13 mainnet, 5 xdai
@@ -33,13 +33,13 @@ const getApps = async (daoAddress: string, appIds: string[]): Promise<string[]> 
   const dao = (await ethers.getContractAt('Kernel', daoAddress)) as Kernel
   const apps = await dao.queryFilter(dao.filters.NewAppProxy(null, null, null)).then((events) =>
     events
-      .filter(({args}) => appIds.includes(args.appId))
-      .map(({args}) => ({
+      .filter(({ args }) => appIds.includes(args.appId))
+      .map(({ args }) => ({
         appId: args.appId,
         proxy: args.proxy,
       }))
       .reduce(
-        (apps, {appId, proxy}) => ({
+        (apps, { appId, proxy }) => ({
           ...apps,
           [appId]: !apps[appId] ? proxy : [...apps[appId], proxy],
         }),
@@ -179,12 +179,7 @@ export default async function main(log = console.log): Promise<any> {
       existingToken,
       gardenTokenName,
       gardenTokenSymbol,
-      [
-        commonPoolAmount,
-        honeyTokenLiquidityInXdai,
-        gardenTokenLiquidity,
-        existingTokenLiquidity
-      ],
+      [commonPoolAmount, honeyTokenLiquidityInXdai, gardenTokenLiquidity, existingTokenLiquidity],
       [
         voteDuration,
         voteSupportRequired,
@@ -194,7 +189,7 @@ export default async function main(log = console.log): Promise<any> {
         voteQuietEndingExtension,
         voteExecutionDelay,
       ],
-      {gasLimit: 9500000}
+      { gasLimit: 9500000 }
     )
     const daoAddress = await getEventArgument('DeployDao', 'dao', gardensTemplate, createDaoTxOneTx.hash)
     await createDaoTxOneTx.wait(1)
@@ -203,7 +198,7 @@ export default async function main(log = console.log): Promise<any> {
   }
 
   const createTokenholders = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
-    const createTokenHoldersTx = await gardensTemplate.createTokenHolders(holders, stakes, {gasLimit: 9500000})
+    const createTokenHoldersTx = await gardensTemplate.createTokenHolders(holders, stakes, { gasLimit: 9500000 })
     await createTokenHoldersTx.wait(1)
     log(`Tx create token holders completed.`)
   }
@@ -212,7 +207,7 @@ export default async function main(log = console.log): Promise<any> {
     const createDaoTxTwoTx = await gardensTemplate.createDaoTxTwo(
       [issuanceTargetRatio, issuanceMaxAdjustmentPerSecond],
       [decay, maxRatio, weight, minThresholdStakePercentage],
-      {gasLimit: 9500000}
+      { gasLimit: 9500000 }
     )
     await createDaoTxTwoTx.wait(1)
     log(`Tx two completed.`)
@@ -227,7 +222,7 @@ export default async function main(log = console.log): Promise<any> {
       [actionAmount, challengeAmount],
       [actionAmountStable, actionAmountStable],
       [challengeAmountStable, challengeAmountStable],
-      {gasLimit: 9500000}
+      { gasLimit: 9500000 }
     )
     await createDaoTxThreeTx.wait(1)
     log(`Tx three completed.`)

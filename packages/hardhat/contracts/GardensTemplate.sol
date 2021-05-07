@@ -12,10 +12,12 @@ import "./external/IPriceOracle.sol";
 import "./external/IIncentivisedPriceOracleFactory.sol"; // This lives in the uniswap-v2-periphery/contracts/examples repo (it should be moved to its own repo)
 import "./external/ICollateralRequirementUpdaterFactory.sol"; // This lives in the agreements repo
 import "./external/ICollateralRequirementUpdater.sol"; // This lives in the agreements repo
+import "./external/IUnipoolFactory.sol"; // This lives in the unipool repo
 import "./external/IUniswapV2Factory.sol";
 import "./appIds/AppIdsXDai.sol";
+import "./appIds/AppIdsRinkeby.sol";
 
-contract GardensTemplate is BaseTemplate, AppIdsXDai {
+contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
 
     using SafeERC20 for ERC20;
 
@@ -44,8 +46,6 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         DisputableVoting disputableVoting;
         Agent commonPoolAgent;
         IHookedTokenManager hookedTokenManager;
-        IIssuance issuance;
-        MiniMeToken gardenToken;
         IConvictionVoting convictionVoting;
     }
 
@@ -60,10 +60,12 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     IIncentivisedPriceOracleFactory public incentivisedPriceOracleFactory;
     ICollateralRequirementUpdaterFactory public collateralRequirementUpdaterFactory;
     IUniswapV2Factory public uniswapFactory;
+    IUnipoolFactory public unipoolFactory;
     address public arbitrator;
     address public stakingFactory;
 
-    event GardenDeployed(address gardenAddress);
+    event GardenTransactionTwo(address incentivisedPriceOracle, address unipool);
+    event GardenDeployed(address gardenAddress, address collateralRequirementUpdater);
 
     constructor(
         DAOFactory _daoFactory,
@@ -77,6 +79,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         IIncentivisedPriceOracleFactory _incentivisedPriceOracleFactory,
         ICollateralRequirementUpdaterFactory _collateralRequirementUpdaterFactory,
         IUniswapV2Factory _uniswapFactory,
+        IUnipoolFactory _unipoolFactory,
         address _arbitrator,
         address _stakingFactory
     ) public BaseTemplate(_daoFactory, _ens, _miniMeFactory, _aragonID) {
@@ -89,6 +92,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         incentivisedPriceOracleFactory = _incentivisedPriceOracleFactory;
         collateralRequirementUpdaterFactory = _collateralRequirementUpdaterFactory;
         uniswapFactory = _uniswapFactory;
+        unipoolFactory = _unipoolFactory;
         arbitrator = _arbitrator;
         stakingFactory = _stakingFactory;
     }
@@ -130,24 +134,25 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         _createAgentPermissions(acl, agent, disputableVoting, disputableVoting);
         _createEvmScriptsRegistryPermissions(acl, disputableVoting, disputableVoting);
 
-        _storeDeployedContractsTxOne(dao, acl, disputableVoting, agent, hookedTokenManager, gardenToken);
+        _storeDeployedContractsTxOne(dao, acl, disputableVoting, agent, hookedTokenManager);
 
-        uint256 honeyLiquidityToAdd = honeyPriceOracle.consult(stableToken, _initialAmountAndLiquidity[1], honeyToken);
-        honeyToken.safeTransferFrom(msg.sender, address(this), honeyLiquidityToAdd);
-        honeyToken.approve(address(honeyswapRouter), honeyLiquidityToAdd);
+//        uint256 honeyLiquidityToAdd = honeyPriceOracle.consult(stableToken, _initialAmountAndLiquidity[1], honeyToken);
+//        honeyToken.safeTransferFrom(msg.sender, address(this), honeyLiquidityToAdd);
+//        honeyToken.approve(address(honeyswapRouter), honeyLiquidityToAdd);
 
         if (existingToken == address(0)) {
             _createPermissionForTemplate(acl, hookedTokenManager, hookedTokenManager.MINT_ROLE());
             hookedTokenManager.mint(agent, _initialAmountAndLiquidity[0]);
             hookedTokenManager.mint(address(this), _initialAmountAndLiquidity[2]);
-            gardenToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[2]);
-
-            honeyswapRouter.addLiquidity(honeyToken, gardenToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[2], 0, 0, BURN_ADDRESS, now);
-        } else {
-            existingToken.safeTransferFrom(msg.sender, address(this), _initialAmountAndLiquidity[3]);
-            existingToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[3]);
-
-            honeyswapRouter.addLiquidity(honeyToken, existingToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[3], 0, 0, BURN_ADDRESS, now);
+//            gardenToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[2]);
+//
+//            honeyswapRouter.addLiquidity(honeyToken, gardenToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[2], 0, 0, BURN_ADDRESS, now);
+        }
+        else {
+//            existingToken.safeTransferFrom(msg.sender, address(this), _initialAmountAndLiquidity[3]);
+//            existingToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[3]);
+//
+//            honeyswapRouter.addLiquidity(honeyToken, existingToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[3], 0, 0, BURN_ADDRESS, now);
         }
     }
 
@@ -158,7 +163,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
      * @param _stakes List of intial tokenholder amounts
      */
     function createTokenHolders(address[] _holders, uint256[] _stakes) public {
-        (,,,, IHookedTokenManager hookedTokenManager,) = _getDeployedContractsTxOne();
+        (,,,, IHookedTokenManager hookedTokenManager) = _getDeployedContractsTxOne();
         for (uint256 i = 0; i < _holders.length; i++) {
             hookedTokenManager.mint(_holders[i], _stakes[i]);
         }
@@ -177,18 +182,17 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         require(senderDeployedContracts[msg.sender].dao != address(0), ERROR_NO_CACHE);
 
         (
-            Kernel dao,
-            ACL acl,
+            Kernel dao,,
             DisputableVoting disputableVoting,
             Agent commonPoolAgent,
-            IHookedTokenManager hookedTokenManager,
+            IHookedTokenManager hookedTokenManager
         ) = _getDeployedContractsTxOne();
 
         if (hookedTokenManager.wrappableToken() == address(0)) { // if existingToken == address(0) (prevents stack too deep error)
-            _removePermissionFromTemplate(acl, hookedTokenManager, hookedTokenManager.MINT_ROLE());
+            _removePermissionFromTemplate(_getAcl(dao), hookedTokenManager, hookedTokenManager.MINT_ROLE());
             IIssuance issuance = _installIssuance(dao, hookedTokenManager, commonPoolAgent, _issuanceSettings);
-            _createIssuancePermissions(acl, issuance, disputableVoting);
-            _createHookedTokenManagerPermissions(acl, disputableVoting, hookedTokenManager, issuance);
+            _createIssuancePermissions(_getAcl(dao), issuance, disputableVoting);
+            _createHookedTokenManagerPermissions(_getAcl(dao), disputableVoting, hookedTokenManager, issuance);
         }
 
         address incentivisedPriceOracle = incentivisedPriceOracleFactory.newIncentivisedPriceOracle(
@@ -209,14 +213,19 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             commonPoolAgent,
             _convictionSettings
         );
-        _createConvictionVotingPermissions(acl, convictionVoting, disputableVoting);
-        _createVaultPermissions(acl, commonPoolAgent, convictionVoting, disputableVoting);
+        _createConvictionVotingPermissions(_getAcl(dao), convictionVoting, disputableVoting);
+        _createVaultPermissions(_getAcl(dao), commonPoolAgent, convictionVoting, disputableVoting);
 
-        _createPermissionForTemplate(acl, hookedTokenManager, hookedTokenManager.SET_HOOK_ROLE());
+        (address unipool,) = unipoolFactory.newUnipoolWithDepositor(_getMainToken(hookedTokenManager));
+
+        _createPermissionForTemplate(_getAcl(dao), hookedTokenManager, hookedTokenManager.SET_HOOK_ROLE());
         hookedTokenManager.registerHook(convictionVoting);
-        _removePermissionFromTemplate(acl, hookedTokenManager, hookedTokenManager.SET_HOOK_ROLE());
+        hookedTokenManager.registerHook(unipool);
+        _removePermissionFromTemplate(_getAcl(dao), hookedTokenManager, hookedTokenManager.SET_HOOK_ROLE());
 
         _storeDeployedContractsTxTwo(convictionVoting);
+
+        emit GardenTransactionTwo(incentivisedPriceOracle, unipool);
     }
 
     /**
@@ -240,7 +249,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     ) public {
         require(senderDeployedContracts[msg.sender].hookedTokenManager.hasInitialized(), ERROR_NO_CACHE);
 
-        (Kernel dao, ACL acl, DisputableVoting disputableVoting,, IHookedTokenManager hookedTokenManager,) = _getDeployedContractsTxOne();
+        (Kernel dao, ACL acl, DisputableVoting disputableVoting,, IHookedTokenManager hookedTokenManager) = _getDeployedContractsTxOne();
         IConvictionVoting convictionVoting = _getDeployedContractsTxTwo();
 
         Agreement agreement =
@@ -280,18 +289,18 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
         _deleteStoredContracts();
 
-        emit GardenDeployed(dao);
+        emit GardenDeployed(dao, collateralRequirementUpdater);
     }
 
     // App installation/setup functions //
 
-    function _installHookedTokenManagerApp(Kernel _dao, MiniMeToken _gardenToken, ERC20 _existingToken)
+    function _installHookedTokenManagerApp(Kernel _dao, MiniMeToken _gardenToken, ERC20 _wrappableToken)
         internal
         returns (IHookedTokenManager)
     {
         IHookedTokenManager hookedTokenManager = IHookedTokenManager(_installDefaultApp(_dao, HOOKED_TOKEN_MANAGER_APP_ID));
         _gardenToken.changeController(hookedTokenManager);
-        hookedTokenManager.initialize(_gardenToken, _existingToken, TOKEN_TRANSFERABLE, TOKEN_MAX_PER_ACCOUNT);
+        hookedTokenManager.initialize(_gardenToken, _wrappableToken, TOKEN_TRANSFERABLE, TOKEN_MAX_PER_ACCOUNT);
         return hookedTokenManager;
     }
 
@@ -342,10 +351,9 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         uint64[4] _convictionSettings
     ) internal returns (IConvictionVoting) {
         IConvictionVoting convictionVoting = IConvictionVoting(_installNonDefaultApp(_dao, CONVICTION_VOTING_APP_ID));
-        address requestToken = address(_requestToken) == address(0) ? address(_stakeToken) : address(_requestToken);
         convictionVoting.initialize(
             _stakeToken,
-            requestToken,
+            _requestToken,
             _stableToken,
             _stableTokenOracle,
             _agent,
@@ -420,8 +428,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         ACL _acl,
         DisputableVoting _disputableVoting,
         Agent _agent,
-        IHookedTokenManager _hookedTokenManager,
-        MiniMeToken _gardenToken
+        IHookedTokenManager _hookedTokenManager
     ) internal {
         DeployedContracts storage deployedContracts = senderDeployedContracts[msg.sender];
         deployedContracts.dao = _dao;
@@ -429,7 +436,6 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         deployedContracts.disputableVoting = _disputableVoting;
         deployedContracts.commonPoolAgent = _agent;
         deployedContracts.hookedTokenManager = _hookedTokenManager;
-        deployedContracts.gardenToken = _gardenToken;
     }
 
     function _getDeployedContractsTxOne() internal view
@@ -438,8 +444,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             ACL,
             DisputableVoting,
             Agent,
-            IHookedTokenManager,
-            MiniMeToken gardenToken
+            IHookedTokenManager
         )
     {
         DeployedContracts storage deployedContracts = senderDeployedContracts[msg.sender];
@@ -448,8 +453,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             deployedContracts.acl,
             deployedContracts.disputableVoting,
             deployedContracts.commonPoolAgent,
-            deployedContracts.hookedTokenManager,
-            deployedContracts.gardenToken
+            deployedContracts.hookedTokenManager
         );
     }
 
@@ -471,5 +475,9 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
     function _getMainToken(IHookedTokenManager hookedTokenManager) internal returns (address) {
         return hookedTokenManager.wrappableToken() == address(0) ? hookedTokenManager.token() : hookedTokenManager.wrappableToken();
+    }
+
+    function _getAcl(Kernel _dao) internal returns (ACL) {
+        return ACL(_dao.acl());
     }
 }

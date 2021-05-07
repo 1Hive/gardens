@@ -5,7 +5,8 @@ import chalk from 'chalk'
 import '@nomiclabs/hardhat-waffle'
 import '@tenderly/hardhat-tenderly'
 import '@nomiclabs/hardhat-etherscan'
-import 'hardhat-typechain'
+import '@typechain/hardhat'
+// import 'hardhat-abi-exporter'
 import 'hardhat-deploy'
 import 'hardhat-gas-reporter'
 import 'solidity-coverage'
@@ -53,11 +54,13 @@ const config: HardhatUserConfig = {
   // (you will need to restart the `yarn run start` dev server after editing the .env)
 
   solidity: {
-    compilers: [
-      {
-        version: '0.4.24',
+    version: '0.4.24',
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 10000,
       },
-    ],
+    },
   },
   mocha: {
     timeout: 0,
@@ -98,6 +101,7 @@ const config: HardhatUserConfig = {
         notice no mnemonic here? it will just use account 0 of the hardhat node to deploy
         (you can put in a mnemonic here to set the deployer locally)
       */
+      accounts: [process.env.ETH_KEY],
     },
     coverage: {
       url: 'http://localhost:8555',
@@ -106,9 +110,8 @@ const config: HardhatUserConfig = {
     rinkeby: {
       url: 'https://rinkeby.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad', //<---- YOUR INFURA ID! (or it won't work)
       gasPrice: 1000000000,
-      accounts: {
-        mnemonic: mnemonic(),
-      },
+      gas: 10000000,
+      accounts: [process.env.ETH_KEY],
     },
     kovan: {
       url: 'https://kovan.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad', //<---- YOUR INFURA ID! (or it won't work)
@@ -137,9 +140,7 @@ const config: HardhatUserConfig = {
     xdai: {
       url: 'https://xdai.1hive.org/',
       gasPrice: 1000000000,
-      accounts: {
-        mnemonic: mnemonic(),
-      },
+      accounts: [process.env.ETH_KEY],
     },
     matic: {
       url: 'https://rpc-mainnet.maticvigil.com/',

@@ -2,15 +2,18 @@
 import { Signer } from '@ethersproject/abstract-signer'
 import { BigNumber } from 'ethers'
 import hre, { ethers } from 'hardhat'
-import { GardensTemplate, ERC20, Kernel } from '../typechain'
+import { GardensTemplate, Erc20, Kernel } from '../typechain'
 import { getEventArgument } from '../helpers/events'
 
 const { deployments } = hre
 
-const network = hre.network.name === 'localhost' ? 'xdai' : hre.network.name
-const blockTime = network === 'rinkeby' ? 15 : network === 'mainnet' ? 13 : 5 // 15 rinkeby, 13 mainnet, 5 xdai
+const overrides = {
+  gasLimit: 9500000,
+}
 
-console.log(`Every ${blockTime}s a new block is mined in ${network}.`)
+const blockTime = process.env.HARDHAT_FORK === 'rinkeby' ? 15 : process.env.HARDHAT_FORK === 'mainnet' ? 13 : 5 // 15 rinkeby, 13 mainnet, 5 xdai
+
+console.log(`Every ${blockTime}s a new block is mined in ${process.env.HARDHAT_FORK}.`)
 
 const ZERO_ADDRESS = ethers.constants.AddressZero
 // EXISTING_TOKEN_RINKEBY = "0x31c952C47EE29058C0558475bb9E77604C52fE5f" // Not for use here, put in the config.
@@ -57,11 +60,11 @@ const getGardensTemplate = async (signer: Signer): Promise<GardensTemplate> => {
 
 const getHoneyToken = async (signer: Signer, gardensTemplate: GardensTemplate) => {
   const honeyTokenAddress = await gardensTemplate.honeyToken()
-  return (await ethers.getContractAt('ERC20', honeyTokenAddress, signer)) as ERC20
+  return (await ethers.getContractAt('IERC20', honeyTokenAddress, signer)) as Erc20
 }
 
 const getOriginalToken = async (signer: Signer, address: string) => {
-  return (await ethers.getContractAt('ERC20', address, signer)) as ERC20
+  return (await ethers.getContractAt('IERC20', address, signer)) as Erc20
 }
 
 const transform = (params) => ({
@@ -131,7 +134,7 @@ export default async function main(log = console.log): Promise<any> {
     challengeAmount,
     actionAmountStable,
     challengeAmountStable,
-  } = transform(await import(`../config/params-${network}.json`))
+  } = transform(await import(`../config/params-${process.env.HARDHAT_FORK}.json`))
   const [mainAccount] = await ethers.getSigners()
 
   const approveHnyPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
@@ -171,7 +174,7 @@ export default async function main(log = console.log): Promise<any> {
         voteQuietEndingExtension,
         voteExecutionDelay,
       ],
-      { gasLimit: 9500000 }
+      overrides
     )
     const daoAddress = await getEventArgument('DeployDao', 'dao', gardensTemplate, createDaoTxOneTx.hash)
     await createDaoTxOneTx.wait(1)
@@ -180,7 +183,7 @@ export default async function main(log = console.log): Promise<any> {
   }
 
   const createTokenholders = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
-    const createTokenHoldersTx = await gardensTemplate.createTokenHolders(holders, stakes, { gasLimit: 9500000 })
+    const createTokenHoldersTx = await gardensTemplate.createTokenHolders(holders, stakes, overrides)
     await createTokenHoldersTx.wait(1)
     log(`Tx create token holders completed.`)
   }
@@ -189,7 +192,7 @@ export default async function main(log = console.log): Promise<any> {
     const createDaoTxTwoTx = await gardensTemplate.createDaoTxTwo(
       [issuanceTargetRatio, issuanceMaxAdjustmentPerSecond],
       [decay, maxRatio, weight, minThresholdStakePercentage],
-      { gasLimit: 9500000 }
+      overrides
     )
     await createDaoTxTwoTx.wait(1)
     log(`Tx two completed.`)
@@ -204,7 +207,7 @@ export default async function main(log = console.log): Promise<any> {
       [actionAmount, challengeAmount],
       [actionAmountStable, actionAmountStable],
       [challengeAmountStable, challengeAmountStable],
-      { gasLimit: 9500000 }
+      overrides
     )
     await createDaoTxThreeTx.wait(1)
     log(`Tx three completed.`)

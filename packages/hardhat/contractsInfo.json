@@ -1,0 +1,503 @@
+{
+  "name": "localhost",
+  "chainId": "31337",
+  "contracts": {
+    "GardensTemplate": {
+      "address": "0x0f846f2C22444d0c68077adfAd8866406f8eA1B0",
+      "abi": [
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "AGREEMENT_APP_ID",
+          "outputs": [
+            {
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "UPDATE_PERCENT_REWARD",
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "MIN_XDAI_IN_HNY_REQUIRED_FOR_NEW_GARDEN",
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "CONVICTION_VOTING_APP_ID",
+          "outputs": [
+            {
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "stakingFactory",
+          "outputs": [
+            {
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "honeyToken",
+          "outputs": [
+            {
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": false,
+          "inputs": [
+            {
+              "name": "_daoId",
+              "type": "string"
+            },
+            {
+              "name": "_agreementTitle",
+              "type": "string"
+            },
+            {
+              "name": "_agreementContent",
+              "type": "bytes"
+            },
+            {
+              "name": "_challengeDuration",
+              "type": "uint64"
+            },
+            {
+              "name": "_initialFees",
+              "type": "uint256[2]"
+            },
+            {
+              "name": "_actionAmountsStable",
+              "type": "uint256[]"
+            },
+            {
+              "name": "_challengeAmountsStable",
+              "type": "uint256[]"
+            }
+          ],
+          "name": "createDaoTxOne",
+          "outputs": [],
+          "payable": false,
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "honeyPriceOracle",
+          "outputs": [
+            {
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "DISPUTABLE_VOTING_APP_ID",
+          "outputs": [
+            {
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "collateralRequirementUpdaterFactory",
+          "outputs": [
+            {
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "arbitrator",
+          "outputs": [
+            {
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": false,
+          "inputs": [
+            {
+              "name": "_existingToken",
+              "type": "address"
+            },
+            {
+              "name": "_gardenTokenName",
+              "type": "string"
+            },
+            {
+              "name": "_gardenTokenSymbol",
+              "type": "string"
+            },
+            {
+              "name": "_initialAmountAndLiquidity",
+              "type": "uint256[4]"
+            },
+            {
+              "name": "_challengeDuration",
+              "type": "uint64"
+            },
+            {
+              "name": "_initialFees",
+              "type": "uint256[2]"
+            },
+            {
+              "name": "_actionAmountsStable",
+              "type": "uint256[]"
+            },
+            {
+              "name": "_challengeAmountsStable",
+              "type": "uint256[]"
+            }
+          ],
+          "name": "createDaoTxThree",
+          "outputs": [],
+          "payable": false,
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "uniswapFactory",
+          "outputs": [
+            {
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "DYNAMIC_ISSUANCE_APP_ID",
+          "outputs": [
+            {
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "honeyswapRouter",
+          "outputs": [
+            {
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": false,
+          "inputs": [
+            {
+              "name": "_holders",
+              "type": "address[]"
+            },
+            {
+              "name": "_stakes",
+              "type": "uint256[]"
+            }
+          ],
+          "name": "createTokenHolders",
+          "outputs": [],
+          "payable": false,
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "stableToken",
+          "outputs": [
+            {
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": false,
+          "inputs": [
+            {
+              "name": "_issuanceSettings",
+              "type": "uint256[2]"
+            },
+            {
+              "name": "_convictionSettings",
+              "type": "uint64[4]"
+            }
+          ],
+          "name": "createDaoTxTwo",
+          "outputs": [],
+          "payable": false,
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "AVERAGE_PRICE_PERIOD",
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint256"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "UPDATE_FREQUENCY",
+          "outputs": [
+            {
+              "name": "",
+              "type": "uint8"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "incentivisedPriceOracleFactory",
+          "outputs": [
+            {
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "HOOKED_TOKEN_MANAGER_APP_ID",
+          "outputs": [
+            {
+              "name": "",
+              "type": "bytes32"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "inputs": [
+            {
+              "name": "_daoFactory",
+              "type": "address"
+            },
+            {
+              "name": "_ens",
+              "type": "address"
+            },
+            {
+              "name": "_miniMeFactory",
+              "type": "address"
+            },
+            {
+              "name": "_aragonID",
+              "type": "address"
+            },
+            {
+              "name": "_honeyswapRouter",
+              "type": "address"
+            },
+            {
+              "name": "_honeyToken",
+              "type": "address"
+            },
+            {
+              "name": "_stableToken",
+              "type": "address"
+            },
+            {
+              "name": "_honeyPriceOracle",
+              "type": "address"
+            },
+            {
+              "name": "_incentivisedPriceOracleFactory",
+              "type": "address"
+            },
+            {
+              "name": "_collateralRequirementUpdaterFactory",
+              "type": "address"
+            },
+            {
+              "name": "_uniswapFactory",
+              "type": "address"
+            },
+            {
+              "name": "_arbitrator",
+              "type": "address"
+            },
+            {
+              "name": "_stakingFactory",
+              "type": "address"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "nonpayable",
+          "type": "constructor"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "gardenAddress",
+              "type": "address"
+            }
+          ],
+          "name": "GardenDeployed",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "dao",
+              "type": "address"
+            }
+          ],
+          "name": "DeployDao",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "dao",
+              "type": "address"
+            }
+          ],
+          "name": "SetupDao",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "token",
+              "type": "address"
+            }
+          ],
+          "name": "DeployToken",
+          "type": "event"
+        },
+        {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "name": "appProxy",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "appId",
+              "type": "bytes32"
+            }
+          ],
+          "name": "InstalledApp",
+          "type": "event"
+        }
+      ]
+    }
+  }
+}

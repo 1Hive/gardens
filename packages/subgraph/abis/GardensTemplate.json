@@ -17,11 +17,153 @@
     {
       "constant": true,
       "inputs": [],
+      "name": "UPDATE_PERCENT_REWARD",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_existingToken",
+          "type": "address"
+        },
+        {
+          "name": "_gardenTokenName",
+          "type": "string"
+        },
+        {
+          "name": "_gardenTokenSymbol",
+          "type": "string"
+        },
+        {
+          "name": "_commonPoolAmount",
+          "type": "uint256"
+        },
+        {
+          "name": "_gardenTokenLiquidity",
+          "type": "uint256"
+        },
+        {
+          "name": "_disputableVotingSettings",
+          "type": "uint64[7]"
+        }
+      ],
+      "name": "createDaoTxOne",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
       "name": "CONVICTION_VOTING_APP_ID",
       "outputs": [
         {
           "name": "",
           "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "stakingFactory",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "honeyToken",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_daoId",
+          "type": "string"
+        },
+        {
+          "name": "_title",
+          "type": "string"
+        },
+        {
+          "name": "_content",
+          "type": "bytes"
+        },
+        {
+          "name": "_challengeDuration",
+          "type": "uint64"
+        },
+        {
+          "name": "_initialFees",
+          "type": "uint256[2]"
+        },
+        {
+          "name": "_actionAmountsStable",
+          "type": "uint256[]"
+        },
+        {
+          "name": "_challengeAmountsStable",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "createDaoTxThree",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "XDAI_IN_HNY_REQUIRED_FOR_NEW_TOKEN",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "honeyPriceOracle",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
         }
       ],
       "payable": false,
@@ -43,29 +185,45 @@
       "type": "function"
     },
     {
-      "constant": false,
-      "inputs": [
+      "constant": true,
+      "inputs": [],
+      "name": "collateralRequirementUpdaterFactory",
+      "outputs": [
         {
-          "name": "_voteTokenName",
-          "type": "string"
-        },
-        {
-          "name": "_voteTokenSymbol",
-          "type": "string"
-        },
-        {
-          "name": "_fundingPoolStake",
-          "type": "uint256"
-        },
-        {
-          "name": "_disputableVotingSettings",
-          "type": "uint64[7]"
+          "name": "",
+          "type": "address"
         }
       ],
-      "name": "createDaoTxOne",
-      "outputs": [],
       "payable": false,
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "arbitrator",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "uniswapFactory",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -76,6 +234,20 @@
         {
           "name": "",
           "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "honeyswapRouter",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
         }
       ],
       "payable": false,
@@ -94,56 +266,24 @@
           "type": "uint256[]"
         }
       ],
-      "name": "createTokenholders",
+      "name": "createTokenHolders",
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "function"
     },
     {
-      "constant": false,
-      "inputs": [
+      "constant": true,
+      "inputs": [],
+      "name": "stableToken",
+      "outputs": [
         {
-          "name": "_id",
-          "type": "string"
-        },
-        {
-          "name": "_arbitrator",
+          "name": "",
           "type": "address"
-        },
-        {
-          "name": "_setAppFeesCashier",
-          "type": "bool"
-        },
-        {
-          "name": "_title",
-          "type": "string"
-        },
-        {
-          "name": "_content",
-          "type": "bytes"
-        },
-        {
-          "name": "_stakingFactory",
-          "type": "address"
-        },
-        {
-          "name": "_feeToken",
-          "type": "address"
-        },
-        {
-          "name": "_challengeDuration",
-          "type": "uint64"
-        },
-        {
-          "name": "_fees",
-          "type": "uint256[2]"
         }
       ],
-      "name": "createDaoTxThree",
-      "outputs": [],
       "payable": false,
-      "stateMutability": "nonpayable",
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -154,14 +294,6 @@
           "type": "uint256[2]"
         },
         {
-          "name": "_stableToken",
-          "type": "address"
-        },
-        {
-          "name": "_stableTokenOracle",
-          "type": "address"
-        },
-        {
           "name": "_convictionSettings",
           "type": "uint64[4]"
         }
@@ -170,6 +302,48 @@
       "outputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "AVERAGE_PRICE_PERIOD",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "UPDATE_FREQUENCY",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint8"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "incentivisedPriceOracleFactory",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
       "type": "function"
     },
     {
@@ -202,6 +376,42 @@
         },
         {
           "name": "_aragonID",
+          "type": "address"
+        },
+        {
+          "name": "_honeyswapRouter",
+          "type": "address"
+        },
+        {
+          "name": "_honeyToken",
+          "type": "address"
+        },
+        {
+          "name": "_stableToken",
+          "type": "address"
+        },
+        {
+          "name": "_honeyPriceOracle",
+          "type": "address"
+        },
+        {
+          "name": "_incentivisedPriceOracleFactory",
+          "type": "address"
+        },
+        {
+          "name": "_collateralRequirementUpdaterFactory",
+          "type": "address"
+        },
+        {
+          "name": "_uniswapFactory",
+          "type": "address"
+        },
+        {
+          "name": "_arbitrator",
+          "type": "address"
+        },
+        {
+          "name": "_stakingFactory",
           "type": "address"
         }
       ],

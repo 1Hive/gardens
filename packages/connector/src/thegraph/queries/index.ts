@@ -356,6 +356,9 @@ export const USER = gql`
             status
             metadata
             type
+            organization {
+              id
+            }
           }
           createdAt
         }
@@ -369,6 +372,9 @@ export const USER = gql`
             status
             metadata
             type
+            organization {
+              id
+            }
           }
           amount
           createdAt
@@ -383,6 +389,10 @@ export const USER = gql`
             status
             metadata
             type
+
+            organization {
+              id
+            }
           }
           totalTokensStaked
           conviction

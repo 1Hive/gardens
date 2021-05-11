@@ -185,9 +185,9 @@ export default async function main(log = console.log): Promise<any> {
     log(`Approval for original token payment made.`)
   }
 
-  const createDaoTxOne = async (gardensTemplate: GardensTemplate, log: Function): Promise<string> => {
-    log(`Create DAO transaction one...`)
-    const createDaoTxOneTx = await gardensTemplate.createDaoTxOne(
+  const createGardenTxOne = async (gardensTemplate: GardensTemplate, log: Function): Promise<string> => {
+    log(`Create garden transaction one...`)
+    const createGardenTxOneTx = await gardensTemplate.createGardenTxOne(
       existingToken,
       gardenTokenName,
       gardenTokenSymbol,
@@ -208,8 +208,8 @@ export default async function main(log = console.log): Promise<any> {
       ],
       {gasLimit: 9500000}
     )
-    const createDaoTxOneReceipt = await createDaoTxOneTx.wait(1)
-    const daoAddress = getEventArgFromReceipt(createDaoTxOneReceipt, 'DeployDao', 'dao')
+    const createGardenTxOneReceipt = await createGardenTxOneTx.wait(1)
+    const daoAddress = getEventArgFromReceipt(createGardenTxOneReceipt, 'DeployDao', 'dao')
 
     log(`Tx one completed: Gardens DAO (${daoAddress}) created.`)
     return daoAddress
@@ -222,9 +222,9 @@ export default async function main(log = console.log): Promise<any> {
     log(`Tx create token holders completed.`)
   }
 
-  const createDaoTxTwo = async (gardensTemplate: GardensTemplate, log: Function): Promise<string[]> => {
-    log(`Create DAO transaction two...`)
-    const createDaoTxTwoTx = await gardensTemplate.createDaoTxTwo(
+  const createGardenTxTwo = async (gardensTemplate: GardensTemplate, log: Function): Promise<string[]> => {
+    log(`Create garden transaction two...`)
+    const createGardenTxTwoTx = await gardensTemplate.createGardenTxTwo(
       [issuanceTargetRatio, issuanceMaxAdjustmentPerSecond],
       [decay, maxRatio, weight, minThresholdStakePercentage],
       {gasLimit: 9500000}
@@ -236,21 +236,21 @@ export default async function main(log = console.log): Promise<any> {
       'NewRewardDepositor',
       'unipoolRewardDepositor',
       await getUnipoolFactory(mainAccount, gardensTemplate),
-      createDaoTxTwoTx.hash
+      createGardenTxTwoTx.hash
     )
 
-    const createDaoTxTwoTxReceipt = await createDaoTxTwoTx.wait(1)
-    const priceOracleAddress = getEventArgFromReceipt(createDaoTxTwoTxReceipt, 'GardenTransactionTwo', 'incentivisedPriceOracle')
-    const unipoolAddress = getEventArgFromReceipt(createDaoTxTwoTxReceipt, 'GardenTransactionTwo', 'unipool')
+    const createGardenTxTwoReceipt = await createGardenTxTwoTx.wait(1)
+    const priceOracleAddress = getEventArgFromReceipt(createGardenTxTwoReceipt, 'GardenTransactionTwo', 'incentivisedPriceOracle')
+    const unipoolAddress = getEventArgFromReceipt(createGardenTxTwoReceipt, 'GardenTransactionTwo', 'unipool')
 
     log(`Tx two completed.`)
 
     return [priceOracleAddress, unipoolAddress, unipoolDepositorAddress]
   }
 
-  const createDaoTxThree = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
-    log(`Create DAO transaction three...`)
-    const createDaoTxThreeTx = await gardensTemplate.createDaoTxThree(
+  const createGardenTxThree = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
+    log(`Create garden transaction three...`)
+    const createGardenTxThreeTx = await gardensTemplate.createGardenTxThree(
       daoId,
       agreementTitle,
       ethers.utils.toUtf8Bytes(agreementContent),
@@ -260,7 +260,7 @@ export default async function main(log = console.log): Promise<any> {
       [challengeAmountStable, challengeAmountStable],
       {gasLimit: 9500000}
     )
-    await createDaoTxThreeTx.wait(1)
+    await createGardenTxThreeTx.wait(1)
     log(`Tx three completed.`)
   }
 
@@ -269,10 +269,10 @@ export default async function main(log = console.log): Promise<any> {
 
   // await approveHnyPayment(gardensTemplate, log)
   // if (!createNewToken) {await approveOgtPayment(gardensTemplate, log)}
-  const daoAddress = await createDaoTxOne(gardensTemplate, log)
+  const daoAddress = await createGardenTxOne(gardensTemplate, log)
   if (createNewToken) {await createTokenholders(gardensTemplate, log)}
-  const [priceOracleAddress, unipoolAddress, unipoolDepositorAddress] = await createDaoTxTwo(gardensTemplate, log)
-  await createDaoTxThree(gardensTemplate, log)
+  const [priceOracleAddress, unipoolAddress, unipoolDepositorAddress] = await createGardenTxTwo(gardensTemplate, log)
+  await createGardenTxThree(gardensTemplate, log)
 
   const [
     convictionVotingAddress,

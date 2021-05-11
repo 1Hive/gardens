@@ -17,7 +17,7 @@ import "./external/IUniswapV2Factory.sol";
 import "./appIds/AppIdsXDai.sol";
 import "./appIds/AppIdsRinkeby.sol";
 
-contract GardensTemplate is BaseTemplate, AppIdsXDai {
+contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
 
     using SafeERC20 for ERC20;
 
@@ -97,7 +97,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         stakingFactory = _stakingFactory;
     }
 
-    // New DAO functions //
+    // New Garden functions //
 
     /**
      * @dev Create the DAO and initialise the basic apps necessary for gardens
@@ -112,7 +112,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
      * @param _disputableVotingSettings Array of [voteDuration, voteSupportRequired, voteMinAcceptanceQuorum, voteDelegatedVotingPeriod,
      *    voteQuietEndingPeriod, voteQuietEndingExtension, voteExecutionDelay] to set up the voting app of the organization
      */
-    function createDaoTxOne(
+    function createGardenTxOne(
         ERC20 _existingToken,
         string _gardenTokenName,
         string _gardenTokenSymbol,
@@ -140,19 +140,19 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 //        honeyToken.safeTransferFrom(msg.sender, address(this), honeyLiquidityToAdd);
 //        honeyToken.approve(address(honeyswapRouter), honeyLiquidityToAdd);
 
-        if (existingToken == address(0)) {
+        if (_creatingGardenWithExistingToken(hookedTokenManager)) {
+//            existingToken.safeTransferFrom(msg.sender, address(this), _initialAmountAndLiquidity[3]);
+//            existingToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[3]);
+
+//            honeyswapRouter.addLiquidity(honeyToken, existingToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[3], 0, 0, BURN_ADDRESS, now);
+        }
+        else {
             _createPermissionForTemplate(acl, hookedTokenManager, hookedTokenManager.MINT_ROLE());
             hookedTokenManager.mint(agent, _initialAmountAndLiquidity[0]);
             hookedTokenManager.mint(address(this), _initialAmountAndLiquidity[2]);
 //            gardenToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[2]);
-//
+
 //            honeyswapRouter.addLiquidity(honeyToken, gardenToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[2], 0, 0, BURN_ADDRESS, now);
-        }
-        else {
-//            existingToken.safeTransferFrom(msg.sender, address(this), _initialAmountAndLiquidity[3]);
-//            existingToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[3]);
-//
-//            honeyswapRouter.addLiquidity(honeyToken, existingToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[3], 0, 0, BURN_ADDRESS, now);
         }
     }
 
@@ -175,7 +175,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
      *        existingToken is set in transaction one.
      * @param _convictionSettings array of conviction settings: [decay, max_ratio, weight, min_threshold_stake_percentage]
      */
-    function createDaoTxTwo(
+    function createGardenTxTwo(
         uint256[2] _issuanceSettings,
         uint64[4] _convictionSettings
     ) public {
@@ -188,7 +188,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             IHookedTokenManager hookedTokenManager
         ) = _getDeployedContractsTxOne();
 
-        if (hookedTokenManager.wrappableToken() == address(0)) { // if existingToken == address(0) (prevents stack too deep error)
+        if (!_creatingGardenWithExistingToken(hookedTokenManager)) {
             _removePermissionFromTemplate(_getAcl(dao), hookedTokenManager, hookedTokenManager.MINT_ROLE());
             IIssuance issuance = _installIssuance(dao, hookedTokenManager, commonPoolAgent, _issuanceSettings);
             _createIssuancePermissions(_getAcl(dao), issuance, disputableVoting);
@@ -216,11 +216,15 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         _createConvictionVotingPermissions(_getAcl(dao), convictionVoting, disputableVoting);
         _createVaultPermissions(_getAcl(dao), commonPoolAgent, convictionVoting, disputableVoting);
 
-        (address unipool,) = unipoolFactory.newUnipoolWithDepositor(_getMainToken(hookedTokenManager));
+        if (_creatingGardenWithExistingToken(hookedTokenManager)) {
+            (address unipool,) = unipoolFactory.newUnipoolWithDepositor(_getMainToken(hookedTokenManager));
+        }
 
         _createPermissionForTemplate(_getAcl(dao), hookedTokenManager, hookedTokenManager.SET_HOOK_ROLE());
         hookedTokenManager.registerHook(convictionVoting);
-        hookedTokenManager.registerHook(unipool);
+        if (_creatingGardenWithExistingToken(hookedTokenManager)) {
+            hookedTokenManager.registerHook(unipool);
+        }
         _removePermissionFromTemplate(_getAcl(dao), hookedTokenManager, hookedTokenManager.SET_HOOK_ROLE());
 
         _storeDeployedContractsTxTwo(convictionVoting);
@@ -238,7 +242,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
      * @param _actionAmountsStable The action amount specified as a stable value (eg in xdai)
      * @param _challengeAmountsStable The challenge amount specified as a stable value (eg in xdai)
      */
-    function createDaoTxThree(
+    function createGardenTxThree(
         string _daoId,
         string _agreementTitle,
         bytes memory _agreementContent,
@@ -472,6 +476,10 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     }
 
     // Misc functions //
+
+    function _creatingGardenWithExistingToken(IHookedTokenManager _hookedTokenManager) internal returns (bool) {
+        return _hookedTokenManager.wrappableToken() != address(0);
+    }
 
     function _getMainToken(IHookedTokenManager hookedTokenManager) internal returns (address) {
         return hookedTokenManager.wrappableToken() == address(0) ? hookedTokenManager.token() : hookedTokenManager.wrappableToken();

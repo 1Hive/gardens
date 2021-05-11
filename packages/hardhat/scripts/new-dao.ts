@@ -163,6 +163,8 @@ export default async function main(log = console.log): Promise<any> {
   } = transform(await import(`../params-${network}.json`))
   const [mainAccount] = await ethers.getSigners()
 
+  const createNewToken = existingToken == ZERO_ADDRESS // As opposed bring your own token
+
   const approveHnyPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
     const honeyToken = await getHoneyToken(mainAccount, gardensTemplate)
     const currentAllowance = await honeyToken.allowance(mainAccount.address, gardensTemplate.address)
@@ -232,7 +234,7 @@ export default async function main(log = console.log): Promise<any> {
 
     // We get the event arg this way because it is emitted by a contract called by the initial contract
     // this means the args can't be decoded on the receipt directly
-    const unipoolDepositorAddress = await getEventArgument(
+    const unipoolDepositorAddress = createNewToken ? undefined : await getEventArgument(
       'NewRewardDepositor',
       'unipoolRewardDepositor',
       await getUnipoolFactory(mainAccount, gardensTemplate),
@@ -265,8 +267,6 @@ export default async function main(log = console.log): Promise<any> {
   }
 
   const gardensTemplate = await getGardensTemplate(mainAccount)
-  const createNewToken = existingToken == ZERO_ADDRESS // As opposed bring your own token
-
   // await approveHnyPayment(gardensTemplate, log)
   // if (!createNewToken) {await approveOgtPayment(gardensTemplate, log)}
   const daoAddress = await createGardenTxOne(gardensTemplate, log)

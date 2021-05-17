@@ -208,7 +208,7 @@ export default async function main(log = console.log): Promise<any> {
         voteQuietEndingExtension,
         voteExecutionDelay,
       ],
-      {gasLimit: 9500000}
+      {gasLimit: 10000000}
     )
     const createGardenTxOneReceipt = await createGardenTxOneTx.wait(1)
     const daoAddress = getEventArgFromReceipt(createGardenTxOneReceipt, 'DeployDao', 'dao')
@@ -267,8 +267,8 @@ export default async function main(log = console.log): Promise<any> {
   }
 
   const gardensTemplate = await getGardensTemplate(mainAccount)
-  // await approveHnyPayment(gardensTemplate, log)
-  // if (!createNewToken) {await approveOgtPayment(gardensTemplate, log)}
+  await approveHnyPayment(gardensTemplate, log)
+  if (!createNewToken) {await approveOgtPayment(gardensTemplate, log)}
   const daoAddress = await createGardenTxOne(gardensTemplate, log)
   if (createNewToken) {await createTokenholders(gardensTemplate, log)}
   const [priceOracleAddress, unipoolAddress, unipoolDepositorAddress] = await createGardenTxTwo(gardensTemplate, log)
@@ -280,6 +280,7 @@ export default async function main(log = console.log): Promise<any> {
     issuanceAddress,
     agreementAddress,
     votingAddress,
+    votingAggregatorAddress
   ] = await getApps(
     daoAddress,
     await Promise.all([
@@ -288,6 +289,7 @@ export default async function main(log = console.log): Promise<any> {
       gardensTemplate.DYNAMIC_ISSUANCE_APP_ID(),
       gardensTemplate.AGREEMENT_APP_ID(),
       gardensTemplate.DISPUTABLE_VOTING_APP_ID(),
+      gardensTemplate.VOTING_AGGREGATOR_APP_ID()
     ])
   )
 
@@ -298,6 +300,7 @@ export default async function main(log = console.log): Promise<any> {
     issuanceAddress,
     agreementAddress,
     votingAddress,
+    votingAggregatorAddress,
     priceOracleAddress,
     unipoolAddress,
     unipoolDepositorAddress
@@ -309,6 +312,7 @@ export default async function main(log = console.log): Promise<any> {
     issuanceAddress,
     agreementAddress,
     votingAddress,
+    votingAggregatorAddress,
     priceOracleAddress,
     unipoolAddress,
     unipoolDepositorAddress

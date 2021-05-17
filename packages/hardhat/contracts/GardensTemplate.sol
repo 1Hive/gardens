@@ -14,6 +14,7 @@ import "./external/ICollateralRequirementUpdaterFactory.sol"; // This lives in t
 import "./external/ICollateralRequirementUpdater.sol"; // This lives in the agreements repo
 import "./external/IUnipoolFactory.sol"; // This lives in the unipool repo
 import "./external/IUniswapV2Factory.sol";
+import "./external/IVotingAggregator.sol";
 import "./appIds/AppIdsXDai.sol";
 import "./appIds/AppIdsRinkeby.sol";
 
@@ -38,6 +39,9 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
     uint256 public constant UPDATE_PERCENT_REWARD = 2e16; // 2% reward per update call
     address private constant BURN_ADDRESS = 0x000000000000000000000000000000000000dEaD;
     uint256 public constant MIN_XDAI_IN_HNY_REQUIRED_FOR_NEW_GARDEN = 100e18;
+    string public constant AGGREGATE_TOKEN_PREPEND_NAME = "Aggregated";
+    string public constant AGGREGATE_TOKEN_PREPEND_SYMBOL = "a";
+    uint256 public constant GARDEN_TOKEN_AGGREGATOR_WEIGHT = 1;
     enum Op {NONE, EQ, NEQ, GT, LT, GTE, LTE, RET, NOT, AND, OR, XOR, IF_ELSE}
 
     struct DeployedContracts {
@@ -126,33 +130,40 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
         ERC20 existingToken = _existingToken; // Prevents stack too deep error
         MiniMeToken gardenToken = _createToken(_gardenTokenName, _gardenTokenSymbol, TOKEN_DECIMALS);
 
-        Agent agent = _installDefaultAgentApp(dao);
+        Agent commonPoolAgent = _installDefaultAgentApp(dao);
         IHookedTokenManager hookedTokenManager = _installHookedTokenManagerApp(dao, gardenToken, existingToken);
-        DisputableVoting disputableVoting = _installDisputableVotingApp(dao, gardenToken, _disputableVotingSettings);
+        IVotingAggregator votingAggregator = _installVotingAggregatorApp(dao, _gardenTokenName, _gardenTokenSymbol);
+        DisputableVoting disputableVoting = _installDisputableVotingApp(dao, votingAggregator, _disputableVotingSettings);
+
+        _createPermissionForTemplate(acl, votingAggregator, votingAggregator.ADD_POWER_SOURCE_ROLE());
+        votingAggregator.addPowerSource(gardenToken, IVotingAggregator.PowerSourceType.ERC20WithCheckpointing, GARDEN_TOKEN_AGGREGATOR_WEIGHT);
+        _removePermissionFromTemplate(acl, votingAggregator, votingAggregator.ADD_POWER_SOURCE_ROLE());
 
         _createDisputableVotingPermissions(acl, disputableVoting);
-        _createAgentPermissions(acl, agent, disputableVoting, disputableVoting);
+        _createAgentPermissions(acl, commonPoolAgent, disputableVoting, disputableVoting);
+        // Create app and permissions for non common pool agent
+        _createAgentPermissions(acl, _installDefaultAgentApp(dao), disputableVoting, disputableVoting);
         _createEvmScriptsRegistryPermissions(acl, disputableVoting, disputableVoting);
 
-        _storeDeployedContractsTxOne(dao, acl, disputableVoting, agent, hookedTokenManager);
+        _storeDeployedContractsTxOne(dao, acl, disputableVoting, commonPoolAgent, hookedTokenManager);
 
-//        uint256 honeyLiquidityToAdd = honeyPriceOracle.consult(stableToken, _initialAmountAndLiquidity[1], honeyToken);
-//        honeyToken.safeTransferFrom(msg.sender, address(this), honeyLiquidityToAdd);
-//        honeyToken.approve(address(honeyswapRouter), honeyLiquidityToAdd);
+        uint256 honeyLiquidityToAdd = honeyPriceOracle.consult(stableToken, _initialAmountAndLiquidity[1], honeyToken);
+        honeyToken.safeTransferFrom(msg.sender, address(this), honeyLiquidityToAdd);
+        honeyToken.approve(address(honeyswapRouter), honeyLiquidityToAdd);
 
         if (_creatingGardenWithExistingToken(hookedTokenManager)) {
-//            existingToken.safeTransferFrom(msg.sender, address(this), _initialAmountAndLiquidity[3]);
-//            existingToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[3]);
+            existingToken.safeTransferFrom(msg.sender, address(this), _initialAmountAndLiquidity[3]);
+            existingToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[3]);
 
-//            honeyswapRouter.addLiquidity(honeyToken, existingToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[3], 0, 0, BURN_ADDRESS, now);
+            honeyswapRouter.addLiquidity(honeyToken, existingToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[3], 0, 0, BURN_ADDRESS, now);
         }
         else {
             _createPermissionForTemplate(acl, hookedTokenManager, hookedTokenManager.MINT_ROLE());
-            hookedTokenManager.mint(agent, _initialAmountAndLiquidity[0]);
+            hookedTokenManager.mint(commonPoolAgent, _initialAmountAndLiquidity[0]);
             hookedTokenManager.mint(address(this), _initialAmountAndLiquidity[2]);
-//            gardenToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[2]);
+            gardenToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[2]);
 
-//            honeyswapRouter.addLiquidity(honeyToken, gardenToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[2], 0, 0, BURN_ADDRESS, now);
+            honeyswapRouter.addLiquidity(honeyToken, gardenToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[2], 0, 0, BURN_ADDRESS, now);
         }
     }
 
@@ -216,15 +227,12 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
         _createConvictionVotingPermissions(_getAcl(dao), convictionVoting, disputableVoting);
         _createVaultPermissions(_getAcl(dao), commonPoolAgent, convictionVoting, disputableVoting);
 
+        _createPermissionForTemplate(_getAcl(dao), hookedTokenManager, hookedTokenManager.SET_HOOK_ROLE());
         if (_creatingGardenWithExistingToken(hookedTokenManager)) {
             (address unipool,) = unipoolFactory.newUnipoolWithDepositor(_getMainToken(hookedTokenManager));
-        }
-
-        _createPermissionForTemplate(_getAcl(dao), hookedTokenManager, hookedTokenManager.SET_HOOK_ROLE());
-        hookedTokenManager.registerHook(convictionVoting);
-        if (_creatingGardenWithExistingToken(hookedTokenManager)) {
             hookedTokenManager.registerHook(unipool);
         }
+        hookedTokenManager.registerHook(convictionVoting);
         _removePermissionFromTemplate(_getAcl(dao), hookedTokenManager, hookedTokenManager.SET_HOOK_ROLE());
 
         _storeDeployedContractsTxTwo(convictionVoting);
@@ -308,7 +316,17 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
         return hookedTokenManager;
     }
 
-    function _installDisputableVotingApp(Kernel _dao, MiniMeToken _token, uint64[7] memory _disputableVotingSettings)
+    function _installVotingAggregatorApp(Kernel _dao, string _gardenTokenName, string _gardenTokenSymbol)
+        internal returns (IVotingAggregator)
+    {
+        IVotingAggregator votingAggregator = IVotingAggregator(_installNonDefaultApp(_dao, VOTING_AGGREGATOR_APP_ID));
+        string memory votingTokenName = string(abi.encodePacked(AGGREGATE_TOKEN_PREPEND_NAME, _gardenTokenName));
+        string memory votingTokenSymbol = string(abi.encodePacked(AGGREGATE_TOKEN_PREPEND_SYMBOL, _gardenTokenSymbol));
+        votingAggregator.initialize(votingTokenName, votingTokenSymbol, 18);
+        return votingAggregator;
+    }
+
+    function _installDisputableVotingApp(Kernel _dao, address _token, uint64[7] memory _disputableVotingSettings)
         internal returns (DisputableVoting)
     {
         uint64 duration = _disputableVotingSettings[0];

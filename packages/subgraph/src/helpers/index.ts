@@ -58,6 +58,7 @@ export function loadOrCreateOrg(orgAddress: Address): OrganizationEntity | null 
     organization.proposalCount = 0
     organization.active = true
     organization.createdAt = BigInt.fromI32(0)
+    organization.supporterCount = 0
 
     config.save()
   }
@@ -89,6 +90,7 @@ export function loadOrCreateSupporter(address: Address, orgAddress: Address): Su
     supporter = new SupporterEntity(id)
     supporter.user = user.id
     supporter.organization = orgAddress.toHexString()
+    incrementSupporterCount(orgAddress)
   }
   return supporter
 }
@@ -129,6 +131,12 @@ export function getProposalEntity(appAddress: Address, proposalId: BigInt): Prop
 export function incrementProposalCount(orgAddress: Address): void {
   const org = loadOrCreateOrg(orgAddress)
   org.proposalCount += 1
+  org.save()
+}
+
+export function incrementSupporterCount(orgAddress: Address): void {
+  const org = loadOrCreateOrg(orgAddress)
+  org.supporterCount += 1
   org.save()
 }
 

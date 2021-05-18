@@ -89,6 +89,7 @@ export function loadOrCreateSupporter(address: Address, orgAddress: Address): Su
     supporter = new SupporterEntity(id)
     supporter.user = user.id
     supporter.organization = orgAddress.toHexString()
+    incrementSupporterCount(orgAddress)
   }
   return supporter
 }
@@ -130,6 +131,12 @@ export function incrementProposalCount(orgAddress: Address): void {
   const org = loadOrCreateOrg(orgAddress)
   org.proposalCount += 1
   org.save()
+}
+
+export function incrementSupporterCount(orgAddress: Address): void {
+  const org = loadOrCreateOrg(orgAddress)
+  org.supporterCount += 1
+  org.save() 
 }
 
 // Export local helpers

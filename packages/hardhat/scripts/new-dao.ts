@@ -169,12 +169,12 @@ export default async function main(log = console.log): Promise<any> {
     const honeyToken = await getHoneyToken(mainAccount, gardensTemplate)
     const currentAllowance = await honeyToken.allowance(mainAccount.address, gardensTemplate.address)
     if (currentAllowance.gt(BigNumber.from(0))) {
-      const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, BigNumber.from(0))
+      const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, BigNumber.from(0), {gasLimit: 1000000})
       await approveHoneyPaymentTx.wait(1)
       log(`Pre unapproval for honey payment made.`)
     }
     const approvalAmount = BigNumber.from(100).pow(BigNumber.from(18))
-    const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, approvalAmount)
+    const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, approvalAmount, {gasLimit: 1000000})
     await approveHoneyPaymentTx.wait(1)
     log(`Approval for honey payment made.`)
   }
@@ -182,7 +182,7 @@ export default async function main(log = console.log): Promise<any> {
   const approveOgtPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
     const originalToken = await getOriginalToken(mainAccount, existingToken)
     const approvalAmount = BigNumber.from(100).pow(BigNumber.from(18))
-    const approveOriginalTokenPaymentTx = await originalToken.approve(gardensTemplate.address, approvalAmount)
+    const approveOriginalTokenPaymentTx = await originalToken.approve(gardensTemplate.address, approvalAmount, {gasLimit: 1000000})
     await approveOriginalTokenPaymentTx.wait(1)
     log(`Approval for original token payment made.`)
   }
@@ -208,7 +208,7 @@ export default async function main(log = console.log): Promise<any> {
         voteQuietEndingExtension,
         voteExecutionDelay,
       ],
-      {gasLimit: 10000000}
+      {gasLimit: 7000000}
     )
     const createGardenTxOneReceipt = await createGardenTxOneTx.wait(1)
     const daoAddress = getEventArgFromReceipt(createGardenTxOneReceipt, 'DeployDao', 'dao')
@@ -219,7 +219,7 @@ export default async function main(log = console.log): Promise<any> {
 
   const createTokenholders = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
     log(`Create token holders...`)
-    const createTokenHoldersTx = await gardensTemplate.createTokenHolders(holders, stakes, {gasLimit: 9500000})
+    const createTokenHoldersTx = await gardensTemplate.createTokenHolders(holders, stakes, {gasLimit: 5000000})
     await createTokenHoldersTx.wait(1)
     log(`Tx create token holders completed.`)
   }
@@ -229,7 +229,7 @@ export default async function main(log = console.log): Promise<any> {
     const createGardenTxTwoTx = await gardensTemplate.createGardenTxTwo(
       [issuanceTargetRatio, issuanceMaxAdjustmentPerSecond],
       [decay, maxRatio, weight, minThresholdStakePercentage],
-      {gasLimit: 9500000}
+      {gasLimit: 5000000}
     )
 
     // We get the event arg this way because it is emitted by a contract called by the initial contract
@@ -260,7 +260,7 @@ export default async function main(log = console.log): Promise<any> {
       [actionAmount, challengeAmount],
       [actionAmountStable, actionAmountStable],
       [challengeAmountStable, challengeAmountStable],
-      {gasLimit: 9500000}
+      {gasLimit: 7000000}
     )
     await createGardenTxThreeTx.wait(1)
     log(`Tx three completed.`)

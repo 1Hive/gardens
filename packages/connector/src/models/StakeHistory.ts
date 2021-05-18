@@ -4,7 +4,7 @@ export default class StakeHistory {
   #connector: IGardenConnector
 
   readonly id: string
-  readonly entity: SupporterData
+  readonly supporter: SupporterData
   readonly proposal: ProposalData
   readonly tokensStaked: string
   readonly totalTokensStaked: string
@@ -15,7 +15,7 @@ export default class StakeHistory {
     this.#connector = connector
 
     this.id = data.id
-    this.entity = data.entity
+    this.supporter = data.supporter
     this.proposal = data.proposal
     this.tokensStaked = data.tokensStaked
     this.totalTokensStaked = data.totalTokensStaked

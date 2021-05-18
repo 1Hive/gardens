@@ -123,18 +123,18 @@ export function handleCastVote(event: CastVoteEvent): void {
   updateVoteState(event.address, event.params.voteId)
   const proposal = getProposalEntity(event.address, event.params.voteId)
 
-  const voter = loadOrCreateSupporter(event.params.voter, Address.fromString(proposal.organization))
+  const supporter = loadOrCreateSupporter(event.params.voter, Address.fromString(proposal.organization))
 
   const votingApp = VotingContract.bind(event.address)
   const miniMeToken = MiniMeTokenContract.bind(votingApp.token())
 
-  voter.proposal = proposal.id
-  voter.save()
+  supporter.organization = proposal.organization
+  supporter.save()
 
   const stake = miniMeToken.balanceOfAt(event.params.voter, proposal.snapshotBlock)
 
   const castVote = loadOrCreateCastVote(event.address, event.params.voteId, event.params.voter)
-  castVote.entity = voter.id
+  castVote.supporter = supporter.id
   castVote.stake = stake
   castVote.supports = event.params.supports
   castVote.createdAt = event.block.timestamp
@@ -178,9 +178,9 @@ export function handleChangeRepresentative(event: ChangeRepresentativeEvent): vo
   const votingApp = VotingContract.bind(event.address)
   const organization = votingApp.kernel()
 
-  const voter = loadOrCreateSupporter(event.params.voter, organization)
-  voter.representative = event.params.representative
-  voter.save()
+  const supporter = loadOrCreateSupporter(event.params.voter, organization)
+  supporter.representative = event.params.representative
+  supporter.save()
 }
 
 export function updateVoteState(votingAddress: Address, voteId: BigInt): void {

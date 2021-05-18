@@ -137,7 +137,7 @@ export function incrementProposalCount(orgAddress: Address): void {
 export function incrementSupporterCount(orgAddress: Address): void {
   const org = loadOrCreateOrg(orgAddress)
   org.supporterCount += 1
-  org.save() 
+  org.save()
 }
 
 // Export local helpers

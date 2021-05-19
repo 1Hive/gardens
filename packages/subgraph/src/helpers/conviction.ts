@@ -9,7 +9,7 @@ import {
   ConvictionVoting as ConvictionVotingContract,
   ProposalAdded as ProposalAddedEvent,
 } from '../../generated/templates/ConvictionVoting/ConvictionVoting'
-import { loadOrCreateConfig, loadTokenData } from '.'
+import { loadOrCreateConfig, loadOrCreateOrg, loadTokenData } from '.'
 import { loadWrappableToken } from './tokens'
 
 /// /// Conviction config entity //////
@@ -42,6 +42,11 @@ export function loadConvictionConfig(orgAddress: Address, appAddress: Address): 
   const stakeTokenId = loadTokenData(stakeToken)
   if (stakeTokenId) {
     convictionConfig.stakeToken = stakeToken.toHexString()
+
+    // Set token for org
+    const org = loadOrCreateOrg(orgAddress)
+    org.token = stakeToken.toHexString()
+    org.save()
   }
   const stableTokenId = loadTokenData(stableToken)
   if (stableTokenId) {

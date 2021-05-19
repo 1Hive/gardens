@@ -43,7 +43,7 @@ export function handleNewSetting(event: NewSettingEvent): void {
   const currentSettingId = getVotingConfigEntityId(event.address, event.params.settingId)
   const votingConfig = getVotingConfigEntity(event.address, event.params.settingId)
 
-  const daoAddress = votingApp.kernel()
+  const orgAddress = votingApp.kernel()
 
   votingConfig.settingId = event.params.settingId
   votingConfig.voteTime = settingData.value0
@@ -58,15 +58,10 @@ export function handleNewSetting(event: NewSettingEvent): void {
   const tokenId = loadTokenData(token)
   if (tokenId) {
     votingConfig.token = token.toHexString()
-
-    // Set token for org
-    const org = loadOrCreateOrg(daoAddress)
-    org.token = token.toHexString()
-    org.save()
   }
   votingConfig.save()
 
-  const config = loadOrCreateConfig(daoAddress)
+  const config = loadOrCreateConfig(orgAddress)
   config.voting = currentSettingId
   config.save()
 }

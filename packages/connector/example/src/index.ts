@@ -16,12 +16,13 @@ type Garden = {
   proposalCount: number,
   token: any,
   wrappableToken: any,
+  honeyLiquidity: string
 }
 
 
 async function main(): Promise<void> {
   console.log('\n##################Gardens:')
-  const gardens = await getGardens({ network: 4 }, { first: 1000 })
+  const gardens = await getGardens({ network: 4 }, { first: 1000, orderBy: 'honeyLiquidity', orderDirection: 'desc' })
   gardens.map(describeGarden)
 
   const org = await connect(ORG_ADDRESS, 'thegraph', { network: 4 })
@@ -93,7 +94,7 @@ function describeGarden(garden: Garden) {
   console.log(`Proposal count: ${garden.proposalCount}`)
   console.log(`Token: ${JSON.stringify(garden.token, null, 2)}`)
   console.log(`Wrappable token: ${garden.wrappableToken ? JSON.stringify(garden.wrappableToken, null, 2): 'No wrappable token'}`)
-
+  console.log(`Honey liquidity: ${garden.honeyLiquidity}`)
   console.log(`\n`)
 }
 

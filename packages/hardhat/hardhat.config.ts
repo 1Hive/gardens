@@ -95,7 +95,7 @@ const config: HardhatUserConfig = {
       },
     },
     localhost: {
-      url: 'http://localhost:8545',
+      url: 'http://127.0.0.1:8545',
       timeout: 0,
       /*
         notice no mnemonic here? it will just use account 0 of the hardhat node to deploy
@@ -122,7 +122,7 @@ const config: HardhatUserConfig = {
     },
     xdai: {
       url: 'https://dai.poa.network',
-      gasPrice: 1000000000,
+      gasPrice: 50000000000,
       accounts: [process.env.ETH_KEY],
     },
     matic: {

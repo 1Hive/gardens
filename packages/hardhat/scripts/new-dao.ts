@@ -208,7 +208,7 @@ export default async function main(log = console.log): Promise<any> {
         voteQuietEndingExtension,
         voteExecutionDelay,
       ],
-      {gasLimit: 7000000}
+      {gasLimit: 12450000}
     )
     const createGardenTxOneReceipt = await createGardenTxOneTx.wait(1)
     const daoAddress = getEventArgFromReceipt(createGardenTxOneReceipt, 'DeployDao', 'dao')
@@ -229,7 +229,7 @@ export default async function main(log = console.log): Promise<any> {
     const createGardenTxTwoTx = await gardensTemplate.createGardenTxTwo(
       [issuanceTargetRatio, issuanceMaxAdjustmentPerSecond],
       [decay, maxRatio, weight, minThresholdStakePercentage],
-      {gasLimit: 5000000}
+      {gasLimit: 8000000}
     )
 
     // We get the event arg this way because it is emitted by a contract called by the initial contract

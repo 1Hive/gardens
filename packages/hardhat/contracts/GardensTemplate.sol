@@ -18,7 +18,7 @@ import "./external/IVotingAggregator.sol";
 import "./appIds/AppIdsXDai.sol";
 import "./appIds/AppIdsRinkeby.sol";
 
-contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
+contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
     using SafeERC20 for ERC20;
 
@@ -140,9 +140,9 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
         _removePermissionFromTemplate(acl, votingAggregator, votingAggregator.ADD_POWER_SOURCE_ROLE());
 
         _createDisputableVotingPermissions(acl, disputableVoting);
-        _createAgentPermissions(acl, commonPoolAgent, disputableVoting, disputableVoting);
         // Create app and permissions for non common pool agent
         _createAgentPermissions(acl, _installDefaultAgentApp(dao), disputableVoting, disputableVoting);
+        _createAgentPermissions(acl, commonPoolAgent, disputableVoting, disputableVoting);
         _createEvmScriptsRegistryPermissions(acl, disputableVoting, disputableVoting);
 
         _storeDeployedContractsTxOne(dao, acl, disputableVoting, commonPoolAgent, hookedTokenManager);
@@ -156,8 +156,7 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
             existingToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[3]);
 
             honeyswapRouter.addLiquidity(honeyToken, existingToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[3], 0, 0, BURN_ADDRESS, now);
-        }
-        else {
+        } else {
             _createPermissionForTemplate(acl, hookedTokenManager, hookedTokenManager.MINT_ROLE());
             hookedTokenManager.mint(commonPoolAgent, _initialAmountAndLiquidity[0]);
             hookedTokenManager.mint(address(this), _initialAmountAndLiquidity[2]);

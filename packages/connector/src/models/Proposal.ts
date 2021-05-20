@@ -11,12 +11,14 @@ import {
   SubscriptionHandler,
   VotingConfigData,
   FunctionCallback,
+  OrganizationData,
 } from '../types'
 
 export default class Proposal {
   #connector: IGardenConnector
 
   readonly id: string
+  readonly organization: OrganizationData
   readonly number: string
   readonly creator: string
   readonly status: string
@@ -65,6 +67,7 @@ export default class Proposal {
     this.#connector = connector
 
     this.id = data.id
+    this.organization = data.organization
     this.number = data.number
     this.creator = data.creator
     this.status = data.status

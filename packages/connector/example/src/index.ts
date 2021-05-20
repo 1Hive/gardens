@@ -1,8 +1,9 @@
-import { connect, Organization } from '@aragon/connect'
+import { connect,  } from '@aragon/connect'
 import {
-  getGardens,
   connectGarden,
   Config,
+  getGardens,
+  getUser,
   Proposal,
   Supporter,
 } from '@1hive/connect-garden'
@@ -17,59 +18,10 @@ type Garden = {
   wrappableToken: any,
 }
 
-function proposalId(proposal: Proposal): string {
-  return (
-    '#' +
-    String(parseInt(proposal.id.match(/proposalId:(.+)$/)?.[1] || '0')).padEnd(
-      2,
-      ' '
-    )
-  )
-}
-
-function describeGarden(garden: Garden) {
-  console.log(`Organization ${garden.id}`)
-  console.log(`Active: ${garden.active}`)
-  console.log(`CreatedAt: ${garden.createdAt}`)
-  console.log(`Proposal count: ${garden.proposalCount}`)
-  console.log(`Token: ${JSON.stringify(garden.token, null, 2)}`)
-  console.log(`Wrappable token: ${garden.wrappableToken ? JSON.stringify(garden.wrappableToken, null, 2): 'No wrappable token'}`)
-
-  console.log(`\n`)
-}
-
-function describeProposal(proposal: Proposal): void {
-  console.log(`PROPOSAL ${proposalId(proposal)} ${proposal.type}`)
-  console.log(`Name: ${proposal.metadata}`)
-  console.log(`Link: ${proposal.link}`)
-  console.log(`Requested amount: ${proposal.requestedAmount}`)
-  console.log(`Beneficiary: ${proposal.beneficiary}`)
-  // console.log(`Stake history: `)
-  // console.log(JSON.stringify(proposal.stakesHistory, null, 2))
-  // console.log(`Casts: `)
-  // console.log(JSON.stringify(proposal.casts, null, 2))
-  console.log(`\n`)
-}
-
-function describeConfig(config: Config): void {
-  console.log(
-    `Conviction config: ${JSON.stringify(config.conviction, null, 2)}`
-  )
-  console.log(`Voting config: ${JSON.stringify(config.voting, null, 2)}`)
-}
-
-function describeSupporter(supporter: Supporter): void {
-  console.log('SUPPORTER', supporter.address)
-  console.log(`casts: ${JSON.stringify(supporter.casts, null, 2)}`)
-  console.log(`stakes: ${JSON.stringify(supporter.stakes, null, 2)}`)
-  console.log(
-    `stakes history: ${JSON.stringify(supporter.stakesHistory, null, 2)}`
-  )
-}
 
 async function main(): Promise<void> {
-  const gardens = await getGardens({ network: 4 }, {})
   console.log('\n##################Gardens:')
+  const gardens = await getGardens({ network: 4 }, { first: 1000 })
   gardens.map(describeGarden)
 
   const org = await connect(ORG_ADDRESS, 'thegraph', { network: 4 })
@@ -91,6 +43,10 @@ async function main(): Promise<void> {
   console.log(`\n#################Proposals:`)
   proposals.map(describeProposal)
   console.log(`\n`)
+
+  console.log(`\n#################User:`)
+  const user = await getUser({ network: 4 }, { id: "0x49c01b61aa3e4cd4c4763c78ecfe75888b49ef50" })
+  describeUser(user)
 
   // const proposal = await garden.proposal({
   //   number: '1',
@@ -118,6 +74,65 @@ async function main(): Promise<void> {
 
   //   describeConfig(config)
   // })
+}
+
+function proposalId(proposal: Proposal): string {
+  return (
+    '#' +
+    String(parseInt(proposal.id.match(/proposalId:(.+)$/)?.[1] || '0')).padEnd(
+      2,
+      ' '
+    )
+  )
+}
+
+function describeGarden(garden: Garden) {
+  console.log(`Organization ${garden.id}`)
+  console.log(`Active: ${garden.active}`)
+  console.log(`CreatedAt: ${garden.createdAt}`)
+  console.log(`Proposal count: ${garden.proposalCount}`)
+  console.log(`Token: ${JSON.stringify(garden.token, null, 2)}`)
+  console.log(`Wrappable token: ${garden.wrappableToken ? JSON.stringify(garden.wrappableToken, null, 2): 'No wrappable token'}`)
+
+  console.log(`\n`)
+}
+
+function describeUser(user: any) {
+  console.log(`User ${user.id}`)
+  console.log(`Address: ${user.address}`)
+  user.supports.map(describeSupporter)
+  
+  console.log(`\n`)
+}
+
+function describeProposal(proposal: Proposal): void {
+  console.log(`PROPOSAL ${proposalId(proposal)} ${proposal.type}`)
+  console.log(`Name: ${proposal.metadata}`)
+  console.log(`Link: ${proposal.link}`)
+  console.log(`Requested amount: ${proposal.requestedAmount}`)
+  console.log(`Beneficiary: ${proposal.beneficiary}`)
+  // console.log(`Stake history: `)
+  // console.log(JSON.stringify(proposal.stakesHistory, null, 2))
+  // console.log(`Casts: `)
+  // console.log(JSON.stringify(proposal.casts, null, 2))
+  console.log(`\n`)
+}
+
+function describeConfig(config: Config): void {
+  console.log(
+    `Conviction config: ${JSON.stringify(config.conviction, null, 2)}`
+  )
+  console.log(`Voting config: ${JSON.stringify(config.voting, null, 2)}`)
+}
+
+function describeSupporter(supporter: Supporter): void {
+  console.log('SUPPORTER', supporter.user.address)
+  console.log('Organization', supporter.organization.id)
+  console.log(`casts: ${JSON.stringify(supporter.casts, null, 2)}`)
+  console.log(`stakes: ${JSON.stringify(supporter.stakes, null, 2)}`)
+  console.log(
+    `stakes history: ${JSON.stringify(supporter.stakesHistory, null, 2)}`
+  )
 }
 
 main().catch((err) => {

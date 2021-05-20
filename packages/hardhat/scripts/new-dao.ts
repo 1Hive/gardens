@@ -1,10 +1,10 @@
-import hre, {ethers} from 'hardhat'
-import {Contract} from '@ethersproject/contracts'
-import {Signer} from '@ethersproject/abstract-signer'
-import {GardensTemplate, ERC20, Kernel, IUnipoolFactory} from '../typechain'
-import {BigNumber} from 'ethers'
+import hre, { ethers } from 'hardhat'
+import { Contract } from '@ethersproject/contracts'
+import { Signer } from '@ethersproject/abstract-signer'
+import { GardensTemplate, ERC20, Kernel, IUnipoolFactory } from '../typechain'
+import { BigNumber } from 'ethers'
 
-const {deployments} = hre
+const { deployments } = hre
 
 const network = hre.network.name === 'localhost' ? 'xdai' : hre.network.name
 const blockTime = network === 'rinkeby' ? 15 : network === 'mainnet' ? 13 : 5 // 15 rinkeby, 13 mainnet, 5 xdai
@@ -33,13 +33,13 @@ const getApps = async (daoAddress: string, appIds: string[]): Promise<string[]> 
   const dao = (await ethers.getContractAt('Kernel', daoAddress)) as Kernel
   const apps = await dao.queryFilter(dao.filters.NewAppProxy(null, null, null)).then((events) =>
     events
-      .filter(({args}) => appIds.includes(args.appId))
-      .map(({args}) => ({
+      .filter(({ args }) => appIds.includes(args.appId))
+      .map(({ args }) => ({
         appId: args.appId,
         proxy: args.proxy,
       }))
       .reduce(
-        (apps, {appId, proxy}) => ({
+        (apps, { appId, proxy }) => ({
           ...apps,
           [appId]: !apps[appId] ? proxy : [...apps[appId], proxy],
         }),
@@ -193,12 +193,7 @@ export default async function main(log = console.log): Promise<any> {
       existingToken,
       gardenTokenName,
       gardenTokenSymbol,
-      [
-        commonPoolAmount,
-        honeyTokenLiquidityInXdai,
-        gardenTokenLiquidity,
-        existingTokenLiquidity
-      ],
+      [commonPoolAmount, honeyTokenLiquidityInXdai, gardenTokenLiquidity, existingTokenLiquidity],
       [
         voteDuration,
         voteSupportRequired,
@@ -208,7 +203,7 @@ export default async function main(log = console.log): Promise<any> {
         voteQuietEndingExtension,
         voteExecutionDelay,
       ],
-      {gasLimit: 12450000}
+      { gasLimit: 1000000 }
     )
     const createGardenTxOneReceipt = await createGardenTxOneTx.wait(1)
     const daoAddress = getEventArgFromReceipt(createGardenTxOneReceipt, 'DeployDao', 'dao')

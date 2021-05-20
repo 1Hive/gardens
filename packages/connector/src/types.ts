@@ -20,6 +20,17 @@ export interface TokenData {
   decimals: number
 }
 
+export interface OrganizationData {
+  id: string
+  address: string
+  createdAt: string
+  config: ConfigData
+  token: TokenData
+  wrappableToken: TokenData
+  proposalCount: number
+  active: boolean
+}
+
 export interface ConfigData {
   id: string
   conviction: ConvictionConfigData
@@ -58,7 +69,7 @@ export interface VotingConfigData {
 export interface StakeData {
   id: string
   type: string
-  entity: SupporterData
+  supporter: SupporterData
   proposal: ProposalData
   amount: string
   createdAt: string
@@ -67,7 +78,7 @@ export interface StakeData {
 export interface StakeHistoryData {
   id: string
   type: string
-  entity: SupporterData
+  supporter: SupporterData
   proposal: ProposalData
   tokensStaked: string
   totalTokensStaked: string
@@ -78,7 +89,7 @@ export interface StakeHistoryData {
 
 export interface CastData {
   id: string
-  entity: SupporterData
+  supporter: SupporterData
   supports: boolean
   stake: string
   createdAt: string
@@ -86,6 +97,7 @@ export interface CastData {
 
 export interface ProposalData {
   id: string
+  organization: OrganizationData
   number: string
   creator: string
   status: string
@@ -131,9 +143,16 @@ export interface ProposalData {
   challengerArbitratorFeeId: string
 }
 
-export interface SupporterData {
+export interface UserData {
   id: string
   address: string
+  supports: SupporterData[]
+}
+
+export interface SupporterData {
+  id: string
+  user: UserData
+  organization: OrganizationData
   representative: string
   casts: CastData[]
   stakes: StakeData[]

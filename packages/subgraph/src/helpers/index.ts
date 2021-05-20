@@ -6,6 +6,7 @@ import {
   Proposal as ProposalEntity,
   Supporter as SupporterEntity,
   Token as TokenEntity,
+  User as UserEntity,
 } from '../../generated/schema'
 import { STATUS_ACTIVE, STATUS_ACTIVE_NUM } from '../statuses'
 
@@ -57,6 +58,7 @@ export function loadOrCreateOrg(orgAddress: Address): OrganizationEntity | null 
     organization.proposalCount = 0
     organization.active = true
     organization.createdAt = BigInt.fromI32(0)
+    organization.supporterCount = 0
 
     config.save()
   }
@@ -64,16 +66,33 @@ export function loadOrCreateOrg(orgAddress: Address): OrganizationEntity | null 
   return organization
 }
 
-/// /// Supporter Entity //////
-export function loadOrCreateSupporter(address: Address, orgAddress: Address): SupporterEntity {
+export function loadOrCreateUser(address: Address): UserEntity | null {
+  const userId = address.toHexString()
+  let user = UserEntity.load(userId)
+
+  if (user === null) {
+    user = new UserEntity(userId)
+    user.address = address
+    user.save()
+  }
+
+  return user
+}
+
+/// /// Organization Support Entity //////
+export function loadOrCreateSupporter(address: Address, orgAddress: Address): SupporterEntity | null {
+  const user = loadOrCreateUser(address)
+
   const id = getSupporterEntityId(address, orgAddress)
   let supporter = SupporterEntity.load(id)
 
   if (supporter === null) {
     supporter = new SupporterEntity(id)
-    supporter.address = address
+    supporter.user = user.id
+    supporter.organization = orgAddress.toHexString()
+    incrementSupporterCount(orgAddress)
   }
-  return supporter!
+  return supporter
 }
 
 export function getSupporterEntityId(address: Address, orgAddress: Address): string {
@@ -112,6 +131,12 @@ export function getProposalEntity(appAddress: Address, proposalId: BigInt): Prop
 export function incrementProposalCount(orgAddress: Address): void {
   const org = loadOrCreateOrg(orgAddress)
   org.proposalCount += 1
+  org.save()
+}
+
+export function incrementSupporterCount(orgAddress: Address): void {
+  const org = loadOrCreateOrg(orgAddress)
+  org.supporterCount += 1
   org.save()
 }
 

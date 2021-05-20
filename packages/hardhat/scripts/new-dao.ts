@@ -88,9 +88,7 @@ const getEventArgument = async (
 }
 
 const getEventArgFromReceipt = (receipt, event, arg) => {
-  return receipt.events
-    .filter(receiptEvent => receiptEvent.event == event)[0]
-    .args[arg]
+  return receipt.events.filter((receiptEvent) => receiptEvent.event == event)[0].args[arg]
 }
 
 const transform = (params) => ({
@@ -169,12 +167,16 @@ export default async function main(log = console.log): Promise<any> {
     const honeyToken = await getHoneyToken(mainAccount, gardensTemplate)
     const currentAllowance = await honeyToken.allowance(mainAccount.address, gardensTemplate.address)
     if (currentAllowance.gt(BigNumber.from(0))) {
-      const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, BigNumber.from(0), {gasLimit: 1000000})
+      const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, BigNumber.from(0), {
+        gasLimit: 1000000,
+      })
       await approveHoneyPaymentTx.wait(1)
       log(`Pre unapproval for honey payment made.`)
     }
     const approvalAmount = BigNumber.from(100).pow(BigNumber.from(18))
-    const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, approvalAmount, {gasLimit: 1000000})
+    const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, approvalAmount, {
+      gasLimit: 1000000,
+    })
     await approveHoneyPaymentTx.wait(1)
     log(`Approval for honey payment made.`)
   }
@@ -182,7 +184,9 @@ export default async function main(log = console.log): Promise<any> {
   const approveOgtPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
     const originalToken = await getOriginalToken(mainAccount, existingToken)
     const approvalAmount = BigNumber.from(100).pow(BigNumber.from(18))
-    const approveOriginalTokenPaymentTx = await originalToken.approve(gardensTemplate.address, approvalAmount, {gasLimit: 1000000})
+    const approveOriginalTokenPaymentTx = await originalToken.approve(gardensTemplate.address, approvalAmount, {
+      gasLimit: 1000000,
+    })
     await approveOriginalTokenPaymentTx.wait(1)
     log(`Approval for original token payment made.`)
   }
@@ -214,7 +218,7 @@ export default async function main(log = console.log): Promise<any> {
 
   const createTokenholders = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
     log(`Create token holders...`)
-    const createTokenHoldersTx = await gardensTemplate.createTokenHolders(holders, stakes, {gasLimit: 5000000})
+    const createTokenHoldersTx = await gardensTemplate.createTokenHolders(holders, stakes, { gasLimit: 5000000 })
     await createTokenHoldersTx.wait(1)
     log(`Tx create token holders completed.`)
   }
@@ -224,20 +228,26 @@ export default async function main(log = console.log): Promise<any> {
     const createGardenTxTwoTx = await gardensTemplate.createGardenTxTwo(
       [issuanceTargetRatio, issuanceMaxAdjustmentPerSecond],
       [decay, maxRatio, weight, minThresholdStakePercentage],
-      {gasLimit: 8000000}
+      { gasLimit: 8000000 }
     )
 
     // We get the event arg this way because it is emitted by a contract called by the initial contract
     // this means the args can't be decoded on the receipt directly
-    const unipoolDepositorAddress = createNewToken ? undefined : await getEventArgument(
-      'NewRewardDepositor',
-      'unipoolRewardDepositor',
-      await getUnipoolFactory(mainAccount, gardensTemplate),
-      createGardenTxTwoTx.hash
-    )
+    const unipoolDepositorAddress = createNewToken
+      ? undefined
+      : await getEventArgument(
+          'NewRewardDepositor',
+          'unipoolRewardDepositor',
+          await getUnipoolFactory(mainAccount, gardensTemplate),
+          createGardenTxTwoTx.hash
+        )
 
     const createGardenTxTwoReceipt = await createGardenTxTwoTx.wait(1)
-    const priceOracleAddress = getEventArgFromReceipt(createGardenTxTwoReceipt, 'GardenTransactionTwo', 'incentivisedPriceOracle')
+    const priceOracleAddress = getEventArgFromReceipt(
+      createGardenTxTwoReceipt,
+      'GardenTransactionTwo',
+      'incentivisedPriceOracle'
+    )
     const unipoolAddress = getEventArgFromReceipt(createGardenTxTwoReceipt, 'GardenTransactionTwo', 'unipool')
 
     log(`Tx two completed.`)
@@ -255,7 +265,7 @@ export default async function main(log = console.log): Promise<any> {
       [actionAmount, challengeAmount],
       [actionAmountStable, actionAmountStable],
       [challengeAmountStable, challengeAmountStable],
-      {gasLimit: 7000000}
+      { gasLimit: 7000000 }
     )
     await createGardenTxThreeTx.wait(1)
     log(`Tx three completed.`)
@@ -263,9 +273,13 @@ export default async function main(log = console.log): Promise<any> {
 
   const gardensTemplate = await getGardensTemplate(mainAccount)
   await approveHnyPayment(gardensTemplate, log)
-  if (!createNewToken) {await approveOgtPayment(gardensTemplate, log)}
+  if (!createNewToken) {
+    await approveOgtPayment(gardensTemplate, log)
+  }
   const daoAddress = await createGardenTxOne(gardensTemplate, log)
-  if (createNewToken) {await createTokenholders(gardensTemplate, log)}
+  if (createNewToken) {
+    await createTokenholders(gardensTemplate, log)
+  }
   const [priceOracleAddress, unipoolAddress, unipoolDepositorAddress] = await createGardenTxTwo(gardensTemplate, log)
   await createGardenTxThree(gardensTemplate, log)
 
@@ -275,7 +289,7 @@ export default async function main(log = console.log): Promise<any> {
     issuanceAddress,
     agreementAddress,
     votingAddress,
-    votingAggregatorAddress
+    votingAggregatorAddress,
   ] = await getApps(
     daoAddress,
     await Promise.all([
@@ -284,7 +298,7 @@ export default async function main(log = console.log): Promise<any> {
       gardensTemplate.DYNAMIC_ISSUANCE_APP_ID(),
       gardensTemplate.AGREEMENT_APP_ID(),
       gardensTemplate.DISPUTABLE_VOTING_APP_ID(),
-      gardensTemplate.VOTING_AGGREGATOR_APP_ID()
+      gardensTemplate.VOTING_AGGREGATOR_APP_ID(),
     ])
   )
 
@@ -298,7 +312,7 @@ export default async function main(log = console.log): Promise<any> {
     votingAggregatorAddress,
     priceOracleAddress,
     unipoolAddress,
-    unipoolDepositorAddress
+    unipoolDepositorAddress,
   })
   return {
     daoAddress,
@@ -310,7 +324,7 @@ export default async function main(log = console.log): Promise<any> {
     votingAggregatorAddress,
     priceOracleAddress,
     unipoolAddress,
-    unipoolDepositorAddress
+    unipoolDepositorAddress,
   }
 }
 

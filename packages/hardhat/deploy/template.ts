@@ -23,7 +23,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     UniswapV2Factory,
     UnipoolFactory,
     Arbitrator,
-    StakingFactory
+    StakingFactory,
   } = Config.Bases[hre.network.name]
 
   await deploy('GardensTemplate', {
@@ -42,7 +42,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       UniswapV2Factory,
       UnipoolFactory,
       Arbitrator,
-      StakingFactory
+      StakingFactory,
     ],
     log: true,
     deterministicDeployment: true,

@@ -16,7 +16,7 @@ export const Config = {
       UniswapV2Factory: '0xA818b4F111Ccac7AA31D0BCc0806d64F2E0737D7',
       UnipoolFactory: '0xD38EB36B7E8b126Ff1E9fDD007bC4050B6C6aB7c',
       Arbitrator: '0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85',
-      StakingFactory: '0xe71331AEf803BaeC606423B105e4d1C85f012C00'
+      StakingFactory: '0xe71331AEf803BaeC606423B105e4d1C85f012C00',
     },
     [eEthereumNetwork.rinkeby]: {
       AragonID: '0x3665e7bFd4D3254AE7796779800f5b603c43C60D',
@@ -32,7 +32,7 @@ export const Config = {
       UniswapV2Factory: '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f',
       UnipoolFactory: '0x710D70591C70B1aA96d558269193F0e59F52E154',
       Arbitrator: '0x35e7433141D5f7f2EB7081186f5284dCDD2ccacE',
-      StakingFactory: '0xE376a7bbD20Ba75616D6a9d0A8468195a5d695FC'
+      StakingFactory: '0xE376a7bbD20Ba75616D6a9d0A8468195a5d695FC',
     },
 
     //Using xdai data to use the fork functionality on localhost
@@ -50,7 +50,7 @@ export const Config = {
       UniswapV2Factory: '0xA818b4F111Ccac7AA31D0BCc0806d64F2E0737D7',
       UnipoolFactory: '0xD38EB36B7E8b126Ff1E9fDD007bC4050B6C6aB7c',
       Arbitrator: '0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85',
-      StakingFactory: '0xe71331AEf803BaeC606423B105e4d1C85f012C00'
+      StakingFactory: '0xe71331AEf803BaeC606423B105e4d1C85f012C00',
     },
   },
 }

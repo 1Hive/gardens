@@ -10,7 +10,13 @@ import {
 } from '../../generated/schema'
 import { STATUS_ACTIVE, STATUS_ACTIVE_NUM } from '../statuses'
 
+export const ZERO_ADDRESS = Address.fromString('0x0000000000000000000000000000000000000000')
+
 /// /// Token Entity //////
+export function isOrgToken(token: TokenEntity | null): boolean {
+  return !!token && !!token.organization
+}
+
 export function loadTokenData(address: Address): string | null {
   const id = address.toHexString()
   const token = TokenEntity.load(id)
@@ -59,6 +65,7 @@ export function loadOrCreateOrg(orgAddress: Address): OrganizationEntity | null 
     organization.active = true
     organization.createdAt = BigInt.fromI32(0)
     organization.supporterCount = 0
+    organization.honeyLiquidity = BigInt.fromI32(0)
 
     config.save()
   }
@@ -144,3 +151,4 @@ export function incrementSupporterCount(orgAddress: Address): void {
 export * from './conviction'
 export * from './voting'
 export * from './agreement'
+export * from './pair'

@@ -4,6 +4,7 @@ import {
   Proposal as ProposalEntity,
   Stake as StakeEntity,
   StakeHistory as StakeHistoryEntity,
+  Token as TokenEntity,
 } from '../../generated/schema'
 import {
   ConvictionVoting as ConvictionVotingContract,
@@ -43,10 +44,15 @@ export function loadConvictionConfig(orgAddress: Address, appAddress: Address): 
   if (stakeTokenId) {
     convictionConfig.stakeToken = stakeToken.toHexString()
 
-    // Set token for org
+    // Set token for org and vice versa
     const org = loadOrCreateOrg(orgAddress)
     org.token = stakeToken.toHexString()
+
+    const token = TokenEntity.load(stakeToken.toHexString())
+    token.organization = org.id
+
     org.save()
+    token.save()
   }
   const stableTokenId = loadTokenData(stableToken)
   if (stableTokenId) {

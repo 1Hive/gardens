@@ -5,7 +5,7 @@ import {
   InstalledApp as InstalledAppEvent,
 } from '../../generated/GardensTemplate/GardensTemplate'
 import { Kernel as KernelTemplate } from '../../generated/templates'
-import { loadOrCreateOrg } from '../helpers'
+import { setUpHoneyLiquidity, loadOrCreateOrg } from '../helpers'
 
 export function handleDeployDao(event: DeployDaoEvent): void {
   const org = loadOrCreateOrg(event.params.dao)
@@ -17,10 +17,14 @@ export function handleDeployDao(event: DeployDaoEvent): void {
 }
 
 export function handleSetupDao(event: SetupDaoEvent): void {
-  const org = loadOrCreateOrg(event.params.dao)
+  const daoAddress = event.params.dao
+  const org = loadOrCreateOrg(daoAddress)
+
   // Set org as active when dao setup finished
   org.active = true
   org.save()
+
+  setUpHoneyLiquidity(event.address, daoAddress)
 }
 
 export function handleDeployToken(event: DeployTokenEvent): void {}

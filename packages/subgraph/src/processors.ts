@@ -1,5 +1,5 @@
 import { Address, BigInt, DataSourceTemplate } from '@graphprotocol/graph-ts'
-import { loadOrCreateConfig, loadOrCreateOrg } from './helpers'
+import { loadOrCreateOrg } from './helpers'
 import { onAppTemplateCreated } from './hooks'
 import { AGREEMENT_APPIDS, CONVICTION_VOTING_APPIDS, TOKENS_APPIDS, VOTING_APPIDS } from './appIds'
 
@@ -13,9 +13,7 @@ export function processApp(orgAddress: Address, appAddress: Address, appId: stri
   } else if (AGREEMENT_APPIDS.includes(appId)) {
     template = 'Agreement'
   } else if (TOKENS_APPIDS.includes(appId)) {
-    const orgConfig = loadOrCreateConfig(orgAddress)
-    orgConfig.tokens = appAddress
-    orgConfig.save()
+    template = 'HookedTokenManager'
   }
 
   if (template) {

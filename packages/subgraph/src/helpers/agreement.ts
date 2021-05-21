@@ -24,12 +24,9 @@ export function populateCollateralData(proposal: ProposalEntity | null, event: P
     const collateralRequirement = new CollateralRequirementEntity(proposal.id)
 
     collateralRequirement.proposal = proposal.id
-    const collateralTokenId = loadTokenData(collateralRequirementData.value0)
+    const tokenId = loadTokenData(collateralRequirementData.value0)
 
-    if (collateralTokenId) {
-      collateralRequirement.token = collateralRequirementData.value0.toHexString()
-    }
-
+    collateralRequirement.token = tokenId
     collateralRequirement.challengeDuration = collateralRequirementData.value1
     collateralRequirement.actionAmount = collateralRequirementData.value2
     collateralRequirement.challengeAmount = collateralRequirementData.value3
@@ -46,12 +43,9 @@ export function populateVoteCollateralData(proposal: ProposalEntity | null, even
   const collateralRequirement = new CollateralRequirementEntity(proposal.id)
 
   collateralRequirement.proposal = proposal.id
-  const collateralTokenId = loadTokenData(collateralRequirementData.value0)
+  const tokenId = loadTokenData(collateralRequirementData.value0)
 
-  if (collateralTokenId) {
-    collateralRequirement.token = collateralTokenId
-  }
-
+  collateralRequirement.token = tokenId
   collateralRequirement.challengeDuration = collateralRequirementData.value1
   collateralRequirement.actionAmount = collateralRequirementData.value2
   collateralRequirement.challengeAmount = collateralRequirementData.value3

@@ -14,6 +14,7 @@ type Garden = {
   id: string,
   createdAt: number,
   proposalCount: number,
+  supporterCount: number
   token: any,
   wrappableToken: any,
   honeyLiquidity: string
@@ -92,6 +93,7 @@ function describeGarden(garden: Garden) {
   console.log(`Active: ${garden.active}`)
   console.log(`CreatedAt: ${garden.createdAt}`)
   console.log(`Proposal count: ${garden.proposalCount}`)
+    console.log(`Supporter count: ${garden.supporterCount}`)
   console.log(`Token: ${JSON.stringify(garden.token, null, 2)}`)
   console.log(`Wrappable token: ${garden.wrappableToken ? JSON.stringify(garden.wrappableToken, null, 2): 'No wrappable token'}`)
   console.log(`Honey liquidity: ${garden.honeyLiquidity}`)

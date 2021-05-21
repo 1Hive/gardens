@@ -26,6 +26,7 @@ export const ORGANIZATIONS = gql`
         decimals
       }
       honeyLiquidity
+      supporterCount
     }
   }
 `

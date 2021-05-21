@@ -12,4 +12,5 @@ templates:
 {{> Agreement.template.yaml}}
 {{> ConvictionVoting.template.yaml}}
 {{> DisputableVoting.template.yaml}}
+{{> HookedTokenManager.template.yaml}}
 {{> Organization.template.yaml}}

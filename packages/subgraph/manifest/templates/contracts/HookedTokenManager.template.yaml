@@ -1,0 +1,20 @@
+- kind: ethereum/contract
+  name: HookedTokenManager
+  network: {{network}}
+  source:
+    abi: HookedTokenManager
+  mapping:
+    kind: ethereum/events
+    apiVersion: 0.0.3
+    language: wasm/assemblyscript
+    entities:
+      - Token
+    abis:
+      - name: HookedTokenManager
+        file: ./abis/HookedTokenManager.json
+      - name: ERC20
+        file: ./abis/ERC20.json
+    eventHandlers:
+      - event: TokenManagerInitialized(address,address)
+        handler: handleTokenManagerInitialized
+    file: ./src/mappings/HookedTokenManager.ts

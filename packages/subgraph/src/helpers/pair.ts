@@ -1,16 +1,16 @@
-import { Address, log } from '@graphprotocol/graph-ts'
+import { Address } from '@graphprotocol/graph-ts'
 import { GardensTemplate as GardensTemplateContract } from '../../generated/GardensTemplate/GardensTemplate'
 import { HoneyswapFactory as HoneyswapFactoryContract } from '../../generated/GardensTemplate/HoneyswapFactory'
 import { HoneyswapRouter as HoneyswapRouterContract } from '../../generated/GardensTemplate/HoneyswapRouter'
 import { Pair as PairContract } from '../../generated/GardensTemplate/Pair'
 import { Pair as PairTemplate } from '../../generated/templates'
-import { isOrgToken, loadOrCreateOrg, ZERO_ADDRESS } from '.'
+import { tokenHasOrg, loadOrCreateOrg, ZERO_ADDRESS } from '.'
 import { Organization as OrganizationEntity, Token as TokenEntity } from '../../generated/schema'
 
 function getOrgTokenFromPair(pairContract: PairContract): TokenEntity | null {
   const token0 = TokenEntity.load(pairContract.token0().toHexString())
 
-  if (isOrgToken(token0)) {
+  if (tokenHasOrg(token0)) {
     return token0
   } else {
     return TokenEntity.load(pairContract.token1().toHexString())
@@ -36,16 +36,24 @@ export function populateLiquidityFromContract(pairAddress: Address): void {
 }
 
 export function setUpHoneyLiquidity(templateAddress: Address, orgAddress: Address): void {
-  const org = loadOrCreateOrg(orgAddress)
   const gardensTemplate = GardensTemplateContract.bind(templateAddress)
   const honeyswapRouter = HoneyswapRouterContract.bind(gardensTemplate.honeyswapRouter())
   const honeyswapFactory = HoneyswapFactoryContract.bind(honeyswapRouter.factory())
-  // Note we assume org entity has token field set
-  const honeyDaoTokenPairAddress = honeyswapFactory.getPair(gardensTemplate.honeyToken(), Address.fromString(org.token))
+  const org = loadOrCreateOrg(orgAddress)
+  // Use BYOT token if it's available
+  const orgToken = TokenEntity.load(org.wrappableToken ? org.wrappableToken : org.token)
+  // We assume org entity has token field set
+  const honeyDaoTokenPairAddress = honeyswapFactory.getPair(
+    gardensTemplate.honeyToken(),
+    Address.fromString(orgToken.id)
+  )
 
   if (honeyDaoTokenPairAddress.equals(ZERO_ADDRESS)) {
     return
   }
+
+  orgToken.organization = org.id
+  orgToken.save()
 
   PairTemplate.create(honeyDaoTokenPairAddress)
   populateLiquidityFromContract(honeyDaoTokenPairAddress)

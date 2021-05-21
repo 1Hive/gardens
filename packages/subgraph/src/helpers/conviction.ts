@@ -44,15 +44,11 @@ export function loadConvictionConfig(orgAddress: Address, appAddress: Address): 
   if (stakeTokenId) {
     convictionConfig.stakeToken = stakeToken.toHexString()
 
-    // Set token for org and vice versa
+    // Set token for org
     const org = loadOrCreateOrg(orgAddress)
     org.token = stakeToken.toHexString()
 
-    const token = TokenEntity.load(stakeToken.toHexString())
-    token.organization = org.id
-
     org.save()
-    token.save()
   }
   const stableTokenId = loadTokenData(stableToken)
   if (stableTokenId) {

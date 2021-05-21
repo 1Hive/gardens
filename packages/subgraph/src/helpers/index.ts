@@ -13,7 +13,7 @@ import { STATUS_ACTIVE, STATUS_ACTIVE_NUM } from '../statuses'
 export const ZERO_ADDRESS = Address.fromString('0x0000000000000000000000000000000000000000')
 
 /// /// Token Entity //////
-export function isOrgToken(token: TokenEntity | null): boolean {
+export function tokenHasOrg(token: TokenEntity | null): boolean {
   return !!token && !!token.organization
 }
 

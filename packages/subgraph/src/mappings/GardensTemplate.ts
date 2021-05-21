@@ -17,14 +17,14 @@ export function handleDeployDao(event: DeployDaoEvent): void {
 }
 
 export function handleSetupDao(event: SetupDaoEvent): void {
-  const daoAddress = event.params.dao
-  const org = loadOrCreateOrg(daoAddress)
+  const orgAddress = event.params.dao
+  const org = loadOrCreateOrg(orgAddress)
 
   // Set org as active when dao setup finished
   org.active = true
   org.save()
 
-  setUpHoneyLiquidity(event.address, daoAddress)
+  setUpHoneyLiquidity(event.address, orgAddress)
 }
 
 export function handleDeployToken(event: DeployTokenEvent): void {}

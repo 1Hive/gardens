@@ -21,6 +21,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     PriceOracleFactory,
     CollateralRequirementUpdaterFactory,
     UniswapV2Factory,
+    UnipoolFactory,
     Arbitrator,
     StakingFactory,
   } = Config.Bases[process.env.HARDHAT_FORK]
@@ -39,6 +40,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       PriceOracleFactory,
       CollateralRequirementUpdaterFactory,
       UniswapV2Factory,
+      UnipoolFactory,
       Arbitrator,
       StakingFactory,
     ],

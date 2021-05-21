@@ -1,5 +1,4 @@
 import { Address, BigInt } from '@graphprotocol/graph-ts'
-import { CastVote as CastVoteEvent } from '../../generated/templates/DisputableVoting/DisputableVoting'
 import {
   Cast as CastVoteEntity,
   Proposal as ProposalEntity,
@@ -50,13 +49,6 @@ export function getCastEntity(proposal: ProposalEntity | null, voter: Address): 
   return cast
 }
 
-export function populateCastDataFromEvent(cast: CastVoteEntity | null, event: CastVoteEvent): void {
-  cast.entity = event.params.voter.toHexString()
-  cast.supports = event.params.supports
-  cast.stake = event.params.stake
-  cast.createdAt = event.block.timestamp
-}
-
 export function castVoteStatus(state: i32): string {
   switch (state) {
     case 0:
@@ -104,14 +96,18 @@ function buildCastVoteId(voting: Address, voteId: BigInt, voter: Address): strin
   return getProposalEntityId(voting, voteId) + '-cast-' + voter.toHexString()
 }
 
-export function loadOrCreateCastVote(votingAddress: Address, voteId: BigInt, voterAddress: Address): CastVoteEntity {
+export function loadOrCreateCastVote(
+  votingAddress: Address,
+  voteId: BigInt,
+  voterAddress: Address
+): CastVoteEntity | null {
   const castVoteId = buildCastVoteId(votingAddress, voteId, voterAddress)
   let castVote = CastVoteEntity.load(castVoteId)
   if (castVote === null) {
     castVote = new CastVoteEntity(castVoteId)
     castVote.proposal = getProposalEntityId(votingAddress, voteId)
   }
-  return castVote!
+  return castVote
 }
 
 function hasReachedValuePct(value: BigInt, total: BigInt, pct: BigInt, pctBase: BigInt): boolean {

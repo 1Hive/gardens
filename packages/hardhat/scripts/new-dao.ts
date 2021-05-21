@@ -1,9 +1,8 @@
-/* eslint-disable @typescript-eslint/ban-types */
-import { Signer } from '@ethersproject/abstract-signer'
-import { BigNumber } from 'ethers'
 import hre, { ethers } from 'hardhat'
-import { GardensTemplate, Erc20, Kernel } from '../typechain'
-import { getEventArgument } from '../helpers/events'
+import { Contract } from '@ethersproject/contracts'
+import { Signer } from '@ethersproject/abstract-signer'
+import { GardensTemplate, ERC20, Kernel, IUnipoolFactory } from '../typechain'
+import { BigNumber } from 'ethers'
 
 const { deployments } = hre
 
@@ -58,6 +57,11 @@ const getGardensTemplate = async (signer: Signer): Promise<GardensTemplate> => {
   return (await ethers.getContractAt('GardensTemplate', gardensTemplateAddress, signer)) as GardensTemplate
 }
 
+const getUnipoolFactory = async (signer: Signer, gardensTemplate: GardensTemplate): Promise<IUnipoolFactory> => {
+  const unipoolFactoryAddress = await gardensTemplate.unipoolFactory()
+  return (await ethers.getContractAt('IUnipoolFactory', unipoolFactoryAddress, signer)) as IUnipoolFactory
+}
+
 const getHoneyToken = async (signer: Signer, gardensTemplate: GardensTemplate) => {
   const honeyTokenAddress = await gardensTemplate.honeyToken()
   return (await ethers.getContractAt('IERC20', honeyTokenAddress, signer)) as Erc20
@@ -65,6 +69,10 @@ const getHoneyToken = async (signer: Signer, gardensTemplate: GardensTemplate) =
 
 const getOriginalToken = async (signer: Signer, address: string) => {
   return (await ethers.getContractAt('IERC20', address, signer)) as Erc20
+}
+
+const getEventArgFromReceipt = (receipt, event, arg) => {
+  return receipt.events.filter((receiptEvent) => receiptEvent.event == event)[0].args[arg]
 }
 
 const transform = (params) => ({
@@ -137,16 +145,22 @@ export default async function main(log = console.log): Promise<any> {
   } = transform(await import(`../config/params-${process.env.HARDHAT_FORK}.json`))
   const [mainAccount] = await ethers.getSigners()
 
+  const createNewToken = existingToken == ZERO_ADDRESS // As opposed bring your own token
+
   const approveHnyPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
     const honeyToken = await getHoneyToken(mainAccount, gardensTemplate)
     const currentAllowance = await honeyToken.allowance(mainAccount.address, gardensTemplate.address)
     if (currentAllowance.gt(BigNumber.from(0))) {
-      const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, BigNumber.from(0))
+      const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, BigNumber.from(0), {
+        gasLimit: 1000000,
+      })
       await approveHoneyPaymentTx.wait(1)
       log(`Pre unapproval for honey payment made.`)
     }
     const approvalAmount = BigNumber.from(100).pow(BigNumber.from(18))
-    const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, approvalAmount)
+    const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, approvalAmount, {
+      gasLimit: 1000000,
+    })
     await approveHoneyPaymentTx.wait(1)
     log(`Approval for honey payment made.`)
   }
@@ -154,13 +168,16 @@ export default async function main(log = console.log): Promise<any> {
   const approveOgtPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
     const originalToken = await getOriginalToken(mainAccount, existingToken)
     const approvalAmount = BigNumber.from(100).pow(BigNumber.from(18))
-    const approveOriginalTokenPaymentTx = await originalToken.approve(gardensTemplate.address, approvalAmount)
+    const approveOriginalTokenPaymentTx = await originalToken.approve(gardensTemplate.address, approvalAmount, {
+      gasLimit: 1000000,
+    })
     await approveOriginalTokenPaymentTx.wait(1)
     log(`Approval for original token payment made.`)
   }
 
-  const createDaoTxOne = async (gardensTemplate: GardensTemplate, log: Function): Promise<string> => {
-    const createDaoTxOneTx = await gardensTemplate.createDaoTxOne(
+  const createGardenTxOne = async (gardensTemplate: GardensTemplate, log: Function): Promise<string> => {
+    log(`Create garden transaction one...`)
+    const createGardenTxOneTx = await gardensTemplate.createGardenTxOne(
       existingToken,
       gardenTokenName,
       gardenTokenSymbol,
@@ -174,32 +191,57 @@ export default async function main(log = console.log): Promise<any> {
         voteQuietEndingExtension,
         voteExecutionDelay,
       ],
-      overrides
+      { gasLimit: 1000000 }
     )
-    const daoAddress = await getEventArgument('DeployDao', 'dao', gardensTemplate, createDaoTxOneTx.hash)
-    await createDaoTxOneTx.wait(1)
+    const createGardenTxOneReceipt = await createGardenTxOneTx.wait(1)
+    const daoAddress = getEventArgFromReceipt(createGardenTxOneReceipt, 'DeployDao', 'dao')
+
     log(`Tx one completed: Gardens DAO (${daoAddress}) created.`)
     return daoAddress
   }
 
   const createTokenholders = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
-    const createTokenHoldersTx = await gardensTemplate.createTokenHolders(holders, stakes, overrides)
+    log(`Create token holders...`)
+    const createTokenHoldersTx = await gardensTemplate.createTokenHolders(holders, stakes, { gasLimit: 5000000 })
     await createTokenHoldersTx.wait(1)
     log(`Tx create token holders completed.`)
   }
 
-  const createDaoTxTwo = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
-    const createDaoTxTwoTx = await gardensTemplate.createDaoTxTwo(
+  const createGardenTxTwo = async (gardensTemplate: GardensTemplate, log: Function): Promise<string[]> => {
+    log(`Create garden transaction two...`)
+    const createGardenTxTwoTx = await gardensTemplate.createGardenTxTwo(
       [issuanceTargetRatio, issuanceMaxAdjustmentPerSecond],
       [decay, maxRatio, weight, minThresholdStakePercentage],
-      overrides
+      { gasLimit: 8000000 }
     )
-    await createDaoTxTwoTx.wait(1)
+
+    // We get the event arg this way because it is emitted by a contract called by the initial contract
+    // this means the args can't be decoded on the receipt directly
+    const unipoolDepositorAddress = createNewToken
+      ? undefined
+      : await getEventArgument(
+          'NewRewardDepositor',
+          'unipoolRewardDepositor',
+          await getUnipoolFactory(mainAccount, gardensTemplate),
+          createGardenTxTwoTx.hash
+        )
+
+    const createGardenTxTwoReceipt = await createGardenTxTwoTx.wait(1)
+    const priceOracleAddress = getEventArgFromReceipt(
+      createGardenTxTwoReceipt,
+      'GardenTransactionTwo',
+      'incentivisedPriceOracle'
+    )
+    const unipoolAddress = getEventArgFromReceipt(createGardenTxTwoReceipt, 'GardenTransactionTwo', 'unipool')
+
     log(`Tx two completed.`)
+
+    return [priceOracleAddress, unipoolAddress, unipoolDepositorAddress]
   }
 
-  const createDaoTxThree = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
-    const createDaoTxThreeTx = await gardensTemplate.createDaoTxThree(
+  const createGardenTxThree = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
+    log(`Create garden transaction three...`)
+    const createGardenTxThreeTx = await gardensTemplate.createGardenTxThree(
       daoId,
       agreementTitle,
       ethers.utils.toUtf8Bytes(agreementContent),
@@ -207,25 +249,23 @@ export default async function main(log = console.log): Promise<any> {
       [actionAmount, challengeAmount],
       [actionAmountStable, actionAmountStable],
       [challengeAmountStable, challengeAmountStable],
-      overrides
+      { gasLimit: 7000000 }
     )
-    await createDaoTxThreeTx.wait(1)
+    await createGardenTxThreeTx.wait(1)
     log(`Tx three completed.`)
   }
 
   const gardensTemplate = await getGardensTemplate(mainAccount)
-  const createNewToken = existingToken == ZERO_ADDRESS // As opposed bring your own token
-
   await approveHnyPayment(gardensTemplate, log)
   if (!createNewToken) {
     await approveOgtPayment(gardensTemplate, log)
   }
-  const daoAddress = await createDaoTxOne(gardensTemplate, log)
+  const daoAddress = await createGardenTxOne(gardensTemplate, log)
   if (createNewToken) {
     await createTokenholders(gardensTemplate, log)
   }
-  await createDaoTxTwo(gardensTemplate, log)
-  await createDaoTxThree(gardensTemplate, log)
+  const [priceOracleAddress, unipoolAddress, unipoolDepositorAddress] = await createGardenTxTwo(gardensTemplate, log)
+  await createGardenTxThree(gardensTemplate, log)
 
   const [
     convictionVotingAddress,
@@ -233,6 +273,7 @@ export default async function main(log = console.log): Promise<any> {
     issuanceAddress,
     agreementAddress,
     votingAddress,
+    votingAggregatorAddress,
   ] = await getApps(
     daoAddress,
     await Promise.all([
@@ -241,6 +282,7 @@ export default async function main(log = console.log): Promise<any> {
       gardensTemplate.DYNAMIC_ISSUANCE_APP_ID(),
       gardensTemplate.AGREEMENT_APP_ID(),
       gardensTemplate.DISPUTABLE_VOTING_APP_ID(),
+      gardensTemplate.VOTING_AGGREGATOR_APP_ID(),
     ])
   )
 
@@ -251,6 +293,10 @@ export default async function main(log = console.log): Promise<any> {
     issuanceAddress,
     agreementAddress,
     votingAddress,
+    votingAggregatorAddress,
+    priceOracleAddress,
+    unipoolAddress,
+    unipoolDepositorAddress,
   })
   return {
     daoAddress,
@@ -259,6 +305,10 @@ export default async function main(log = console.log): Promise<any> {
     issuanceAddress,
     agreementAddress,
     votingAddress,
+    votingAggregatorAddress,
+    priceOracleAddress,
+    unipoolAddress,
+    unipoolDepositorAddress,
   }
 }
 

@@ -219,7 +219,6 @@ function _updateProposalStakes(
   timestamp: BigInt
 ): void {
   const supporter = loadOrCreateSupporter(entity, Address.fromString(proposal.organization))
-  supporter.proposal = proposal.id
   supporter.save()
 
   const stake = getStakeEntity(proposal, supporter.id)

@@ -6,6 +6,7 @@ type Organization @entity {
   wrappableToken: Token
   proposalCount: Int!
   proposals: [Proposal!] @derivedFrom(field: "organization")
+  supporterCount: Int!
   active: Boolean!
 }
 
@@ -101,7 +102,7 @@ type Proposal @entity {
 
 type Cast @entity {
   id: ID!
-  entity: Supporter!
+  supporter: Supporter!
   caster: Bytes!
   proposal: Proposal!
   supports: Boolean!
@@ -112,7 +113,7 @@ type Cast @entity {
 type Stake @entity {
   id: ID!
   type: StakeType!
-  entity: Supporter!
+  supporter: Supporter!
   proposal: Proposal!
   amount: BigInt!
   createdAt: BigInt!
@@ -121,7 +122,7 @@ type Stake @entity {
 type StakeHistory @entity {
   id: ID!
   type: StakeType!
-  entity: Supporter!
+  supporter: Supporter!
   proposal: Proposal!
   tokensStaked: BigInt!
   totalTokensStaked: BigInt!
@@ -130,14 +131,20 @@ type StakeHistory @entity {
   createdAt: BigInt! # Timestamp at which was created
 }
 
-type Supporter @entity {
+type User @entity {
   id: ID!
   address: Bytes!
-  proposal: Proposal!
+  supports: [Supporter!]! @derivedFrom(field: "user")
+}
+
+type Supporter @entity {
+  id: ID!
+  user: User!
+  organization: Organization!
   representative: Bytes
-  casts: [Cast!] @derivedFrom(field: "entity")
-  stakes: [Stake!] @derivedFrom(field: "entity")
-  stakesHistory: [StakeHistory!] @derivedFrom(field: "entity")
+  casts: [Cast!] @derivedFrom(field: "supporter")
+  stakes: [Stake!] @derivedFrom(field: "supporter")
+  stakesHistory: [StakeHistory!] @derivedFrom(field: "supporter")
 }
 
 type Token @entity {

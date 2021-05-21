@@ -1,20 +1,22 @@
 import { GraphQLWrapper } from '@aragon/connect-thegraph'
 import { subgraphUrlFromChainId } from './thegraph/connector'
-import { ORGANIZATIONS } from './thegraph/queries'
+import { ORGANIZATIONS, USER } from './thegraph/queries'
 
 type Config = {
   network: number
   subgraphUrl?: string
 }
 
-export async function getGardens(config: Config, { first = 1000 }) {
-  const subgraphUrl = config?.subgraphUrl ?? subgraphUrlFromChainId(config.network) ?? undefined
+type GardenParams = {
+  first?: number
+}
 
-  if (!subgraphUrl) {
-    throw new Error('subgraphUrl required to be passed.')
-  }
+type UserParams = {
+  id: string
+}
 
-  const client = new GraphQLWrapper(subgraphUrl)
+export async function getGardens(config: Config, { first = 1000 }: GardenParams): Promise<any> {
+  const client = getSubgraphClient(config)
   const result = await client.performQuery(ORGANIZATIONS, { first })
 
   if (!result.data.organizations) {
@@ -22,4 +24,25 @@ export async function getGardens(config: Config, { first = 1000 }) {
   }
 
   return result.data.organizations
+}
+
+export async function getUser(config: Config, { id }: UserParams): Promise<any> {
+  const client = getSubgraphClient(config)
+  const result = await client.performQuery(USER, { id })
+
+  if (!result.data.user) {
+    throw new Error('Unable to find user.')
+  }
+
+  return result.data.user
+}
+
+function getSubgraphClient(config: Config) {
+  const subgraphUrl = config?.subgraphUrl ?? subgraphUrlFromChainId(config.network) ?? undefined
+
+  if (!subgraphUrl) {
+    throw new Error('subgraphUrl required to be passed.')
+  }
+
+  return new GraphQLWrapper(subgraphUrl)
 }

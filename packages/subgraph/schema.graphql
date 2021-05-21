@@ -7,6 +7,7 @@ type Organization @entity {
   proposalCount: Int!
   proposals: [Proposal!] @derivedFrom(field: "organization")
   supporterCount: Int!
+  honeyLiquidity: BigInt
   active: Boolean!
 }
 
@@ -151,6 +152,7 @@ type Token @entity {
   name: String!
   symbol: String!
   decimals: Int!
+  organization: Organization # Needed for setting honey liquidity
 }
 
 type CollateralRequirement @entity {

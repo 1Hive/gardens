@@ -19,6 +19,7 @@ mustache \
   -p manifest/templates/contracts/ConvictionVoting.template.yaml \
   -p manifest/templates/contracts/DisputableVoting.template.yaml \
   -p manifest/templates/contracts/HookedTokenManager.template.yaml \
+  -p manifest/templates/contracts/Pair.template.yaml \
   -p manifest/templates/contracts/Organization.template.yaml \
   -p manifest/templates/contracts/GardensTemplate.template.yaml \
   $DATA \

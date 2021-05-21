@@ -13,4 +13,5 @@ templates:
 {{> ConvictionVoting.template.yaml}}
 {{> DisputableVoting.template.yaml}}
 {{> HookedTokenManager.template.yaml}}
+{{> Pair.template.yaml}}
 {{> Organization.template.yaml}}

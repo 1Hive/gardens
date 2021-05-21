@@ -1,12 +1,8 @@
-import { Address } from '@graphprotocol/graph-ts'
-
 import {
   HookedTokenManager as HookedTokenManagerContract,
   TokenManagerInitialized as TokenManagerInitializedEvent,
 } from '../../generated/templates/HookedTokenManager/HookedTokenManager'
-import { loadOrCreateOrg, loadTokenData } from '../helpers'
-
-const ZERO_ADDRESS = Address.fromHexString('0x0000000000000000000000000000000000000000')
+import { loadOrCreateOrg, loadTokenData, ZERO_ADDRESS } from '../helpers'
 
 export function handleTokenManagerInitialized(event: TokenManagerInitializedEvent): void {
   const tokenManagerApp = HookedTokenManagerContract.bind(event.address)

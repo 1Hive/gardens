@@ -28,6 +28,7 @@ export interface OrganizationData {
   token: TokenData
   wrappableToken: TokenData
   proposalCount: number
+  supporterCount: number
   active: boolean
 }
 

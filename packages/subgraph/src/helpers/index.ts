@@ -17,7 +17,16 @@ export function tokenHasOrg(token: TokenEntity | null): boolean {
   return !!token && !!token.organization
 }
 
-export function loadTokenData(address: Address): string | null {
+export function saveOrgToken(tokenId: string, orgAddress: Address): void {
+  const org = loadOrCreateOrg(orgAddress)
+  if (!org.token) {
+    org.token = tokenId
+    org.save()
+  }
+}
+
+/// /// Token Entity //////
+export function loadTokenData(address: Address): string {
   const id = address.toHexString()
   const token = TokenEntity.load(id)
 
@@ -41,7 +50,7 @@ export function loadTokenData(address: Address): string | null {
 }
 
 /// /// General Config Entity //////
-export function loadOrCreateConfig(orgAddress: Address): ConfigEntity | null {
+export function loadOrCreateConfig(orgAddress: Address): ConfigEntity {
   const id = orgAddress.toHexString()
   let config = ConfigEntity.load(id)
 
@@ -49,11 +58,11 @@ export function loadOrCreateConfig(orgAddress: Address): ConfigEntity | null {
     config = new ConfigEntity(id)
   }
 
-  return config
+  return config!
 }
 
 /// /// Organization entity //////
-export function loadOrCreateOrg(orgAddress: Address): OrganizationEntity | null {
+export function loadOrCreateOrg(orgAddress: Address): OrganizationEntity {
   const id = orgAddress.toHexString()
   let organization = OrganizationEntity.load(id)
 
@@ -70,10 +79,10 @@ export function loadOrCreateOrg(orgAddress: Address): OrganizationEntity | null 
     config.save()
   }
 
-  return organization
+  return organization!
 }
 
-export function loadOrCreateUser(address: Address): UserEntity | null {
+export function loadOrCreateUser(address: Address): UserEntity {
   const userId = address.toHexString()
   let user = UserEntity.load(userId)
 
@@ -83,11 +92,11 @@ export function loadOrCreateUser(address: Address): UserEntity | null {
     user.save()
   }
 
-  return user
+  return user!
 }
 
 /// /// Organization Support Entity //////
-export function loadOrCreateSupporter(address: Address, orgAddress: Address): SupporterEntity | null {
+export function loadOrCreateSupporter(address: Address, orgAddress: Address): SupporterEntity {
   const user = loadOrCreateUser(address)
 
   const id = getSupporterEntityId(address, orgAddress)
@@ -99,7 +108,7 @@ export function loadOrCreateSupporter(address: Address, orgAddress: Address): Su
     supporter.organization = orgAddress.toHexString()
     incrementSupporterCount(orgAddress)
   }
-  return supporter
+  return supporter!
 }
 
 export function getSupporterEntityId(address: Address, orgAddress: Address): string {
@@ -111,7 +120,7 @@ export function getProposalEntityId(appAddress: Address, proposalId: BigInt): st
   return 'appAddress:' + appAddress.toHexString() + '-proposalId:' + proposalId.toHexString()
 }
 
-export function getProposalEntity(appAddress: Address, proposalId: BigInt): ProposalEntity | null {
+export function getProposalEntity(appAddress: Address, proposalId: BigInt): ProposalEntity {
   const proposalEntityId = getProposalEntityId(appAddress, proposalId)
 
   let proposal = ProposalEntity.load(proposalEntityId)
@@ -132,7 +141,7 @@ export function getProposalEntity(appAddress: Address, proposalId: BigInt): Prop
     proposal.pauseDuration = BigInt.fromI32(0)
   }
 
-  return proposal
+  return proposal!
 }
 
 export function incrementProposalCount(orgAddress: Address): void {

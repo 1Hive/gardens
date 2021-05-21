@@ -1,17 +1,15 @@
-import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts'
+import { Address, BigInt } from '@graphprotocol/graph-ts'
 import {
   ConvictionConfig as ConvictionConfigEntity,
   Proposal as ProposalEntity,
   Stake as StakeEntity,
   StakeHistory as StakeHistoryEntity,
-  Token as TokenEntity,
 } from '../../generated/schema'
 import {
   ConvictionVoting as ConvictionVotingContract,
   ProposalAdded as ProposalAddedEvent,
 } from '../../generated/templates/ConvictionVoting/ConvictionVoting'
-import { loadOrCreateConfig, loadOrCreateOrg, loadTokenData } from '.'
-import { loadWrappableToken } from './tokens'
+import { loadOrCreateConfig, loadTokenData, saveOrgToken } from '.'
 
 /// /// Conviction config entity //////
 function getConvictionConfigEntityId(appAddress: Address): string {
@@ -39,33 +37,20 @@ export function loadConvictionConfig(orgAddress: Address, appAddress: Address): 
   const convictionVoting = ConvictionVotingContract.bind(appAddress)
   // Load tokens data
   const stakeToken = convictionVoting.stakeToken()
-  const stableToken = convictionVoting.stableToken()
   const stakeTokenId = loadTokenData(stakeToken)
-  if (stakeTokenId) {
-    convictionConfig.stakeToken = stakeToken.toHexString()
+  convictionConfig.stakeToken = stakeTokenId
 
-    // Set token for org
-    const org = loadOrCreateOrg(orgAddress)
-    org.token = stakeToken.toHexString()
+  // Save organization token if not exists (1Hive edge case)
+  saveOrgToken(stakeTokenId, orgAddress)
 
-    org.save()
-  }
+  const stableToken = convictionVoting.stableToken()
   const stableTokenId = loadTokenData(stableToken)
-  if (stableTokenId) {
-    convictionConfig.stableToken = stableToken.toHexString()
-  }
+  convictionConfig.stableToken = stableTokenId
 
   const requestToken = convictionVoting.requestToken()
   // App could be instantiated without a vault
   const requestTokenId = loadTokenData(requestToken)
-  if (requestTokenId) {
-    convictionConfig.requestToken = requestToken.toHexString()
-  }
-
-  // Load wrappable token data
-  // Note we handle the wrappable token here to make sure the
-  // initialize event was already called for the tokens app
-  loadWrappableToken(orgAddress)
+  convictionConfig.requestToken = requestTokenId
 
   // Load conviction params
   convictionConfig.decay = convictionVoting.decay()

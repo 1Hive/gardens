@@ -19,6 +19,7 @@ export const ORGANIZATIONS = gql`
         name
         decimals
       }
+      supporterCount
     }
   }
 `

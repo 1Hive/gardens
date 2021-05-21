@@ -2,4 +2,4 @@ build
 config/config.json
 generated
 subgraph.yaml
-src/appIds.ts
+src/constants.ts

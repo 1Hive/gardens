@@ -1,7 +1,13 @@
 import { Address, BigInt, DataSourceTemplate } from '@graphprotocol/graph-ts'
-import { loadOrCreateOrg } from './helpers'
+import { loadOrCreateOrg, MAX_UINT_256 } from './helpers'
 import { onAppTemplateCreated } from './hooks'
-import { AGREEMENT_APPIDS, CONVICTION_VOTING_APPIDS, TOKENS_APPIDS, VOTING_APPIDS } from './appIds'
+import {
+  ONE_HIVE_GARDEN_ADDRESS,
+  AGREEMENT_APPIDS,
+  CONVICTION_VOTING_APPIDS,
+  TOKENS_APPIDS,
+  VOTING_APPIDS,
+} from './constants'
 
 export function processApp(orgAddress: Address, appAddress: Address, appId: string): void {
   let template: string
@@ -26,6 +32,11 @@ export function processOrg(orgAddress: Address, timestamp: BigInt): void {
   const org = loadOrCreateOrg(orgAddress)
   if (org.createdAt.isZero()) {
     org.createdAt = timestamp
+
+    if (ONE_HIVE_GARDEN_ADDRESS.equals(orgAddress)) {
+      org.honeyLiquidity = MAX_UINT_256
+    }
+
     org.save()
   }
 }

@@ -1,4 +1,4 @@
-import { Address, BigInt } from '@graphprotocol/graph-ts'
+import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts'
 import { ERC20 as ERC20Contract } from '../../generated/templates/ConvictionVoting/ERC20'
 import {
   Config as ConfigEntity,
@@ -9,6 +9,10 @@ import {
   User as UserEntity,
 } from '../../generated/schema'
 import { STATUS_ACTIVE, STATUS_ACTIVE_NUM } from '../statuses'
+
+export const MAX_UINT_256 = BigInt.fromUnsignedBytes(
+  Bytes.fromHexString('0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff') as Bytes
+)
 
 export const ZERO_ADDRESS = Address.fromString('0x0000000000000000000000000000000000000000')
 

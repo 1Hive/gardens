@@ -1,5 +1,4 @@
 import 'dotenv/config'
-
 export function node_url(networkName: string): string {
   if (networkName) {
     const uri = process.env['ETH_NODE_URI_' + networkName.toUpperCase()]

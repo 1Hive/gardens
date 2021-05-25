@@ -18,7 +18,7 @@ import "./external/IVotingAggregator.sol";
 import "./appIds/AppIdsXDai.sol";
 import "./appIds/AppIdsRinkeby.sol";
 
-contract GardensTemplate is BaseTemplate, AppIdsXDai {
+contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
 
     using SafeERC20 for ERC20;
 

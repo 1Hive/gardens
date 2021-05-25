@@ -1,7 +1,7 @@
 import { HardhatRuntimeEnvironment } from 'hardhat/types'
 import { DeployFunction } from 'hardhat-deploy/types'
 
-import { Config } from '../helpers/configuration'
+import { Config } from '../helpers'
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployments, getNamedAccounts } = hre
@@ -24,9 +24,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     UnipoolFactory,
     Arbitrator,
     StakingFactory,
-  } = Config.Bases[process.env.HARDHAT_FORK]
+  } = Config.Bases[process.env.HARDHAT_FORK ? process.env.HARDHAT_FORK : hre.network.name]
 
-  await deploy('GardensTemplate', {
+  const gardenTeamplte = await deploy('GardensTemplate', {
     from: deployer,
     args: [
       DAOFactory,
@@ -47,5 +47,17 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     log: true,
     deterministicDeployment: true,
   })
+
+  if (process.env.VERIFY) {
+    await hre.tenderly.persistArtifacts({
+      name: 'GardensTemplate',
+      address: gardenTeamplte.address,
+    })
+
+    await hre.tenderly.verify({
+      name: 'GardensTemplate',
+      address: gardenTeamplte.address,
+    })
+  }
 }
 export default func

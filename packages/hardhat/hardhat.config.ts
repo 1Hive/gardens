@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { HardhatUserConfig } from 'hardhat/config'
-import { node_url, accounts } from './helpers/network'
+import { node_url, accounts } from './utils/network'
 
 import '@nomiclabs/hardhat-waffle'
 import '@tenderly/hardhat-tenderly'
@@ -50,19 +50,10 @@ const config: HardhatUserConfig = {
     xdai: {
       url: node_url('xdai'),
       accounts: accounts('xdai'),
-      gasPrice: 1000000000,
     },
   },
   gasReporter: {
-    currency: 'USD',
-    gasPrice: 100,
     enabled: process.env.REPORT_GAS ? true : false,
-    coinmarketcap: process.env.COINMARKETCAP_API_KEY,
-    maxMethodDiff: 10,
-  },
-  typechain: {
-    outDir: 'typechain',
-    target: 'ethers-v5',
   },
   mocha: {
     timeout: 0,

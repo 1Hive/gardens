@@ -1,18 +1,14 @@
-import hre, { ethers } from 'hardhat'
-import { Contract } from '@ethersproject/contracts'
-import { Signer } from '@ethersproject/abstract-signer'
-import { GardensTemplate, ERC20, Kernel, IUnipoolFactory } from '../typechain'
+/* eslint-disable @typescript-eslint/ban-types */
 import { BigNumber } from 'ethers'
+import hre, { ethers } from 'hardhat'
+import { GardensTemplate } from '../typechain'
+import { getGardensTemplate, getHoneyToken, getOriginalToken, getUnipoolFactory } from '../helpers'
+import { getEventArgument, getEventArgFromReceipt, getApps } from '../utils/events'
 
-const { deployments } = hre
+const network = process.env.HARDHAT_FORK ? process.env.HARDHAT_FORK : hre.network.name
+const blockTime = network === 'rinkeby' ? 15 : network === 'mainnet' ? 13 : 5 // 15 rinkeby, 13 mainnet, 5 xdai
 
-const overrides = {
-  gasLimit: 9500000,
-}
-
-const blockTime = process.env.HARDHAT_FORK === 'rinkeby' ? 15 : process.env.HARDHAT_FORK === 'mainnet' ? 13 : 5 // 15 rinkeby, 13 mainnet, 5 xdai
-
-console.log(`Every ${blockTime}s a new block is mined in ${process.env.HARDHAT_FORK}.`)
+console.log(`Every ${blockTime}s a new block is mined in ${network}.`)
 
 const ZERO_ADDRESS = ethers.constants.AddressZero
 // EXISTING_TOKEN_RINKEBY = "0x31c952C47EE29058C0558475bb9E77604C52fE5f" // Not for use here, put in the config.
@@ -25,55 +21,6 @@ const ONE_MINUTE = 60
 const ONE_HOUR = 60 * ONE_MINUTE
 const ONE_DAY = 24 * ONE_HOUR
 const ONE_YEAR = 365 * ONE_DAY
-
-/**
- * Get proxies from a deployed DAO
- * @param daoAddress Address of the DAO
- * @param appIds List of appIds
- * @returns Returns an object of the form { [appId]: proxy | proxy[] }
- */
-const getApps = async (daoAddress: string, appIds: string[]): Promise<string[]> => {
-  const dao = (await ethers.getContractAt('Kernel', daoAddress)) as Kernel
-  const apps = await dao.queryFilter(dao.filters.NewAppProxy(null, null, null)).then((events) =>
-    events
-      .filter(({ args }) => appIds.includes(args.appId))
-      .map(({ args }) => ({
-        appId: args.appId,
-        proxy: args.proxy,
-      }))
-      .reduce(
-        (apps, { appId, proxy }) => ({
-          ...apps,
-          [appId]: !apps[appId] ? proxy : [...apps[appId], proxy],
-        }),
-        {}
-      )
-  )
-  return appIds.map((appId) => apps[appId])
-}
-
-const getGardensTemplate = async (signer: Signer): Promise<GardensTemplate> => {
-  const gardensTemplateAddress = (await deployments.get('GardensTemplate')).address
-  return (await ethers.getContractAt('GardensTemplate', gardensTemplateAddress, signer)) as GardensTemplate
-}
-
-const getUnipoolFactory = async (signer: Signer, gardensTemplate: GardensTemplate): Promise<IUnipoolFactory> => {
-  const unipoolFactoryAddress = await gardensTemplate.unipoolFactory()
-  return (await ethers.getContractAt('IUnipoolFactory', unipoolFactoryAddress, signer)) as IUnipoolFactory
-}
-
-const getHoneyToken = async (signer: Signer, gardensTemplate: GardensTemplate) => {
-  const honeyTokenAddress = await gardensTemplate.honeyToken()
-  return (await ethers.getContractAt('IERC20', honeyTokenAddress, signer)) as Erc20
-}
-
-const getOriginalToken = async (signer: Signer, address: string) => {
-  return (await ethers.getContractAt('IERC20', address, signer)) as Erc20
-}
-
-const getEventArgFromReceipt = (receipt, event, arg) => {
-  return receipt.events.filter((receiptEvent) => receiptEvent.event == event)[0].args[arg]
-}
 
 const transform = (params) => ({
   gardenTokenName: params.gardenTokenName,
@@ -142,7 +89,7 @@ export default async function main(log = console.log): Promise<any> {
     challengeAmount,
     actionAmountStable,
     challengeAmountStable,
-  } = transform(await import(`../config/params-${process.env.HARDHAT_FORK}.json`))
+  } = transform(await import(`../config/params-${network}.json`))
   const [mainAccount] = await ethers.getSigners()
 
   const createNewToken = existingToken == ZERO_ADDRESS // As opposed bring your own token
@@ -191,7 +138,7 @@ export default async function main(log = console.log): Promise<any> {
         voteQuietEndingExtension,
         voteExecutionDelay,
       ],
-      { gasLimit: 1000000 }
+      { gasLimit: 7000000 }
     )
     const createGardenTxOneReceipt = await createGardenTxOneTx.wait(1)
     const daoAddress = getEventArgFromReceipt(createGardenTxOneReceipt, 'DeployDao', 'dao')
@@ -256,10 +203,10 @@ export default async function main(log = console.log): Promise<any> {
   }
 
   const gardensTemplate = await getGardensTemplate(mainAccount)
-  await approveHnyPayment(gardensTemplate, log)
-  if (!createNewToken) {
-    await approveOgtPayment(gardensTemplate, log)
-  }
+  // await approveHnyPayment(gardensTemplate, log)
+  // if (!createNewToken) {
+  //   await approveOgtPayment(gardensTemplate, log)
+  // }
   const daoAddress = await createGardenTxOne(gardensTemplate, log)
   if (createNewToken) {
     await createTokenholders(gardensTemplate, log)

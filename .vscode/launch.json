@@ -25,6 +25,18 @@
     {
       "type": "node",
       "request": "launch",
+      "name": "hardhat mock-actions",
+      "skipFiles": ["<node_internals>/**"],
+      "runtimeExecutable": "${workspaceFolder}/packages/hardhat/node_modules/.bin/hardhat",
+      "args": ["run", "./scripts/mock-actions.ts", "--network", "localhost"],
+      "cwd": "${workspaceFolder}/packages/hardhat",
+      "env": {
+        "HARDHAT_FORK": "rinkeby"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
       "name": "hardhat deploy",
       "skipFiles": ["<node_internals>/**"],
       "runtimeExecutable": "${workspaceFolder}/packages/hardhat/node_modules/.bin/hardhat",

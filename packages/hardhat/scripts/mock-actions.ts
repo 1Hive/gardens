@@ -1,10 +1,11 @@
 import { Contract } from '@ethersproject/contracts'
 import { BigNumber } from '@ethersproject/bignumber'
-import { ethers, network } from 'hardhat'
-import { arbitratorAbi, stakingAbi, stakingFactoryAbi } from '../helpers/abis'
-import { getEventArgument } from '../helpers/events'
-import { Agreement, DisputableVoting, IConvictionVoting, MiniMeToken } from '../typechain'
 import { SignerWithAddress } from '@nomiclabs/hardhat-ethers/signers'
+import hre, { ethers } from 'hardhat'
+import { Config } from '../helpers'
+import { arbitratorAbi, stakingAbi, stakingFactoryAbi } from '../utils/abis'
+import { getEventArgument } from '../utils/events'
+import { Agreement, DisputableVoting, IConvictionVoting, MiniMeToken } from '../typechain'
 
 const bigExp = (base, exp) => BigNumber.from(10).pow(exp).mul(base)
 
@@ -16,7 +17,7 @@ const SETTLEMENT_AMOUNT = bigExp(1, 16)
 
 const EMPTY_CALLS_SCRIPT = `0x${String(1).padStart(8, '0')}`
 
-const FORKED_NETOWRK = 'xdai'
+const network = process.env.HARDHAT_FORK ? process.env.HARDHAT_FORK : hre.network.name
 
 const overrides = {
   gasLimit: 9500000,
@@ -26,14 +27,12 @@ export default async function main(): Promise<any> {
   const [beneficiary, challenger] = await ethers.getSigners()
 
   const {
-    arbitrator: arbitratorAddress,
-    feeToken: feeTokenAddress,
-    stakingFactory: stakingFactoryAddress,
-  } = await import(`../config/params-${network.name == 'localhost' ? FORKED_NETOWRK : network.name}.json`)
+    HoneyToken: feeTokenAddress,
+    Arbitrator: arbitratorAddress,
+    StakingFactory: stakingFactoryAddress,
+  } = Config.Bases[network]
 
-  const { agreementAddress, disputableConvictionVotingAddress, disputableVotingAddress } = await import(
-    `../config/mock-${network.name == 'localhost' ? FORKED_NETOWRK : network.name}.json`
-  )
+  const { convictionVotingAddress, agreementAddress, votingAddress } = await import(`../config/mock-${network}.json`)
 
   const agreementArtifact = await import('@1hive/apps-agreement/artifacts/Agreement.json')
 
@@ -41,10 +40,10 @@ export default async function main(): Promise<any> {
 
   const convictionVoting = (await ethers.getContractAt(
     'IConvictionVoting',
-    disputableConvictionVotingAddress
+    convictionVotingAddress
   )) as IConvictionVoting
 
-  const disputableVoting = (await ethers.getContractAt('DisputableVoting', disputableVotingAddress)) as DisputableVoting
+  const disputableVoting = (await ethers.getContractAt('DisputableVoting', votingAddress)) as DisputableVoting
 
   const feeToken = (await ethers.getContractAt('MiniMeToken', feeTokenAddress)) as MiniMeToken
 
@@ -310,7 +309,7 @@ async function approveFeeToken(token: MiniMeToken, from: SignerWithAddress, to: 
     console.log('Removed previous approval')
   }
   const newAllowance = amount.add(allowance)
-  await token.generateTokens(from.address, amount)
+  // await token.generateTokens(from.address, amount)
   console.log('Executing approve...')
   return token.connect(from).approve(to, newAllowance, { ...overrides })
 }

@@ -2,8 +2,8 @@
   "gardenTokenName": "Garden",
   "gardenTokenSymbol": "GDN",
   "seeds": {
-    "0xb4124cEB3451635DAcedd11767f004d8a28c6eE7": 2.5,
-    "0x8401Eb5ff34cc943f096A32EF3d5113FEbE8D4Eb": 1
+    "0x80Db3a57195616eb3ccBb2B6Eb089372988D852a": 25,
+    "0x7C2bDCd8ab278e8207A3f1a2eFF2eBB56CCd4685": 10
   },
   "existingToken": "0x0000000000000000000000000000000000000000",
   "commonPoolAmount": 100,

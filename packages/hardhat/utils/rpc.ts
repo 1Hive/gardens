@@ -1,24 +1,24 @@
 import { BigNumber } from 'ethers'
-import hre, { ethers } from 'hardhat'
+import hre from 'hardhat'
 
 export const duration = {
   seconds: function (val) {
-    return ethers.BigNumber.from(val)
+    return BigNumber.from(val)
   },
   minutes: function (val) {
-    return ethers.BigNumber.from(val).mul(this.seconds('60'))
+    return BigNumber.from(val).mul(this.seconds('60'))
   },
   hours: function (val) {
-    return ethers.BigNumber.from(val).mul(this.minutes('60'))
+    return BigNumber.from(val).mul(this.minutes('60'))
   },
   days: function (val) {
-    return ethers.BigNumber.from(val).mul(this.hours('24'))
+    return BigNumber.from(val).mul(this.hours('24'))
   },
   weeks: function (val) {
-    return ethers.BigNumber.from(val).mul(this.days('7'))
+    return BigNumber.from(val).mul(this.days('7'))
   },
   years: function (val) {
-    return ethers.BigNumber.from(val).mul(this.days('365'))
+    return BigNumber.from(val).mul(this.days('365'))
   },
 }
 
@@ -28,7 +28,7 @@ export const impersonateAddress = async (address: string) => {
     params: [address],
   })
 
-  const signer = await ethers.provider.getSigner(address)
+  const signer = await hre.ethers.provider.getSigner(address)
 
   return signer
 }

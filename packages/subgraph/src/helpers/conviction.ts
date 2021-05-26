@@ -61,6 +61,7 @@ export function loadConvictionConfig(orgAddress: Address, appAddress: Address): 
   convictionConfig.maxStakedProposals = convictionVoting.MAX_STAKED_PROPOSALS().toI32()
   convictionConfig.minThresholdStakePercentage = convictionVoting.minThresholdStakePercentage()
   convictionConfig.contractPaused = false
+  convictionConfig.vault = convictionVoting.vault()
   convictionConfig.stableTokenOracle = convictionVoting.stableTokenOracle()
 
   convictionConfig.save()

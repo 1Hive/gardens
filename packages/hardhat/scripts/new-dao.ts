@@ -22,13 +22,15 @@ const ONE_HOUR = 60 * ONE_MINUTE
 const ONE_DAY = 24 * ONE_HOUR
 const ONE_YEAR = 365 * ONE_DAY
 
+const bigExp = (base, exp) => BigNumber.from(10).pow(exp).mul(base)
+
 const transform = (params) => ({
   gardenTokenName: params.gardenTokenName,
   gardenTokenSymbol: params.gardenTokenSymbol,
   holders: Object.entries(params.seeds).map((e) => e[0]),
-  stakes: Object.entries(params.seeds).map((e) => Math.floor((e[1] as number) * ONE_TOKEN).toString()),
+  stakes: Object.entries(params.seeds).map((e) => bigExp(e[1], 18)),
   existingToken: params.existingToken,
-  commonPoolAmount: Math.floor(params.commonPoolAmount * ONE_TOKEN).toString(),
+  commonPoolAmount: bigExp(params.commonPoolAmount, 18),
   honeyTokenLiquidityInXdai: Math.floor(params.honeyTokenLiquidityInXdai * ONE_TOKEN).toString(),
   gardenTokenLiquidity: Math.floor(params.gardenTokenLiquidity * ONE_TOKEN).toString(),
   existingTokenLiquidity: Math.floor(params.existingTokenLiquidity * ONE_TOKEN).toString(),
@@ -138,7 +140,7 @@ export default async function main(log = console.log): Promise<any> {
         voteQuietEndingExtension,
         voteExecutionDelay,
       ],
-      { gasLimit: 7000000 }
+      { gasLimit: 9850000 }
     )
     const createGardenTxOneReceipt = await createGardenTxOneTx.wait(1)
     const daoAddress = getEventArgFromReceipt(createGardenTxOneReceipt, 'DeployDao', 'dao')
@@ -159,7 +161,7 @@ export default async function main(log = console.log): Promise<any> {
     const createGardenTxTwoTx = await gardensTemplate.createGardenTxTwo(
       [issuanceTargetRatio, issuanceMaxAdjustmentPerSecond],
       [decay, maxRatio, weight, minThresholdStakePercentage],
-      { gasLimit: 8000000 }
+      { gasLimit: 9500000 }
     )
 
     // We get the event arg this way because it is emitted by a contract called by the initial contract
@@ -196,7 +198,7 @@ export default async function main(log = console.log): Promise<any> {
       [actionAmount, challengeAmount],
       [actionAmountStable, actionAmountStable],
       [challengeAmountStable, challengeAmountStable],
-      { gasLimit: 7000000 }
+      { gasLimit: 9500000 }
     )
     await createGardenTxThreeTx.wait(1)
     log(`Tx three completed.`)

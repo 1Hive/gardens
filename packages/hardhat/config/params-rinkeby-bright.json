@@ -1,0 +1,33 @@
+{
+  "gardenTokenName": "Bright",
+  "gardenTokenSymbol": "🔆",
+  "seeds": {
+    "0x80Db3a57195616eb3ccBb2B6Eb089372988D852a": 25,
+    "0x7C2bDCd8ab278e8207A3f1a2eFF2eBB56CCd4685": 10
+  },
+  "existingToken": "0x567841a6c8281bfb45e6aeec5791948a7dde90e4",
+  "commonPoolAmount": 100,
+  "honeyTokenLiquidityInXdai": 100,
+  "gardenTokenLiquidity": 100,
+  "existingTokenLiquidity": 10,
+  "voteSupportRequired": 0.5,
+  "voteMinAcceptanceQuorum": 0.1,
+  "issuanceTargetRatio": 0.3,
+  "issuanceMaxAdjustmentPerYear": 0.1,
+  "halfLifeHours": 48,
+  "maxRatio": 0.1,
+  "minThreshold": 0.025,
+  "minActiveStakePct": 0.2,
+  "agreementTitle": "Bright Charter",
+  "agreementContent": "ipfs:QmYHY4XAAmPtGGdaG6vNwcSKBJMWAx963Pqd1KayfaGGH9",
+  "challengeDurationDays": 3,
+  "actionAmount": 0.1,
+  "challengeAmount": 0.1,
+  "actionAmountStable": 100,
+  "challengeAmountStable": 100,
+  "voteDurationDays": 0.002083334,
+  "delegatedVotingPeriodDays": 0.00138889,
+  "voteQuietEndingPeriodDays": 0.000694445,
+  "voteQuietEndingExtensionDays": 0.00068288,
+  "voteExecutionDelayDays": 0.000694445
+}

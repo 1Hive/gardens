@@ -1,12 +1,11 @@
 {
-  "gardenTokenName": "Garden",
-  "gardenTokenSymbol": "GDN",
+  "gardenTokenName": "Nectar",
+  "gardenTokenSymbol": "NCTR",
   "seeds": {
-    "0x80Db3a57195616eb3ccBb2B6Eb089372988D852a": 25,
-    "0x7C2bDCd8ab278e8207A3f1a2eFF2eBB56CCd4685": 10
+    "0x80Db3a57195616eb3ccBb2B6Eb089372988D852a": 10000
   },
   "existingToken": "0x0000000000000000000000000000000000000000",
-  "commonPoolAmount": 100,
+  "commonPoolAmount": 5000,
   "honeyTokenLiquidityInXdai": 100,
   "gardenTokenLiquidity": 100,
   "existingTokenLiquidity": 100,
@@ -18,16 +17,16 @@
   "maxRatio": 0.1,
   "minThreshold": 0.025,
   "minActiveStakePct": 0.2,
-  "agreementTitle": "1Hive Community Covenant",
-  "agreementContent": "ipfs:QmfWppqC55Xc7PU48vei2XvVAuH76z2rNFF7JMUhjVM5xV",
+  "agreementTitle": "Beezu Community Covenant",
+  "agreementContent": "ipfs:QmdA7VnNHqXkRBtgJ5o8vwXdnX7KZhXgqoS3jnEVRY732Q",
   "challengeDurationDays": 3,
   "actionAmount": 0.1,
   "challengeAmount": 0.1,
   "actionAmountStable": 100,
   "challengeAmountStable": 100,
-  "voteDurationDays": 0.002083334,
-  "delegatedVotingPeriodDays": 0.00138889,
-  "voteQuietEndingPeriodDays": 0.000694445,
-  "voteQuietEndingExtensionDays": 0.00068288,
-  "voteExecutionDelayDays": 0.000694445
+  "voteDurationDays": 5,
+  "delegatedVotingPeriodDays": 2,
+  "voteQuietEndingPeriodDays": 1,
+  "voteQuietEndingExtensionDays": 0.5,
+  "voteExecutionDelayDays": 1
 }

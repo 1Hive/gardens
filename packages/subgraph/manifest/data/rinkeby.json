@@ -4,7 +4,7 @@
     "Organizations": [
       {
         "address": "0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a",
-        "name": "Honeypot DAO",
+        "name": "1Hive Garden",
         "startBlock": 7887667
       }
     ],
@@ -16,6 +16,7 @@
       }
     ]
   },
+  "1HiveGarden": "0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a",
   "agreementAppIds": [
     {
       "id": "0x41dd0b999b443a19321f2f34fe8078d1af95a1487b49af4c2ca57fb9e3e5331e", "name": "agreement-1hive.open.aragonpm.eth"

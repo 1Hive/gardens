@@ -4,7 +4,7 @@
 set -o errexit
 
 
-./scripts/build-appIds.sh
+./scripts/build-constants.sh
 # Create manifest
 yarn manifest
 

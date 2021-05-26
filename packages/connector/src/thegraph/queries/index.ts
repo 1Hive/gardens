@@ -53,6 +53,7 @@ export const CONFIG = (type: string) => gql`
         totalStaked
         maxStakedProposals
         minThresholdStakePercentage
+        vault
         requestToken {
           id
           name

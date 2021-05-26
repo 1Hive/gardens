@@ -27,6 +27,7 @@ type ConvictionConfig @entity {
   totalStaked: BigInt!
   maxStakedProposals: Int!
   minThresholdStakePercentage: BigInt!
+  vault: Bytes
   requestToken: Token
   stableToken: Token
   stableTokenOracle: Bytes
@@ -35,7 +36,7 @@ type ConvictionConfig @entity {
 
 type VotingConfig @entity {
   id: ID!
-  token:  Token
+  token: Token
   settingId: BigInt!
   voteTime: BigInt!
   supportRequiredPct: BigInt!
@@ -60,7 +61,7 @@ type Proposal @entity {
   weight: BigInt!
   metadata: String
   executedAt: BigInt
-  
+
   # Proposal data
   link: String
   stakes: [Stake!] @derivedFrom(field: "proposal")
@@ -127,7 +128,7 @@ type StakeHistory @entity {
   tokensStaked: BigInt!
   totalTokensStaked: BigInt!
   conviction: BigInt!
-  time: BigInt!      # Block at which was created
+  time: BigInt! # Block at which was created
   createdAt: BigInt! # Timestamp at which was created
 }
 
@@ -148,7 +149,7 @@ type Supporter @entity {
 }
 
 type Token @entity {
-  id:ID!
+  id: ID!
   name: String!
   symbol: String!
   decimals: Int!
@@ -176,8 +177,8 @@ enum ProposalStatus {
 
 enum ProposalType {
   Suggestion # Signaling proposal
-  Proposal   # Proposal requesting funds
-  Decision   # Vote
+  Proposal # Proposal requesting funds
+  Decision # Vote
 }
 
 enum StakeType {
@@ -186,8 +187,8 @@ enum StakeType {
 }
 
 enum VoterState {
-  Absent,
-  Yea,
+  Absent
+  Yea
   Nay
 }
 

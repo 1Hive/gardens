@@ -9,7 +9,7 @@ fi
 
 DATA=manifest/data/$FILE
 
-echo 'Generating appIds from data file: '$DATA
+echo 'Generating constants from data file: '$DATA
 cat $DATA
 
-mustache $DATA src/appIds.template.ts > src/appIds.ts
+mustache $DATA src/constants.template.ts > src/constants.ts

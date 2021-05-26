@@ -4,18 +4,19 @@
     "Organizations": [
       {
         "address": "0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a",
-        "name": "Honeypot DAO",
+        "name": "1Hive Garden",
         "startBlock": 7887667
       }
     ],
     "OrganizationTemplates": [
       {
-        "address": "0xa1771fa779081264626cE7Ff30c78EbBB5F185da",
+        "address": "0xE1B043996132c2285Ee298a878F2C20DCdB9E3AA",
         "name": "gardens-template@1.0.0",
-        "startBlock": 8602078
+        "startBlock": 8650058
       }
     ]
   },
+  "1HiveGarden": "0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a",
   "agreementAppIds": [
     {
       "id": "0x41dd0b999b443a19321f2f34fe8078d1af95a1487b49af4c2ca57fb9e3e5331e", "name": "agreement-1hive.open.aragonpm.eth"

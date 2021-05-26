@@ -25,9 +25,9 @@
   "challengeAmount": 0.1,
   "actionAmountStable": 100,
   "challengeAmountStable": 100,
-  "voteDurationDays": 0.002083334,
-  "delegatedVotingPeriodDays": 0.00138889,
-  "voteQuietEndingPeriodDays": 0.000694445,
-  "voteQuietEndingExtensionDays": 0.00068288,
-  "voteExecutionDelayDays": 0.000694445
+  "voteDurationDays": 5,
+  "delegatedVotingPeriodDays": 2,
+  "voteQuietEndingPeriodDays": 1,
+  "voteQuietEndingExtensionDays": 0.5,
+  "voteExecutionDelayDays": 1
 }

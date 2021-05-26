@@ -17,6 +17,14 @@
         file: ./abis/GardensTemplate.json
       - name: Kernel
         file: ./abis/Kernel.json
+      - name: HoneyswapFactory
+        file: ./abis/HoneyswapFactory.json
+      - name: HoneyswapRouter
+        file: ./abis/HoneyswapRouter.json
+      - name: Pair
+        file: ./abis/Pair.json
+      - name: ERC20
+        file: ./abis/ERC20.json
     eventHandlers:
       - event: DeployDao(address)
         handler: handleDeployDao

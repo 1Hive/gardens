@@ -308,6 +308,20 @@
     },
     {
       "constant": true,
+      "inputs": [],
+      "name": "hooksLength",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
       "inputs": [
         {
           "name": "_token",
@@ -347,6 +361,25 @@
         {
           "name": "",
           "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "hooks",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
         }
       ],
       "payable": false,
@@ -813,6 +846,23 @@
       "payable": false,
       "stateMutability": "pure",
       "type": "function"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "wrappableToken",
+          "type": "address"
+        }
+      ],
+      "name": "TokenManagerInitialized",
+      "type": "event"
     },
     {
       "anonymous": false,

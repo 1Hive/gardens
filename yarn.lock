@@ -2,6 +2,14 @@
 # yarn lockfile v1
 
 
+"@1hive/apps-agreement@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@1hive/apps-agreement/-/apps-agreement-0.1.0.tgz#1a21c5850d39a36e7166eaa7931909ce0bab9fab"
+  integrity sha512-0BlJyCTMJzGmeTMRPOy/Funf1v08bbmJGYJTaQvCmMq9Pcsl5bHeZj/fQXBfkvrgMo1/zzxlRJ0sKw6gxTvqIg==
+  dependencies:
+    "@aragon/os" "5.0.0-rc.0"
+    "@aragon/staking" "0.3.2"
+
 "@aragon/apps-agent@^2.0.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@aragon/apps-agent/-/apps-agent-2.1.0.tgz#eab53abd9f0e99755a6d2bd1891f0ffaa6d6581e"
@@ -124,6 +132,11 @@
     truffle-hdwallet-provider "0.0.3"
     truffle-hdwallet-provider-privkey "0.3.0"
 
+"@aragon/os@5.0.0-rc.0":
+  version "5.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@aragon/os/-/os-5.0.0-rc.0.tgz#a4e68fc452aebf59b7976d7f763b71da714f4b2e"
+  integrity sha512-jqSxL5f4k7fHT6EyROZCi8oXG1ZBzIXbaStfQFokhZVKtLN0yXayOz5WukVaHrllRUQLtWcrSAXHnx6P6WGLkA==
+
 "@aragon/os@^4.0.0":
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/@aragon/os/-/os-4.4.0.tgz#af3e80b11f71209f86dba8b2b3f37a4b025aff7b"
@@ -138,6 +151,11 @@
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@aragon/ppf-contracts/-/ppf-contracts-1.2.0.tgz#d2339481fe21436f349eabf39ca1264aded702e8"
   integrity sha512-9U0v/GR2Q62psB8sWk3UCsiyxS4LDqAWOmJqVrRtncKph1reF4PnKSOgKsI1Gncyp9Dk9+ZTkIspGGpYSjApBg==
+
+"@aragon/staking@0.3.2":
+  version "0.3.2"
+  resolved "https://registry.yarnpkg.com/@aragon/staking/-/staking-0.3.2.tgz#03a11e49c6b9d145b6837afe95a984e4fd57497b"
+  integrity sha512-rhQQh+y2AFIq5KP5Xe8vpGaixDPFdyMTOVyfEsSa+o37XRPgezR/muhqCGQ8pv06dNS7mpY65z6LLt/5hCkHFw==
 
 "@aragon/templates-shared@1.0.0":
   version "1.0.0"
@@ -3576,6 +3594,13 @@ create-require@^1.1.0:
   resolved "https://registry.yarnpkg.com/create-require/-/create-require-1.1.1.tgz#c1d7e8f1e5f6cfc9ff65f9cd352d37348756c333"
   integrity sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==
 
+cross-env@^7.0.3:
+  version "7.0.3"
+  resolved "https://registry.yarnpkg.com/cross-env/-/cross-env-7.0.3.tgz#865264b29677dc015ba8418918965dd232fc54cf"
+  integrity sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==
+  dependencies:
+    cross-spawn "^7.0.1"
+
 cross-fetch@^2.1.0, cross-fetch@^2.1.1:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-2.2.3.tgz#e8a0b3c54598136e037f8650f8e823ccdfac198e"
@@ -3595,7 +3620,7 @@ cross-spawn@^6.0.0, cross-spawn@^6.0.5:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
-cross-spawn@^7.0.0, cross-spawn@^7.0.2:
+cross-spawn@^7.0.0, cross-spawn@^7.0.1, cross-spawn@^7.0.2:
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
   integrity sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==
@@ -3932,6 +3957,11 @@ dom-walk@^0.1.0:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/dom-walk/-/dom-walk-0.1.2.tgz#0c548bef048f4d1f2a97249002236060daa3fd84"
   integrity sha512-6QvTW9mrGeIegrFXdtQi9pk7O/nSK6lSdXW2eqUspN5LWD7UTji2Fqw5V2YLjBpHEoU9Xl/eUWNpDeZvoyOv2w==
+
+dotenv@^9.0.0:
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-9.0.0.tgz#2408af4e39378375b7eebe30b7b54989e36d6e46"
+  integrity sha512-yy3x9XjojW8ROTBePD25AcMoHqGHsvHmtfw8QWlpEXyMMXXPj6brUA464AptUvHuTPRmNz6Sd3ZLNLeJl6dHJA==
 
 dotignore@~0.1.2:
   version "0.1.2"
@@ -10773,11 +10803,6 @@ ts-essentials@^6.0.3:
   resolved "https://registry.yarnpkg.com/ts-essentials/-/ts-essentials-6.0.7.tgz#5f4880911b7581a873783740ce8b94da163d18a6"
   integrity sha512-2E4HIIj4tQJlIHuATRHayv0EfMGK3ris/GRk1E3CFnsZzeNV+hUmelbaTZHLtXaZppM5oLhHRtO04gINC4Jusw==
 
-ts-essentials@^7.0.1:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/ts-essentials/-/ts-essentials-7.0.1.tgz#d205508cae0cdadfb73c89503140cf2228389e2d"
-  integrity sha512-8lwh3QJtIc1UWhkQtr9XuksXu3O0YQdEE5g79guDfhCaU1FWTDIEDZ1ZSx4HTHUmlJZ8L812j3BZQ4a0aOUkSA==
-
 ts-generator@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/ts-generator/-/ts-generator-0.1.1.tgz#af46f2fb88a6db1f9785977e9590e7bcd79220ab"
@@ -10922,19 +10947,6 @@ typechain@^3.0.0:
     js-sha3 "^0.8.0"
     lodash "^4.17.15"
     ts-essentials "^6.0.3"
-    ts-generator "^0.1.1"
-
-typechain@^4.0.2:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/typechain/-/typechain-4.0.3.tgz#e8fcd6c984676858c64eeeb155ea783a10b73779"
-  integrity sha512-tmoHQeXZWHxIdeLK+i6dU0CU0vOd9Cndr3jFTZIMzak5/YpFZ8XoiYpTZcngygGBqZo+Z1EUmttLbW9KkFZLgQ==
-  dependencies:
-    command-line-args "^4.0.7"
-    debug "^4.1.1"
-    fs-extra "^7.0.0"
-    js-sha3 "^0.8.0"
-    lodash "^4.17.15"
-    ts-essentials "^7.0.1"
     ts-generator "^0.1.1"
 
 typedarray-to-buffer@^3.1.5:

@@ -54,11 +54,10 @@ export function handleNewSetting(event: NewSettingEvent): void {
   votingConfig.quietEndingExtension = settingData.value5
   votingConfig.executionDelay = settingData.value6
   votingConfig.createdAt = event.block.timestamp
+
   const token = votingApp.token()
-  const tokenId = loadTokenData(token)
-  if (tokenId) {
-    votingConfig.token = token.toHexString()
-  }
+  votingConfig.token = loadTokenData(token)
+
   votingConfig.save()
 
   const config = loadOrCreateConfig(orgAddress)

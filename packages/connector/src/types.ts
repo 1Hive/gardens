@@ -28,6 +28,7 @@ export interface OrganizationData {
   token: TokenData
   wrappableToken: TokenData
   proposalCount: number
+  supporterCount: number
   active: boolean
 }
 
@@ -47,6 +48,7 @@ export interface ConvictionConfigData {
   maxStakedProposals: number
   minThresholdStakePercentage: string
   totalStaked: string
+  vault: string
   stableToken: TokenData
   stableTokenOracle: string
   contractPaused: boolean

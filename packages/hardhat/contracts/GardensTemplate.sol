@@ -22,18 +22,15 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
     using SafeERC20 for ERC20;
 
-    string private constant ERROR_MISSING_MEMBERS = "MISSING_MEMBERS";
     string private constant ERROR_BAD_VOTE_SETTINGS = "BAD_SETTINGS";
     string private constant ERROR_HONEY_DEPOSIT_TOO_LOW = "BAD_HONEY_DEPOSIT_TOO_LOW";
-    string private constant ERROR_EXISTING_TOKEN = "EXISTING_TOKEN";
     string private constant ERROR_NO_CACHE = "NO_CACHE";
-    string private constant ERROR_NO_TOLLGATE_TOKEN = "NO_TOLLGATE_TOKEN";
+    string constant private ERROR_MINIME_FACTORY_NOT_PROVIDED = "TEMPLATE_MINIME_FAC_NOT_PROVIDED";
 
     bool private constant TOKEN_TRANSFERABLE = true;
     uint8 private constant TOKEN_DECIMALS = uint8(18);
     uint256 private constant TOKEN_MAX_PER_ACCOUNT = uint256(-1);
     address private constant ANY_ENTITY = address(-1);
-    uint8 private constant ORACLE_PARAM_ID = 203;
     uint256 public constant AVERAGE_PRICE_PERIOD = 86400; // 24 hours
     uint8 public constant UPDATE_FREQUENCY = 8; // 8 times within price period, once every 3 hours
     uint256 public constant UPDATE_PERCENT_REWARD = 2e16; // 2% reward per update call
@@ -42,7 +39,6 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     string public constant AGGREGATE_TOKEN_PREPEND_NAME = "Aggregated";
     string public constant AGGREGATE_TOKEN_PREPEND_SYMBOL = "a";
     uint256 public constant GARDEN_TOKEN_AGGREGATOR_WEIGHT = 1;
-    enum Op {NONE, EQ, NEQ, GT, LT, GTE, LTE, RET, NOT, AND, OR, XOR, IF_ELSE}
 
     struct DeployedContracts {
         Kernel dao;
@@ -128,7 +124,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
         (Kernel dao, ACL acl) = _createDAO();
         ERC20 existingToken = _existingToken; // Prevents stack too deep error
-        MiniMeToken gardenToken = _createToken(_gardenTokenName, _gardenTokenSymbol, TOKEN_DECIMALS);
+        MiniMeToken gardenToken = _createToken(_gardenTokenName, _gardenTokenSymbol, TOKEN_DECIMALS, existingToken == address(0));
 
         Agent commonPoolAgent = _installDefaultAgentApp(dao);
         IHookedTokenManager hookedTokenManager = _installHookedTokenManagerApp(dao, gardenToken, existingToken);
@@ -304,6 +300,13 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     }
 
     // App installation/setup functions //
+
+    function _createToken(string memory _name, string memory _symbol, uint8 _decimals, bool _transfersEnabled) internal returns (MiniMeToken) {
+        require(address(miniMeFactory) != address(0), ERROR_MINIME_FACTORY_NOT_PROVIDED);
+        MiniMeToken token = miniMeFactory.createCloneToken(MiniMeToken(address(0)), 0, _name, _decimals, _symbol, _transfersEnabled);
+        emit DeployToken(address(token));
+        return token;
+    }
 
     function _installHookedTokenManagerApp(Kernel _dao, MiniMeToken _gardenToken, ERC20 _wrappableToken)
         internal

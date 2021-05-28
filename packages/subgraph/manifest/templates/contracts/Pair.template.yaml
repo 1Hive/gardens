@@ -1,0 +1,18 @@
+- kind: ethereum/contract
+  name: Pair
+  network: {{network}}
+  source:
+    abi: Pair
+  mapping:
+    kind: ethereum/events
+    apiVersion: 0.0.3
+    language: wasm/assemblyscript
+    entities:
+      - Organization
+    abis:
+      - name: Pair
+        file: ./abis/Pair.json
+    eventHandlers:
+    - event: Sync(uint112,uint112)
+      handler: handleSync
+    file: ./src/mappings/Pair.ts

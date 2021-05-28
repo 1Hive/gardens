@@ -3,7 +3,7 @@
   "dataSources": {
     "Organizations": [
       {
-        "name": "Honeypot DAO",
+        "name": "1Hive Garden",
         "address": "0x8ccbeab14b5ac4a431fffc39f4bec4089020a155",
         "startBlock": "14861344"
       }
@@ -16,6 +16,7 @@
       }
     ]  
   },
+  "1HiveGarden": "0x8ccbeab14b5ac4a431fffc39f4bec4089020a155",
   "agreementAppIds": [
     {
       "id": "0x34c62f3aec3073826f39c2c35e9a1297d9dbf3cc77472283106f09eee9cf47bf", "name": "agreement.open.aragonpm.eth"

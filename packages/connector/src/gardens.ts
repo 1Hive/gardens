@@ -9,15 +9,21 @@ type Config = {
 
 type GardenParams = {
   first?: number
+  skip?: number
+  orderBy?: string
+  orderDirection?: string
 }
 
 type UserParams = {
   id: string
 }
 
-export async function getGardens(config: Config, { first = 1000 }: GardenParams): Promise<any> {
+export async function getGardens(
+  config: Config,
+  { first = 1000, skip = 0, orderBy = 'createdAt', orderDirection = 'desc' }: GardenParams
+): Promise<any> {
   const client = getSubgraphClient(config)
-  const result = await client.performQuery(ORGANIZATIONS, { first })
+  const result = await client.performQuery(ORGANIZATIONS, { first, skip, orderBy, orderDirection })
 
   if (!result.data.organizations) {
     throw new Error('Unable to find gardens.')

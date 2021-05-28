@@ -1,5 +1,5 @@
 import { Address } from '@graphprotocol/graph-ts'
-import { CONVICTION_VOTING_APPIDS } from './appIds'
+import { CONVICTION_VOTING_APPIDS } from './constants'
 import { loadConvictionConfig } from './helpers'
 
 export function onAppTemplateCreated(orgAddress: Address, appAddress: Address, appId: string): void {

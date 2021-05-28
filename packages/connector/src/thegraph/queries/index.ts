@@ -1,8 +1,14 @@
 import gql from 'graphql-tag'
 
 export const ORGANIZATIONS = gql`
-  query Organizations($first: Int!) {
-    organizations(first: $first, where: { active: true }) {
+  query Organizations($first: Int!, $skip: Int!, $orderBy: String!, $orderDirection: String!) {
+    organizations(
+      first: $first
+      where: { active: true }
+      skip: $skip
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+    ) {
       id
       active
       createdAt
@@ -19,6 +25,8 @@ export const ORGANIZATIONS = gql`
         name
         decimals
       }
+      honeyLiquidity
+      supporterCount
     }
   }
 `
@@ -45,6 +53,7 @@ export const CONFIG = (type: string) => gql`
         totalStaked
         maxStakedProposals
         minThresholdStakePercentage
+        vault
         requestToken {
           id
           name

@@ -4,6 +4,8 @@ import "./ICollateralRequirementUpdater.sol";
 
 contract ICollateralRequirementUpdaterFactory {
 
+    event NewCollateralRequirementUpdater(address _newCollateralRequirementUpdater);
+
     // The returned address needs the MANAGE_DISPUTABLE_ROLE permission on the specified Agreement contract
     function newCollateralRequirementUpdater(
         address _agreement,

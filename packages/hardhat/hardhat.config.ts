@@ -58,7 +58,7 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 10000,
+        runs: 5000,
       },
     },
   },
@@ -87,20 +87,21 @@ const config: HardhatUserConfig = {
   networks: {
     hardhat: {
       gas: 12450000,
-      gasPrice: 8000000000,
+      gasPrice: 1000000000,
       //allowUnlimitedContractSize: true,
       forking: {
         url: 'https://xdai-archive.blockscout.com',
-        blockNumber: 15456020,
+        blockNumber: 16119155,
       },
     },
     localhost: {
-      url: 'http://localhost:8545',
+      url: 'http://127.0.0.1:8545',
       timeout: 0,
       /*
         notice no mnemonic here? it will just use account 0 of the hardhat node to deploy
         (you can put in a mnemonic here to set the deployer locally)
       */
+      gas: 12000000,
       accounts: [process.env.ETH_KEY],
     },
     coverage: {
@@ -113,33 +114,15 @@ const config: HardhatUserConfig = {
       gas: 10000000,
       accounts: [process.env.ETH_KEY],
     },
-    kovan: {
-      url: 'https://kovan.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad', //<---- YOUR INFURA ID! (or it won't work)
-      accounts: {
-        mnemonic: mnemonic(),
-      },
-    },
     mainnet: {
       url: 'https://mainnet.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad', //<---- YOUR INFURA ID! (or it won't work)
       accounts: {
         mnemonic: mnemonic(),
       },
     },
-    ropsten: {
-      url: 'https://ropsten.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad', //<---- YOUR INFURA ID! (or it won't work)
-      accounts: {
-        mnemonic: mnemonic(),
-      },
-    },
-    goerli: {
-      url: 'https://goerli.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad', //<---- YOUR INFURA ID! (or it won't work)
-      accounts: {
-        mnemonic: mnemonic(),
-      },
-    },
     xdai: {
-      url: 'https://xdai.1hive.org/',
-      gasPrice: 1000000000,
+      url: 'https://dai.poa.network',
+      gasPrice: 50000000000,
       accounts: [process.env.ETH_KEY],
     },
     matic: {

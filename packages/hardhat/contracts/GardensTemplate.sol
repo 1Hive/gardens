@@ -183,22 +183,22 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
      */
     function createGardenTxTwo(
         uint256[2] _issuanceSettings,
-        uint64[4] _convictionSettings
+        uint64[4] _convictionSettings,
+        address _convictionVotingRequestToken
     ) public {
         require(senderDeployedContracts[msg.sender].dao != address(0), ERROR_NO_CACHE);
 
         (
-            Kernel dao,,
-            DisputableVoting disputableVoting,
+            Kernel dao,,,
             Agent commonPoolAgent,
             IHookedTokenManager hookedTokenManager
         ) = _getDeployedContractsTxOne();
 
         if (!_creatingGardenWithExistingToken(hookedTokenManager)) {
-            _removePermissionFromTemplate(_getAcl(dao), hookedTokenManager, hookedTokenManager.MINT_ROLE());
+            _removePermissionFromTemplate(_getAcl(), hookedTokenManager, hookedTokenManager.MINT_ROLE());
             IIssuance issuance = _installIssuance(dao, hookedTokenManager, commonPoolAgent, _issuanceSettings);
-            _createIssuancePermissions(_getAcl(dao), issuance, disputableVoting);
-            _createHookedTokenManagerPermissions(_getAcl(dao), disputableVoting, hookedTokenManager, issuance);
+            _createIssuancePermissions(_getAcl(), issuance, _getDisputableVoting());
+            _createHookedTokenManagerPermissions(_getAcl(), _getDisputableVoting(), hookedTokenManager, issuance);
         }
 
         address incentivisedPriceOracle = incentivisedPriceOracleFactory.newIncentivisedPriceOracle(
@@ -210,25 +210,27 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             uniswapFactory.getPair(stableToken, _getMainToken(hookedTokenManager))
         );
 
+        _convictionVotingRequestToken = _convictionVotingRequestToken == address(0) ? _getMainToken(hookedTokenManager) : _convictionVotingRequestToken;
+
         IConvictionVoting convictionVoting = _installConvictionVoting(
             dao,
             MiniMeToken(hookedTokenManager.token()),
-            _getMainToken(hookedTokenManager),
+            _convictionVotingRequestToken,
             stableToken,
             incentivisedPriceOracle,
             commonPoolAgent,
             _convictionSettings
         );
-        _createConvictionVotingPermissions(_getAcl(dao), convictionVoting, disputableVoting);
-        _createVaultPermissions(_getAcl(dao), commonPoolAgent, convictionVoting, disputableVoting);
+        _createConvictionVotingPermissions(_getAcl(), convictionVoting, _getDisputableVoting());
+        _createVaultPermissions(_getAcl(), commonPoolAgent, convictionVoting, _getDisputableVoting());
 
-        _createPermissionForTemplate(_getAcl(dao), hookedTokenManager, hookedTokenManager.SET_HOOK_ROLE());
+        _createPermissionForTemplate(_getAcl(), hookedTokenManager, hookedTokenManager.SET_HOOK_ROLE());
         if (_creatingGardenWithExistingToken(hookedTokenManager)) {
             (address unipool,) = unipoolFactory.newUnipoolWithDepositor(_getMainToken(hookedTokenManager));
             hookedTokenManager.registerHook(unipool);
         }
         hookedTokenManager.registerHook(convictionVoting);
-        _removePermissionFromTemplate(_getAcl(dao), hookedTokenManager, hookedTokenManager.SET_HOOK_ROLE());
+        _removePermissionFromTemplate(_getAcl(), hookedTokenManager, hookedTokenManager.SET_HOOK_ROLE());
 
         _storeDeployedContractsTxTwo(convictionVoting);
 
@@ -505,7 +507,11 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         return hookedTokenManager.wrappableToken() == address(0) ? hookedTokenManager.token() : hookedTokenManager.wrappableToken();
     }
 
-    function _getAcl(Kernel _dao) internal returns (ACL) {
-        return ACL(_dao.acl());
+    function _getAcl() internal returns (ACL) {
+        return senderDeployedContracts[msg.sender].acl;
+    }
+
+    function _getDisputableVoting() internal returns (DisputableVoting) {
+        return senderDeployedContracts[msg.sender].disputableVoting;
     }
 }

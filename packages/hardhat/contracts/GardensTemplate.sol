@@ -2,6 +2,8 @@ pragma solidity 0.4.24;
 
 import "@aragon/templates-shared/contracts/BaseTemplate.sol";
 import "@aragon/os/contracts/common/SafeERC20.sol";
+import "./external/IMiniMeWithPermit.sol";
+import "./external/IMiniMeWithPermitFactory.sol";
 import "./external/IHookedTokenManager.sol";
 import "./external/IIssuance.sol";
 import "./external/IConvictionVoting.sol";
@@ -53,6 +55,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     address[] private collateralTokens; // Used to prevent stack too deep error
 
     mapping(address => DeployedContracts) internal senderDeployedContracts;
+    IMiniMeWithPermitFactory public miniMeWithPermitFactory;
     IHoneyswapRouter public honeyswapRouter;
     ERC20 public honeyToken;
     address public stableToken;
@@ -70,7 +73,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     constructor(
         DAOFactory _daoFactory,
         ENS _ens,
-        MiniMeTokenFactory _miniMeFactory,
+        IMiniMeWithPermitFactory _miniMeWithPermitFactory,
         IFIFSResolvingRegistrar _aragonID,
         IHoneyswapRouter _honeyswapRouter,
         ERC20 _honeyToken,
@@ -82,9 +85,10 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         IUnipoolFactory _unipoolFactory,
         address _arbitrator,
         address _stakingFactory
-    ) public BaseTemplate(_daoFactory, _ens, _miniMeFactory, _aragonID) {
+    ) public BaseTemplate(_daoFactory, _ens, MiniMeTokenFactory(0), _aragonID) {
         _ensureAragonIdIsValid(_aragonID);
-        _ensureMiniMeFactoryIsValid(_miniMeFactory);
+        _ensureMiniMeFactoryIsValid(_miniMeWithPermitFactory);
+        miniMeWithPermitFactory = _miniMeWithPermitFactory;
         honeyswapRouter = _honeyswapRouter;
         honeyToken = _honeyToken;
         stableToken = _stableToken;
@@ -124,7 +128,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
         (Kernel dao, ACL acl) = _createDAO();
         ERC20 existingToken = _existingToken; // Prevents stack too deep error
-        MiniMeToken gardenToken = _createToken(_gardenTokenName, _gardenTokenSymbol, TOKEN_DECIMALS, existingToken == address(0));
+        IMiniMeWithPermit gardenToken = _createToken(_gardenTokenName, _gardenTokenSymbol, TOKEN_DECIMALS, existingToken == address(0));
 
         Agent commonPoolAgent = _installDefaultAgentApp(dao);
         IHookedTokenManager hookedTokenManager = _installHookedTokenManagerApp(dao, gardenToken, existingToken);
@@ -214,7 +218,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
         IConvictionVoting convictionVoting = _installConvictionVoting(
             dao,
-            MiniMeToken(hookedTokenManager.token()),
+            IMiniMeWithPermit(hookedTokenManager.token()),
             _convictionVotingRequestToken,
             stableToken,
             incentivisedPriceOracle,
@@ -303,14 +307,14 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
     // App installation/setup functions //
 
-    function _createToken(string memory _name, string memory _symbol, uint8 _decimals, bool _transfersEnabled) internal returns (MiniMeToken) {
-        require(address(miniMeFactory) != address(0), ERROR_MINIME_FACTORY_NOT_PROVIDED);
-        MiniMeToken token = miniMeFactory.createCloneToken(MiniMeToken(address(0)), 0, _name, _decimals, _symbol, _transfersEnabled);
+    function _createToken(string memory _name, string memory _symbol, uint8 _decimals, bool _transfersEnabled) internal returns (IMiniMeWithPermit) {
+        require(address(miniMeWithPermitFactory) != address(0), ERROR_MINIME_FACTORY_NOT_PROVIDED);
+        IMiniMeWithPermit token = miniMeWithPermitFactory.createCloneToken(IMiniMeWithPermit(address(0)), 0, _name, _decimals, _symbol, _transfersEnabled);
         emit DeployToken(address(token));
         return token;
     }
 
-    function _installHookedTokenManagerApp(Kernel _dao, MiniMeToken _gardenToken, ERC20 _wrappableToken)
+    function _installHookedTokenManagerApp(Kernel _dao, IMiniMeWithPermit _gardenToken, ERC20 _wrappableToken)
         internal
         returns (IHookedTokenManager)
     {
@@ -369,7 +373,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
     function _installConvictionVoting(
         Kernel _dao,
-        MiniMeToken _stakeToken,
+        IMiniMeWithPermit _stakeToken,
         address _requestToken,
         address _stableToken,
         address _stableTokenOracle,

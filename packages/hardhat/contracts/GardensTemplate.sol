@@ -140,8 +140,6 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         _removePermissionFromTemplate(acl, votingAggregator, votingAggregator.ADD_POWER_SOURCE_ROLE());
 
         _createDisputableVotingPermissions(acl, disputableVoting);
-        // Create app and permissions for non common pool agent
-        _createAgentPermissions(acl, _installDefaultAgentApp(dao), disputableVoting, disputableVoting);
         _createAgentPermissions(acl, commonPoolAgent, disputableVoting, disputableVoting);
         _createEvmScriptsRegistryPermissions(acl, disputableVoting, disputableVoting);
 
@@ -264,6 +262,9 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
         (Kernel dao, ACL acl, DisputableVoting disputableVoting,, IHookedTokenManager hookedTokenManager) = _getDeployedContractsTxOne();
         IConvictionVoting convictionVoting = _getDeployedContractsTxTwo();
+
+        // Create app and permissions for non common pool agent, in a separate transaction to first agent due to gas limits
+        _createAgentPermissions(acl, _installDefaultAgentApp(dao), disputableVoting, disputableVoting);
 
         Agreement agreement =
             _installAgreementApp(dao, arbitrator, _agreementTitle, _agreementContent, stakingFactory);

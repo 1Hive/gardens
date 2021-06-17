@@ -181,7 +181,9 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
      * @dev Add and initialise issuance and conviction voting
      * @param _issuanceSettings Array of issuance settings: [targetRatio, maxAdjustmentRatioPerSecond]. Unused if
      *        existingToken is set in transaction one.
-     * @param _convictionSettings array of conviction settings: [decay, max_ratio, weight, min_threshold_stake_percentage]
+     * @param _convictionSettings Array of conviction settings: [decay, max_ratio, weight, min_threshold_stake_percentage]
+     * @param _convictionVotingRequestToken The Garden's common pool token, requested using conviction voting. If set to
+     *        address(0) the Garden will use it's main token.
      */
     function createGardenTxTwo(
         uint256[2] _issuanceSettings,

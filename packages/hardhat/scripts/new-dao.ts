@@ -116,6 +116,7 @@ const transform = (params) => ({
   maxRatio: Math.floor(params.maxRatio * CONVICTION_VOTING_ONE_HUNDRED_PERCENT),
   weight: Math.floor(params.maxRatio ** 2 * params.minThreshold * CONVICTION_VOTING_ONE_HUNDRED_PERCENT),
   minThresholdStakePercentage: Math.floor(params.minActiveStakePct * ONE_HUNDRED_PERCENT).toString(),
+  requestToken: params.requestToken,
   challengeDuration: Math.floor(params.challengeDurationDays * ONE_DAY),
   actionAmount: Math.floor(params.actionAmount * ONE_TOKEN).toString(),
   challengeAmount: Math.floor(params.challengeAmount * ONE_TOKEN).toString(),
@@ -150,6 +151,7 @@ export default async function main(log = console.log): Promise<any> {
     maxRatio,
     weight,
     minThresholdStakePercentage,
+    requestToken,
     daoId,
     agreementTitle,
     agreementContent,
@@ -207,7 +209,7 @@ export default async function main(log = console.log): Promise<any> {
         voteQuietEndingExtension,
         voteExecutionDelay,
       ],
-      { gasLimit: 10000000 }
+      { gasLimit: 12000000 }
     )
     const createGardenTxOneReceipt = await createGardenTxOneTx.wait(1)
     const daoAddress = getEventArgFromReceipt(createGardenTxOneReceipt, 'DeployDao', 'dao')
@@ -228,6 +230,7 @@ export default async function main(log = console.log): Promise<any> {
     const createGardenTxTwoTx = await gardensTemplate.createGardenTxTwo(
       [issuanceTargetRatio, issuanceMaxAdjustmentPerSecond],
       [decay, maxRatio, weight, minThresholdStakePercentage],
+      requestToken,
       { gasLimit: 8000000 }
     )
 

@@ -4,7 +4,7 @@
 
 pragma solidity 0.4.24;
 
-import "@aragon/apps-shared-minime/contracts/MiniMeToken.sol";
+import "./IMiniMeWithPermit.sol";
 
 
 interface DisputableVoting {
@@ -19,7 +19,7 @@ interface DisputableVoting {
     function CHANGE_EXECUTION_DELAY_ROLE() external pure returns (bytes32);
 
     function initialize(
-        MiniMeToken _token,
+        IMiniMeWithPermit _token,
         uint64 _voteTime,
         uint64 _supportRequiredPct,
         uint64 _minAcceptQuorumPct,

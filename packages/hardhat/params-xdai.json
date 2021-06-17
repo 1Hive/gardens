@@ -18,6 +18,7 @@
   "maxRatio": 0.1,
   "minThreshold": 0.025,
   "minActiveStakePct": 0.2,
+  "requestToken": "0x0000000000000000000000000000000000000000",
   "agreementTitle": "1Hive Community Covenant",
   "agreementContent": "ipfs:QmfWppqC55Xc7PU48vei2XvVAuH76z2rNFF7JMUhjVM5xV",
   "challengeDurationDays": 3,

@@ -58,7 +58,7 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 5000,
+        runs: 5000, // Set this to 10000 for xDai/Arbitrum deployment, must be lower for Rinkeby deployment
       },
     },
   },
@@ -122,7 +122,7 @@ const config: HardhatUserConfig = {
     },
     xdai: {
       url: 'https://dai.poa.network',
-      gasPrice: 50000000000,
+      gasPrice: 1000000000,
       accounts: [process.env.ETH_KEY],
     },
     matic: {

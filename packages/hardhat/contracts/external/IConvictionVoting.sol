@@ -1,6 +1,6 @@
 pragma solidity ^0.4.24;
 
-import "@aragon/apps-shared-minime/contracts/MiniMeToken.sol";
+import "./IMiniMeWithPermit.sol";
 import "@aragon/apps-vault/contracts/Vault.sol";
 
 contract IConvictionVoting {
@@ -12,7 +12,7 @@ contract IConvictionVoting {
     bytes32 public constant CANCEL_PROPOSALS_ROLE = keccak256("CANCEL_PROPOSALS_ROLE");
 
     function initialize(
-        MiniMeToken _stakeToken,
+        IMiniMeWithPermit _stakeToken,
         address _requestToken,
         address _stableToken,
         address _stableTokenOracle,

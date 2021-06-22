@@ -1,7 +1,7 @@
 import hre, { ethers } from 'hardhat'
 import { Contract } from '@ethersproject/contracts'
 import { Signer } from '@ethersproject/abstract-signer'
-import { GardensTemplate, ERC20, Kernel, IUnipoolFactory } from '../typechain'
+import { GardensTemplate, Erc20, Kernel, IUnipoolFactory } from '../typechain'
 import { BigNumber } from 'ethers'
 
 const { deployments } = hre
@@ -60,11 +60,11 @@ const getUnipoolFactory = async (signer: Signer, gardensTemplate: GardensTemplat
 
 const getHoneyToken = async (signer: Signer, gardensTemplate: GardensTemplate) => {
   const honeyTokenAddress = await gardensTemplate.honeyToken()
-  return (await ethers.getContractAt('ERC20', honeyTokenAddress, signer)) as ERC20
+  return (await ethers.getContractAt('ERC20', honeyTokenAddress, signer)) as Erc20
 }
 
 const getOriginalToken = async (signer: Signer, address: string) => {
-  return (await ethers.getContractAt('ERC20', address, signer)) as ERC20
+  return (await ethers.getContractAt('ERC20', address, signer)) as Erc20
 }
 
 const getEventArgument = async (

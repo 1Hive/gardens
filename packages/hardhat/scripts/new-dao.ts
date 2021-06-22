@@ -92,7 +92,7 @@ const getEventArgFromReceipt = (receipt, event, arg) => {
 
 const toTokens = (amount, decimals = 18) => {
   const [integer, decimal] = String(amount).split('.')
-  return BigNumber.from((integer != "0" ? integer : '') + (decimal || '').padEnd(decimals, '0'))
+  return BigNumber.from((integer != '0' ? integer : '') + (decimal || '').padEnd(decimals, '0'))
 }
 
 const transform = (params) => ({

@@ -17,7 +17,6 @@ const ZERO_ADDRESS = ethers.constants.AddressZero
 const ONE_HUNDRED_PERCENT = 1e18
 const ISSUANCE_ONE_HUNDRED_PERCENT = 1e10
 const CONVICTION_VOTING_ONE_HUNDRED_PERCENT = 1e7
-const ONE_TOKEN = 1e18
 const ONE_MINUTE = 60
 const ONE_HOUR = 60 * ONE_MINUTE
 const ONE_DAY = 24 * ONE_HOUR
@@ -91,16 +90,21 @@ const getEventArgFromReceipt = (receipt, event, arg) => {
   return receipt.events.filter((receiptEvent) => receiptEvent.event == event)[0].args[arg]
 }
 
+const toTokens = (amount, decimals = 18) => {
+  const [integer, decimal] = String(amount).split('.')
+  return BigNumber.from((integer != "0" ? integer : '') + (decimal || '').padEnd(decimals, '0'))
+}
+
 const transform = (params) => ({
   gardenTokenName: params.gardenTokenName,
   gardenTokenSymbol: params.gardenTokenSymbol,
   holders: Object.entries(params.seeds).map((e) => e[0]),
-  stakes: Object.entries(params.seeds).map((e) => Math.floor((e[1] as number) * ONE_TOKEN).toString()),
+  stakes: Object.entries(params.seeds).map((e) => toTokens(e[1] as number).toString()),
   existingToken: params.existingToken,
-  commonPoolAmount: Math.floor(params.commonPoolAmount * ONE_TOKEN).toString(),
-  honeyTokenLiquidityInXdai: Math.floor(params.honeyTokenLiquidityInXdai * ONE_TOKEN).toString(),
-  gardenTokenLiquidity: Math.floor(params.gardenTokenLiquidity * ONE_TOKEN).toString(),
-  existingTokenLiquidity: Math.floor(params.existingTokenLiquidity * ONE_TOKEN).toString(),
+  commonPoolAmount: Math.floor(params.commonPoolAmount).toString(),
+  honeyTokenLiquidityInXdai: toTokens(params.honeyTokenLiquidityInXdai).toString(),
+  gardenTokenLiquidity: toTokens(params.gardenTokenLiquidity).toString(),
+  existingTokenLiquidity: toTokens(params.existingTokenLiquidity).toString(),
   voteSupportRequired: Math.floor(params.voteSupportRequired * ONE_HUNDRED_PERCENT).toString(),
   voteMinAcceptanceQuorum: Math.floor(params.voteMinAcceptanceQuorum * ONE_HUNDRED_PERCENT).toString(),
   voteDuration: Math.floor(params.voteDurationDays * ONE_DAY),
@@ -118,10 +122,10 @@ const transform = (params) => ({
   minThresholdStakePercentage: Math.floor(params.minActiveStakePct * ONE_HUNDRED_PERCENT).toString(),
   requestToken: params.requestToken,
   challengeDuration: Math.floor(params.challengeDurationDays * ONE_DAY),
-  actionAmount: Math.floor(params.actionAmount * ONE_TOKEN).toString(),
-  challengeAmount: Math.floor(params.challengeAmount * ONE_TOKEN).toString(),
-  actionAmountStable: Math.floor(params.actionAmountStable * ONE_TOKEN).toString(),
-  challengeAmountStable: Math.floor(params.challengeAmountStable * ONE_TOKEN).toString(),
+  actionAmount: toTokens(params.actionAmount).toString(),
+  challengeAmount: toTokens(params.challengeAmount).toString(),
+  actionAmountStable: toTokens(params.actionAmountStable).toString(),
+  challengeAmountStable: toTokens(params.challengeAmountStable).toString(),
   daoId: params.daoId || 'gardens' + Math.floor(Math.random() * 100000),
   agreementTitle: params.agreementTitle,
   agreementContent: params.agreementContent,

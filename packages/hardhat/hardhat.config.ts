@@ -16,6 +16,8 @@ import { HttpNetworkUserConfig } from 'hardhat/types'
 
 const { isAddress, getAddress, formatUnits, parseUnits } = utils
 
+const ETH_KEY = process.env.ETH_KEY ? [process.env.ETH_KEY] : null
+
 // const MAINNET_FORK = process.env.MAINNET_FORK === 'true';
 
 /*
@@ -58,7 +60,7 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 5000, // Set this to 10000 for xDai/Arbitrum deployment, must be lower for Rinkeby deployment
+        runs: 5000,
       },
     },
   },
@@ -102,7 +104,9 @@ const config: HardhatUserConfig = {
         (you can put in a mnemonic here to set the deployer locally)
       */
       gas: 12000000,
-      accounts: [process.env.ETH_KEY],
+      accounts: ETH_KEY || {
+        mnemonic: mnemonic(),
+      },
     },
     coverage: {
       url: 'http://localhost:8555',
@@ -112,23 +116,27 @@ const config: HardhatUserConfig = {
       url: 'https://rinkeby.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad', //<---- YOUR INFURA ID! (or it won't work)
       gasPrice: 1000000000,
       gas: 10000000,
-      accounts: [process.env.ETH_KEY],
+      accounts: ETH_KEY || {
+        mnemonic: mnemonic(),
+      },
     },
     mainnet: {
       url: 'https://mainnet.infura.io/v3/460f40a260564ac4a4f4b3fffb032dad', //<---- YOUR INFURA ID! (or it won't work)
-      accounts: {
+      accounts: ETH_KEY || {
         mnemonic: mnemonic(),
       },
     },
     xdai: {
       url: 'https://dai.poa.network',
-      gasPrice: 1000000000,
-      accounts: [process.env.ETH_KEY],
+      gasPrice: 50000000000,
+      accounts: ETH_KEY || {
+        mnemonic: mnemonic(),
+      },
     },
     matic: {
       url: 'https://rpc-mainnet.maticvigil.com/',
       gasPrice: 1000000000,
-      accounts: {
+      accounts: ETH_KEY || {
         mnemonic: mnemonic(),
       },
     },

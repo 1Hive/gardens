@@ -5,6 +5,8 @@ export enum eEthereumNetwork {
   main = 'main',
   coverage = 'coverage',
   hardhat = 'hardhat',
+  arbtest = 'arbtest',
+  arbitrum = 'arbitrum'
 }
 
 export enum eXDaiNetwork {
@@ -15,6 +17,8 @@ export enum EthereumNetworkNames {
   rinkeby = 'rinkeby',
   main = 'main',
   xdai = 'xdai',
+  arbtest = 'arbtest',
+  arbitrum = 'arbitrum'
 }
 
 export enum eLocalHostNetwork {

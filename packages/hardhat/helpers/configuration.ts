@@ -2,6 +2,38 @@ import { eEthereumNetwork, eXDaiNetwork, eLocalHostNetwork } from './types'
 
 export const Config = {
   Bases: {
+    [eEthereumNetwork.arbitrum]:{
+      AragonID: '0xf2E58AdD12dc1d73725574CfD33068Ca8d978f91',
+      DAOFactory: '0x959Bc393f42C803D04C4ACCe7157553dbd4cBD35',
+      ENS: '0x2DDE068a7fdF72c10848298cC0317E691E40E593',
+      MiniMeFactory: '',
+      HoneyswapRouter: '',
+      HoneyToken: '',
+      StableToken: '',
+      HoneyPriceOracle: '',
+      PriceOracleFactory: '', // Requires updating hex before deployment
+      CollateralRequirementUpdaterFactory: '0x14E1326445077E2E170eb48785a849e30D502994',
+      UniswapV2Factory: '',
+      UnipoolFactory: '0x62F3b99Ef24f5070b9ae80552e321ec89aBFC71B',
+      Arbitrator: '',
+      StakingFactory: '0x425f7E1024cb86De06970FE6eF8423Cf6424e5c1',
+    },
+    [eEthereumNetwork.arbtest]:{
+      AragonID: '0xdCFeD4A30D696b8200aF9C4Cae88f201b9511041',
+      DAOFactory: '0x3476A931490BD5ae7e497AB6B58Dd2DF3946d5A9',
+      ENS: '0x73ddD4B38982aB515daCf43289B41706f9A39199',
+      MiniMeFactory: '0x4790d9A35c653481df31B914d2022A5CcF016c15',
+      HoneyswapRouter: '0x0Fe2d157c5f1334eDd687d045143CE4b36f88040',
+      HoneyToken: '',
+      StableToken: '',
+      HoneyPriceOracle: '',
+      PriceOracleFactory: '0xe4FDEff6633E5d4408C94E6736795b8cd6EEB4Ac',
+      CollateralRequirementUpdaterFactory: '0xf674e14c3c1488F7d259907438f15d38A143dEF1',
+      UniswapV2Factory: '0xC7120Cb97283B5527a24fD5b9971c6deB362f08E',
+      UnipoolFactory: '0xd1a3dD30bc63dC90bE2fC0c3Ec7Fe188E48FF402',
+      Arbitrator: '',
+      StakingFactory: '0x2038976E96cDe0187820Bd84e6b36D595e979bD9',
+    },
     [eXDaiNetwork.xdai]: {
       AragonID: '0x0b3b17f9705783bb51ae8272f3245d6414229b36',
       DAOFactory: '0x4037f97fcc94287257e50bd14c7da9cb4df18250',

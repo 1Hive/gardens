@@ -60,7 +60,7 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 5000,
+        runs: 20000,
       },
     },
   },
@@ -139,6 +139,16 @@ const config: HardhatUserConfig = {
       accounts: ETH_KEY || {
         mnemonic: mnemonic(),
       },
+    },
+    arbtest: {
+      url: 'https://rinkeby.arbitrum.io/rpc',
+      accounts: [process.env.ETH_KEY],
+      gasPrice: 0,
+    },
+    arbitrum: {
+      url: 'https://arb1.arbitrum.io/rpc',
+      accounts: [process.env.ETH_KEY],
+      gasPrice: 0,
     },
   },
 }

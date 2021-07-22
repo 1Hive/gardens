@@ -14,6 +14,7 @@ console.log(`Every ${blockTime}s a new block is mined in ${network}.`)
 const ZERO_ADDRESS = ethers.constants.AddressZero
 // EXISTING_TOKEN_RINKEBY = "0x31c952C47EE29058C0558475bb9E77604C52fE5f" // Not for use here, put in the config.
 // EXISTING_TOKEN_XDAI = "0xa09e33C8dCb1f95f7B79d7fC75a72aaDf69eB319" // Not for use here, put in the config.
+// EXISTING_TOKEN_ARBTEST = "0xEa9508cE6DCd45365d636D9730cFFA839A4A8121" // Not for use here, put in the config.
 const ONE_HUNDRED_PERCENT = 1e18
 const ISSUANCE_ONE_HUNDRED_PERCENT = 1e10
 const CONVICTION_VOTING_ONE_HUNDRED_PERCENT = 1e7
@@ -213,7 +214,7 @@ export default async function main(log = console.log): Promise<any> {
         voteQuietEndingExtension,
         voteExecutionDelay,
       ],
-      { gasLimit: 12000000 }
+      { gasLimit: 500000000 }
     )
     const createGardenTxOneReceipt = await createGardenTxOneTx.wait(1)
     const daoAddress = getEventArgFromReceipt(createGardenTxOneReceipt, 'DeployDao', 'dao')
@@ -235,7 +236,7 @@ export default async function main(log = console.log): Promise<any> {
       [issuanceTargetRatio, issuanceMaxAdjustmentPerSecond],
       [decay, maxRatio, weight, minThresholdStakePercentage],
       requestToken,
-      { gasLimit: 8000000 }
+      { gasLimit: 800000000 }
     )
 
     // We get the event arg this way because it is emitted by a contract called by the initial contract
@@ -272,7 +273,7 @@ export default async function main(log = console.log): Promise<any> {
       [actionAmount, challengeAmount],
       [actionAmountStable, actionAmountStable],
       [challengeAmountStable, challengeAmountStable],
-      { gasLimit: 7000000 }
+      { gasLimit: 700000000 }
     )
     await createGardenTxThreeTx.wait(1)
     log(`Tx three completed.`)

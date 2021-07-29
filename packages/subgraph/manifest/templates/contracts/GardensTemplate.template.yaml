@@ -1,6 +1,6 @@
 # OrganizationTemplate
 - kind: ethereum/contract
-  name: GardensTemplate
+  name: {{name}}
   network: {{network}}
   source:
     abi: GardensTemplate

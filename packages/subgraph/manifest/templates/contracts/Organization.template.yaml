@@ -1,6 +1,11 @@
 # Kernel
 - kind: ethereum/contract
+  {{#name}}
+  name: {{name}}
+  {{/name}}
+  {{^name}}
   name: Kernel
+  {{/name}}
   network: {{network}}
   source:
     abi: Kernel

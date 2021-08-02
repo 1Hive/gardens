@@ -3,16 +3,16 @@
   "dataSources": {
     "Organizations": [
       {
-        "name": "1Hive Garden",
+        "name": "Kernel",
         "address": "0x8ccbeab14b5ac4a431fffc39f4bec4089020a155",
         "startBlock": "14861344"
       }
     ],
     "OrganizationTemplates": [
       {
-        "address": "0x3B97CBD0275bCdfe563Efe4f80e44035b479fab8",
-        "name": "gardens-template@1.0.0",
-        "startBlock": 15778398
+        "address": "0xd90deE41a68291d15AD4B1939ab5d4e75Db4Fc3d",
+        "name": "GardensTemplate",
+        "startBlock": 16466203
       }
     ]  
   },

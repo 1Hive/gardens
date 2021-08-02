@@ -60,11 +60,11 @@ const getUnipoolFactory = async (signer: Signer, gardensTemplate: GardensTemplat
 
 const getHoneyToken = async (signer: Signer, gardensTemplate: GardensTemplate) => {
   const honeyTokenAddress = await gardensTemplate.honeyToken()
-  return (await ethers.getContractAt('ERC20', honeyTokenAddress, signer)) as Erc20
+  return (await ethers.getContractAt('IERC20', honeyTokenAddress, signer)) as Erc20
 }
 
 const getOriginalToken = async (signer: Signer, address: string) => {
-  return (await ethers.getContractAt('ERC20', address, signer)) as Erc20
+  return (await ethers.getContractAt('IERC20', address, signer)) as Erc20
 }
 
 const getEventArgument = async (

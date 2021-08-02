@@ -58,7 +58,6 @@ $ yarn newdao -- --network rinkeby # or --network xdai
 https://rinkeby.aragon.org/#/<DAO address>
 ```
 
-
 ## SCRIPTS
 
 Here is the list of npm scripts you can execute:

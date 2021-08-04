@@ -30,7 +30,7 @@ export function subgraphUrlFromChainId(chainId: number) {
     return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-rinkeby'
   }
   if (chainId === 100) {
-    return 'https://api.thegraph.com/subgraphs/name/1hive/gardens'
+    return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai'
   }
   return null
 }

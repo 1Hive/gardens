@@ -10,7 +10,7 @@ GRAPH_NODE="https://api.thegraph.com/deploy/"
 IPFS_NODE="https://api.thegraph.com/ipfs/"
 
 # Use custom subgraph name based on target network
-if [[ "$NETWORK" != "xdai" ]]; then
+if [[ "$NETWORK" != "arbitrum" ]]; then
   SUBGRAPH_EXT="-${NETWORK}"
 else
   SUBGRAPH_EXT=""

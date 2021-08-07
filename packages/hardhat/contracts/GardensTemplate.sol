@@ -67,7 +67,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     address public arbitrator;
     address public stakingFactory;
 
-    event GardenTransactionTwo(address incentivisedPriceOracle, address unipool);
+    event GardenTransactionTwo(address gardenAddress, address incentivisedPriceOracle, address unipool);
     event GardenDeployed(address gardenAddress, address collateralRequirementUpdater);
 
     constructor(
@@ -238,7 +238,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
         _storeDeployedContractsTxTwo(convictionVoting);
 
-        emit GardenTransactionTwo(incentivisedPriceOracle, unipool);
+        emit GardenTransactionTwo(dao, incentivisedPriceOracle, unipool);
     }
 
     /**

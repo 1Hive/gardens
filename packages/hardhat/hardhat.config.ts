@@ -55,7 +55,7 @@ const config: HardhatUserConfig = {
     xdai: {
       url: node_url('xdai'),
       accounts: account('xdai'),
-      gasPrice: 1000000000
+      gasPrice: 1000000000,
     },
     polygon: {
       url: node_url('polygon'),

@@ -8,7 +8,7 @@ import 'hardhat-deploy'
 import 'hardhat-gas-reporter'
 import 'solidity-coverage'
 
-import { node_url, accounts } from './helpers/network'
+import { node_url, accounts, account } from './helpers/network'
 
 const config: HardhatUserConfig = {
   solidity: {
@@ -49,7 +49,13 @@ const config: HardhatUserConfig = {
     },
     rinkeby: {
       url: node_url('rinkeby'),
-      accounts: accounts('rinkeby'),
+      accounts: account('rinkeby'),
+      gasPrice: 1000000000,
+    },
+    xdai: {
+      url: node_url('xdai'),
+      accounts: account('xdai'),
+      gasPrice: 1000000000,
     },
     polygon: {
       url: node_url('polygon'),

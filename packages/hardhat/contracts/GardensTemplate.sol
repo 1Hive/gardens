@@ -67,7 +67,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     address public arbitrator;
     address public stakingFactory;
 
-    event GardenTransactionTwo(address incentivisedPriceOracle, address unipool);
+    event GardenTransactionTwo(address dao, address incentivisedPriceOracle, address unipool);
     event GardenDeployed(address gardenAddress, address collateralRequirementUpdater);
 
     constructor(
@@ -147,6 +147,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
         uint256 honeyLiquidityToAdd = honeyPriceOracle.consult(stableToken, _initialAmountAndLiquidity[1], honeyToken);
         honeyToken.safeTransferFrom(msg.sender, address(this), honeyLiquidityToAdd);
+        honeyToken.approve(address(honeyswapRouter), 0);
         honeyToken.approve(address(honeyswapRouter), honeyLiquidityToAdd);
 
         if (_creatingGardenWithExistingToken(hookedTokenManager)) {
@@ -238,7 +239,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
         _storeDeployedContractsTxTwo(convictionVoting);
 
-        emit GardenTransactionTwo(incentivisedPriceOracle, unipool);
+        emit GardenTransactionTwo(dao, incentivisedPriceOracle, unipool);
     }
 
     /**

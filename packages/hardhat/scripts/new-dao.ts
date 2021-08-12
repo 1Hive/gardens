@@ -119,7 +119,7 @@ const transform = (params) => ({
   ),
   maxRatio: Math.floor(params.spendingLimit * CONVICTION_VOTING_ONE_HUNDRED_PERCENT),
   weight: Math.floor(params.spendingLimit ** 2 * params.minimumConviction * CONVICTION_VOTING_ONE_HUNDRED_PERCENT),
-  minThresholdStakePercentage: Math.floor(params.minEffectiveSupply * ONE_HUNDRED_PERCENT).toString(),
+  minThresholdStakePercentage: Math.floor(params.minActiveStakePercentage * ONE_HUNDRED_PERCENT).toString(),
   requestToken: params.requestToken,
   challengeDuration: Math.floor(params.settlementPeriod * ONE_DAY),
   actionAmount: toTokens(params.proposalDeposit).toString(),

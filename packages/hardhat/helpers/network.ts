@@ -41,6 +41,25 @@ export function getMnemonic(networkName?: string): string {
   return mnemonic
 }
 
+export function getAccount(networkName?: string): Array<string> {
+  if (networkName) {
+    const account = process.env['ACCOUNT_' + networkName.toUpperCase()]
+    if (account && account !== '') {
+      return [account]
+    }
+  }
+
+  const account = process.env.ACCOUNT
+  if (!account || account === '') {
+    return []
+  }
+  return [account]
+}
+
 export function accounts(networkName?: string): { mnemonic: string } {
   return { mnemonic: getMnemonic(networkName) }
+}
+
+export function account(networkName?: string): Array<string> {
+  return getAccount(networkName)
 }

@@ -8,6 +8,8 @@ type Organization @entity {
   proposals: [Proposal!] @derivedFrom(field: "organization")
   supporterCount: Int!
   honeyLiquidity: BigInt
+  incentivisedPriceOracle: Bytes
+  unipool: Bytes
   active: Boolean!
 }
 

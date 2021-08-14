@@ -34,4 +34,6 @@
         handler: handleDeployToken
       - event: InstalledApp(address,bytes32)
         handler: handleInstalledApp
+      - event: GardenTransactionTwo(address,address,address)
+        handler: handleGardenTransactionTwo
     file: ./src/mappings/GardensTemplate.ts

@@ -244,6 +244,28 @@
           "indexed": false,
           "name": "dao",
           "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "incentivisedPriceOracle",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "unipool",
+          "type": "address"
+        }
+      ],
+      "name": "GardenTransactionTwo",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "dao",
+          "type": "address"
         }
       ],
       "name": "DeployDao",

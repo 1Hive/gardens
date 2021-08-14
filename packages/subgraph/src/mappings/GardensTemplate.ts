@@ -3,6 +3,7 @@ import {
   SetupDao as SetupDaoEvent,
   DeployToken as DeployTokenEvent,
   InstalledApp as InstalledAppEvent,
+  GardenTransactionTwo as GardenTransactionTwoEvent,
 } from '../../generated/GardensTemplate/GardensTemplate'
 import { Kernel as KernelTemplate } from '../../generated/templates'
 import { setUpHoneyLiquidity, loadOrCreateOrg } from '../helpers'
@@ -30,3 +31,11 @@ export function handleSetupDao(event: SetupDaoEvent): void {
 export function handleDeployToken(event: DeployTokenEvent): void {}
 
 export function handleInstalledApp(event: InstalledAppEvent): void {}
+
+export function handleGardenTransactionTwo(event: GardenTransactionTwoEvent): void {
+  const dao = loadOrCreateOrg(event.params.dao)
+  
+  org.incentivisedPriceOracle = event.params.incentivisedPriceOracle
+  org.unipool = event.params.unipool
+  org.save()
+}

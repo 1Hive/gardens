@@ -33,7 +33,7 @@ export function handleDeployToken(event: DeployTokenEvent): void {}
 export function handleInstalledApp(event: InstalledAppEvent): void {}
 
 export function handleGardenTransactionTwo(event: GardenTransactionTwoEvent): void {
-  const dao = loadOrCreateOrg(event.params.dao)
+  const org = loadOrCreateOrg(event.params.dao)
 
   org.incentivisedPriceOracle = event.params.incentivisedPriceOracle
   org.unipool = event.params.unipool

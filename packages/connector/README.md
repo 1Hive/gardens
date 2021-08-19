@@ -1,1 +1,1 @@
-# The Graph Connector for Honey pot
+# The Graph Connector for Gardens

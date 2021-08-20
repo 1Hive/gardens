@@ -27,6 +27,8 @@ export const ORGANIZATIONS = gql`
       }
       honeyLiquidity
       supporterCount
+      incentivisedPriceOracle
+      unipool
     }
   }
 `

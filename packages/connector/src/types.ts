@@ -29,6 +29,8 @@ export interface OrganizationData {
   wrappableToken: TokenData
   proposalCount: number
   supporterCount: number
+  incentivisedPriceOracle: string
+  unipool: string
   active: boolean
 }
 

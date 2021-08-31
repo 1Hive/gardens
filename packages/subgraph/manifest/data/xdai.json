@@ -10,18 +10,13 @@
     ],
     "OrganizationTemplates": [
       {
-        "address": "0xd90deE41a68291d15AD4B1939ab5d4e75Db4Fc3d",
-        "name": "GardensTemplate",
-        "startBlock": 16466203
-      },
-       {
         "address": "0xa80Df3fb9Cc3fd09eC4F5B9865448762f7F3EeC8",
-        "name": "GardensTemplateWithPermit",
+        "name": "GardensTemplate",
         "startBlock": 17532285
       },
-       {
-        "address": "0xd90deE41a68291d15AD4B1939ab5d4e75Db4Fc3d",
-        "name": "GardensTemplateWithPermit2",
+      {
+        "address": "0x5507A6365C47d5b201Af3c1CB18C7fD4a889321b",
+        "name": "GardensTemplateWithPermit",
         "startBlock": 17550461
       }      
     ]  

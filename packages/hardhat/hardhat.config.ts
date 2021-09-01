@@ -18,7 +18,7 @@ const config: HardhatUserConfig = {
         settings: {
           optimizer: {
             enabled: true,
-            runs: 5000 // Increase to 20000 for Arbitrum deployment
+            runs: 5000, // Increase to 20000 for Arbitrum deployment
           },
         },
       },

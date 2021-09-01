@@ -22,7 +22,7 @@ export const Config = {
       AragonID: '0x3665e7bFd4D3254AE7796779800f5b603c43C60D',
       DAOFactory: '0xad4d106b43b480faa3ef7f98464ffc27fc1faa96',
       ENS: '0x98Df287B6C145399Aaa709692c8D308357bC085D',
-      MiniMeFactory: '0xf73F5e9bcB5eD2c56aBe7439094Ac1114B76Ed9A',
+      MiniMeFactory: '0x556dB7a212E0fb1B9C77958bE0744Af7768bf503',
       HoneyswapRouter: '0x7a250d5630B4cF539739dF2C5dAcb4c659F2488D',
       HoneyToken: '0x3050e20fabe19f8576865811c9f28e85b96fa4f9',
       StableToken: '0x531eab8bb6a2359fe52ca5d308d85776549a0af9',

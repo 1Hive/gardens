@@ -13,10 +13,10 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "hardhat new dao",
+      "name": "hardhat new byot garden",
       "skipFiles": ["<node_internals>/**"],
       "runtimeExecutable": "${workspaceFolder}/packages/hardhat/node_modules/.bin/hardhat",
-      "args": ["run", "./scripts/new-dao.ts", "--network", "rinkeby"],
+      "args": ["run", "./scripts/new-byot-garden.ts", "--network", "rinkeby"],
       "cwd": "${workspaceFolder}/packages/hardhat"
     }
   ]

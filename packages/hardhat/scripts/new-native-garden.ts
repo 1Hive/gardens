@@ -11,9 +11,10 @@ const blockTime = network === 'rinkeby' ? 15 : network === 'mainnet' ? 13 : 5 //
 
 console.log(`Every ${blockTime}s a new block is mined in ${network}.`)
 
-const ZERO_ADDRESS = ethers.constants.AddressZero
 // EXISTING_TOKEN_RINKEBY = "0x31c952C47EE29058C0558475bb9E77604C52fE5f" // Not for use here, put in the config.
 // EXISTING_TOKEN_XDAI = "0xa09e33C8dCb1f95f7B79d7fC75a72aaDf69eB319" // Not for use here, put in the config.
+
+const ZERO_ADDRESS = ethers.constants.AddressZero
 const ONE_HUNDRED_PERCENT = 1e18
 const ISSUANCE_ONE_HUNDRED_PERCENT = 1e10
 const CONVICTION_VOTING_ONE_HUNDRED_PERCENT = 1e7
@@ -100,11 +101,9 @@ const transform = (params) => ({
   gardenTokenSymbol: params.gardenTokenSymbol,
   holders: Object.entries(params.seeds).map((e) => e[0]),
   stakes: Object.entries(params.seeds).map((e) => toTokens(e[1] as number).toString()),
-  existingToken: params.existingToken,
   commonPoolAmount: Math.floor(params.commonPoolAmount).toString(),
   honeyTokenLiquidityInXdai: toTokens(params.honeyTokenLiquidityInXdai).toString(),
   gardenTokenLiquidity: toTokens(params.gardenTokenLiquidity).toString(),
-  existingTokenLiquidity: toTokens(params.existingTokenLiquidity).toString(),
   voteSupportRequired: Math.floor(params.voteSupportRequired * ONE_HUNDRED_PERCENT).toString(),
   voteMinAcceptanceQuorum: Math.floor(params.voteMinAcceptanceQuorum * ONE_HUNDRED_PERCENT).toString(),
   voteDuration: Math.floor(params.voteDurationDays * ONE_DAY),
@@ -137,11 +136,9 @@ export default async function main(log = console.log): Promise<any> {
     gardenTokenSymbol,
     holders,
     stakes,
-    existingToken,
     commonPoolAmount,
     honeyTokenLiquidityInXdai,
     gardenTokenLiquidity,
-    existingTokenLiquidity,
     voteDuration,
     voteSupportRequired,
     voteMinAcceptanceQuorum,
@@ -164,10 +161,8 @@ export default async function main(log = console.log): Promise<any> {
     challengeAmount,
     actionAmountStable,
     challengeAmountStable,
-  } = transform(await import(`../params-${network}.json`))
+  } = transform(await import(`../params-native.json`))
   const [mainAccount] = await ethers.getSigners()
-
-  const createNewToken = existingToken == ZERO_ADDRESS // As opposed bring your own token
 
   const approveHnyPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
     const honeyToken = await getHoneyToken(mainAccount, gardensTemplate)
@@ -187,23 +182,13 @@ export default async function main(log = console.log): Promise<any> {
     log(`Approval for honey payment made.`)
   }
 
-  const approveOgtPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
-    const originalToken = await getOriginalToken(mainAccount, existingToken)
-    const approvalAmount = BigNumber.from(100).pow(BigNumber.from(18))
-    const approveOriginalTokenPaymentTx = await originalToken.approve(gardensTemplate.address, approvalAmount, {
-      gasLimit: 1000000,
-    })
-    await approveOriginalTokenPaymentTx.wait(1)
-    log(`Approval for original token payment made.`)
-  }
-
   const createGardenTxOne = async (gardensTemplate: GardensTemplate, log: Function): Promise<string> => {
     log(`Create garden transaction one...`)
     const createGardenTxOneTx = await gardensTemplate.createGardenTxOne(
-      existingToken,
+      ZERO_ADDRESS,
       gardenTokenName,
       gardenTokenSymbol,
-      [commonPoolAmount, honeyTokenLiquidityInXdai, gardenTokenLiquidity, existingTokenLiquidity],
+      [commonPoolAmount, honeyTokenLiquidityInXdai, gardenTokenLiquidity, 0],
       [
         voteDuration,
         voteSupportRequired,
@@ -240,14 +225,7 @@ export default async function main(log = console.log): Promise<any> {
 
     // We get the event arg this way because it is emitted by a contract called by the initial contract
     // this means the args can't be decoded on the receipt directly
-    const unipoolDepositorAddress = createNewToken
-      ? undefined
-      : await getEventArgument(
-          'NewRewardDepositor',
-          'unipoolRewardDepositor',
-          await getUnipoolFactory(mainAccount, gardensTemplate),
-          createGardenTxTwoTx.hash
-        )
+    const unipoolDepositorAddress = undefined
 
     const createGardenTxTwoReceipt = await createGardenTxTwoTx.wait(1)
     const priceOracleAddress = getEventArgFromReceipt(
@@ -280,14 +258,9 @@ export default async function main(log = console.log): Promise<any> {
 
   const gardensTemplate = await getGardensTemplate(mainAccount)
   await approveHnyPayment(gardensTemplate, log)
-  if (!createNewToken) {
-    await approveOgtPayment(gardensTemplate, log)
-  }
   const daoAddress = await createGardenTxOne(gardensTemplate, log)
-  if (createNewToken) {
-    await createTokenholders(gardensTemplate, log)
-  }
-  const [priceOracleAddress, unipoolAddress, unipoolDepositorAddress] = await createGardenTxTwo(gardensTemplate, log)
+  await createTokenholders(gardensTemplate, log)
+  const [priceOracleAddress, ,] = await createGardenTxTwo(gardensTemplate, log)
   await createGardenTxThree(gardensTemplate, log)
 
   const [
@@ -309,8 +282,15 @@ export default async function main(log = console.log): Promise<any> {
     ])
   )
 
+  const convictionVotingContract = await ethers.getContractAt(
+    ['function vault() public view returns(address)'],
+    convictionVotingAddress
+  )
+  const commonPoolAddress = await convictionVotingContract.vault()
+
   log({
     daoAddress,
+    commonPoolAddress,
     convictionVotingAddress,
     tokenManagerAddress,
     issuanceAddress,
@@ -318,11 +298,10 @@ export default async function main(log = console.log): Promise<any> {
     votingAddress,
     votingAggregatorAddress,
     priceOracleAddress,
-    unipoolAddress,
-    unipoolDepositorAddress,
   })
   return {
     daoAddress,
+    commonPoolAddress,
     convictionVotingAddress,
     tokenManagerAddress,
     issuanceAddress,
@@ -330,8 +309,6 @@ export default async function main(log = console.log): Promise<any> {
     votingAddress,
     votingAggregatorAddress,
     priceOracleAddress,
-    unipoolAddress,
-    unipoolDepositorAddress,
   }
 }
 

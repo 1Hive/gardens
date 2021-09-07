@@ -28,4 +28,6 @@
         handler: handleActionSettled
       - event: ActionChallenged(indexed uint256,indexed uint256)
         handler: handleActionChallenged
+      - event: Signed(indexed address,uint256)
+        handler: handleSigned
     file: ./src/mappings/Agreement.ts

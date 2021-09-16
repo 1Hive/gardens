@@ -6,7 +6,7 @@ import {
   getUser,
   Proposal,
   Supporter,
-} from '@1hive/connect-garden'
+} from '@1hive/connect-gardens'
 
 const ORG_ADDRESS = '0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a'
 type Garden = {
@@ -103,6 +103,7 @@ function describeGarden(garden: Garden) {
 function describeUser(user: any) {
   console.log(`User ${user.id}`)
   console.log(`Address: ${user.address}`)
+  console.log(`gardensSigned: ${user.gardensSigned}`)
   user.supports.map(describeSupporter)
   
   console.log(`\n`)

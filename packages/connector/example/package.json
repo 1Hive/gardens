@@ -11,7 +11,7 @@
     "start": "ts-node ."
   },
   "dependencies": {
-    "@1hive/connect-garden": "link:..",
+    "@1hive/connect-gardens": "link:..",
     "@aragon/connect": "0.7.0",
     "@aragon/connect-core": "0.7.0",
     "@aragon/connect-thegraph": "0.7.0"

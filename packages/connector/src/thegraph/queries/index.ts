@@ -346,6 +346,7 @@ export const USER = gql`
     user(id: $id) {
       id
       address
+      gardensSigned
       supports {
         id
         user {

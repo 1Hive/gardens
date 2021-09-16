@@ -7,12 +7,7 @@ import {
   ActionChallenged as ActionChallengedEvent,
   Signed as SignedEvent,
 } from '../../generated/templates/Agreement/Agreement'
-import {
-  getProposalEntity,
-  getProposalEntityId,
-  loadOrCreateUser,
-  loadTokenData,
-} from '../helpers/index'
+import { getProposalEntity, getProposalEntityId, loadOrCreateUser, loadTokenData } from '../helpers/index'
 import { STATUS_DISPUTED, STATUS_DISPUTED_NUM, STATUS_SETTLED, STATUS_SETTLED_NUM } from '../statuses'
 
 /* eslint-disable @typescript-eslint/no-use-before-define */

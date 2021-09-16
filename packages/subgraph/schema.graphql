@@ -137,7 +137,7 @@ type StakeHistory @entity {
 type User @entity {
   id: ID!
   address: Bytes!
-  gardensSigned: [Organization!]
+  gardensSigned: [String!]
   supports: [Supporter!]! @derivedFrom(field: "user")
 }
 

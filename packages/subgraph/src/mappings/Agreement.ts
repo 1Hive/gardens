@@ -10,7 +10,6 @@ import {
 import {
   getProposalEntity,
   getProposalEntityId,
-  loadOrCreateOrg,
   loadOrCreateUser,
   loadTokenData,
 } from '../helpers/index'
@@ -79,11 +78,10 @@ export function handleSigned(event: SignedEvent): void {
   const agreementApp = AgreementContract.bind(event.address)
   const gardenAddress = agreementApp.kernel()
 
-  const org = loadOrCreateOrg(gardenAddress)
   const user = loadOrCreateUser(event.params.signer)
 
   const currentGardensSigned = user.gardensSigned
-  currentGardensSigned.push(org.id)
+  currentGardensSigned.push(gardenAddress.toHexString())
   user.gardensSigned = currentGardensSigned
 
   user.save()

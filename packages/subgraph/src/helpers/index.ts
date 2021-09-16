@@ -93,6 +93,7 @@ export function loadOrCreateUser(address: Address): UserEntity {
   if (user === null) {
     user = new UserEntity(userId)
     user.address = address
+    user.gardensSigned = []
     user.save()
   }
 

@@ -10,15 +10,10 @@
     ],
     "OrganizationTemplates": [
       {
-        "address": "0xa80Df3fb9Cc3fd09eC4F5B9865448762f7F3EeC8",
-        "name": "GardensTemplate",
-        "startBlock": 17532285
-      },
-      {
         "address": "0x5507A6365C47d5b201Af3c1CB18C7fD4a889321b",
-        "name": "GardensTemplateWithPermit",
+        "name": "GardensTemplate",
         "startBlock": 17550461
-      }      
+      }
     ]  
   },
   "1HiveGarden": "0x8ccbeab14b5ac4a431fffc39f4bec4089020a155",

@@ -2,14 +2,11 @@
   "gardenTokenName": "Garden",
   "gardenTokenSymbol": "GDN",
   "seeds": {
-    "0xb4124cEB3451635DAcedd11767f004d8a28c6eE7": 2.5,
-    "0x8401Eb5ff34cc943f096A32EF3d5113FEbE8D4Eb": 1
+    "0x4355a2cdec902c372f404007114bbcf2c65a3eb0": 10000
   },
-  "existingToken": "0x31c952C47EE29058C0558475bb9E77604C52fE5f",
-  "commonPoolAmount": 100,
+  "commonPoolAmount": 3000,
   "honeyTokenLiquidityInXdai": 100,
   "gardenTokenLiquidity": 100,
-  "existingTokenLiquidity": 100,
   "issuanceTargetRatio": 0.3,
   "issuanceThrottle": 0.1,
   "convictionGrowthHours": 48,
@@ -26,9 +23,9 @@
   "challengeDepositStable": 100,
   "voteSupportRequired": 0.5,
   "voteMinAcceptanceQuorum": 0.1,
-  "voteDurationDays": 0.002083334,
-  "delegatedVotingPeriodDays": 0.00138889,
-  "voteQuietEndingPeriodDays": 0.000694445,
-  "voteQuietEndingExtensionDays": 0.00068288,
-  "voteExecutionDelayDays": 0.000694445
+  "voteDurationDays": 5,
+  "delegatedVotingPeriodDays": 2,
+  "voteQuietEndingPeriodDays": 1,
+  "voteQuietEndingExtensionDays": 0.5,
+  "voteExecutionDelayDays": 1
 }

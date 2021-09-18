@@ -150,7 +150,7 @@ export default async function main(log = console.log): Promise<any> {
     challengeAmount,
     actionAmountStable,
     challengeAmountStable,
-  } = transform(await import(`../params-byot.json`))
+  } = transform(await import(`../params-boboli.json`))
   const [mainAccount] = await ethers.getSigners()
 
   const approveHnyPayment = async (gardensTemplate: GardensTemplate, log: Function) => {

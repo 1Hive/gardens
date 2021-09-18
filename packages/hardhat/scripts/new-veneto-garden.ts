@@ -161,7 +161,7 @@ export default async function main(log = console.log): Promise<any> {
     challengeAmount,
     actionAmountStable,
     challengeAmountStable,
-  } = transform(await import(`../params-native.json`))
+  } = transform(await import(`../params-veneto.json`))
   const [mainAccount] = await ethers.getSigners()
 
   const approveHnyPayment = async (gardensTemplate: GardensTemplate, log: Function) => {

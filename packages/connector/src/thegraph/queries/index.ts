@@ -112,7 +112,7 @@ export const ALL_PROPOSALS = (type: string) => gql`
 
       # Proposal / Suggestion data (signaling proposals and proposals requesting funds)
       link
-      stakes(where: { amount_gt: 0 }, first: 1000, orderBy: createdAt, orderDirection: asc) {
+      stakes(where: { amount_gt: 0 }, first: 10000, orderBy: createdAt, orderDirection: asc) {
         id
         type
         supporter {
@@ -124,7 +124,7 @@ export const ALL_PROPOSALS = (type: string) => gql`
         amount
         createdAt
       }
-      stakesHistory(first: 1000, orderBy: createdAt, orderDirection: asc) {
+      stakesHistory(first: 10000, orderBy: createdAt, orderDirection: asc) {
         id
         type
         supporter {
@@ -232,7 +232,7 @@ export const PROPOSAL = (type: string) => gql`
 
       # Proposal / Suggestion data (signaling proposals and proposals requesting funds)
       link
-      stakes(where: { amount_gt: 0 }, first: 1000, orderBy: createdAt, orderDirection: asc) {
+      stakes(where: { amount_gt: 0 }, first: 10000, orderBy: createdAt, orderDirection: asc) {
         id
         type
         supporter {
@@ -247,7 +247,7 @@ export const PROPOSAL = (type: string) => gql`
         amount
         createdAt
       }
-      stakesHistory(first: 1000, orderBy: createdAt, orderDirection: asc) {
+      stakesHistory(first: 10000, orderBy: createdAt, orderDirection: asc) {
         id
         type
         supporter {

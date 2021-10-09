@@ -260,22 +260,17 @@ export default async function main(log = console.log): Promise<any> {
   const [priceOracleAddress, unipoolAddress, unipoolDepositorAddress] = await createGardenTxTwo(gardensTemplate, log)
   await createGardenTxThree(gardensTemplate, log)
 
-  const [
-    convictionVotingAddress,
-    tokenManagerAddress,
-    agreementAddress,
-    votingAddress,
-    votingAggregatorAddress,
-  ] = await getApps(
-    daoAddress,
-    await Promise.all([
-      gardensTemplate.CONVICTION_VOTING_APP_ID(),
-      gardensTemplate.HOOKED_TOKEN_MANAGER_APP_ID(),
-      gardensTemplate.AGREEMENT_APP_ID(),
-      gardensTemplate.DISPUTABLE_VOTING_APP_ID(),
-      gardensTemplate.VOTING_AGGREGATOR_APP_ID(),
-    ])
-  )
+  const [convictionVotingAddress, tokenManagerAddress, agreementAddress, votingAddress, votingAggregatorAddress] =
+    await getApps(
+      daoAddress,
+      await Promise.all([
+        gardensTemplate.CONVICTION_VOTING_APP_ID(),
+        gardensTemplate.HOOKED_TOKEN_MANAGER_APP_ID(),
+        gardensTemplate.AGREEMENT_APP_ID(),
+        gardensTemplate.DISPUTABLE_VOTING_APP_ID(),
+        gardensTemplate.VOTING_AGGREGATOR_APP_ID(),
+      ])
+    )
 
   const convictionVotingContract = await ethers.getContractAt(
     ['function vault() public view returns(address)'],

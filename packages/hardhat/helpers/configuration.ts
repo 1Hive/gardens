@@ -2,7 +2,7 @@ import { eEthereumNetwork, eXDaiNetwork, eLocalHostNetwork } from './types'
 
 export const Config = {
   Bases: {
-    [eEthereumNetwork.arbitrum]:{
+    [eEthereumNetwork.arbitrum]: {
       AragonID: '0xf2E58AdD12dc1d73725574CfD33068Ca8d978f91',
       DAOFactory: '0x959Bc393f42C803D04C4ACCe7157553dbd4cBD35',
       ENS: '0x2DDE068a7fdF72c10848298cC0317E691E40E593',
@@ -18,7 +18,7 @@ export const Config = {
       Arbitrator: '',
       StakingFactory: '0x425f7E1024cb86De06970FE6eF8423Cf6424e5c1',
     },
-    [eEthereumNetwork.arbtest]:{
+    [eEthereumNetwork.arbtest]: {
       AragonID: '0xdCFeD4A30D696b8200aF9C4Cae88f201b9511041',
       DAOFactory: '0x3476A931490BD5ae7e497AB6B58Dd2DF3946d5A9',
       ENS: '0x73ddD4B38982aB515daCf43289B41706f9A39199',

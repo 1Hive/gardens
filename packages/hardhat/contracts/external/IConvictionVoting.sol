@@ -2,6 +2,7 @@ pragma solidity ^0.4.24;
 
 import "./IMiniMeWithPermit.sol";
 import "@aragon/apps-vault/contracts/Vault.sol";
+import "@1hive/funds-manager/contracts/FundsManager.sol";
 
 contract IConvictionVoting {
     bytes32 public constant CHALLENGE_ROLE = keccak256("CHALLENGE_ROLE");
@@ -16,7 +17,7 @@ contract IConvictionVoting {
         address _requestToken,
         address _stableToken,
         address _stableTokenOracle,
-        Vault _vault,
+        FundsManager _vault,
         uint256 _decay,
         uint256 _maxRatio,
         uint256 _weight,

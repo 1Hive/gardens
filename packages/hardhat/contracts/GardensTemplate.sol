@@ -2,6 +2,10 @@ pragma solidity 0.4.24;
 
 import "@aragon/templates-shared/contracts/BaseTemplate.sol";
 import "@aragon/os/contracts/common/SafeERC20.sol";
+import "@1hive/funds-manager/contracts/FundsManager.sol";
+import "@1hive/funds-manager/contracts/AragonVaultFundsManager.sol";
+import "@1hive/funds-manager/contracts/GnosisSafeFundsManager.sol";
+import "@1hive/funds-manager/contracts/GnosisSafe.sol";
 import "./external/IMiniMeWithPermit.sol";
 import "./external/IMiniMeWithPermitFactory.sol";
 import "./external/IHookedTokenManager.sol";
@@ -46,7 +50,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         Kernel dao;
         ACL acl;
         DisputableVoting disputableVoting;
-        Agent commonPoolAgent;
+        FundsManager commonPoolFundsManager;
         IHookedTokenManager hookedTokenManager;
         IConvictionVoting convictionVoting;
     }
@@ -67,6 +71,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     address public arbitrator;
     address public stakingFactory;
 
+    event GardenTransactionOne(address fundsManager);
     event GardenTransactionTwo(address dao, address incentivisedPriceOracle, address unipool);
     event GardenDeployed(address gardenAddress, address collateralRequirementUpdater);
 
@@ -105,7 +110,9 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
     /**
      * @dev Create the DAO and initialise the basic apps necessary for gardens
-     * @param _existingToken An existing token used for the common pool token. Set to address(0) to create a new token.
+     * @param _addresses Array of [existingToken, gnosisSafe]
+     *      existingToken An existing token used for the common pool token. Set to address(0) to create a new token.
+     *      gnosisSafe Gnosis Safe used to hold common pools funds. Set to address(0) to use an Aragon Agent instead.
      * @param _gardenTokenName DAO governance new token name
      * @param _gardenTokenSymbol DAO governance new token symbol
      * @param _initialAmountAndLiquidity Array of [commonPoolAmount, honeyTokenLiquidityInXdai, gardenTokenLiquidity, existingTokenLiquidity]
@@ -117,7 +124,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
      *    voteQuietEndingPeriod, voteQuietEndingExtension, voteExecutionDelay] to set up the voting app of the organization
      */
     function createGardenTxOne(
-        ERC20 _existingToken,
+        address[2] _addresses,
         string _gardenTokenName,
         string _gardenTokenSymbol,
         uint256[4] _initialAmountAndLiquidity,
@@ -127,23 +134,22 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         require(_initialAmountAndLiquidity[1] >= MIN_XDAI_IN_HNY_REQUIRED_FOR_NEW_GARDEN, ERROR_HONEY_DEPOSIT_TOO_LOW);
 
         (Kernel dao, ACL acl) = _createDAO();
-        ERC20 existingToken = _existingToken; // Prevents stack too deep error
+        ERC20 existingToken = ERC20(_addresses[0]); // Prevents stack too deep error
         IMiniMeWithPermit gardenToken = _createToken(_gardenTokenName, _gardenTokenSymbol, TOKEN_DECIMALS, existingToken == address(0));
 
-        Agent commonPoolAgent = _installDefaultAgentApp(dao);
         IHookedTokenManager hookedTokenManager = _installHookedTokenManagerApp(dao, gardenToken, existingToken);
         IVotingAggregator votingAggregator = _installVotingAggregatorApp(dao, _gardenTokenName, _gardenTokenSymbol);
         DisputableVoting disputableVoting = _installDisputableVotingApp(dao, votingAggregator, _disputableVotingSettings);
+        FundsManager fundsManager = _addresses[1] == address(0) ? _createAgentFundsManager(dao, acl, disputableVoting) : _createGnosisFundsManager(_addresses[1]);
 
         _createPermissionForTemplate(acl, votingAggregator, votingAggregator.ADD_POWER_SOURCE_ROLE());
         votingAggregator.addPowerSource(gardenToken, IVotingAggregator.PowerSourceType.ERC20WithCheckpointing, GARDEN_TOKEN_AGGREGATOR_WEIGHT);
         _removePermissionFromTemplate(acl, votingAggregator, votingAggregator.ADD_POWER_SOURCE_ROLE());
 
         _createDisputableVotingPermissions(acl, disputableVoting);
-        _createAgentPermissions(acl, commonPoolAgent, disputableVoting, disputableVoting);
         _createEvmScriptsRegistryPermissions(acl, disputableVoting, disputableVoting);
 
-        _storeDeployedContractsTxOne(dao, acl, disputableVoting, commonPoolAgent, hookedTokenManager);
+        _storeDeployedContractsTxOne(dao, acl, disputableVoting, fundsManager, hookedTokenManager);
 
         uint256 honeyLiquidityToAdd = honeyPriceOracle.consult(stableToken, _initialAmountAndLiquidity[1], honeyToken);
         honeyToken.safeTransferFrom(msg.sender, address(this), honeyLiquidityToAdd);
@@ -157,12 +163,14 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             honeyswapRouter.addLiquidity(honeyToken, existingToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[3], 0, 0, BURN_ADDRESS, now);
         } else {
             _createPermissionForTemplate(acl, hookedTokenManager, hookedTokenManager.MINT_ROLE());
-            hookedTokenManager.mint(commonPoolAgent, _initialAmountAndLiquidity[0]);
+            hookedTokenManager.mint(fundsManager.fundsOwner(), _initialAmountAndLiquidity[0]);
             hookedTokenManager.mint(address(this), _initialAmountAndLiquidity[2]);
             gardenToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[2]);
 
             honeyswapRouter.addLiquidity(honeyToken, gardenToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[2], 0, 0, BURN_ADDRESS, now);
         }
+
+        emit GardenTransactionOne(fundsManager);
     }
 
     /**
@@ -195,15 +203,16 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
         (
             Kernel dao,,,
-            Agent commonPoolAgent,
+            FundsManager commonPoolFundsManager,
             IHookedTokenManager hookedTokenManager
         ) = _getDeployedContractsTxOne();
 
         if (!_creatingGardenWithExistingToken(hookedTokenManager)) {
             _removePermissionFromTemplate(_getAcl(), hookedTokenManager, hookedTokenManager.MINT_ROLE());
-            IIssuance issuance = _installIssuance(dao, hookedTokenManager, commonPoolAgent, _issuanceSettings);
+            IIssuance issuance = _installIssuance(dao, hookedTokenManager, commonPoolFundsManager, _issuanceSettings);
             _createIssuancePermissions(_getAcl(), issuance, _getDisputableVoting());
             _createHookedTokenManagerPermissions(_getAcl(), _getDisputableVoting(), hookedTokenManager, issuance);
+//            commonPoolFundsManager.addOwner(issuance);
         }
 
         address incentivisedPriceOracle = incentivisedPriceOracleFactory.newIncentivisedPriceOracle(
@@ -223,11 +232,11 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             _convictionVotingRequestToken,
             stableToken,
             incentivisedPriceOracle,
-            commonPoolAgent,
+            commonPoolFundsManager,
             _convictionSettings
         );
         _createConvictionVotingPermissions(_getAcl(), convictionVoting, _getDisputableVoting());
-        _createVaultPermissions(_getAcl(), commonPoolAgent, convictionVoting, _getDisputableVoting());
+//        commonPoolFundsManager.addOwner(convictionVoting);
 
         _createPermissionForTemplate(_getAcl(), hookedTokenManager, hookedTokenManager.SET_HOOK_ROLE());
         if (_creatingGardenWithExistingToken(hookedTokenManager)) {
@@ -318,6 +327,20 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         return token;
     }
 
+    function _createAgentFundsManager(Kernel _dao, ACL _acl, DisputableVoting _disputableVoting) internal returns (FundsManager) {
+        Agent commonPoolAgent = _installDefaultAgentApp(_dao);
+        FundsManager fundsManager = new AragonVaultFundsManager(commonPoolAgent);
+        _createAgentPermissions(_acl, commonPoolAgent, _disputableVoting, _disputableVoting);
+        _createVaultPermissions(_acl, commonPoolAgent, fundsManager, _disputableVoting);
+        return fundsManager;
+    }
+
+    function _createGnosisFundsManager(address _gnosisSafe) internal returns (FundsManager) {
+        FundsManager fundsManager = new GnosisSafeFundsManager(GnosisSafe(_gnosisSafe));
+        // The GnosisSafe owner must allow the above FundsManager permission to execute functions on it
+        return fundsManager;
+    }
+
     function _installHookedTokenManagerApp(Kernel _dao, IMiniMeWithPermit _gardenToken, ERC20 _wrappableToken)
         internal
         returns (IHookedTokenManager)
@@ -367,11 +390,11 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     function _installIssuance(
         Kernel _dao,
         IHookedTokenManager _hookedTokenManager,
-        Agent _commonPoolAgent,
+        FundsManager _commonPoolFundsManager,
         uint256[2] _issuanceSettings
     ) internal returns (IIssuance) {
         IIssuance issuance = IIssuance(_installNonDefaultApp(_dao, DYNAMIC_ISSUANCE_APP_ID));
-        issuance.initialize(_hookedTokenManager, _commonPoolAgent, _issuanceSettings[0], _issuanceSettings[1]);
+        issuance.initialize(_hookedTokenManager, _commonPoolFundsManager, _issuanceSettings[0], _issuanceSettings[1]);
         return issuance;
     }
 
@@ -381,7 +404,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         address _requestToken,
         address _stableToken,
         address _stableTokenOracle,
-        Agent _agent,
+        FundsManager _fundsManager,
         uint64[4] _convictionSettings
     ) internal returns (IConvictionVoting) {
         IConvictionVoting convictionVoting = IConvictionVoting(_installNonDefaultApp(_dao, CONVICTION_VOTING_APP_ID));
@@ -390,7 +413,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             _requestToken,
             _stableToken,
             _stableTokenOracle,
-            _agent,
+            _fundsManager,
             _convictionSettings[0],
             _convictionSettings[1],
             _convictionSettings[2],
@@ -461,14 +484,14 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         Kernel _dao,
         ACL _acl,
         DisputableVoting _disputableVoting,
-        Agent _agent,
+        FundsManager _fundsManager,
         IHookedTokenManager _hookedTokenManager
     ) internal {
         DeployedContracts storage deployedContracts = senderDeployedContracts[msg.sender];
         deployedContracts.dao = _dao;
         deployedContracts.acl = _acl;
         deployedContracts.disputableVoting = _disputableVoting;
-        deployedContracts.commonPoolAgent = _agent;
+        deployedContracts.commonPoolFundsManager = _fundsManager;
         deployedContracts.hookedTokenManager = _hookedTokenManager;
     }
 
@@ -477,7 +500,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             Kernel,
             ACL,
             DisputableVoting,
-            Agent,
+            FundsManager,
             IHookedTokenManager
         )
     {
@@ -486,7 +509,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             deployedContracts.dao,
             deployedContracts.acl,
             deployedContracts.disputableVoting,
-            deployedContracts.commonPoolAgent,
+            deployedContracts.commonPoolFundsManager,
             deployedContracts.hookedTokenManager
         );
     }

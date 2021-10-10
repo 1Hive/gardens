@@ -35,7 +35,7 @@
     "@aragon/os": "4.3.0",
     "@aragon/templates-shared": "1.0.0",
     "@openzeppelin/contracts": "^3.2.0",
-    "@1hive/funds-manager": "1.0.2"
+    "@1hive/funds-manager": "1.0.3"
   },
   "scripts": {
     "chain": "hardhat node",

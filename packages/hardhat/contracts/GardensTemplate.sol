@@ -212,7 +212,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             IIssuance issuance = _installIssuance(dao, hookedTokenManager, commonPoolFundsManager, _issuanceSettings);
             _createIssuancePermissions(_getAcl(), issuance, _getDisputableVoting());
             _createHookedTokenManagerPermissions(_getAcl(), _getDisputableVoting(), hookedTokenManager, issuance);
-//            commonPoolFundsManager.addOwner(issuance);
+            commonPoolFundsManager.addFundsUser(issuance);
         }
 
         address incentivisedPriceOracle = incentivisedPriceOracleFactory.newIncentivisedPriceOracle(
@@ -236,7 +236,8 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
             _convictionSettings
         );
         _createConvictionVotingPermissions(_getAcl(), convictionVoting, _getDisputableVoting());
-//        commonPoolFundsManager.addOwner(convictionVoting);
+        commonPoolFundsManager.addFundsUser(convictionVoting);
+        commonPoolFundsManager.setOwner(_getDisputableVoting());
 
         _createPermissionForTemplate(_getAcl(), hookedTokenManager, hookedTokenManager.SET_HOOK_ROLE());
         if (_creatingGardenWithExistingToken(hookedTokenManager)) {

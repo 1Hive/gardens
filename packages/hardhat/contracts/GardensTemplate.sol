@@ -134,6 +134,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         require(_initialAmountAndLiquidity[1] >= MIN_XDAI_IN_HNY_REQUIRED_FOR_NEW_GARDEN, ERROR_HONEY_DEPOSIT_TOO_LOW);
 
         (Kernel dao, ACL acl) = _createDAO();
+
         ERC20 existingToken = ERC20(_addresses[0]); // Prevents stack too deep error
         IMiniMeWithPermit gardenToken = _createToken(_gardenTokenName, _gardenTokenSymbol, TOKEN_DECIMALS, existingToken == address(0));
 

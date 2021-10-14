@@ -58,11 +58,11 @@ const getUnipoolFactory = async (signer: Signer, gardensTemplate: GardensTemplat
 
 const getHoneyToken = async (signer: Signer, gardensTemplate: GardensTemplate) => {
   const honeyTokenAddress = await gardensTemplate.honeyToken()
-  return (await ethers.getContractAt('IERC20', honeyTokenAddress, signer)) as Erc20
+  return (await ethers.getContractAt('ERC20', honeyTokenAddress, signer)) as Erc20
 }
 
 const getOriginalToken = async (signer: Signer, address: string) => {
-  return (await ethers.getContractAt('IERC20', address, signer)) as Erc20
+  return (await ethers.getContractAt('ERC20', address, signer)) as Erc20
 }
 
 const getEventArgument = async (
@@ -94,6 +94,7 @@ const toTokens = (amount, decimals = 18) => {
 }
 
 const transform = (params) => ({
+  gnosisSafe: params.gnosisSafe,
   gardenTokenName: params.gardenTokenName,
   gardenTokenSymbol: params.gardenTokenSymbol,
   existingToken: params.existingToken,
@@ -125,6 +126,7 @@ const transform = (params) => ({
 
 export default async function main(log = console.log): Promise<any> {
   const {
+    gnosisSafe,
     gardenTokenName,
     gardenTokenSymbol,
     existingToken,
@@ -150,7 +152,7 @@ export default async function main(log = console.log): Promise<any> {
     challengeAmount,
     actionAmountStable,
     challengeAmountStable,
-  } = transform(await import(`../params-boboli.json`))
+  } = transform(await import(`../params-boboli-rinkeby.json`))
   const [mainAccount] = await ethers.getSigners()
 
   const approveHnyPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
@@ -184,7 +186,7 @@ export default async function main(log = console.log): Promise<any> {
   const createGardenTxOne = async (gardensTemplate: GardensTemplate, log: Function): Promise<string> => {
     log(`Create garden transaction one...`)
     const createGardenTxOneTx = await gardensTemplate.createGardenTxOne(
-      existingToken,
+      [existingToken, gnosisSafe],
       gardenTokenName,
       gardenTokenSymbol,
       [0, honeyTokenLiquidityInXdai, 0, existingTokenLiquidity],
@@ -273,13 +275,19 @@ export default async function main(log = console.log): Promise<any> {
     )
 
   const convictionVotingContract = await ethers.getContractAt(
-    ['function vault() public view returns(address)'],
+    ['function fundsManager() public view returns(address)'],
     convictionVotingAddress
   )
-  const commonPoolAddress = await convictionVotingContract.vault()
+  const fundsManagerAddress = await convictionVotingContract.fundsManager()
+  const fundsManagerContract = await ethers.getContractAt(
+    ['function fundsOwner() public view returns(address)'],
+    fundsManagerAddress
+  )
+  const commonPoolAddress = await fundsManagerContract.fundsOwner()
 
   log({
     daoAddress,
+    fundsManagerAddress,
     commonPoolAddress,
     convictionVotingAddress,
     tokenManagerAddress,
@@ -292,6 +300,7 @@ export default async function main(log = console.log): Promise<any> {
   })
   return {
     daoAddress,
+    fundsManagerAddress,
     commonPoolAddress,
     convictionVotingAddress,
     tokenManagerAddress,

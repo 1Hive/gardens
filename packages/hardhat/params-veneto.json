@@ -1,4 +1,5 @@
 {
+  "gnosisSafe": "0x0000000000000000000000000000000000000000",
   "gardenTokenName": "Garden",
   "gardenTokenSymbol": "GDN",
   "seeds": {

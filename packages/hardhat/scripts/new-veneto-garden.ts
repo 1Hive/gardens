@@ -61,11 +61,11 @@ const getUnipoolFactory = async (signer: Signer, gardensTemplate: GardensTemplat
 
 const getHoneyToken = async (signer: Signer, gardensTemplate: GardensTemplate) => {
   const honeyTokenAddress = await gardensTemplate.honeyToken()
-  return (await ethers.getContractAt('IERC20', honeyTokenAddress, signer)) as Erc20
+  return (await ethers.getContractAt('ERC20', honeyTokenAddress, signer)) as Erc20
 }
 
 const getOriginalToken = async (signer: Signer, address: string) => {
-  return (await ethers.getContractAt('IERC20', address, signer)) as Erc20
+  return (await ethers.getContractAt('ERC20', address, signer)) as Erc20
 }
 
 const getEventArgument = async (
@@ -97,6 +97,7 @@ const toTokens = (amount, decimals = 18) => {
 }
 
 const transform = (params) => ({
+  gnosisSafe: params.gnosisSafe,
   gardenTokenName: params.gardenTokenName,
   gardenTokenSymbol: params.gardenTokenSymbol,
   holders: Object.entries(params.seeds).map((e) => e[0]),
@@ -132,6 +133,7 @@ const transform = (params) => ({
 
 export default async function main(log = console.log): Promise<any> {
   const {
+    gnosisSafe,
     gardenTokenName,
     gardenTokenSymbol,
     holders,
@@ -185,7 +187,7 @@ export default async function main(log = console.log): Promise<any> {
   const createGardenTxOne = async (gardensTemplate: GardensTemplate, log: Function): Promise<string> => {
     log(`Create garden transaction one...`)
     const createGardenTxOneTx = await gardensTemplate.createGardenTxOne(
-      ZERO_ADDRESS,
+      [ZERO_ADDRESS, gnosisSafe],
       gardenTokenName,
       gardenTokenSymbol,
       [commonPoolAmount, honeyTokenLiquidityInXdai, gardenTokenLiquidity, 0],
@@ -198,7 +200,7 @@ export default async function main(log = console.log): Promise<any> {
         voteQuietEndingExtension,
         voteExecutionDelay,
       ],
-      { gasLimit: 500000000 }
+      { gasPrice: 1000000000, gasLimit: 11000000 }
     )
     const createGardenTxOneReceipt = await createGardenTxOneTx.wait(1)
     const daoAddress = getEventArgFromReceipt(createGardenTxOneReceipt, 'DeployDao', 'dao')
@@ -220,7 +222,7 @@ export default async function main(log = console.log): Promise<any> {
       [issuanceTargetRatio, issuanceMaxAdjustmentPerSecond],
       [decay, maxRatio, weight, minThresholdStakePercentage],
       requestToken,
-      { gasLimit: 800000000 }
+      { gasLimit: 8000000 }
     )
 
     // We get the event arg this way because it is emitted by a contract called by the initial contract
@@ -250,14 +252,14 @@ export default async function main(log = console.log): Promise<any> {
       [actionAmount, challengeAmount],
       [actionAmountStable, actionAmountStable],
       [challengeAmountStable, challengeAmountStable],
-      { gasLimit: 700000000 }
+      { gasLimit: 7000000 }
     )
     await createGardenTxThreeTx.wait(1)
     log(`Tx three completed.`)
   }
 
   const gardensTemplate = await getGardensTemplate(mainAccount)
-  await approveHnyPayment(gardensTemplate, log)
+  // await approveHnyPayment(gardensTemplate, log)
   const daoAddress = await createGardenTxOne(gardensTemplate, log)
   await createTokenholders(gardensTemplate, log)
   const [priceOracleAddress, ,] = await createGardenTxTwo(gardensTemplate, log)
@@ -283,13 +285,19 @@ export default async function main(log = console.log): Promise<any> {
   )
 
   const convictionVotingContract = await ethers.getContractAt(
-    ['function vault() public view returns(address)'],
+    ['function fundsManager() public view returns(address)'],
     convictionVotingAddress
   )
-  const commonPoolAddress = await convictionVotingContract.vault()
+  const fundsManagerAddress = await convictionVotingContract.fundsManager()
+  const fundsManagerContract = await ethers.getContractAt(
+    ['function fundsOwner() public view returns(address)'],
+    fundsManagerAddress
+  )
+  const commonPoolAddress = await fundsManagerContract.fundsOwner()
 
   log({
     daoAddress,
+    fundsManagerAddress,
     commonPoolAddress,
     convictionVotingAddress,
     tokenManagerAddress,
@@ -301,6 +309,7 @@ export default async function main(log = console.log): Promise<any> {
   })
   return {
     daoAddress,
+    fundsManagerAddress,
     commonPoolAddress,
     convictionVotingAddress,
     tokenManagerAddress,

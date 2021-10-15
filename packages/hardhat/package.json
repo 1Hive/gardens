@@ -34,7 +34,8 @@
     "@aragon/apps-vault": "^4.1.0",
     "@aragon/os": "4.3.0",
     "@aragon/templates-shared": "1.0.0",
-    "@openzeppelin/contracts": "^3.2.0"
+    "@openzeppelin/contracts": "^3.2.0",
+    "@1hive/funds-manager": "1.0.4"
   },
   "scripts": {
     "chain": "hardhat node",

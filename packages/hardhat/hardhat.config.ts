@@ -61,6 +61,10 @@ const config: HardhatUserConfig = {
       url: node_url('polygon'),
       accounts: accounts('polygon'),
     },
+    mumbai: {
+      url: node_url("mumbai"),
+      accounts: account("mumbai"),
+    },
     arbitrum: {
       url: node_url('arbitrum'),
       accounts: accounts('arbitrum'),

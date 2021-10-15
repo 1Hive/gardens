@@ -2,6 +2,38 @@ import { eEthereumNetwork, eXDaiNetwork, eLocalHostNetwork } from './types'
 
 export const Config = {
   Bases: {
+    [eEthereumNetwork.mumbai]: {
+      AragonID: '0xb7E098cB86b120363A935730970A3758861ba458',
+      DAOFactory: '0xE97999F411333E3B712104aa04fc06b149BD12eA',
+      ENS: '0xB1576a9bE5EC445368740161174f3Dd1034fF8be',
+      MiniMeFactory: '',
+      HoneyswapRouter: '',
+      HoneyToken: '',
+      StableToken: '',
+      HoneyPriceOracle: '',
+      PriceOracleFactory: '',
+      CollateralRequirementUpdaterFactory: '',
+      UniswapV2Factory: '',
+      UnipoolFactory: '',
+      Arbitrator: '',
+      StakingFactory: '',
+    },
+    [eEthereumNetwork.polygon]: {
+      AragonID: '',
+      DAOFactory: '',
+      ENS: '',
+      MiniMeFactory: '',
+      HoneyswapRouter: '',
+      HoneyToken: '',
+      StableToken: '',
+      HoneyPriceOracle: '',
+      PriceOracleFactory: '',
+      CollateralRequirementUpdaterFactory: '',
+      UniswapV2Factory: '',
+      UnipoolFactory: '',
+      Arbitrator: '',
+      StakingFactory: '',
+    },
     [eEthereumNetwork.arbitrum]: {
       AragonID: '0xf2E58AdD12dc1d73725574CfD33068Ca8d978f91',
       DAOFactory: '0x959Bc393f42C803D04C4ACCe7157553dbd4cBD35',
@@ -66,7 +98,6 @@ export const Config = {
       Arbitrator: '0x35e7433141D5f7f2EB7081186f5284dCDD2ccacE',
       StakingFactory: '0xE376a7bbD20Ba75616D6a9d0A8468195a5d695FC',
     },
-
     //Using xdai data to use the fork functionality on localhost
     [eLocalHostNetwork.localhost]: {
       AragonID: '0x0b3b17f9705783bb51ae8272f3245d6414229b36',

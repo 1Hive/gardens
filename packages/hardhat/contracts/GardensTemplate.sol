@@ -19,8 +19,9 @@ import "./external/IUniswapV2Factory.sol";
 import "./external/IVotingAggregator.sol";
 import "./appIds/AppIdsXDai.sol";
 import "./appIds/AppIdsRinkeby.sol";
+import "./appIds/AppIdsMumbai.sol";
 
-contract GardensTemplate is BaseTemplate, AppIdsXDai {
+contract GardensTemplate is BaseTemplate, AppIdsMumbai {
 
     using SafeERC20 for ERC20;
 

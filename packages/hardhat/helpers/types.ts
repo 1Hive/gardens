@@ -7,6 +7,8 @@ export enum eEthereumNetwork {
   hardhat = 'hardhat',
   arbtest = 'arbtest',
   arbitrum = 'arbitrum',
+  mumbai = 'mumbai',
+  polygon = 'polygon'
 }
 
 export enum eXDaiNetwork {
@@ -19,6 +21,8 @@ export enum EthereumNetworkNames {
   xdai = 'xdai',
   arbtest = 'arbtest',
   arbitrum = 'arbitrum',
+  mumbai = 'mumbai',
+  polygon = 'polygon'
 }
 
 export enum eLocalHostNetwork {

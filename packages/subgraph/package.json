@@ -18,13 +18,13 @@
     "manifest:rinkeby": "NETWORK=rinkeby yarn manifest",
     "manifest:mainnet": "NETWORK=mainnet yarn manifest",
     "manifest:xdai": "NETWORK=xdai yarn manifest",
-    "clean": "node ../../node_modules/rimraf/bin.js abis build generated subgraph.yaml src/constants.ts",
+    "clean": "node ../../node_modules/rimraf/bin.js build generated subgraph.yaml src/constants.ts",
     "lint": "eslint --ext .ts,.json,.md,.yaml,.graphql",
     "lint:fix": "eslint --ext ts,.json,.md,.yaml,.graphql --fix"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.20.0",
-    "@graphprotocol/graph-ts": "^0.20.0"
+    "@graphprotocol/graph-cli": "^0.22.3",
+    "@graphprotocol/graph-ts": "^0.22.1"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",

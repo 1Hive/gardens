@@ -7,6 +7,7 @@ import {
 } from '../../generated/GardensTemplate/GardensTemplate'
 import { Kernel as KernelTemplate } from '../../generated/templates'
 import { setUpHoneyLiquidity, loadOrCreateOrg } from '../helpers'
+import { ONE_HIVE_GARDEN_ADDRESS, ONE_HIVE_GARDEN_PRICE_ORACLE_ADDRESS } from '../constants'
 
 export function handleDeployDao(event: DeployDaoEvent): void {
   const org = loadOrCreateOrg(event.params.dao)
@@ -35,7 +36,11 @@ export function handleInstalledApp(event: InstalledAppEvent): void {}
 export function handleGardenTransactionTwo(event: GardenTransactionTwoEvent): void {
   const org = loadOrCreateOrg(event.params.dao)
 
-  org.incentivisedPriceOracle = event.params.incentivisedPriceOracle
+  if (ONE_HIVE_GARDEN_ADDRESS.equals(event.params.dao)) {
+    org.incentivisedPriceOracle = ONE_HIVE_GARDEN_PRICE_ORACLE_ADDRESS
+  } else {
+    org.incentivisedPriceOracle = event.params.incentivisedPriceOracle
+  }
   org.unipool = event.params.unipool
   org.save()
 }

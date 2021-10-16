@@ -3,6 +3,7 @@ import { loadOrCreateOrg, MAX_UINT_256 } from './helpers'
 import { onAppTemplateCreated } from './hooks'
 import {
   ONE_HIVE_GARDEN_ADDRESS,
+  ONE_HIVE_GARDEN_PRICE_ORACLE_ADDRESS,
   AGREEMENT_APPIDS,
   CONVICTION_VOTING_APPIDS,
   TOKENS_APPIDS,
@@ -35,6 +36,7 @@ export function processOrg(orgAddress: Address, timestamp: BigInt): void {
 
     if (ONE_HIVE_GARDEN_ADDRESS.equals(orgAddress)) {
       org.honeyLiquidity = MAX_UINT_256
+      org.incentivisedPriceOracle = ONE_HIVE_GARDEN_PRICE_ORACLE_ADDRESS
     }
 
     org.save()

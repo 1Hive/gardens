@@ -6,3 +6,4 @@ export const TOKENS_APPIDS: string[] = [{{#tokensAppIds}}'{{id}}',{{/tokensAppId
 export const VOTING_APPIDS: string[] = [{{#votingAppIds}}'{{id}}',{{/votingAppIds}}]
 
 export const ONE_HIVE_GARDEN_ADDRESS: Address = Address.fromString('{{1HiveGarden}}')
+export const ONE_HIVE_GARDEN_PRICE_ORACLE_ADDRESS: Address = Address.fromString('{{1HivePriceOracle}}')

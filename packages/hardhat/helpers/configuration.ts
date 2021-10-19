@@ -11,7 +11,7 @@ export const Config = {
       HoneyToken: '',
       StableToken: '',
       HoneyPriceOracle: '',
-      PriceOracleFactory: '0x62F3b99Ef24f5070b9ae80552e321ec89aBFC71B',
+      PriceOracleFactory: '', // Requires updating hex before deployment
       CollateralRequirementUpdaterFactory: '0x75409fa02734668B1c0E351dbC51e93bBd402A6f',
       UniswapV2Factory: '',
       UnipoolFactory: '0xAD289640D2D6976b6d7dd87eecC33B0cf6332BAF',
@@ -27,7 +27,7 @@ export const Config = {
       HoneyToken: '',
       StableToken: '',
       HoneyPriceOracle: '',
-      PriceOracleFactory: '0xFB13cc44B3E79E05713002b9aa3776eAa7164bD7',
+      PriceOracleFactory: '', // Requires updating hex before deployment
       CollateralRequirementUpdaterFactory: '0xD608eC04f748c9E1982A6965E422722e9506E061',
       UniswapV2Factory: '',
       UnipoolFactory: '0x022eD1710Cd17193C9eD05D516E8Ea64b036a44F',

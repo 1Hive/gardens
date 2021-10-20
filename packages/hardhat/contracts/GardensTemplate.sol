@@ -13,7 +13,6 @@ import "./external/IIssuance.sol";
 import "./external/IConvictionVoting.sol";
 import "./external/Agreement.sol";
 import "./external/DisputableVoting.sol";
-import "./external/IHoneyswapRouter.sol";
 import "./external/IPriceOracle.sol";
 import "./external/IIncentivisedPriceOracleFactory.sol"; // This lives in the uniswap-v2-periphery/contracts/examples repo (it should be moved to its own repo)
 import "./external/ICollateralRequirementUpdaterFactory.sol"; // This lives in the agreements repo
@@ -24,6 +23,7 @@ import "./external/IVotingAggregator.sol";
 import "./appIds/AppIdsXDai.sol";
 import "./appIds/AppIdsRinkeby.sol";
 import "./appIds/AppIdsMumbai.sol";
+import "./external/Erc721Adapter.sol";
 
 contract GardensTemplate is BaseTemplate, AppIdsMumbai {
 
@@ -61,19 +61,16 @@ contract GardensTemplate is BaseTemplate, AppIdsMumbai {
 
     mapping(address => DeployedContracts) internal senderDeployedContracts;
     IMiniMeWithPermitFactory public miniMeWithPermitFactory;
-    IHoneyswapRouter public honeyswapRouter;
-    ERC20 public honeyToken;
     address public stableToken;
     IPriceOracle public honeyPriceOracle;
     IIncentivisedPriceOracleFactory public incentivisedPriceOracleFactory;
     ICollateralRequirementUpdaterFactory public collateralRequirementUpdaterFactory;
     IUniswapV2Factory public uniswapFactory;
-    IUnipoolFactory public unipoolFactory;
     address public arbitrator;
     address public stakingFactory;
 
     event GardenTransactionOne(address fundsManager);
-    event GardenTransactionTwo(address dao, address incentivisedPriceOracle, address unipool);
+    event GardenTransactionTwo(address dao, address incentivisedPriceOracle, address convictionVoting);
     event GardenDeployed(address gardenAddress, address collateralRequirementUpdater);
 
     constructor(
@@ -81,28 +78,20 @@ contract GardensTemplate is BaseTemplate, AppIdsMumbai {
         ENS _ens,
         IMiniMeWithPermitFactory _miniMeWithPermitFactory,
         IFIFSResolvingRegistrar _aragonID,
-        IHoneyswapRouter _honeyswapRouter,
-        ERC20 _honeyToken,
         address _stableToken,
-        IPriceOracle _honeyPriceOracle,
         IIncentivisedPriceOracleFactory _incentivisedPriceOracleFactory,
         ICollateralRequirementUpdaterFactory _collateralRequirementUpdaterFactory,
         IUniswapV2Factory _uniswapFactory,
-        IUnipoolFactory _unipoolFactory,
         address _arbitrator,
         address _stakingFactory
     ) public BaseTemplate(_daoFactory, _ens, MiniMeTokenFactory(0), _aragonID) {
         _ensureAragonIdIsValid(_aragonID);
         _ensureMiniMeFactoryIsValid(_miniMeWithPermitFactory);
         miniMeWithPermitFactory = _miniMeWithPermitFactory;
-        honeyswapRouter = _honeyswapRouter;
-        honeyToken = _honeyToken;
         stableToken = _stableToken;
-        honeyPriceOracle = _honeyPriceOracle;
         incentivisedPriceOracleFactory = _incentivisedPriceOracleFactory;
         collateralRequirementUpdaterFactory = _collateralRequirementUpdaterFactory;
         uniswapFactory = _uniswapFactory;
-        unipoolFactory = _unipoolFactory;
         arbitrator = _arbitrator;
         stakingFactory = _stakingFactory;
     }
@@ -116,11 +105,6 @@ contract GardensTemplate is BaseTemplate, AppIdsMumbai {
      *      gnosisSafe Gnosis Safe used to hold common pools funds. Set to address(0) to use an Aragon Agent instead.
      * @param _gardenTokenName DAO governance new token name
      * @param _gardenTokenSymbol DAO governance new token symbol
-     * @param _initialAmountAndLiquidity Array of [commonPoolAmount, honeyTokenLiquidityInXdai, gardenTokenLiquidity, existingTokenLiquidity]
-     *      commonPoolAmount Amount created for the common pool. Unused if _existingToken is set
-     *      honeyTokenLiquidityInXdai Liquidity to add to the HNY/(GDN/_existingToken) pair.
-     *      gardenTokenLiquidity Liquidity to add to the HNY/GDN pair. Unused if _existingToken is set
-     *      existingTokenLiquidity Liquidity to add to the HNY/_existingToken pair. Unused it _existingToken is address(0)
      * @param _disputableVotingSettings Array of [voteDuration, voteSupportRequired, voteMinAcceptanceQuorum, voteDelegatedVotingPeriod,
      *    voteQuietEndingPeriod, voteQuietEndingExtension, voteExecutionDelay] to set up the voting app of the organization
      */
@@ -128,11 +112,9 @@ contract GardensTemplate is BaseTemplate, AppIdsMumbai {
         address[2] _addresses,
         string _gardenTokenName,
         string _gardenTokenSymbol,
-        uint256[4] _initialAmountAndLiquidity,
         uint64[7] _disputableVotingSettings
     ) public {
         require(_disputableVotingSettings.length == 7, ERROR_BAD_VOTE_SETTINGS);
-        require(_initialAmountAndLiquidity[1] >= MIN_XDAI_IN_HNY_REQUIRED_FOR_NEW_GARDEN, ERROR_HONEY_DEPOSIT_TOO_LOW);
 
         (Kernel dao, ACL acl) = _createDAO();
 
@@ -153,25 +135,6 @@ contract GardensTemplate is BaseTemplate, AppIdsMumbai {
 
         _storeDeployedContractsTxOne(dao, acl, disputableVoting, fundsManager, hookedTokenManager);
 
-        uint256 honeyLiquidityToAdd = honeyPriceOracle.consult(stableToken, _initialAmountAndLiquidity[1], honeyToken);
-        honeyToken.safeTransferFrom(msg.sender, address(this), honeyLiquidityToAdd);
-        honeyToken.approve(address(honeyswapRouter), 0);
-        honeyToken.approve(address(honeyswapRouter), honeyLiquidityToAdd);
-
-        if (_creatingGardenWithExistingToken(hookedTokenManager)) {
-            existingToken.safeTransferFrom(msg.sender, address(this), _initialAmountAndLiquidity[3]);
-            existingToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[3]);
-
-            honeyswapRouter.addLiquidity(honeyToken, existingToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[3], 0, 0, BURN_ADDRESS, now);
-        } else {
-            _createPermissionForTemplate(acl, hookedTokenManager, hookedTokenManager.MINT_ROLE());
-            hookedTokenManager.mint(fundsManager.fundsOwner(), _initialAmountAndLiquidity[0]);
-            hookedTokenManager.mint(address(this), _initialAmountAndLiquidity[2]);
-            gardenToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[2]);
-
-            honeyswapRouter.addLiquidity(honeyToken, gardenToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[2], 0, 0, BURN_ADDRESS, now);
-        }
-
         emit GardenTransactionOne(fundsManager);
     }
 
@@ -190,14 +153,13 @@ contract GardensTemplate is BaseTemplate, AppIdsMumbai {
 
     /**
      * @dev Add and initialise issuance and conviction voting
-     * @param _issuanceSettings Array of issuance settings: [targetRatio, maxAdjustmentRatioPerSecond]. Unused if
-     *        existingToken is set in transaction one.
+     * @param _erc721Adapter The Garden's stake token, used to vote on conviction votes. Eg ERC721Adapter
      * @param _convictionSettings Array of conviction settings: [decay, max_ratio, weight, min_threshold_stake_percentage]
      * @param _convictionVotingRequestToken The Garden's common pool token, requested using conviction voting. If set to
      *        address(0) the Garden will use it's main token.
      */
     function createGardenTxTwo(
-        uint256[2] _issuanceSettings,
+        Erc721Adapter _erc721Adapter,
         uint64[4] _convictionSettings,
         address _convictionVotingRequestToken
     ) public {
@@ -209,28 +171,20 @@ contract GardensTemplate is BaseTemplate, AppIdsMumbai {
             IHookedTokenManager hookedTokenManager
         ) = _getDeployedContractsTxOne();
 
-        if (!_creatingGardenWithExistingToken(hookedTokenManager)) {
-            _removePermissionFromTemplate(_getAcl(), hookedTokenManager, hookedTokenManager.MINT_ROLE());
-            IIssuance issuance = _installIssuance(dao, hookedTokenManager, commonPoolFundsManager, _issuanceSettings);
-            _createIssuancePermissions(_getAcl(), issuance, _getDisputableVoting());
-            _createHookedTokenManagerPermissions(_getAcl(), _getDisputableVoting(), hookedTokenManager, issuance);
-            commonPoolFundsManager.addFundsUser(issuance);
-        }
+        _removePermissionFromTemplate(_getAcl(), hookedTokenManager, hookedTokenManager.MINT_ROLE());
 
         address incentivisedPriceOracle = incentivisedPriceOracleFactory.newIncentivisedPriceOracle(
             uniswapFactory,
             AVERAGE_PRICE_PERIOD,
             UPDATE_FREQUENCY,
-            _getMainToken(hookedTokenManager),
+            _convictionVotingRequestToken,
             UPDATE_PERCENT_REWARD,
-            uniswapFactory.getPair(stableToken, _getMainToken(hookedTokenManager))
+            uniswapFactory.getPair(stableToken, _convictionVotingRequestToken)
         );
-
-        _convictionVotingRequestToken = _convictionVotingRequestToken == address(0) ? _getMainToken(hookedTokenManager) : _convictionVotingRequestToken;
 
         IConvictionVoting convictionVoting = _installConvictionVoting(
             dao,
-            IMiniMeWithPermit(hookedTokenManager.token()),
+            IMiniMeWithPermit(_erc721Adapter),
             _convictionVotingRequestToken,
             stableToken,
             incentivisedPriceOracle,
@@ -241,17 +195,11 @@ contract GardensTemplate is BaseTemplate, AppIdsMumbai {
         commonPoolFundsManager.addFundsUser(convictionVoting);
         commonPoolFundsManager.setOwner(_getDisputableVoting());
 
-        _createPermissionForTemplate(_getAcl(), hookedTokenManager, hookedTokenManager.SET_HOOK_ROLE());
-        if (_creatingGardenWithExistingToken(hookedTokenManager)) {
-            (address unipool,) = unipoolFactory.newUnipoolWithDepositor(_getMainToken(hookedTokenManager));
-            hookedTokenManager.registerHook(unipool);
-        }
-        hookedTokenManager.registerHook(convictionVoting);
-        _removePermissionFromTemplate(_getAcl(), hookedTokenManager, hookedTokenManager.SET_HOOK_ROLE());
+        // TODO: Set conviction voting on the ERC721 Adapter
 
         _storeDeployedContractsTxTwo(convictionVoting);
 
-        emit GardenTransactionTwo(dao, incentivisedPriceOracle, unipool);
+        emit GardenTransactionTwo(dao, incentivisedPriceOracle, convictionVoting);
     }
 
     /**

@@ -64,6 +64,7 @@ const config: HardhatUserConfig = {
     mumbai: {
       url: node_url('mumbai'),
       accounts: account('mumbai'),
+      gasPrice: 1000000000
     },
     arbitrum: {
       url: node_url('arbitrum'),

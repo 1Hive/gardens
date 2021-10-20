@@ -7,13 +7,13 @@ export const Config = {
       DAOFactory: '0xE97999F411333E3B712104aa04fc06b149BD12eA',
       ENS: '0xB1576a9bE5EC445368740161174f3Dd1034fF8be',
       MiniMeFactory: '0x14E1326445077E2E170eb48785a849e30D502994',
-      HoneyswapRouter: '',
-      HoneyToken: '',
-      StableToken: '',
-      HoneyPriceOracle: '',
-      PriceOracleFactory: '', // Requires updating hex before deployment
+      HoneyswapRouter: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506', // Sushiswap Mumbai deployment
+      HoneyToken: '0x7570C560cCAB8455A6726ad54978E6d1ce6fda7c', // Unused, just for reference (cv request token)
+      StableToken: '0xF9c0EBA79d452d3F426F12117DE5a10676a812d3', // Using HoneyV2 as contract
+      HoneyPriceOracle: '', // Unused
+      PriceOracleFactory: '0x992AA39502D76E594B80B4102F5FeA692fE0d537', // Sushiswap Mumbai deployment
       CollateralRequirementUpdaterFactory: '0x75409fa02734668B1c0E351dbC51e93bBd402A6f',
-      UniswapV2Factory: '',
+      UniswapV2Factory: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', // Sushiswap Mumbai deployment
       UnipoolFactory: '0xAD289640D2D6976b6d7dd87eecC33B0cf6332BAF',
       Arbitrator: '0x68E18891159475c21E9f98bbb8b33234769328b1', // Mock Celeste
       StakingFactory: '0x2C3ac82981979af1611F6Efb17a4a3a04d1F9245',

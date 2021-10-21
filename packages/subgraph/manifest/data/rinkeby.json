@@ -23,6 +23,11 @@
         "address": "0x2427F0f1B842665d9FB9f0d8Ca347E044Ef5F15a",
         "name": "GardensTemplateWithPermit2",
         "startBlock": 9102279
+      },
+      {
+        "address": "0xa8e6c20e8ad85836c8ee7b6c8decae75967b580e",
+        "name": "GardensTemplateWithGnosisSafe",
+        "startBlock": 9463579
       }
     ]
   },

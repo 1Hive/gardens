@@ -380,7 +380,7 @@
           "type": "address"
         },
         {
-          "name": "_vaultOrFundsManager", 
+          "name": "_vaultOrFundsManager",
           "type": "address"
         },
         {

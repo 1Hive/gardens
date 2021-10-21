@@ -32,22 +32,21 @@ const ONE_YEAR = 365 * ONE_DAY
 const getApps = async (daoAddress: string, deploymentBlockNumber: string, appIds: string[]): Promise<string[]> => {
   const dao = (await ethers.getContractAt('Kernel', daoAddress)) as Kernel
   const toBlock = parseInt(deploymentBlockNumber, 10) - 10
-  const apps = await dao.queryFilter(dao.filters.NewAppProxy(null, null, null),toBlock, "latest").then((events) => {
+  const apps = await dao.queryFilter(dao.filters.NewAppProxy(null, null, null), toBlock, 'latest').then((events) => {
     return events
-        .filter(({args}) => appIds.includes(args.appId))
-        .map(({args}) => ({
-          appId: args.appId,
-          proxy: args.proxy,
-        }))
-        .reduce(
-          (apps, {appId, proxy}) => ({
-            ...apps,
-            [appId]: !apps[appId] ? proxy : [...apps[appId], proxy],
-          }),
-          {}
-        )
-    }
-  )
+      .filter(({ args }) => appIds.includes(args.appId))
+      .map(({ args }) => ({
+        appId: args.appId,
+        proxy: args.proxy,
+      }))
+      .reduce(
+        (apps, { appId, proxy }) => ({
+          ...apps,
+          [appId]: !apps[appId] ? proxy : [...apps[appId], proxy],
+        }),
+        {}
+      )
+  })
   return appIds.map((appId) => apps[appId])
 }
 
@@ -233,7 +232,11 @@ export default async function main(log = console.log): Promise<any> {
       'GardenTransactionTwo',
       'incentivisedPriceOracle'
     )
-    const convictionVoting = getEventArgFromReceipt(createGardenTxTwoReceipt, 'GardenTransactionTwo', 'convictionVoting')
+    const convictionVoting = getEventArgFromReceipt(
+      createGardenTxTwoReceipt,
+      'GardenTransactionTwo',
+      'convictionVoting'
+    )
     const erc721Adapter = getEventArgFromReceipt(createGardenTxTwoReceipt, 'GardenTransactionTwo', 'erc721Adapter')
 
     log(`Tx two completed.`)
@@ -306,7 +309,7 @@ export default async function main(log = console.log): Promise<any> {
     votingAddress,
     votingAggregatorAddress,
     priceOracleAddress,
-    erc721Adapter
+    erc721Adapter,
   })
   return {
     daoAddress,
@@ -319,7 +322,7 @@ export default async function main(log = console.log): Promise<any> {
     votingAddress,
     votingAggregatorAddress,
     priceOracleAddress,
-    erc721Adapter
+    erc721Adapter,
   }
 }
 

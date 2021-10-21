@@ -4,6 +4,7 @@ import {
   ContractPaused as ContractPausedEvent,
   ConvictionVoting as ConvictionVotingContract,
   ConvictionSettingsChanged as ConvictionSettingsChangedEvent,
+  FundsManagerChanged as FundsManagerChangedEvent,
   ProposalAdded as ProposalAddedEvent,
   ProposalCancelled as ProposalCancelledEvent,
   ProposalExecuted as ProposalExecutedEvent,
@@ -13,6 +14,7 @@ import {
   StakeAdded as StakeAddedEvent,
   StakeWithdrawn as StakeWithdrawnEvent,
 } from '../../generated/templates/ConvictionVoting/ConvictionVoting'
+import { FundsManager as FundsManagerContract } from '../../generated/templates/ConvictionVoting/FundsManager'
 import { Agreement as AgreementContract } from '../../generated/templates/Agreement/Agreement'
 import { Proposal as ProposalEntity } from '../../generated/schema'
 import {
@@ -52,6 +54,15 @@ export function handleConfigChanged(event: ConvictionSettingsChangedEvent): void
   convictionConfig.weight = event.params.weight
   convictionConfig.minThresholdStakePercentage = event.params.minThresholdStakePercentage
 
+  convictionConfig.save()
+}
+
+export function handleFundsManagerChanged(event: FundsManagerChangedEvent): void {
+  const convictionConfig = getConvictionConfigEntity(event.address)
+  const convictionVotingApp = ConvictionVotingContract.bind(event.address)
+
+  const fundsManagerApp = FundsManagerContract.bind(convictionVotingApp.fundsManager())
+  convictionConfig.fundsOwner = fundsManagerApp.fundsOwner()
   convictionConfig.save()
 }
 

@@ -380,7 +380,7 @@
           "type": "address"
         },
         {
-          "name": "_vault",
+          "name": "_vaultOrFundsManager", 
           "type": "address"
         },
         {
@@ -1136,6 +1136,20 @@
       "type": "function"
     },
     {
+      "constant": true,
+      "inputs": [],
+      "name": "fundsManager",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
       "constant": false,
       "inputs": [
         {
@@ -1163,6 +1177,18 @@
         }
       ],
       "name": "ContractPaused",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "fundsManager",
+          "type": "address"
+        }
+      ],
+      "name": "FundsManagerChanged",
       "type": "event"
     },
     {

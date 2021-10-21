@@ -9,7 +9,6 @@ import {
   ConvictionVoting as ConvictionVotingContract,
   ProposalAdded as ProposalAddedEvent,
 } from '../../generated/templates/ConvictionVoting/ConvictionVoting'
-import { FundsManager as FundsManagerContract } from '../../generated/templates/ConvictionVoting/FundsManager'
 import { loadOrCreateConfig, loadTokenData, saveOrgToken } from '.'
 
 /// /// Conviction config entity //////
@@ -64,19 +63,18 @@ export function loadConvictionConfig(orgAddress: Address, appAddress: Address): 
   convictionConfig.contractPaused = false
 
   // Get funds owner
-  let fundsOwner: Address
+  let fundsManager: Address
   const vault = convictionVoting.try_vault()
   if (!vault.reverted) {
-    fundsOwner = vault.value
+    fundsManager = vault.value
   } else {
-    const fundsManager = convictionVoting.try_fundsManager()
-    if (!fundsManager.reverted) {
-      const fundsManagerApp = FundsManagerContract.bind(fundsManager.value)
-      fundsOwner = fundsManagerApp.fundsOwner()
+    const fundsManagerResult = convictionVoting.try_fundsManager()
+    if (!fundsManagerResult.reverted) {
+      fundsManager = fundsManagerResult.value
     }
   }
 
-  convictionConfig.fundsOwner = fundsOwner
+  convictionConfig.fundsManager = fundsManager
   convictionConfig.stableTokenOracle = convictionVoting.stableTokenOracle()
 
   convictionConfig.save()

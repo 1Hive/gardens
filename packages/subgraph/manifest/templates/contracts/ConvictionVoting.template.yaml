@@ -21,8 +21,6 @@
         file: ./abis/ConvictionVoting.json
       - name: ERC20
         file: ./abis/ERC20.json
-      - name: FundsManager
-        file: ./abis/FundsManager.json 
     eventHandlers:
       - event: ConvictionSettingsChanged(uint256,uint256,uint256,uint256)
         handler: handleConfigChanged

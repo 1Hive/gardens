@@ -50,7 +50,7 @@ export interface ConvictionConfigData {
   maxStakedProposals: number
   minThresholdStakePercentage: string
   totalStaked: string
-  vault: string
+  fundsManager: string
   stableToken: TokenData
   stableTokenOracle: string
   contractPaused: boolean

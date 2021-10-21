@@ -29,7 +29,7 @@ type ConvictionConfig @entity {
   totalStaked: BigInt!
   maxStakedProposals: Int!
   minThresholdStakePercentage: BigInt!
-  vault: Bytes
+  fundsOwner: Bytes
   requestToken: Token
   stableToken: Token
   stableTokenOracle: Bytes

@@ -24,6 +24,8 @@
     eventHandlers:
       - event: ConvictionSettingsChanged(uint256,uint256,uint256,uint256)
         handler: handleConfigChanged
+      - event: FundsManagerChanged(address)
+        handler: handleFundsManagerChanged
       - event: ProposalAdded(indexed address,indexed uint256,indexed uint256,string,bytes,uint256,bool,address)
         handler: handleProposalAdded
       - event: StakeAdded(indexed address,indexed uint256,uint256,uint256,uint256,uint256)

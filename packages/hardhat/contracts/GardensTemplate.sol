@@ -24,6 +24,7 @@ import "./appIds/AppIdsXDai.sol";
 import "./appIds/AppIdsRinkeby.sol";
 import "./appIds/AppIdsMumbai.sol";
 import "./external/Erc721Adapter.sol";
+import "./external/Erc721AdapterFactory.sol";
 
 contract GardensTemplate is BaseTemplate, AppIdsMumbai {
 
@@ -68,9 +69,10 @@ contract GardensTemplate is BaseTemplate, AppIdsMumbai {
     IUniswapV2Factory public uniswapFactory;
     address public arbitrator;
     address public stakingFactory;
+    Erc721AdapterFactory public erc721AdapterFactory;
 
     event GardenTransactionOne(address fundsManager);
-    event GardenTransactionTwo(address dao, address incentivisedPriceOracle, address convictionVoting);
+    event GardenTransactionTwo(address dao, address incentivisedPriceOracle, address convictionVoting, address erc721Adapter);
     event GardenDeployed(address gardenAddress, address collateralRequirementUpdater);
 
     constructor(
@@ -83,7 +85,8 @@ contract GardensTemplate is BaseTemplate, AppIdsMumbai {
         ICollateralRequirementUpdaterFactory _collateralRequirementUpdaterFactory,
         IUniswapV2Factory _uniswapFactory,
         address _arbitrator,
-        address _stakingFactory
+        address _stakingFactory,
+        Erc721AdapterFactory _erc721AdapterFactory
     ) public BaseTemplate(_daoFactory, _ens, MiniMeTokenFactory(0), _aragonID) {
         _ensureAragonIdIsValid(_aragonID);
         _ensureMiniMeFactoryIsValid(_miniMeWithPermitFactory);
@@ -94,6 +97,7 @@ contract GardensTemplate is BaseTemplate, AppIdsMumbai {
         uniswapFactory = _uniswapFactory;
         arbitrator = _arbitrator;
         stakingFactory = _stakingFactory;
+        erc721AdapterFactory = _erc721AdapterFactory;
     }
 
     // New Garden functions //
@@ -132,6 +136,7 @@ contract GardensTemplate is BaseTemplate, AppIdsMumbai {
 
         _createDisputableVotingPermissions(acl, disputableVoting);
         _createEvmScriptsRegistryPermissions(acl, disputableVoting, disputableVoting);
+        _createPermissionForTemplate(acl, hookedTokenManager, hookedTokenManager.MINT_ROLE());
 
         _storeDeployedContractsTxOne(dao, acl, disputableVoting, fundsManager, hookedTokenManager);
 
@@ -153,7 +158,7 @@ contract GardensTemplate is BaseTemplate, AppIdsMumbai {
 
     /**
      * @dev Add and initialise issuance and conviction voting
-     * @param _erc721Adapter The Garden's stake token, used to vote on conviction votes. Eg ERC721Adapter
+     * @param _erc721Adapter The Conviction Voting stake token. Set to address(0) to create a new one.
      * @param _convictionSettings Array of conviction settings: [decay, max_ratio, weight, min_threshold_stake_percentage]
      * @param _convictionVotingRequestToken The Garden's common pool token, requested using conviction voting. If set to
      *        address(0) the Garden will use it's main token.
@@ -182,6 +187,8 @@ contract GardensTemplate is BaseTemplate, AppIdsMumbai {
             uniswapFactory.getPair(stableToken, _convictionVotingRequestToken)
         );
 
+        _erc721Adapter = _erc721Adapter == address(0) ? erc721AdapterFactory.newErc721Adapter(address(this)) : _erc721Adapter;
+
         IConvictionVoting convictionVoting = _installConvictionVoting(
             dao,
             IMiniMeWithPermit(_erc721Adapter),
@@ -195,11 +202,12 @@ contract GardensTemplate is BaseTemplate, AppIdsMumbai {
         commonPoolFundsManager.addFundsUser(convictionVoting);
         commonPoolFundsManager.setOwner(_getDisputableVoting());
 
-        // TODO: Set conviction voting on the ERC721 Adapter
+        _erc721Adapter.setConvictionVoting(convictionVoting);
+        _erc721Adapter.setOwner(msg.sender);
 
         _storeDeployedContractsTxTwo(convictionVoting);
 
-        emit GardenTransactionTwo(dao, incentivisedPriceOracle, convictionVoting);
+        emit GardenTransactionTwo(dao, incentivisedPriceOracle, convictionVoting, _erc721Adapter);
     }
 
     /**
@@ -261,8 +269,8 @@ contract GardensTemplate is BaseTemplate, AppIdsMumbai {
         acl.createPermission(collateralRequirementUpdater, agreement, agreement.MANAGE_DISPUTABLE_ROLE(), disputableVoting);
 
         _transferRootPermissionsFromTemplateAndFinalizeDAO(dao, address(disputableVoting));
-        _validateId(_daoId);
-        _registerID(_daoId, dao);
+//        _validateId(_daoId);
+//        _registerID(_daoId, dao);
 
         _deleteStoredContracts();
 

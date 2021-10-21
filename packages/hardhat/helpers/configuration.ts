@@ -12,11 +12,12 @@ export const Config = {
       StableToken: '0xF9c0EBA79d452d3F426F12117DE5a10676a812d3', // Using HoneyV2 as contract
       HoneyPriceOracle: '', // Unused
       PriceOracleFactory: '0x992AA39502D76E594B80B4102F5FeA692fE0d537', // Sushiswap Mumbai deployment
-      CollateralRequirementUpdaterFactory: '0x75409fa02734668B1c0E351dbC51e93bBd402A6f',
+      CollateralRequirementUpdaterFactory: '0xd1a3dD30bc63dC90bE2fC0c3Ec7Fe188E48FF402',
       UniswapV2Factory: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4', // Sushiswap Mumbai deployment
       UnipoolFactory: '0xAD289640D2D6976b6d7dd87eecC33B0cf6332BAF',
       Arbitrator: '0x68E18891159475c21E9f98bbb8b33234769328b1', // Mock Celeste
       StakingFactory: '0x2C3ac82981979af1611F6Efb17a4a3a04d1F9245',
+      Erc721AdapterFactory: '0x360229267A176a11Db407A5cc54734fED6313024'
     },
     [eEthereumNetwork.polygon]: {
       AragonID: '',

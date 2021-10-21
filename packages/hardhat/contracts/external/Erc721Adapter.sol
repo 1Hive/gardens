@@ -4,4 +4,6 @@ contract Erc721Adapter {
 
     function setConvictionVoting(address _convictionVoting) public;
 
+    function setOwner(address _owner) public;
+
 }

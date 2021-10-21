@@ -29,22 +29,24 @@ const ONE_YEAR = 365 * ONE_DAY
  * @param appIds List of appIds
  * @returns Returns an object of the form { [appId]: proxy | proxy[] }
  */
-const getApps = async (daoAddress: string, appIds: string[]): Promise<string[]> => {
+const getApps = async (daoAddress: string, deploymentBlockNumber: string, appIds: string[]): Promise<string[]> => {
   const dao = (await ethers.getContractAt('Kernel', daoAddress)) as Kernel
-  const apps = await dao.queryFilter(dao.filters.NewAppProxy(null, null, null)).then((events) =>
-    events
-      .filter(({ args }) => appIds.includes(args.appId))
-      .map(({ args }) => ({
-        appId: args.appId,
-        proxy: args.proxy,
-      }))
-      .reduce(
-        (apps, { appId, proxy }) => ({
-          ...apps,
-          [appId]: !apps[appId] ? proxy : [...apps[appId], proxy],
-        }),
-        {}
-      )
+  const toBlock = parseInt(deploymentBlockNumber, 10) - 10
+  const apps = await dao.queryFilter(dao.filters.NewAppProxy(null, null, null),toBlock, "latest").then((events) => {
+    return events
+        .filter(({args}) => appIds.includes(args.appId))
+        .map(({args}) => ({
+          appId: args.appId,
+          proxy: args.proxy,
+        }))
+        .reduce(
+          (apps, {appId, proxy}) => ({
+            ...apps,
+            [appId]: !apps[appId] ? proxy : [...apps[appId], proxy],
+          }),
+          {}
+        )
+    }
   )
   return appIds.map((appId) => apps[appId])
 }
@@ -184,13 +186,12 @@ export default async function main(log = console.log): Promise<any> {
     log(`Approval for honey payment made.`)
   }
 
-  const createGardenTxOne = async (gardensTemplate: GardensTemplate, log: Function): Promise<string> => {
+  const createGardenTxOne = async (gardensTemplate: GardensTemplate, log: Function): Promise<string[]> => {
     log(`Create garden transaction one...`)
     const createGardenTxOneTx = await gardensTemplate.createGardenTxOne(
       [ZERO_ADDRESS, gnosisSafe],
       gardenTokenName,
       gardenTokenSymbol,
-      [commonPoolAmount, honeyTokenLiquidityInXdai, gardenTokenLiquidity, 0],
       [
         voteDuration,
         voteSupportRequired,
@@ -206,7 +207,8 @@ export default async function main(log = console.log): Promise<any> {
     const daoAddress = getEventArgFromReceipt(createGardenTxOneReceipt, 'DeployDao', 'dao')
 
     log(`Tx one completed: Gardens DAO (${daoAddress}) created.`)
-    return daoAddress
+
+    return [daoAddress, createGardenTxOneReceipt.blockNumber]
   }
 
   const createTokenholders = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
@@ -219,15 +221,11 @@ export default async function main(log = console.log): Promise<any> {
   const createGardenTxTwo = async (gardensTemplate: GardensTemplate, log: Function): Promise<string[]> => {
     log(`Create garden transaction two...`)
     const createGardenTxTwoTx = await gardensTemplate.createGardenTxTwo(
-      [issuanceTargetRatio, issuanceMaxAdjustmentPerSecond],
+      ZERO_ADDRESS,
       [decay, maxRatio, weight, minThresholdStakePercentage],
       requestToken,
       { gasLimit: 8000000 }
     )
-
-    // We get the event arg this way because it is emitted by a contract called by the initial contract
-    // this means the args can't be decoded on the receipt directly
-    const unipoolDepositorAddress = undefined
 
     const createGardenTxTwoReceipt = await createGardenTxTwoTx.wait(1)
     const priceOracleAddress = getEventArgFromReceipt(
@@ -235,11 +233,12 @@ export default async function main(log = console.log): Promise<any> {
       'GardenTransactionTwo',
       'incentivisedPriceOracle'
     )
-    const unipoolAddress = getEventArgFromReceipt(createGardenTxTwoReceipt, 'GardenTransactionTwo', 'unipool')
+    const convictionVoting = getEventArgFromReceipt(createGardenTxTwoReceipt, 'GardenTransactionTwo', 'convictionVoting')
+    const erc721Adapter = getEventArgFromReceipt(createGardenTxTwoReceipt, 'GardenTransactionTwo', 'erc721Adapter')
 
     log(`Tx two completed.`)
 
-    return [priceOracleAddress, unipoolAddress, unipoolDepositorAddress]
+    return [priceOracleAddress, convictionVoting, erc721Adapter]
   }
 
   const createGardenTxThree = async (gardensTemplate: GardensTemplate, log: Function): Promise<void> => {
@@ -252,7 +251,7 @@ export default async function main(log = console.log): Promise<any> {
       [actionAmount, challengeAmount],
       [actionAmountStable, actionAmountStable],
       [challengeAmountStable, challengeAmountStable],
-      { gasLimit: 7000000 }
+      { gasLimit: 8000000 }
     )
     await createGardenTxThreeTx.wait(1)
     log(`Tx three completed.`)
@@ -260,9 +259,9 @@ export default async function main(log = console.log): Promise<any> {
 
   const gardensTemplate = await getGardensTemplate(mainAccount)
   // await approveHnyPayment(gardensTemplate, log)
-  const daoAddress = await createGardenTxOne(gardensTemplate, log)
+  const [daoAddress, deploymentBlockNumber] = await createGardenTxOne(gardensTemplate, log)
   await createTokenholders(gardensTemplate, log)
-  const [priceOracleAddress, ,] = await createGardenTxTwo(gardensTemplate, log)
+  const [priceOracleAddress, , erc721Adapter] = await createGardenTxTwo(gardensTemplate, log)
   await createGardenTxThree(gardensTemplate, log)
 
   const [
@@ -274,6 +273,7 @@ export default async function main(log = console.log): Promise<any> {
     votingAggregatorAddress,
   ] = await getApps(
     daoAddress,
+    deploymentBlockNumber,
     await Promise.all([
       gardensTemplate.CONVICTION_VOTING_APP_ID(),
       gardensTemplate.HOOKED_TOKEN_MANAGER_APP_ID(),
@@ -306,6 +306,7 @@ export default async function main(log = console.log): Promise<any> {
     votingAddress,
     votingAggregatorAddress,
     priceOracleAddress,
+    erc721Adapter
   })
   return {
     daoAddress,
@@ -318,6 +319,7 @@ export default async function main(log = console.log): Promise<any> {
     votingAddress,
     votingAggregatorAddress,
     priceOracleAddress,
+    erc721Adapter
   }
 }
 

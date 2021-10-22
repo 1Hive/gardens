@@ -36,7 +36,11 @@
       - name: Kernel
         file: ./abis/Kernel.json  
       - name: ERC20
-        file: ./abis/ERC20.json   
+        file: ./abis/ERC20.json  
+      - name: ERC721
+        file: ./abis/ERC721.json
+      - name: ERC721Adapter
+        file: ./abis/ERC721Adapter.json 
     eventHandlers:
       - event: NewAppProxy(address,bool,bytes32)
         handler: handleNewAppProxy

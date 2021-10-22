@@ -1,5 +1,7 @@
-import { Address, BigInt, Bytes } from '@graphprotocol/graph-ts'
+import { Address, BigInt, Bytes, log } from '@graphprotocol/graph-ts'
 import { ERC20 as ERC20Contract } from '../../generated/templates/ConvictionVoting/ERC20'
+import { ERC721 as ERC721Contract } from '../../generated/templates/Kernel/ERC721'
+import { ERC721Adapter as ERC721AdapterContract } from '../../generated/templates/Kernel/ERC721Adapter'
 import {
   Config as ConfigEntity,
   Organization as OrganizationEntity,
@@ -54,14 +56,24 @@ export function loadTokenData(address: Address): string {
   return id
 }
 
-/// /// Token entity from ERC721 token //// (we´ll add `g` to the front of the name and symbol)
+/// /// Token entity from ERC721 token //// (we´ll add `g` to the front of the name and symbol, use 18 as decimals)
 export function loadERC721AdapterTokenData(address: Address): string {
+  // Load or create token entity with erc721adapter contract address with erc721 token data
   const id = address.toHexString()
   const token = TokenEntity.load(id)
 
+  // Get erc721 contract address
+  const adapterContract = ERC721AdapterContract.bind(address)
+  const erc721TokenAddress = adapterContract.erc721()
+
+  if (erc721TokenAddress.equals(ZERO_ADDRESS)) {
+    log.warning("No ERC721 set returning", [])
+    return
+  }
+
   if (!token) {
     const token = new TokenEntity(id)
-    const tokenContract = ERC20Contract.bind(address)
+    const tokenContract = ERC721Contract.bind(erc721TokenAddress)
 
     token.symbol = "g" + tokenContract.symbol() 
     token.name = "g" + tokenContract.name()

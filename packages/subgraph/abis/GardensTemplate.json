@@ -522,7 +522,12 @@
         },
         {
           "indexed": false,
-          "name": "unipool",
+          "name": "convictionVoting",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "erc721Adapter",
           "type": "address"
         }
       ],

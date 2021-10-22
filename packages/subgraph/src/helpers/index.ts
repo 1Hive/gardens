@@ -29,6 +29,7 @@ export function saveOrgToken(tokenId: string, orgAddress: Address): void {
   }
 }
 
+
 /// /// Token Entity //////
 export function loadTokenData(address: Address): string {
   const id = address.toHexString()
@@ -52,6 +53,25 @@ export function loadTokenData(address: Address): string {
 
   return id
 }
+
+/// /// Token entity from ERC721 token //// (we´ll add `g` to the front of the name and symbol)
+export function loadERC721AdapterTokenData(address: Address): string {
+  const id = address.toHexString()
+  const token = TokenEntity.load(id)
+
+  if (!token) {
+    const token = new TokenEntity(id)
+    const tokenContract = ERC20Contract.bind(address)
+
+    token.symbol = "g" + tokenContract.symbol() 
+    token.name = "g" + tokenContract.name()
+    token.decimals = 18
+    token.save()
+  }
+
+  return id
+}
+
 
 /// /// General Config Entity //////
 export function loadOrCreateConfig(orgAddress: Address): ConfigEntity {

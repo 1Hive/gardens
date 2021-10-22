@@ -1,0 +1,34 @@
+{
+  "network": "mumbai",
+  "dataSources": {
+    "OrganizationTemplates": [
+      {
+        "address": "0x38C5bd814A1659B162e782Db6fE30Ae8a16b5d4D",
+        "name": "GardensTemplate",
+        "startBlock": 20458269
+      }
+    ]
+  },
+  "1HiveGarden": "0x0000000000000000000000000000000000000000",
+  "1HivePriceOracle": "0x0000000000000000000000000000000000000000",
+  "agreementAppIds": [
+    {
+      "id": "0x41dd0b999b443a19321f2f34fe8078d1af95a1487b49af4c2ca57fb9e3e5331e", "name": "agreement-1hive.open.aragonpm.eth"
+    }
+  ],
+  "convictionVotingAppIds": [
+    {
+      "id": "0x589851b3734f6578a92f33bfc26877a1166b95238be1f484deeaac6383d14c38", "name": "conviction-voting.open.aragonpm.eth"
+    }
+  ],
+  "votingAppIds": [
+    { 
+      "id": "0x705b5084c67966bb8e4640b28bab7a1e51e03d209d84e3a04d2a4f7415f93b34", "name": "disputable-voting.open.aragonpm.eth"
+    }
+  ],
+  "tokensAppIds": [
+    { 
+      "id": "0x3ccad1fc11d5b14e58c1c53a5138a51f4da8d509831bc505e60bb74d88f8bef5", "name": "wrappable-hooked-token-manager.open.aragonpm.eth"
+    }
+  ]
+}

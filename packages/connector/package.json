@@ -12,6 +12,7 @@
     "build:cjs": "tsc --build ./tsconfig.cjs.json",
     "dev:esm": "yarn build:esm --watch",
     "dev:cjs": "yarn build:cjs --watch",
+    "docs": "rm -fr ./docs && typedoc --out docs/ src/index.ts",
     "clean": "node ../../node_modules/rimraf/bin.js dist tsconfig.tsbuildinfo",
     "lint": "eslint --ext .ts,.json,.md ./src",
     "lint:fix": "eslint --ext .ts,.json,.md ./src --fix"
@@ -20,7 +21,9 @@
     "dist"
   ],
   "devDependencies": {
-    "@types/react": "^16.9.34"
+    "@types/react": "^16.9.34",
+    "typedoc": "^0.22.6",
+    "typedoc-plugin-markdown": "^3.11.3"
   },
   "dependencies": {
     "@aragon/connect-core": "0.7.0",

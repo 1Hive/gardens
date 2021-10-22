@@ -24,8 +24,6 @@ export function handleSetupDao(event: SetupDaoEvent): void {
   // Set org as active when dao setup finished
   org.active = true
   org.save()
-
-  setUpHoneyLiquidity(event.address, orgAddress)
 }
 
 export function handleDeployToken(event: DeployTokenEvent): void {}
@@ -36,6 +34,5 @@ export function handleGardenTransactionTwo(event: GardenTransactionTwoEvent): vo
   const org = loadOrCreateOrg(event.params.dao)
 
   org.incentivisedPriceOracle = event.params.incentivisedPriceOracle
-  org.unipool = event.params.unipool
   org.save()
 }

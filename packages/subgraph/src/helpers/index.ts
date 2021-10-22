@@ -68,7 +68,7 @@ export function loadERC721AdapterTokenData(address: Address): string {
 
   if (erc721TokenAddress.equals(ZERO_ADDRESS)) {
     log.warning("No ERC721 set returning", [])
-    return
+    return null
   }
 
   if (!token) {

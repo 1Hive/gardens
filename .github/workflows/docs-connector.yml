@@ -3,9 +3,9 @@ on:
   push:
     branches:
       - master
-      - connector-docs
     paths:
       - packages/connector/src/**/*.ts
+      - packages/connector/README.md
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest

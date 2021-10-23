@@ -182,7 +182,6 @@ function useGardensList() {
 }
 ```
 
-
 ### Data fetch example of useUser
 
 This is an example of how to create a React hook to fetch a user data given their address. 

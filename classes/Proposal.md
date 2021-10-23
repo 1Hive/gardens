@@ -78,7 +78,7 @@ Create a new Proposal instance.
 
 #### Defined in
 
-[models/Proposal.ts:71](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L71)
+[models/Proposal.ts:71](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L71)
 
 ## Properties
 
@@ -88,7 +88,7 @@ Create a new Proposal instance.
 
 #### Defined in
 
-[models/Proposal.ts:18](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L18)
+[models/Proposal.ts:18](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L18)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:53](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L53)
+[models/Proposal.ts:53](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L53)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:34](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L34)
+[models/Proposal.ts:34](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L34)
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:50](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L50)
+[models/Proposal.ts:50](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L50)
 
 ___
 
@@ -128,7 +128,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:56](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L56)
+[models/Proposal.ts:56](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L56)
 
 ___
 
@@ -138,7 +138,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:54](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L54)
+[models/Proposal.ts:54](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L54)
 
 ___
 
@@ -148,7 +148,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:55](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L55)
+[models/Proposal.ts:55](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L55)
 
 ___
 
@@ -158,7 +158,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:64](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L64)
+[models/Proposal.ts:64](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L64)
 
 ___
 
@@ -168,7 +168,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:26](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L26)
+[models/Proposal.ts:26](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L26)
 
 ___
 
@@ -178,7 +178,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:23](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L23)
+[models/Proposal.ts:23](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L23)
 
 ___
 
@@ -188,7 +188,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:57](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L57)
+[models/Proposal.ts:57](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L57)
 
 ___
 
@@ -198,7 +198,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:60](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L60)
+[models/Proposal.ts:60](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L60)
 
 ___
 
@@ -208,7 +208,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:27](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L27)
+[models/Proposal.ts:27](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L27)
 
 ___
 
@@ -218,7 +218,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:20](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L20)
+[models/Proposal.ts:20](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L20)
 
 ___
 
@@ -228,7 +228,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:49](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L49)
+[models/Proposal.ts:49](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L49)
 
 ___
 
@@ -238,7 +238,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:31](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L31)
+[models/Proposal.ts:31](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L31)
 
 ___
 
@@ -248,7 +248,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:28](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L28)
+[models/Proposal.ts:28](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L28)
 
 ___
 
@@ -258,7 +258,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:45](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L45)
+[models/Proposal.ts:45](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L45)
 
 ___
 
@@ -268,7 +268,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:22](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L22)
+[models/Proposal.ts:22](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L22)
 
 ___
 
@@ -278,7 +278,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:21](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L21)
+[models/Proposal.ts:21](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L21)
 
 ___
 
@@ -288,7 +288,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:62](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L62)
+[models/Proposal.ts:62](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L62)
 
 ___
 
@@ -298,7 +298,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:61](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L61)
+[models/Proposal.ts:61](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L61)
 
 ___
 
@@ -308,7 +308,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:46](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L46)
+[models/Proposal.ts:46](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L46)
 
 ___
 
@@ -318,7 +318,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:47](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L47)
+[models/Proposal.ts:47](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L47)
 
 ___
 
@@ -328,7 +328,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:35](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L35)
+[models/Proposal.ts:35](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L35)
 
 ___
 
@@ -338,7 +338,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:48](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L48)
+[models/Proposal.ts:48](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L48)
 
 ___
 
@@ -348,7 +348,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:40](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L40)
+[models/Proposal.ts:40](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L40)
 
 ___
 
@@ -358,7 +358,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:58](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L58)
+[models/Proposal.ts:58](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L58)
 
 ___
 
@@ -368,7 +368,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:59](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L59)
+[models/Proposal.ts:59](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L59)
 
 ___
 
@@ -378,7 +378,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:43](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L43)
+[models/Proposal.ts:43](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L43)
 
 ___
 
@@ -388,7 +388,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:37](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L37)
+[models/Proposal.ts:37](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L37)
 
 ___
 
@@ -398,7 +398,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:32](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L32)
+[models/Proposal.ts:32](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L32)
 
 ___
 
@@ -408,7 +408,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:33](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L33)
+[models/Proposal.ts:33](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L33)
 
 ___
 
@@ -418,7 +418,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:41](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L41)
+[models/Proposal.ts:41](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L41)
 
 ___
 
@@ -428,7 +428,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:24](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L24)
+[models/Proposal.ts:24](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L24)
 
 ___
 
@@ -438,7 +438,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:63](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L63)
+[models/Proposal.ts:63](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L63)
 
 ___
 
@@ -448,7 +448,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:42](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L42)
+[models/Proposal.ts:42](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L42)
 
 ___
 
@@ -458,7 +458,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:36](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L36)
+[models/Proposal.ts:36](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L36)
 
 ___
 
@@ -468,7 +468,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:25](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L25)
+[models/Proposal.ts:25](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L25)
 
 ___
 
@@ -478,7 +478,7 @@ ___
 
 #### Defined in
 
-[models/Proposal.ts:44](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L44)
+[models/Proposal.ts:44](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L44)
 
 ## Methods
 
@@ -496,7 +496,7 @@ A promise that resolves to the arbitrator fee for the challenger of the proposal
 
 #### Defined in
 
-[models/Proposal.ts:170](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L170)
+[models/Proposal.ts:170](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L170)
 
 ___
 
@@ -514,7 +514,7 @@ A promise that resolves to the collateral requirement of the proposal.
 
 #### Defined in
 
-[models/Proposal.ts:132](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L132)
+[models/Proposal.ts:132](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L132)
 
 ___
 
@@ -530,7 +530,7 @@ Close the connection.
 
 #### Defined in
 
-[models/Proposal.ts:124](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L124)
+[models/Proposal.ts:124](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L124)
 
 ___
 
@@ -554,7 +554,7 @@ A GraphQL subsription to the arbitrator fee for the challenger of the proposal.
 
 #### Defined in
 
-[models/Proposal.ts:179](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L179)
+[models/Proposal.ts:179](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L179)
 
 ___
 
@@ -578,7 +578,7 @@ A GraphQL subsription to the collateral requirement of the proposal.
 
 #### Defined in
 
-[models/Proposal.ts:141](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L141)
+[models/Proposal.ts:141](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L141)
 
 ___
 
@@ -602,7 +602,7 @@ A GraphQL subsription to the arbitrator fee for the submitter of the proposal.
 
 #### Defined in
 
-[models/Proposal.ts:160](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L160)
+[models/Proposal.ts:160](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L160)
 
 ___
 
@@ -620,4 +620,4 @@ A promise that resolves to the arbitrator fee for the submitter of the proposal.
 
 #### Defined in
 
-[models/Proposal.ts:151](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Proposal.ts#L151)
+[models/Proposal.ts:151](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Proposal.ts#L151)

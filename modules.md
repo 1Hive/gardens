@@ -45,7 +45,7 @@ A new Garden instance.
 
 #### Defined in
 
-[connect.ts:19](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/connect.ts#L19)
+[connect.ts:19](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/connect.ts#L19)
 
 ___
 
@@ -70,7 +70,7 @@ A promise that resolves to a group of gardens.
 
 #### Defined in
 
-[gardens.ts:43](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/gardens.ts#L43)
+[gardens.ts:43](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/gardens.ts#L43)
 
 ___
 
@@ -95,4 +95,4 @@ A promise that resolves to a group of users.
 
 #### Defined in
 
-[gardens.ts:65](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/gardens.ts#L65)
+[gardens.ts:65](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/gardens.ts#L65)

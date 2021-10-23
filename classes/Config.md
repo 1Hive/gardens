@@ -30,7 +30,7 @@
 
 #### Defined in
 
-[models/Config.ts:10](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Config.ts#L10)
+[models/Config.ts:10](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Config.ts#L10)
 
 ## Properties
 
@@ -40,7 +40,7 @@
 
 #### Defined in
 
-[models/Config.ts:4](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Config.ts#L4)
+[models/Config.ts:4](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Config.ts#L4)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-[models/Config.ts:7](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Config.ts#L7)
+[models/Config.ts:7](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Config.ts#L7)
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-[models/Config.ts:6](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Config.ts#L6)
+[models/Config.ts:6](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Config.ts#L6)
 
 ___
 
@@ -70,4 +70,4 @@ ___
 
 #### Defined in
 
-[models/Config.ts:8](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Config.ts#L8)
+[models/Config.ts:8](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Config.ts#L8)

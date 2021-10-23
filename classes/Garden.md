@@ -42,7 +42,7 @@ Create a new Garden instance.
 
 #### Defined in
 
-[models/Garden.ts:23](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Garden.ts#L23)
+[models/Garden.ts:23](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Garden.ts#L23)
 
 ## Properties
 
@@ -52,7 +52,7 @@ Create a new Garden instance.
 
 #### Defined in
 
-[models/Garden.ts:15](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Garden.ts#L15)
+[models/Garden.ts:15](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Garden.ts#L15)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[models/Garden.ts:16](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Garden.ts#L16)
+[models/Garden.ts:16](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Garden.ts#L16)
 
 ## Methods
 
@@ -80,7 +80,7 @@ A promise that resolves to the configuratio of the garden.
 
 #### Defined in
 
-[models/Garden.ts:39](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Garden.ts#L39)
+[models/Garden.ts:39](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Garden.ts#L39)
 
 ___
 
@@ -96,7 +96,7 @@ Close the connection.
 
 #### Defined in
 
-[models/Garden.ts:31](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Garden.ts#L31)
+[models/Garden.ts:31](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Garden.ts#L31)
 
 ___
 
@@ -120,7 +120,7 @@ A GraphQL subsription to the configuratio of the garden.
 
 #### Defined in
 
-[models/Garden.ts:48](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Garden.ts#L48)
+[models/Garden.ts:48](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Garden.ts#L48)
 
 ___
 
@@ -147,7 +147,7 @@ A GraphQL subsription to a proposal of the garden.
 
 #### Defined in
 
-[models/Garden.ts:72](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Garden.ts#L72)
+[models/Garden.ts:72](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Garden.ts#L72)
 
 ___
 
@@ -179,7 +179,7 @@ A GraphQL subsription to a list of proposals of the garden.
 
 #### Defined in
 
-[models/Garden.ts:113](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Garden.ts#L113)
+[models/Garden.ts:113](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Garden.ts#L113)
 
 ___
 
@@ -205,7 +205,7 @@ A GraphQL subsription to a supporter of the garden.
 
 #### Defined in
 
-[models/Garden.ts:156](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Garden.ts#L156)
+[models/Garden.ts:156](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Garden.ts#L156)
 
 ___
 
@@ -231,7 +231,7 @@ A promise that resolves to a proposal of the garden.
 
 #### Defined in
 
-[models/Garden.ts:59](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Garden.ts#L59)
+[models/Garden.ts:59](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Garden.ts#L59)
 
 ___
 
@@ -262,7 +262,7 @@ A promise that resolves to a list of proposals of the garden.
 
 #### Defined in
 
-[models/Garden.ts:89](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Garden.ts#L89)
+[models/Garden.ts:89](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Garden.ts#L89)
 
 ___
 
@@ -287,4 +287,4 @@ A promise that resolves to a supporter of the garden.
 
 #### Defined in
 
-[models/Garden.ts:144](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Garden.ts#L144)
+[models/Garden.ts:144](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Garden.ts#L144)

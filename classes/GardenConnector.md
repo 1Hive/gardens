@@ -50,7 +50,7 @@ Create a new GardenConnector instance.z
 
 #### Defined in
 
-[thegraph/connector.ts:60](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/thegraph/connector.ts#L60)
+[thegraph/connector.ts:60](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/thegraph/connector.ts#L60)
 
 ## Properties
 
@@ -60,7 +60,7 @@ Create a new GardenConnector instance.z
 
 #### Defined in
 
-[thegraph/connector.ts:54](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/thegraph/connector.ts#L54)
+[thegraph/connector.ts:54](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/thegraph/connector.ts#L54)
 
 ## Methods
 
@@ -88,7 +88,7 @@ IGardenConnector.arbitratorFee
 
 #### Defined in
 
-[thegraph/connector.ts:266](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/thegraph/connector.ts#L266)
+[thegraph/connector.ts:266](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/thegraph/connector.ts#L266)
 
 ___
 
@@ -116,7 +116,7 @@ IGardenConnector.collateralRequirement
 
 #### Defined in
 
-[thegraph/connector.ts:238](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/thegraph/connector.ts#L238)
+[thegraph/connector.ts:238](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/thegraph/connector.ts#L238)
 
 ___
 
@@ -144,7 +144,7 @@ IGardenConnector.config
 
 #### Defined in
 
-[thegraph/connector.ts:82](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/thegraph/connector.ts#L82)
+[thegraph/connector.ts:82](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/thegraph/connector.ts#L82)
 
 ___
 
@@ -164,7 +164,7 @@ IGardenConnector.disconnect
 
 #### Defined in
 
-[thegraph/connector.ts:73](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/thegraph/connector.ts#L73)
+[thegraph/connector.ts:73](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/thegraph/connector.ts#L73)
 
 ___
 
@@ -193,7 +193,7 @@ IGardenConnector.onArbitratorFee
 
 #### Defined in
 
-[thegraph/connector.ts:280](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/thegraph/connector.ts#L280)
+[thegraph/connector.ts:280](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/thegraph/connector.ts#L280)
 
 ___
 
@@ -222,7 +222,7 @@ IGardenConnector.onCollateralRequirement
 
 #### Defined in
 
-[thegraph/connector.ts:252](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/thegraph/connector.ts#L252)
+[thegraph/connector.ts:252](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/thegraph/connector.ts#L252)
 
 ___
 
@@ -251,7 +251,7 @@ IGardenConnector.onConfig
 
 #### Defined in
 
-[thegraph/connector.ts:94](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/thegraph/connector.ts#L94)
+[thegraph/connector.ts:94](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/thegraph/connector.ts#L94)
 
 ___
 
@@ -280,7 +280,7 @@ IGardenConnector.onProposal
 
 #### Defined in
 
-[thegraph/connector.ts:120](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/thegraph/connector.ts#L120)
+[thegraph/connector.ts:120](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/thegraph/connector.ts#L120)
 
 ___
 
@@ -316,7 +316,7 @@ IGardenConnector.onProposals
 
 #### Defined in
 
-[thegraph/connector.ts:179](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/thegraph/connector.ts#L179)
+[thegraph/connector.ts:179](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/thegraph/connector.ts#L179)
 
 ___
 
@@ -345,7 +345,7 @@ IGardenConnector.onSupporter
 
 #### Defined in
 
-[thegraph/connector.ts:224](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/thegraph/connector.ts#L224)
+[thegraph/connector.ts:224](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/thegraph/connector.ts#L224)
 
 ___
 
@@ -373,7 +373,7 @@ IGardenConnector.proposal
 
 #### Defined in
 
-[thegraph/connector.ts:108](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/thegraph/connector.ts#L108)
+[thegraph/connector.ts:108](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/thegraph/connector.ts#L108)
 
 ___
 
@@ -408,7 +408,7 @@ IGardenConnector.proposals
 
 #### Defined in
 
-[thegraph/connector.ts:141](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/thegraph/connector.ts#L141)
+[thegraph/connector.ts:141](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/thegraph/connector.ts#L141)
 
 ___
 
@@ -436,4 +436,4 @@ IGardenConnector.supporter
 
 #### Defined in
 
-[thegraph/connector.ts:212](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/thegraph/connector.ts#L212)
+[thegraph/connector.ts:212](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/thegraph/connector.ts#L212)

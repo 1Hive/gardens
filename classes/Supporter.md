@@ -38,7 +38,7 @@
 
 #### Defined in
 
-[models/Supporter.ts:22](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Supporter.ts#L22)
+[models/Supporter.ts:22](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Supporter.ts#L22)
 
 ## Properties
 
@@ -48,7 +48,7 @@
 
 #### Defined in
 
-[models/Supporter.ts:12](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Supporter.ts#L12)
+[models/Supporter.ts:12](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Supporter.ts#L12)
 
 ___
 
@@ -62,7 +62,7 @@ SupporterData.casts
 
 #### Defined in
 
-[models/Supporter.ts:18](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Supporter.ts#L18)
+[models/Supporter.ts:18](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Supporter.ts#L18)
 
 ___
 
@@ -76,7 +76,7 @@ SupporterData.id
 
 #### Defined in
 
-[models/Supporter.ts:14](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Supporter.ts#L14)
+[models/Supporter.ts:14](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Supporter.ts#L14)
 
 ___
 
@@ -90,7 +90,7 @@ SupporterData.organization
 
 #### Defined in
 
-[models/Supporter.ts:16](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Supporter.ts#L16)
+[models/Supporter.ts:16](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Supporter.ts#L16)
 
 ___
 
@@ -104,7 +104,7 @@ SupporterData.representative
 
 #### Defined in
 
-[models/Supporter.ts:17](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Supporter.ts#L17)
+[models/Supporter.ts:17](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Supporter.ts#L17)
 
 ___
 
@@ -118,7 +118,7 @@ SupporterData.stakes
 
 #### Defined in
 
-[models/Supporter.ts:19](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Supporter.ts#L19)
+[models/Supporter.ts:19](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Supporter.ts#L19)
 
 ___
 
@@ -132,7 +132,7 @@ SupporterData.stakesHistory
 
 #### Defined in
 
-[models/Supporter.ts:20](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Supporter.ts#L20)
+[models/Supporter.ts:20](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Supporter.ts#L20)
 
 ___
 
@@ -146,4 +146,4 @@ SupporterData.user
 
 #### Defined in
 
-[models/Supporter.ts:15](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Supporter.ts#L15)
+[models/Supporter.ts:15](https://github.com/1Hive/gardens/blob/3030077/packages/connector/src/models/Supporter.ts#L15)

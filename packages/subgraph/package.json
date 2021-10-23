@@ -10,6 +10,7 @@
     "codegen:rinkeby": "NETWORK=rinkeby yarn codegen",
     "codegen:mainnet": "NETWORK=mainnet yarn codegen",
     "codegen:xdai": "NETWORK=xdai yarn codegen",
+    "draw-schema": "./scripts/draw-schema.sh",
     "deploy": "./scripts/deploy.sh",
     "deploy:rinkeby": "NETWORK=rinkeby yarn deploy",
     "deploy:mainnet": "NETWORK=mainnet yarn deploy",

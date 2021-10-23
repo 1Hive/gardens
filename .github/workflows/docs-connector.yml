@@ -1,0 +1,29 @@
+name: Connector Docs
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - packages/connector/src/**/*.ts
+      - packages/connector/README.md
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.3.1
+        with:
+          path: '**/node_modules'
+          key: yarn-${{ hashFiles('yarn.lock') }}
+
+      - name: Install and Build
+        with:
+          path: 'packages/connector'
+        run: |
+          yarn install
+          yarn docs
+      - name: Deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.4
+        with:
+          branch: gh-pages
+          folder: packages/connector/docs

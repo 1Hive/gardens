@@ -7,7 +7,16 @@ type Config = {
   subgraphUrl: string
 }
 
-export default function connectGarden(organization: Organization, config?: Config) {
+type IOrganization = Organization
+
+/**
+ * The default way to connect a Garden and start fetching data from the subgraph.
+ * @category Main
+ * @param organization Organization class we are connecting to using Aragon Connect.
+ * @param config A configuration object.
+ * @returns A new Garden instance.
+ */
+export default function connectGarden(organization: IOrganization, config?: Config): Garden {
   const { network, orgConnector } = organization.connection
 
   const subgraphUrl = config?.subgraphUrl ?? subgraphUrlFromChainId(network.chainId) ?? undefined

@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - master
+      - connector-docs
     paths:
       - packages/connector/**/*.ts
 jobs:

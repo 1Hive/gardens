@@ -3,9 +3,6 @@ on:
   push:
     branches:
       - master
-    paths:
-      - packages/connector/src/**/*.ts
-      - packages/connector/README.md
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest

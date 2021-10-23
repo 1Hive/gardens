@@ -35,7 +35,7 @@
 
 #### Defined in
 
-[models/Stake.ts:11](https://github.com/1Hive/gardens/blob/45584cf/packages/connector/src/models/Stake.ts#L11)
+[models/Stake.ts:11](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Stake.ts#L11)
 
 ## Properties
 
@@ -49,7 +49,7 @@ StakeData.amount
 
 #### Defined in
 
-[models/Stake.ts:8](https://github.com/1Hive/gardens/blob/45584cf/packages/connector/src/models/Stake.ts#L8)
+[models/Stake.ts:8](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Stake.ts#L8)
 
 ___
 
@@ -63,7 +63,7 @@ StakeData.createdAt
 
 #### Defined in
 
-[models/Stake.ts:9](https://github.com/1Hive/gardens/blob/45584cf/packages/connector/src/models/Stake.ts#L9)
+[models/Stake.ts:9](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Stake.ts#L9)
 
 ___
 
@@ -77,7 +77,7 @@ StakeData.id
 
 #### Defined in
 
-[models/Stake.ts:4](https://github.com/1Hive/gardens/blob/45584cf/packages/connector/src/models/Stake.ts#L4)
+[models/Stake.ts:4](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Stake.ts#L4)
 
 ___
 
@@ -91,7 +91,7 @@ StakeData.proposal
 
 #### Defined in
 
-[models/Stake.ts:7](https://github.com/1Hive/gardens/blob/45584cf/packages/connector/src/models/Stake.ts#L7)
+[models/Stake.ts:7](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Stake.ts#L7)
 
 ___
 
@@ -105,7 +105,7 @@ StakeData.supporter
 
 #### Defined in
 
-[models/Stake.ts:6](https://github.com/1Hive/gardens/blob/45584cf/packages/connector/src/models/Stake.ts#L6)
+[models/Stake.ts:6](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Stake.ts#L6)
 
 ___
 
@@ -119,4 +119,4 @@ StakeData.type
 
 #### Defined in
 
-[models/Stake.ts:5](https://github.com/1Hive/gardens/blob/45584cf/packages/connector/src/models/Stake.ts#L5)
+[models/Stake.ts:5](https://github.com/1Hive/gardens/blob/7e512ca/packages/connector/src/models/Stake.ts#L5)

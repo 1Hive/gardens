@@ -6,7 +6,7 @@ The garden subgraph collects, stores and indexes garden-related data from the bl
 
 ## Documentation
 
-Check out the [documentation](https://1hive.github.io/gardens/modules.html) for an in-depth explanation of the API.
+Check out the [documentation](https://1hive.github.io/gardens-connector/modules.html) for an in-depth explanation of the API.
 
 ## Usage of Garden Connector
 

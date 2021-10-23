@@ -15,7 +15,6 @@ jobs:
 
       - name: Install and Build
         run: |
-          cd packages/connector
           yarn install
           yarn docs
       - name: Deploy

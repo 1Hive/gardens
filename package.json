@@ -10,6 +10,7 @@
   ],
   "private": true,
   "scripts": {
+    "docs:connector": "yarn workspace @1hive/connect-gardens docs",
     "submodule:get": "git submodule add -f https://github.com/1Hive/honey-pot packages/react-app && yarn submodule:install",
     "submodule:install": "git submodule foreach 'git checkout gardens' && git submodule foreach yarn install",
     "react-app:build": "yarn workspace @gardens/react-app build --max-old-space-size=12288",

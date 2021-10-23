@@ -17,9 +17,8 @@ jobs:
           key: yarn-${{ hashFiles('yarn.lock') }}
 
       - name: Install and Build
-        with:
-          path: 'packages/connector'
         run: |
+          cd packages/connector
           yarn install
           yarn docs
       - name: Deploy

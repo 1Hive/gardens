@@ -22,8 +22,7 @@
   ],
   "devDependencies": {
     "@types/react": "^16.9.34",
-    "typedoc": "^0.22.6",
-    "typedoc-plugin-markdown": "^3.11.3"
+    "typedoc": "^0.22.6"
   },
   "dependencies": {
     "@aragon/connect-core": "0.7.0",

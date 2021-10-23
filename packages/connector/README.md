@@ -8,7 +8,7 @@ The garden subgraph collects, stores and indexes garden-related data from the bl
 
 Check out the [documentation](https://1hive.github.io/gardens/modules.html) for an in-depth explanation of the API.
 
-## Usage
+## Usage of Garden Connector
 
 ### Set up
 
@@ -141,6 +141,83 @@ const handler = gardenConnector.onProposals(
 // ...
 
 handler.unsubscribe()
+```
+
+## Usage of useGardens and useUser
+
+### Data fetch example of useGardens
+
+This is an example of how to create a React hook to fetch a list of Gardens order by they HNY liquidity. 
+
+```jsx
+import { getGardens } from '@1hive/connect-gardens'
+
+function useGardensList() {
+  const [gardens, setGardens] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    setLoading(true)
+    const fetchGardens = async () => {
+      try {
+        setLoading(true)
+
+        const result = await getGardens(
+          { network: CHAIN_ID },
+          { orderBy: 'honeyLiquidity' }
+        )
+
+        setGardens(result)
+      } catch (err) {
+        setGardens([])
+        console.error(`Error fetching gardens ${err}`)
+      }
+      setLoading(false)
+    }
+
+    fetchGardens()
+  }, [sorting.queryArgs])
+
+  return [gardens, loading]
+}
+```
+
+
+### Data fetch example of useUser
+
+This is an example of how to create a React hook to fetch a user data given their address. 
+
+```jsx
+import { getUser } from '@1hive/connect-gardens'
+
+function useUser(address) {
+  const [user, setUser] = useState(null)
+  const mounted = useMounted()
+
+  useEffect(() => {
+    if (!address) {
+      return
+    }
+
+    const fetchUser = async () => {
+      try {
+        const user = await getUser(
+          { network: CHAIN_ID },
+          { id: address.toLowerCase() }
+        )
+        if (mounted()) {
+          setUser(transformUserData(user))
+        }
+      } catch (err) {
+        console.error(`Failed to fetch user: ${err}`)
+      }
+    }
+
+    fetchUser()
+  }, [address, mounted])
+
+  return user
+}
 ```
 
 For more information check out the Aragon Connect [docs](https://connect.aragon.org/).

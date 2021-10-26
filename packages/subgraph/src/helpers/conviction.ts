@@ -61,10 +61,20 @@ export function loadConvictionConfig(orgAddress: Address, appAddress: Address): 
   convictionConfig.maxStakedProposals = convictionVoting.MAX_STAKED_PROPOSALS().toI32()
   convictionConfig.minThresholdStakePercentage = convictionVoting.minThresholdStakePercentage()
   convictionConfig.contractPaused = false
+
+  // Get funds owner
+  let fundsManager: Address
   const vault = convictionVoting.try_vault()
   if (!vault.reverted) {
-    convictionConfig.vault = vault.value
+    fundsManager = vault.value
+  } else {
+    const fundsManagerResult = convictionVoting.try_fundsManager()
+    if (!fundsManagerResult.reverted) {
+      fundsManager = fundsManagerResult.value
+    }
   }
+
+  convictionConfig.fundsManager = fundsManager
   convictionConfig.stableTokenOracle = convictionVoting.stableTokenOracle()
 
   convictionConfig.save()

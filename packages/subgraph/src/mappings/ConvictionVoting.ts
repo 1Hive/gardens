@@ -4,6 +4,7 @@ import {
   ContractPaused as ContractPausedEvent,
   ConvictionVoting as ConvictionVotingContract,
   ConvictionSettingsChanged as ConvictionSettingsChangedEvent,
+  FundsManagerChanged as FundsManagerChangedEvent,
   ProposalAdded as ProposalAddedEvent,
   ProposalCancelled as ProposalCancelledEvent,
   ProposalExecuted as ProposalExecutedEvent,
@@ -52,6 +53,13 @@ export function handleConfigChanged(event: ConvictionSettingsChangedEvent): void
   convictionConfig.weight = event.params.weight
   convictionConfig.minThresholdStakePercentage = event.params.minThresholdStakePercentage
 
+  convictionConfig.save()
+}
+
+export function handleFundsManagerChanged(event: FundsManagerChangedEvent): void {
+  const convictionConfig = getConvictionConfigEntity(event.address)
+
+  convictionConfig.fundsManager = event.params.fundsManager
   convictionConfig.save()
 }
 

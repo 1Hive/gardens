@@ -63,6 +63,11 @@ export default class Proposal {
   readonly submitterArbitratorFeeId?: string
   readonly challengerArbitratorFeeId?: string
 
+  /**
+   * Create a new Proposal instance.
+   * @param data The proposal data.
+   * @param connector A GardenConnector instance.
+   */
   constructor(data: ProposalData, connector: IGardenConnector) {
     this.#connector = connector
 
@@ -113,30 +118,64 @@ export default class Proposal {
     this.challengerArbitratorFeeId = data.challengerArbitratorFeeId
   }
 
+  /**
+   * Close the connection.
+   */
+  async disconnect(): Promise<void> {
+    await this.#connector.disconnect()
+  }
+
+  /**
+   * Fetch the collateral requirement of the proposal.
+   * @returns A promise that resolves to the collateral requirement of the proposal.
+   */
   async collateralRequirement(): Promise<CollateralRequirement> {
     return this.#connector.collateralRequirement(this.id)
   }
 
+  /**
+   * Subscribe to updates in the collateral requirement of the proposal.
+   * @param callback A function callback to postprocess the result.
+   * @returns A GraphQL subsription to the collateral requirement of the proposal.
+   */
   onCollateralRequirement(callback?: FunctionCallback): SubscriptionHandler {
     return subscription<CollateralRequirement>(callback, (callback) =>
       this.#connector.onCollateralRequirement(this.id, callback)
     )
   }
 
+  /**
+   * Fetch the arbitrator fee for the submitter of the proposal.
+   * @returns A promise that resolves to the arbitrator fee for the submitter of the proposal.
+   */
   async submitterArbitratorFee(): Promise<ArbitratorFee | null> {
     return this.#connector.arbitratorFee(this.submitterArbitratorFeeId || '')
   }
 
+  /**
+   * Subscribe to updates in the arbitrator fee for the submitter of the proposal.
+   * @param callback A function callback to postprocess the result.
+   * @returns A GraphQL subsription to the arbitrator fee for the submitter of the proposal.
+   */
   onSubmitterArbitratorFee(callback?: FunctionCallback): SubscriptionHandler {
     return subscription<ArbitratorFee | null>(callback, (callback) =>
       this.#connector.onArbitratorFee(this.submitterArbitratorFeeId || '', callback)
     )
   }
 
+  /**
+   * Fetch the arbitrator fee for the challenger of the proposal.
+   * @returns A promise that resolves to the arbitrator fee for the challenger of the proposal.
+   */
   async challengerArbitratorFee(): Promise<ArbitratorFee | null> {
     return this.#connector.arbitratorFee(this.challengerArbitratorFeeId || '')
   }
 
+  /**
+   * Subscribe to updates in the arbitrator fee for the challenger of the proposal.
+   * @param callback A function callback to postprocess the result.
+   * @returns A GraphQL subsription to the arbitrator fee for the challenger of the proposal.
+   */
   onChallengerArbitratorFee(callback?: FunctionCallback): SubscriptionHandler {
     return subscription<ArbitratorFee | null>(callback, (callback) =>
       this.#connector.onArbitratorFee(this.challengerArbitratorFeeId || '', callback)

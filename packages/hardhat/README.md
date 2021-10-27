@@ -29,4 +29,4 @@ $ yarn new:garden:boboli -- --network localhost
 
 ## Rinkeby/xDAI deployment
 
-Check our documentation for a detailed guid on how to [create a Garden with scripts.](https://1hive.gitbook.io/gardens/garden-creators/create-a-garden/create-a-garden-with-scripts)
+Check our documentation for a detailed guide on how to [create a Garden with scripts.](https://1hive.gitbook.io/gardens/garden-creators/create-a-garden/create-a-garden-with-scripts)

@@ -19,7 +19,7 @@ $ yarn
 $ yarn chain
 ```
 
-3. Configure your DAO in `packages/hardhat/params-boboli.json` or `packages/hardhat/params-veneto.json` depending of the type of garden you want to deploy.
+3. Configure your DAO in `packages/hardhat/params-boboli.json` or `packages/hardhat/params-veneto.json` depending of the [type of garden](https://1hive.gitbook.io/gardens/garden-creators/garden-modes) you want to deploy.
 
 4. Deploy the DAO:
 

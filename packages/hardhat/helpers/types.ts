@@ -27,4 +27,5 @@ export enum EthereumNetworkNames {
 
 export enum eLocalHostNetwork {
   localhost = 'localhost',
+  hardhat = 'hardhat',
 }

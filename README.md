@@ -4,10 +4,13 @@ Based on the 1hive model, Gardens is a framework for a new kind of DAO - a compo
 
 ## Documentation
 
+Read our [Introducing Gardens blog post](https://gardens.substack.com/p/introducing-gardens) or,
+
 Check out the [documentation](https://1hive.gitbook.io/gardens/) for an in-depth explanation of the moving pieces of the framework.
 
-
 ## Current deployed networks
+
+Explore the production deployments.
 
 |Network  | URL |
 | ------------- | ------------- |

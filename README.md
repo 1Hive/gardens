@@ -8,9 +8,9 @@ Read our [Introducing Gardens blog post](https://gardens.substack.com/p/introduc
 
 Check out the [documentation](https://1hive.gitbook.io/gardens/) for an in-depth explanation of the moving pieces of the framework.
 
-## Current deployed networks
+## Current Deployments
 
-Explore the production deployments.
+Explore the production deployments on the following networks.
 
 |Network  | URL |
 | ------------- | ------------- |

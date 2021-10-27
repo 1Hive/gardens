@@ -22,5 +22,5 @@ Explore the production deployments on the following networks.
 This is a monorepo with the following packages:
 
 - Garden Template smart contracts under [`packages/hardhat`](https://github.com/1Hive/gardens/tree/master/packages/hardhat)
-- Garden subgraph under [`packages/subgraph`](https://github.com/1Hive/gardens/tree/master/packages/subgraph)
-- Garden connector under [`packages/connector`](https://github.com/1Hive/gardens/tree/master/packages/connector)
+- Garden Subgraph under [`packages/subgraph`](https://github.com/1Hive/gardens/tree/master/packages/subgraph)
+- Garden Connector under [`packages/connector`](https://github.com/1Hive/gardens/tree/master/packages/connector)

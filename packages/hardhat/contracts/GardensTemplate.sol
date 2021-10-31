@@ -26,7 +26,7 @@ import "./appIds/AppIdsMumbai.sol";
 import "./external/Erc721Adapter.sol";
 import "./external/Erc721AdapterFactory.sol";
 
-contract GardensTemplate is BaseTemplate, AppIdsMumbai {
+contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
     using SafeERC20 for ERC20;
 

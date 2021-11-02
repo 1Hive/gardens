@@ -10,6 +10,7 @@ contract IHookedTokenManager {
     bytes32 public constant REVOKE_VESTINGS_ROLE = keccak256("REVOKE_VESTINGS_ROLE");
     bytes32 public constant BURN_ROLE = keccak256("BURN_ROLE");
     bytes32 public constant SET_HOOK_ROLE = keccak256("SET_HOOK_ROLE");
+    bytes32 public constant WRAP_TOKEN_ROLE = keccak256("WRAP_TOKEN_ROLE");
 
     function initialize(address _token, address _wrappableToken, bool _transferable, uint256 _maxAccountTokens) external;
 

@@ -159,6 +159,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         honeyToken.approve(address(honeyswapRouter), honeyLiquidityToAdd);
 
         if (_creatingGardenWithExistingToken(hookedTokenManager)) {
+            acl.createPermission(ANY_ENTITY, hookedTokenManager, hookedTokenManager.WRAP_TOKEN_ROLE(), disputableVoting);
             existingToken.safeTransferFrom(msg.sender, address(this), _initialAmountAndLiquidity[3]);
             existingToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[3]);
 

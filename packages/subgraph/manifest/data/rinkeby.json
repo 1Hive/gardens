@@ -28,6 +28,11 @@
         "address": "0xa8e6c20e8ad85836c8ee7b6c8decae75967b580e",
         "name": "GardensTemplateWithGnosisSafe",
         "startBlock": 9463579
+      },
+      {
+        "address": "0xA28c03923385e31E506e749e64Ce4CfC14d93459",
+        "name": "GardensTemplateWithModVoting",
+        "startBlock": 9589595
       }
     ]
   },
@@ -52,6 +57,9 @@
     },
     { 
       "id": "0x705b5084c67966bb8e4640b28bab7a1e51e03d209d84e3a04d2a4f7415f93b34", "name": "disputable-voting.open.aragonpm.eth"
+    },
+    { 
+      "id": "0xa2219faba0fd99e0917be824499ceacce5f078efaf0b433cb726c7e8518c77bd", "name": "disputable-voting-mod-permission.open.aragonpm.eth"
     }
   ],
   "tokensAppIds": [

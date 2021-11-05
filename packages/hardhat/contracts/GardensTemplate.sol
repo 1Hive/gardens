@@ -29,10 +29,9 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
     using SafeERC20 for ERC20;
 
-    string private constant ERROR_BAD_VOTE_SETTINGS = "BAD_SETTINGS";
-    string private constant ERROR_HONEY_DEPOSIT_TOO_LOW = "BAD_HONEY_DEPOSIT_TOO_LOW";
+    string private constant ERROR_BAD_VOTE_SETTINGS = "VOTE_SETTINGS";
+    string private constant ERROR_HONEY_DEPOSIT_TOO_LOW = "DEPOSIT_TOO_LOW";
     string private constant ERROR_NO_CACHE = "NO_CACHE";
-    string constant private ERROR_MINIME_FACTORY_NOT_PROVIDED = "TEMPLATE_MINIME_FAC_NOT_PROVIDED";
 
     bool private constant TOKEN_TRANSFERABLE = true;
     uint8 private constant TOKEN_DECIMALS = uint8(18);
@@ -159,7 +158,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         honeyToken.approve(address(honeyswapRouter), honeyLiquidityToAdd);
 
         if (_creatingGardenWithExistingToken(hookedTokenManager)) {
-            acl.createPermission(ANY_ENTITY, hookedTokenManager, hookedTokenManager.WRAP_TOKEN_ROLE(), disputableVoting);
+            acl.createPermission(ANY_ENTITY, hookedTokenManager, keccak256("WRAP_TOKEN_ROLE"), disputableVoting);
             existingToken.safeTransferFrom(msg.sender, address(this), _initialAmountAndLiquidity[3]);
             existingToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[3]);
 
@@ -325,7 +324,6 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
     // App installation/setup functions //
 
     function _createToken(string memory _name, string memory _symbol, uint8 _decimals, bool _transfersEnabled) internal returns (IMiniMeWithPermit) {
-        require(address(miniMeWithPermitFactory) != address(0), ERROR_MINIME_FACTORY_NOT_PROVIDED);
         IMiniMeWithPermit token = miniMeWithPermitFactory.createCloneToken(IMiniMeWithPermit(address(0)), 0, _name, _decimals, _symbol, _transfersEnabled);
         emit DeployToken(address(token));
         return token;

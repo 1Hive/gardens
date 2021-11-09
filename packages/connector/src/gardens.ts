@@ -1,6 +1,6 @@
 import { GraphQLWrapper } from '@aragon/connect-thegraph'
 import { subgraphUrlFromChainId } from './thegraph/connector'
-import { ORGANIZATIONS, USER } from './thegraph/queries'
+import { ORGANIZATION, ORGANIZATIONS, USER } from './thegraph/queries'
 import { Organization, User } from './thegraph/queries/types'
 
 type Config = {
@@ -52,6 +52,24 @@ export async function getGardens(
   }
 
   return result.data.organizations
+}
+
+/**
+ * Fetch a garden from a subgraph.
+ * @category Main
+ * @param config A configuration object.
+ * @param id The garden's id
+ * @returns A promise that resolvles to a garden.
+ */
+export async function getGarden(config: Config, id: string): Promise<Organization> {
+  const client = getSubgraphClient(config)
+  const result = await client.performQuery(ORGANIZATION, { id })
+
+  if (!result.data.organization) {
+    throw new Error(' Unable to find garden.')
+  }
+
+  return result.data.organization
 }
 
 /**

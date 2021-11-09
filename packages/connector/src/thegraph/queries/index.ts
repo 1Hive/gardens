@@ -34,6 +34,33 @@ export const ORGANIZATIONS = gql`
   }
 `
 
+export const ORGANIZATION = gql`
+  query Organization($id: String!) {
+    organization(id: $id) {
+      id
+      active
+      createdAt
+      proposalCount
+      token {
+        id
+        symbol
+        name
+        decimals
+      }
+      wrappableToken {
+        id
+        symbol
+        name
+        decimals
+      }
+      honeyLiquidity
+      supporterCount
+      incentivisedPriceOracle
+      unipool
+    }
+  }
+`
+
 // TODO: Filters
 export const CONFIG = (type: string): DocumentNode => gql`
   ${type} Config($id: ID!) {

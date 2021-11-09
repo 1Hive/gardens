@@ -109,7 +109,7 @@ function describeUser(user: any) {
   console.log(`User ${user.id}`)
   console.log(`Address: ${user.address}`)
   console.log(`gardensSigned: ${user.gardensSigned}`)
-  console.log(`representativesFor: ${user.representativesFor}`)
+  console.log(`representativeFor: ${user.representativeFor}`)
   user.supports.map(describeSupporter)
   
   console.log(`\n`)

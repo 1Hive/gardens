@@ -63,8 +63,8 @@ export const ORGANIZATION = gql`
 
 // TODO: Filters
 export const CONFIG = (type: string): DocumentNode => gql`
-  ${type} Config($id: ID!) {
-    config(id: $id) {
+  ${type} Config($address: ID!) {
+    config(id: $address) {
       id
 
       # conviction voting config

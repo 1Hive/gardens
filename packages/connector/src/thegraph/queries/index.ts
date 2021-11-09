@@ -348,6 +348,15 @@ export const USER = gql`
       id
       address
       gardensSigned
+      representativeFor {
+        organization {
+          id
+        }
+        user {
+          id
+          address
+        }
+      }
       supports {
         id
         user {
@@ -357,7 +366,10 @@ export const USER = gql`
         organization {
           id
         }
-        representative
+        representative {
+          id
+          address
+        }
         # vote casts
         casts {
           id

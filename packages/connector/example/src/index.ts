@@ -10,15 +10,20 @@ import {
 
 const ORG_ADDRESS = '0x7777cd7c9c6d3537244871ac8e73b3cb9710d45a'
 type Garden = {
-  active: boolean,
-  id: string,
-  createdAt: number,
-  proposalCount: number,
+  id: string
+  createdAt: string
+  config: any
+  token?: any
+  wrappableToken?: any
+  proposalCount: number
   supporterCount: number
-  token: any,
-  wrappableToken: any,
-  honeyLiquidity: string
+  honeyLiquidity?: string
+  incentivisedPriceOracle?: string
+  unipool?: string
+  active: boolean
 }
+
+
 
 
 async function main(): Promise<void> {
@@ -104,6 +109,7 @@ function describeUser(user: any) {
   console.log(`User ${user.id}`)
   console.log(`Address: ${user.address}`)
   console.log(`gardensSigned: ${user.gardensSigned}`)
+  console.log(`representativesFor: ${user.representativesFor}`)
   user.supports.map(describeSupporter)
   
   console.log(`\n`)

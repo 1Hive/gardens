@@ -176,7 +176,7 @@ export function handleChangeRepresentative(event: ChangeRepresentativeEvent): vo
   const user = loadOrCreateUser(event.params.representative)
   const supporter = loadOrCreateSupporter(event.params.voter, organization)
 
-  if (event.params.representative === ZERO_ADDRESS) {
+  if (event.params.representative.equals(ZERO_ADDRESS)) {
     // Removing representative
     supporter.representative = null
   } else {

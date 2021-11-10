@@ -26,6 +26,7 @@ import {
   loadOrCreateCastVote,
   loadOrCreateConfig,
   loadOrCreateSupporter,
+  loadOrCreateUser,
   loadTokenData,
   populateVoteCollateralData,
   ZERO_ADDRESS,
@@ -172,13 +173,14 @@ export function handleChangeRepresentative(event: ChangeRepresentativeEvent): vo
   const votingApp = VotingContract.bind(event.address)
   const organization = votingApp.kernel()
 
+  const user = loadOrCreateUser(event.params.representative)
   const supporter = loadOrCreateSupporter(event.params.voter, organization)
 
-  if (event.params.representative === ZERO_ADDRESS) {
+  if (event.params.representative.equals(ZERO_ADDRESS)) {
     // Removing representative
     supporter.representative = null
   } else {
-    supporter.representative = event.params.representative.toHexString()
+    supporter.representative = user.id
   }
   supporter.save()
 }

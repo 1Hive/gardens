@@ -94,6 +94,7 @@ export function loadOrCreateUser(address: Address): UserEntity {
     user = new UserEntity(userId)
     user.address = address
     user.gardensSigned = []
+    user.representativeFor = []
     user.save()
   }
 

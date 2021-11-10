@@ -139,7 +139,7 @@ type User @entity {
   address: Bytes!
   gardensSigned: [String!]
   supports: [Supporter!]! @derivedFrom(field: "user")
-  representativeFor: [Supporter!] @derivedFrom(field: "representative")
+  representativeFor: [Supporter!]! @derivedFrom(field: "representative")
 }
 
 type Supporter @entity {

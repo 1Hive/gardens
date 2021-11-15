@@ -1,4 +1,4 @@
-import { subscription } from '@aragon/connect-core'
+import { subscription } from '@1hive/connect-core'
 
 import ArbitratorFee from './ArbitratorFee'
 import CollateralRequirement from './CollateralRequirement'

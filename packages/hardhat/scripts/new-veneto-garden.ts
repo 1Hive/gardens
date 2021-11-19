@@ -31,7 +31,8 @@ const ONE_YEAR = 365 * ONE_DAY
  */
 const getApps = async (daoAddress: string, appIds: string[]): Promise<string[]> => {
   const dao = (await ethers.getContractAt('Kernel', daoAddress)) as Kernel
-  const apps = await dao.queryFilter(dao.filters.NewAppProxy(null, null, null)).then((events) =>
+  const currentBlockNumber = await ethers.provider.getBlockNumber()
+  const apps = await dao.queryFilter(dao.filters.NewAppProxy(null, null, null), currentBlockNumber - 100, 'latest').then((events) =>
     events
       .filter(({ args }) => appIds.includes(args.appId))
       .map(({ args }) => ({

@@ -258,8 +258,8 @@ export default async function main(log = console.log): Promise<any> {
   }
 
   const gardensTemplate = await getGardensTemplate(mainAccount)
-  // await approveHnyPayment(gardensTemplate, log)
-  // await approveOgtPayment(gardensTemplate, log)
+  await approveHnyPayment(gardensTemplate, log)
+  await approveOgtPayment(gardensTemplate, log)
   const daoAddress = await createGardenTxOne(gardensTemplate, log)
   const [priceOracleAddress, unipoolAddress, unipoolDepositorAddress] = await createGardenTxTwo(gardensTemplate, log)
   await createGardenTxThree(gardensTemplate, log)

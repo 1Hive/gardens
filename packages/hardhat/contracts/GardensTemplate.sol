@@ -25,7 +25,7 @@ import "./appIds/AppIdsXDai.sol";
 import "./appIds/AppIdsRinkeby.sol";
 import "./appIds/AppIdsMumbai.sol";
 
-contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
+contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
     using SafeERC20 for ERC20;
 
@@ -152,24 +152,24 @@ contract GardensTemplate is BaseTemplate, AppIdsRinkeby {
 
         _storeDeployedContractsTxOne(dao, acl, disputableVoting, fundsManager, hookedTokenManager);
 
-//        uint256 honeyLiquidityToAdd = honeyPriceOracle.consult(stableToken, _initialAmountAndLiquidity[1], honeyToken);
-//        honeyToken.safeTransferFrom(msg.sender, address(this), honeyLiquidityToAdd);
-//        honeyToken.approve(address(honeyswapRouter), 0);
-//        honeyToken.approve(address(honeyswapRouter), honeyLiquidityToAdd);
+        uint256 honeyLiquidityToAdd = honeyPriceOracle.consult(stableToken, _initialAmountAndLiquidity[1], honeyToken);
+        honeyToken.safeTransferFrom(msg.sender, address(this), honeyLiquidityToAdd);
+        honeyToken.approve(address(honeyswapRouter), 0);
+        honeyToken.approve(address(honeyswapRouter), honeyLiquidityToAdd);
 
         if (_creatingGardenWithExistingToken(hookedTokenManager)) {
             acl.createPermission(ANY_ENTITY, hookedTokenManager, keccak256("WRAP_TOKEN_ROLE"), disputableVoting);
-//            existingToken.safeTransferFrom(msg.sender, address(this), _initialAmountAndLiquidity[3]);
-//            existingToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[3]);
-//
-//            honeyswapRouter.addLiquidity(honeyToken, existingToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[3], 0, 0, BURN_ADDRESS, now);
+            existingToken.safeTransferFrom(msg.sender, address(this), _initialAmountAndLiquidity[3]);
+            existingToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[3]);
+
+            honeyswapRouter.addLiquidity(honeyToken, existingToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[3], 0, 0, BURN_ADDRESS, now);
         } else {
             _createPermissionForTemplate(acl, hookedTokenManager, hookedTokenManager.MINT_ROLE());
-//            hookedTokenManager.mint(fundsManager.fundsOwner(), _initialAmountAndLiquidity[0]);
-//            hookedTokenManager.mint(address(this), _initialAmountAndLiquidity[2]);
-//            gardenToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[2]);
-//
-//            honeyswapRouter.addLiquidity(honeyToken, gardenToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[2], 0, 0, BURN_ADDRESS, now);
+            hookedTokenManager.mint(fundsManager.fundsOwner(), _initialAmountAndLiquidity[0]);
+            hookedTokenManager.mint(address(this), _initialAmountAndLiquidity[2]);
+            gardenToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[2]);
+
+            honeyswapRouter.addLiquidity(honeyToken, gardenToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[2], 0, 0, BURN_ADDRESS, now);
         }
 
         emit GardenTransactionOne(fundsManager);

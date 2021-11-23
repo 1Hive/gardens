@@ -1,6 +1,6 @@
 {
   "name": "@1hive/connect-gardens",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "license": "AGPL-3.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -27,6 +27,7 @@
   "dependencies": {
     "@aragon/connect-core": "0.7.0",
     "@aragon/connect-thegraph": "0.7.0",
+    "ethers": "^5.5.1",
     "graphql-tag": "^2.10.3"
   },
   "description": "Access gardens data.",

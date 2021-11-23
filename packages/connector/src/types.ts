@@ -78,11 +78,16 @@ export interface UserData {
   supports: SupporterData[]
 }
 
+export interface RepresentativeData {
+  id: string
+  address: string
+}
+
 export interface SupporterData {
   id: string
   user: UserData
   organization: OrganizationData
-  representative: string
+  representative: RepresentativeData
   casts: CastData[]
   stakes: StakeData[]
   stakesHistory: StakeHistoryData[]

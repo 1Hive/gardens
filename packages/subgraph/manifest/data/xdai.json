@@ -18,11 +18,6 @@
         "address": "0x6D68156D6D75bAe0CDABfAFDdE2DD16a75e1eB8A",
         "name": "GardensTemplateWithModVoting",
         "startBlock": 18917914
-      },
-      {
-        "address": "0x6B2C396048c7E7eeB310116e6e12A397dA704D91",
-        "name": "GardensTemplateWithWrappedRole",
-        "startBlock": 18916358
       }
     ]  
   },

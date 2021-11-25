@@ -76,6 +76,7 @@ export function handleStartVote(event: StartVoteEvent): void {
   proposal.organization = organization.toHexString()
   proposal.type = PROPOSAL_TYPE_DECISION
   proposal.typeInt = PROPOSAL_TYPE_DECISION_NUM
+  proposal.txHash = event.transaction.hash.toHexString()
   proposal.creator = event.params.creator
   proposal.metadata = event.params.context.toString()
   proposal.yeas = voteData.value0

@@ -1,4 +1,4 @@
-import { Organization } from '@aragon/connect-core'
+import { Organization } from '@1hive/connect-core'
 import Garden from './models/Garden'
 import GardenConnectorTheGraph, { pollIntervalFromChainId, subgraphUrlFromChainId } from './thegraph/connector'
 

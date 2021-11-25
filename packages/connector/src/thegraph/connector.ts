@@ -1,4 +1,4 @@
-import { GraphQLWrapper, QueryResult } from '@aragon/connect-thegraph'
+import { GraphQLWrapper, QueryResult } from '@1hive/connect-thegraph'
 
 import { FunctionCallback, IGardenConnector, SubscriptionHandler } from '../types'
 import ArbitratorFee from '../models/ArbitratorFee'

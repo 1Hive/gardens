@@ -26,6 +26,8 @@ const BLOCK_TIMES = new Map([
   [1, 13], // mainnet
   [4, 14], // rinkeby
   [100, 5], // xdai
+  [137, 2], // polygon
+  [80001, 2], // mumbai
 ])
 
 export function subgraphUrlFromChainId(chainId: number): string | null {
@@ -37,6 +39,12 @@ export function subgraphUrlFromChainId(chainId: number): string | null {
   }
   if (chainId === 100) {
     return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai'
+  }
+  if (chainId === 137) {
+    return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-polygon'
+  }
+  if (chainId === 80001) {
+    return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-mumbai'
   }
   return null
 }

@@ -1,6 +1,6 @@
 {
   "name": "@1hive/connect-gardens",
-  "version": "0.1.8",
+  "version": "0.1.10",
   "license": "AGPL-3.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -25,8 +25,8 @@
     "typedoc": "^0.22.6"
   },
   "dependencies": {
-    "@1hive/connect-core": "^0.9.3",
-    "@1hive/connect-thegraph": "^0.9.3",
+    "@1hive/connect-core": "^0.9.4",
+    "@1hive/connect-thegraph": "^0.9.4",
     "ethers": "^5.5.1",
     "graphql-tag": "^2.10.3"
   },

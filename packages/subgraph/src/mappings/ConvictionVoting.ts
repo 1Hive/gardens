@@ -71,7 +71,6 @@ export function handleProposalAdded(event: ProposalAddedEvent): void {
   const proposal = getProposalEntity(event.address, event.params.id)
   populateProposalDataFromEvent(proposal, event)
   proposal.organization = organization.toHexString()
-  proposal.txHash = event.transaction.hash.toHexString()
 
   if (event.params.amount.gt(BigInt.fromI32(0))) {
     proposal.type = PROPOSAL_TYPE_PROPOSAL

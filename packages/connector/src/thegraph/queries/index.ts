@@ -137,6 +137,7 @@ export const ALL_PROPOSALS = (type: string): DocumentNode => gql`
       createdAt
       metadata
       executedAt
+      txHash
 
       # Proposal / Suggestion data (signaling proposals and proposals requesting funds)
       link
@@ -257,6 +258,7 @@ export const PROPOSAL = (type: string): DocumentNode => gql`
       createdAt
       metadata
       executedAt
+      txHash
 
       # Proposal / Suggestion data (signaling proposals and proposals requesting funds)
       link

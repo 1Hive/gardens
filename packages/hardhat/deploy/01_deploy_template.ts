@@ -47,14 +47,16 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     log: true,
   })
 
-  await hre.tenderly.persistArtifacts({
-    name: 'GardensTemplate',
-    address: GardensTemplate.address,
-  })
+  if (hre.network.live) {
+    await hre.tenderly.persistArtifacts({
+      name: 'GardensTemplate',
+      address: GardensTemplate.address,
+    })
 
-  await hre.tenderly.verify({
-    name: 'GardensTemplate',
-    address: GardensTemplate.address,
-  })
+    await hre.tenderly.verify({
+      name: 'GardensTemplate',
+      address: GardensTemplate.address,
+    })
+  }
 }
 export default func

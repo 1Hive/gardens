@@ -31,7 +31,8 @@ const ONE_YEAR = 365 * ONE_DAY
  */
 const getApps = async (daoAddress: string, appIds: string[]): Promise<string[]> => {
   const dao = (await ethers.getContractAt('Kernel', daoAddress)) as Kernel
-  const apps = await dao.queryFilter(dao.filters.NewAppProxy(null, null, null)).then((events) =>
+  const currentBlockNumber = await ethers.provider.getBlockNumber()
+  const apps = await dao.queryFilter(dao.filters.NewAppProxy(null, null, null), currentBlockNumber - 100, 'latest').then((events) =>
     events
       .filter(({ args }) => appIds.includes(args.appId))
       .map(({ args }) => ({
@@ -202,10 +203,11 @@ export default async function main(log = console.log): Promise<any> {
       ],
       { gasLimit: 11000000 }
     )
+    log(`submitted: ${createGardenTxOneTx.hash}`)
     const createGardenTxOneReceipt = await createGardenTxOneTx.wait(1)
     const daoAddress = getEventArgFromReceipt(createGardenTxOneReceipt, 'DeployDao', 'dao')
 
-    log(`Tx one completed: Gardens DAO (${daoAddress}) created.`)
+    log(`Tx one completed: Gardens DAO (${daoAddress}) created. Gas used: ${createGardenTxOneReceipt.gasUsed}`)
     return daoAddress
   }
 
@@ -237,7 +239,7 @@ export default async function main(log = console.log): Promise<any> {
     )
     const unipoolAddress = getEventArgFromReceipt(createGardenTxTwoReceipt, 'GardenTransactionTwo', 'unipool')
 
-    log(`Tx two completed.`)
+    log(`Tx two completed. Gas used: ${createGardenTxTwoReceipt.gasUsed}`)
 
     return [priceOracleAddress, unipoolAddress, unipoolDepositorAddress]
   }
@@ -252,10 +254,11 @@ export default async function main(log = console.log): Promise<any> {
       [actionAmount, challengeAmount],
       [actionAmountStable, actionAmountStable],
       [challengeAmountStable, challengeAmountStable],
-      { gasLimit: 7000000 }
+      { gasLimit: 10000000 }
     )
     await createGardenTxThreeTx.wait(1)
-    log(`Tx three completed.`)
+    const createGardenTxThreeReceipt = await createGardenTxThreeTx.wait(1)
+    log(`Tx three completed. Gas used: ${createGardenTxThreeReceipt.gasUsed}`)
   }
 
   const gardensTemplate = await getGardensTemplate(mainAccount)

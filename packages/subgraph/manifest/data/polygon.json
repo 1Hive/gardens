@@ -7,6 +7,11 @@
         "address": "0x785580f946e322E4Ed6900a2C4A08413f65FfbBF",
         "name": "GardensTemplate",
         "startBlock": 21709747
+      },
+      {
+        "address": "0x1162faf333dd3ab813d06691f8EED25b2D933bed",
+        "name": "GardensTemplateWithAragonId",
+        "startBlock": 21823459
       }
     ]
   },

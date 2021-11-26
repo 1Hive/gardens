@@ -313,8 +313,8 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         acl.createPermission(collateralRequirementUpdater, agreement, agreement.MANAGE_DISPUTABLE_ROLE(), disputableVoting);
 
         _transferRootPermissionsFromTemplateAndFinalizeDAO(dao, address(disputableVoting));
-//        _validateId(_daoId);
-//        _registerID(_daoId, dao);
+        _validateId(_daoId);
+        _registerID(_daoId, dao);
 
         _deleteStoredContracts();
 

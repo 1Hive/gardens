@@ -31,7 +31,7 @@ export const Config = {
       CollateralRequirementUpdaterFactory: '0xD608eC04f748c9E1982A6965E422722e9506E061',
       UniswapV2Factory: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
       UnipoolFactory: '0x022eD1710Cd17193C9eD05D516E8Ea64b036a44F',
-      Arbitrator: '0x205F76D6dDD95D7bA53b131506EA851B04568899', // Mock Celeste 0x124C3Ae1EfBf30c61966989D150738978D16849A
+      Arbitrator: '0x0ED8867EDaBD4d0b5045E45a39077D97a6B78cbE', // Mock Celeste 0x124C3Ae1EfBf30c61966989D150738978D16849A
       StakingFactory: '0xe4FDEff6633E5d4408C94E6736795b8cd6EEB4Ac',
     },
     [eEthereumNetwork.arbitrum]: {

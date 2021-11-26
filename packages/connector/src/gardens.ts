@@ -1,4 +1,4 @@
-import { GraphQLWrapper } from '@aragon/connect-thegraph'
+import { GraphQLWrapper } from '@1hive/connect-thegraph'
 import { subgraphUrlFromChainId } from './thegraph/connector'
 import { ORGANIZATION, ORGANIZATIONS, USER } from './thegraph/queries'
 import { Organization, User } from './thegraph/queries/types'

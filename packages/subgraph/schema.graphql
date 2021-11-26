@@ -63,6 +63,7 @@ type Proposal @entity {
   weight: BigInt!
   metadata: String
   executedAt: BigInt
+  txHash: String!
 
   # Proposal data
   link: String

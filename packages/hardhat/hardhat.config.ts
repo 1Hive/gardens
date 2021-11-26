@@ -2,6 +2,7 @@ import 'dotenv/config'
 import { HardhatUserConfig } from 'hardhat/types'
 
 import '@nomiclabs/hardhat-ethers'
+import '@tenderly/hardhat-tenderly'
 import '@typechain/hardhat'
 import 'hardhat-deploy'
 
@@ -47,12 +48,10 @@ const config: HardhatUserConfig = {
     rinkeby: {
       url: node_url('rinkeby'),
       accounts: account('rinkeby'),
-      gasPrice: 1000000000,
     },
     xdai: {
       url: node_url('xdai'),
       accounts: account('xdai'),
-      gasPrice: 1000000000,
     },
     polygon: {
       url: node_url('polygon'),

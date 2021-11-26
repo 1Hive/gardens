@@ -1,4 +1,4 @@
-import { NewAppProxy as NewAppProxyEvent } from '../../generated/Kernel/Kernel'
+import { NewAppProxy as NewAppProxyEvent } from '../../generated/GardensTemplate/Kernel'
 import { processApp, processOrg } from '../processors'
 
 export function handleNewAppProxy(event: NewAppProxyEvent): void {

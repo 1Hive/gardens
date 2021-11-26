@@ -1,4 +1,4 @@
-import { subscription } from '@aragon/connect-core'
+import { subscription } from '@1hive/connect-core'
 
 import ArbitratorFee from './ArbitratorFee'
 import CollateralRequirement from './CollateralRequirement'
@@ -26,6 +26,7 @@ export default class Proposal {
   readonly createdAt: string
   readonly executedAt: string
   readonly metadata?: string
+  readonly txHash: string
 
   // proposal data
   readonly link?: string
@@ -80,6 +81,7 @@ export default class Proposal {
     this.createdAt = data.createdAt
     this.executedAt = data.executedAt
     this.metadata = data.metadata
+    this.txHash = data.txHash
 
     // proposal data
     this.link = data.link

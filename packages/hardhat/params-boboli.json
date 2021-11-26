@@ -2,7 +2,7 @@
   "gnosisSafe": "0x0000000000000000000000000000000000000000",
   "gardenTokenName": "Garden Bright",
   "gardenTokenSymbol": "gBRIGHT",
-  "existingToken": "0x901eb48A8394eA3a135c6Ac611030D297DA9dC8b",
+  "existingToken": "0x779ec783bbeec9350b3efb8bec775c6379f5e218",
   "honeyTokenLiquidityInXdai": 100,
   "existingTokenLiquidity": 1000,
   "convictionGrowthHours": 48,

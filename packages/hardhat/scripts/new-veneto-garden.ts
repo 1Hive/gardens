@@ -203,10 +203,11 @@ export default async function main(log = console.log): Promise<any> {
       ],
       { gasLimit: 11000000 }
     )
+    log(`submitted: ${createGardenTxOneTx.hash}`)
     const createGardenTxOneReceipt = await createGardenTxOneTx.wait(1)
     const daoAddress = getEventArgFromReceipt(createGardenTxOneReceipt, 'DeployDao', 'dao')
 
-    log(`Tx one completed: Gardens DAO (${daoAddress}) created.`)
+    log(`Tx one completed: Gardens DAO (${daoAddress}) created. Gas used: ${createGardenTxOneReceipt.gasUsed}`)
     return daoAddress
   }
 
@@ -238,7 +239,7 @@ export default async function main(log = console.log): Promise<any> {
     )
     const unipoolAddress = getEventArgFromReceipt(createGardenTxTwoReceipt, 'GardenTransactionTwo', 'unipool')
 
-    log(`Tx two completed.`)
+    log(`Tx two completed. Gas used: ${createGardenTxTwoReceipt.gasUsed}`)
 
     return [priceOracleAddress, unipoolAddress, unipoolDepositorAddress]
   }
@@ -256,7 +257,8 @@ export default async function main(log = console.log): Promise<any> {
       { gasLimit: 10000000 }
     )
     await createGardenTxThreeTx.wait(1)
-    log(`Tx three completed.`)
+    const createGardenTxThreeReceipt = await createGardenTxThreeTx.wait(1)
+    log(`Tx three completed. Gas used: ${createGardenTxThreeReceipt.gasUsed}`)
   }
 
   const gardensTemplate = await getGardensTemplate(mainAccount)

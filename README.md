@@ -10,9 +10,9 @@ Check out the [documentation](https://1hive.gitbook.io/gardens/) for an in-depth
 
 ## Current Deployments
 
-Explore the production deployments on the following networks.
+Explore the deployments on the following environments.
 
-|Network  | URL |
+| Environment | URL |
 | ------------- | ------------- |
 | Production | https://gardens-xdai.1hive.org/ |
 | Staging | https://gardens-staging.1hive.org/ |

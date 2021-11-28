@@ -14,8 +14,8 @@ Explore the production deployments on the following networks.
 
 |Network  | URL |
 | ------------- | ------------- |
-| xDai | https://gardens-xdai.1hive.org/ |
-| Rinkeby | https://gardens-rinkeby.1hive.org/ |
+| Production | https://gardens-xdai.1hive.org/ |
+| Staging | https://gardens-staging.1hive.org/ |
 
 ## Development
 

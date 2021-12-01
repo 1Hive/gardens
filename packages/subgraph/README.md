@@ -9,6 +9,7 @@ Indexed data from DAOs created through the [GardensTemplate](https://github.com/
 |Network  | TheGraph | HTTP endpoint |
 | ------------- | ------------- | ------------- |
 | xDai | [Hosted Service](https://thegraph.com/hosted-service/subgraph/1hive/gardens-xdai) | https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai |
+| Polygon | [Hosted Service](https://thegraph.com/hosted-service/subgraph/1hive/gardens-polygon) | https://api.thegraph.com/subgraphs/name/1hive/gardens-polygon |
 | Rinkeby | [Hosted Service](https://thegraph.com/hosted-service/subgraph/1hive/gardens-rinkeby) | https://api.thegraph.com/subgraphs/name/1hive/gardens-rinkeby |
 
 ## Schema

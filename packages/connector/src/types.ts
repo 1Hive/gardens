@@ -132,6 +132,7 @@ export interface ProposalData {
   createdAt: string
   executedAt: string
   metadata?: string
+  txHash: string
 
   // proposal data
   link?: string

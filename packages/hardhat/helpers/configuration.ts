@@ -19,19 +19,19 @@ export const Config = {
       StakingFactory: '0x2C3ac82981979af1611F6Efb17a4a3a04d1F9245',
     },
     [eEthereumNetwork.polygon]: {
-      AragonID: '',
-      DAOFactory: '',
-      ENS: '',
+      AragonID: '0x7b9cd2d5eCFE44C8b64E01B93973491BBDAe879B',
+      DAOFactory: '0xEe261Cf86cFf35d8657a4B5D4d1546B4d72c5314',
+      ENS: '0x7EdE100965B1E870d726cD480dD41F2af1Ca0130',
       MiniMeFactory: '0xcFed1594A5b1B612dC8199962461ceC148F14E68',
-      HoneyswapRouter: '',
-      HoneyToken: '',
-      StableToken: '',
-      HoneyPriceOracle: '',
-      PriceOracleFactory: '', // Requires updating hex before deployment
+      HoneyswapRouter: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
+      HoneyToken: '0xb371248dd0f9e4061ccf8850e9223ca48aa7ca4b',
+      StableToken: '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063',
+      HoneyPriceOracle: '0x15f627b9c47bbfbbc2194c9a8db2e722e090a690',
+      PriceOracleFactory: '0x01D464be5866Dc2bCA4dC30269D08406d2f6dC46', // Requires updating hex before deployment
       CollateralRequirementUpdaterFactory: '0xD608eC04f748c9E1982A6965E422722e9506E061',
-      UniswapV2Factory: '',
+      UniswapV2Factory: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
       UnipoolFactory: '0x022eD1710Cd17193C9eD05D516E8Ea64b036a44F',
-      Arbitrator: '0x124C3Ae1EfBf30c61966989D150738978D16849A', // Mock Celeste
+      Arbitrator: '0xf0C8376065fadfACB706caFbaaC96B321069C015', // Mock Celeste 0x124C3Ae1EfBf30c61966989D150738978D16849A
       StakingFactory: '0xe4FDEff6633E5d4408C94E6736795b8cd6EEB4Ac',
     },
     [eEthereumNetwork.arbitrum]: {

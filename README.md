@@ -14,7 +14,7 @@ Explore the deployments on the following environments.
 
 | Environment | URL |
 | ------------- | ------------- |
-| Production | https://gardens-xdai.1hive.org/ |
+| Production | https://gardens.1hive.org/ |
 | Staging | https://gardens-staging.1hive.org/ |
 
 ## Development

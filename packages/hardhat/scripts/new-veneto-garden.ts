@@ -55,16 +55,6 @@ const getGardensTemplate = async (signer: Signer): Promise<GardensTemplate> => {
   return (await ethers.getContractAt('GardensTemplate', gardensTemplateAddress, signer)) as GardensTemplate
 }
 
-const getUnipoolFactory = async (signer: Signer, gardensTemplate: GardensTemplate): Promise<IUnipoolFactory> => {
-  const unipoolFactoryAddress = await gardensTemplate.unipoolFactory()
-  return (await ethers.getContractAt('IUnipoolFactory', unipoolFactoryAddress, signer)) as IUnipoolFactory
-}
-
-const getHoneyToken = async (signer: Signer, gardensTemplate: GardensTemplate) => {
-  const honeyTokenAddress = await gardensTemplate.honeyToken()
-  return (await ethers.getContractAt('ERC20', honeyTokenAddress, signer)) as ERC20
-}
-
 const getOriginalToken = async (signer: Signer, address: string) => {
   return (await ethers.getContractAt('ERC20', address, signer)) as ERC20
 }
@@ -166,24 +156,6 @@ export default async function main(log = console.log): Promise<any> {
     challengeAmountStable,
   } = transform(await import(`../params-veneto.json`))
   const [mainAccount] = await ethers.getSigners()
-
-  const approveHnyPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
-    const honeyToken = await getHoneyToken(mainAccount, gardensTemplate)
-    const currentAllowance = await honeyToken.allowance(mainAccount.address, gardensTemplate.address)
-    if (currentAllowance.gt(BigNumber.from(0))) {
-      const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, BigNumber.from(0), {
-        gasLimit: 1000000,
-      })
-      await approveHoneyPaymentTx.wait(1)
-      log(`Pre unapproval for honey payment made.`)
-    }
-    const approvalAmount = BigNumber.from(100).pow(BigNumber.from(18))
-    const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, approvalAmount, {
-      gasLimit: 1000000,
-    })
-    await approveHoneyPaymentTx.wait(1)
-    log(`Approval for honey payment made.`)
-  }
 
   const createGardenTxOne = async (gardensTemplate: GardensTemplate, log: Function): Promise<string[]> => {
     log(`Create garden transaction one...`)

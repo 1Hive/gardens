@@ -17,7 +17,7 @@ export const Config = {
       UnipoolFactory: '0xAD289640D2D6976b6d7dd87eecC33B0cf6332BAF',
       Arbitrator: '0x68E18891159475c21E9f98bbb8b33234769328b1', // Mock Celeste
       StakingFactory: '0x2C3ac82981979af1611F6Efb17a4a3a04d1F9245',
-      Erc721AdapterFactory: '0x9e69734865441b6B29C1ed423dBe80ecfa24Fe03',
+      Erc721AdapterFactory: '0x1Ba0465165736b1fbc3c0ce984b4dD062Ae346C6',
     },
     [eEthereumNetwork.polygon]: {
       AragonID: '',

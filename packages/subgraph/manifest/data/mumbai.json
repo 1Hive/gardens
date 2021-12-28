@@ -3,9 +3,9 @@
   "dataSources": {
     "OrganizationTemplates": [
       {
-        "address": "0x38C5bd814A1659B162e782Db6fE30Ae8a16b5d4D",
+        "address": "0x6a8f393eDCDd596CB3d19a5E348e89825cA07CcC",
         "name": "GardensTemplate",
-        "startBlock": 20458269
+        "startBlock": 22490965
       }
     ]
   },
@@ -19,6 +19,9 @@
   "convictionVotingAppIds": [
     {
       "id": "0x589851b3734f6578a92f33bfc26877a1166b95238be1f484deeaac6383d14c38", "name": "conviction-voting.open.aragonpm.eth"
+    },
+    {
+      "id": "0xca60629a22f03bcad7738fee1a6f0c5863eb89463621b40566a6799b82cbe184", "name": "disputable-conviction-voting.open.aragonpm.eth"
     }
   ],
   "votingAppIds": [

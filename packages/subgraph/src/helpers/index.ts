@@ -55,28 +55,32 @@ export function loadTokenData(address: Address): string {
   return id
 }
 
-/// /// Token entity from ERC721 token //// (we´ll add `g` to the front of the name and symbol, use 18 as decimals)
+/// /// Token entity from ERC721 token
 export function loadERC721AdapterTokenData(address: Address): string {
   // Load or create token entity with erc721adapter contract address with erc721 token data
   const id = address.toHexString()
   const token = TokenEntity.load(id)
-
-  // Get erc721 contract address
-  const adapterContract = ERC721AdapterContract.bind(address)
-  const erc721TokenAddress = adapterContract.erc721()
-
-  if (erc721TokenAddress.equals(ZERO_ADDRESS)) {
-    log.warning('No ERC721 set returning', [])
-    return null
-  }
-
   if (!token) {
     const token = new TokenEntity(id)
-    const tokenContract = ERC721Contract.bind(erc721TokenAddress)
-
-    token.symbol = 'g' + tokenContract.symbol()
-    token.name = 'g' + tokenContract.name()
     token.decimals = 18
+
+
+    // Get erc721 contract address
+    const adapterContract = ERC721AdapterContract.bind(address)
+    const erc721TokenAddress = adapterContract.erc721()
+
+    // Check if erc721 token is set
+    if (erc721TokenAddress.equals(ZERO_ADDRESS)) {
+      // If not set yet, we'll set empty values. 
+      // It will be processed with the correct values once the erc721 token is set
+      // We do this so that we can have the token linked to the corresponding conviction config.
+      token.symbol = ""
+      token.name = ""
+    } else {
+      token.symbol = adapterContract.symbol()
+      token.name = adapterContract.name()
+    }
+  
     token.save()
   }
 

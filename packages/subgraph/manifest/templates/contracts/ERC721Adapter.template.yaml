@@ -1,0 +1,20 @@
+- kind: ethereum/contract
+  name: ERC721Adapter
+  network: {{network}}
+  source:
+    abi: ERC721Adapter
+  mapping:
+    kind: ethereum/events
+    apiVersion: 0.0.3
+    language: wasm/assemblyscript
+    entities:
+      - Token
+    abis:
+      - name: ERC20
+        file: ./abis/ERC20.json
+      - name: ERC721Adapter
+        file: ./abis/ERC721Adapter.json
+    eventHandlers:
+      - event: SetErc721(address)
+        handler: handleSetErc721
+    file: ./src/mappings/ERC721Adapter.ts

@@ -15,3 +15,4 @@ templates:
 {{> HookedTokenManager.template.yaml}}
 {{> Pair.template.yaml}}
 {{> Organization.template.yaml}}
+{{> ERC721Adapter.template.yaml}}

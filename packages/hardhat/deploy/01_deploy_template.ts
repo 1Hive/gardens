@@ -26,7 +26,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     StakingFactory,
   } = Config.Bases[hre.network.name]
 
-  await deploy('GardensTemplate', {
+  const GardensTemplate = await deploy('GardensTemplate', {
     from: deployer,
     args: [
       DAOFactory,
@@ -45,7 +45,18 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
       StakingFactory,
     ],
     log: true,
-    deterministicDeployment: true,
   })
+
+  if (hre.network.live) {
+    await hre.tenderly.persistArtifacts({
+      name: 'GardensTemplate',
+      address: GardensTemplate.address,
+    })
+
+    await hre.tenderly.verify({
+      name: 'GardensTemplate',
+      address: GardensTemplate.address,
+    })
+  }
 }
 export default func

@@ -1,28 +1,15 @@
 {
-  "network": "xdai",
+  "network": "matic",
   "dataSources": {
-    "Organizations": [
-      {
-        "name": "Kernel",
-        "address": "0x8ccbeab14b5ac4a431fffc39f4bec4089020a155",
-        "startBlock": "14861344"
-      }
-    ],
+    "Organizations": [],
     "OrganizationTemplates": [
       {
-        "address": "0x5507A6365C47d5b201Af3c1CB18C7fD4a889321b",
+        "address": "0x64A35Cafb5FE1f70F4DF29A9bC550e93a11369F9",
         "name": "GardensTemplate",
-        "startBlock": 17550461
-      },
-      {
-        "address": "0x9B770712603d66Faa8F048EEf4C0Afd2FA7F0844",
-        "name": "GardensTemplateWithModVoting",
-        "startBlock": 19255064
+        "startBlock": 21939075
       }
-    ]  
+    ]
   },
-  "1HiveGarden": "0x8ccbeab14b5ac4a431fffc39f4bec4089020a155",
-  "1HivePriceOracle": "0x6f38D112b13eda1E3abAFC61E296Be2E27F15071",
   "agreementAppIds": [
     {
       "id": "0x34c62f3aec3073826f39c2c35e9a1297d9dbf3cc77472283106f09eee9cf47bf", "name": "agreement.open.aragonpm.eth"

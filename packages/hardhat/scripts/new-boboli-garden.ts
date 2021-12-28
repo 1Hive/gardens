@@ -1,7 +1,7 @@
 import hre, { ethers } from 'hardhat'
 import { Contract } from '@ethersproject/contracts'
 import { Signer } from '@ethersproject/abstract-signer'
-import { GardensTemplate, Erc20, Kernel, IUnipoolFactory, IConvictionVoting } from '../typechain'
+import { GardensTemplate, ERC20, Kernel, IUnipoolFactory } from '../typechain'
 import { BigNumber } from 'ethers'
 
 const { deployments } = hre
@@ -28,7 +28,8 @@ const ONE_DAY = 24 * ONE_HOUR
  */
 const getApps = async (daoAddress: string, appIds: string[]): Promise<string[]> => {
   const dao = (await ethers.getContractAt('Kernel', daoAddress)) as Kernel
-  const apps = await dao.queryFilter(dao.filters.NewAppProxy(null, null, null)).then((events) =>
+  const currentBlockNumber = await ethers.provider.getBlockNumber()
+  const apps = await dao.queryFilter(dao.filters.NewAppProxy(null, null, null), currentBlockNumber - 100, 'latest').then((events) =>
     events
       .filter(({ args }) => appIds.includes(args.appId))
       .map(({ args }) => ({
@@ -58,11 +59,11 @@ const getUnipoolFactory = async (signer: Signer, gardensTemplate: GardensTemplat
 
 const getHoneyToken = async (signer: Signer, gardensTemplate: GardensTemplate) => {
   const honeyTokenAddress = await gardensTemplate.honeyToken()
-  return (await ethers.getContractAt('ERC20', honeyTokenAddress, signer)) as Erc20
+  return (await ethers.getContractAt('ERC20', honeyTokenAddress, signer)) as ERC20
 }
 
 const getOriginalToken = async (signer: Signer, address: string) => {
-  return (await ethers.getContractAt('ERC20', address, signer)) as Erc20
+  return (await ethers.getContractAt('ERC20', address, signer)) as ERC20
 }
 
 const getEventArgument = async (
@@ -201,10 +202,11 @@ export default async function main(log = console.log): Promise<any> {
       ],
       { gasLimit: 12000000 }
     )
+    log(`submitted: ${createGardenTxOneTx.hash}`)
     const createGardenTxOneReceipt = await createGardenTxOneTx.wait(1)
     const daoAddress = getEventArgFromReceipt(createGardenTxOneReceipt, 'DeployDao', 'dao')
 
-    log(`Tx one completed: Gardens DAO (${daoAddress}) created.`)
+    log(`Tx one completed: Gardens DAO (${daoAddress}) created. Gas used: ${createGardenTxOneReceipt.gasUsed}`)
     return daoAddress
   }
 
@@ -234,7 +236,7 @@ export default async function main(log = console.log): Promise<any> {
     )
     const unipoolAddress = getEventArgFromReceipt(createGardenTxTwoReceipt, 'GardenTransactionTwo', 'unipool')
 
-    log(`Tx two completed.`)
+    log(`Tx two completed. Gas used: ${createGardenTxTwoReceipt.gasUsed}`)
 
     return [priceOracleAddress, unipoolAddress, unipoolDepositorAddress]
   }
@@ -251,8 +253,8 @@ export default async function main(log = console.log): Promise<any> {
       [challengeAmountStable, challengeAmountStable],
       { gasLimit: 7000000 }
     )
-    await createGardenTxThreeTx.wait(1)
-    log(`Tx three completed.`)
+    const createGardenTxThreeReceipt = await createGardenTxThreeTx.wait(1)
+    log(`Tx three completed. Gas used: ${createGardenTxThreeReceipt.gasUsed}`)
   }
 
   const gardensTemplate = await getGardensTemplate(mainAccount)

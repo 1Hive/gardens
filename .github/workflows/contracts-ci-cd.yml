@@ -1,5 +1,8 @@
 name: Contracts CI/CD
-on: push
+on: 
+  push:
+    paths:
+      - packages/hardhat/contracts/**/*.sol
 jobs:
   coverage:
     runs-on: ubuntu-latest

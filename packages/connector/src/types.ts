@@ -11,6 +11,9 @@ export type FunctionCallback = <T = unknown, R = unknown>(args?: T) => R
 
 export type SubscriptionHandler = { unsubscribe: () => void }
 
+/**
+ * A string that contains an Ethereum address.
+ */
 export type Address = string
 
 export interface TokenData {
@@ -18,26 +21,6 @@ export interface TokenData {
   name: string
   symbol: string
   decimals: number
-}
-
-export interface OrganizationData {
-  id: string
-  address: string
-  createdAt: string
-  config: ConfigData
-  token: TokenData
-  wrappableToken: TokenData
-  proposalCount: number
-  supporterCount: number
-  incentivisedPriceOracle: string
-  unipool: string
-  active: boolean
-}
-
-export interface ConfigData {
-  id: string
-  conviction: ConvictionConfigData
-  voting: VotingConfigData
 }
 
 export interface ConvictionConfigData {
@@ -68,6 +51,46 @@ export interface VotingConfigData {
   quietEndingExtension: string
   executionDelay: string
   createdAt: string
+}
+export interface ConfigData {
+  id: string
+  conviction: ConvictionConfigData
+  voting: VotingConfigData
+}
+
+export interface OrganizationData {
+  id: string
+  address: string
+  createdAt: string
+  config: ConfigData
+  token: TokenData
+  wrappableToken: TokenData
+  proposalCount: number
+  supporterCount: number
+  incentivisedPriceOracle: string
+  unipool: string
+  active: boolean
+}
+
+export interface UserData {
+  id: string
+  address: string
+  supports: SupporterData[]
+}
+
+export interface RepresentativeData {
+  id: string
+  address: string
+}
+
+export interface SupporterData {
+  id: string
+  user: UserData
+  organization: OrganizationData
+  representative: RepresentativeData
+  casts: CastData[]
+  stakes: StakeData[]
+  stakesHistory: StakeHistoryData[]
 }
 
 export interface StakeData {
@@ -109,6 +132,7 @@ export interface ProposalData {
   createdAt: string
   executedAt: string
   metadata?: string
+  txHash: string
 
   // proposal data
   link?: string
@@ -145,22 +169,6 @@ export interface ProposalData {
   pauseDuration: string
   submitterArbitratorFeeId: string
   challengerArbitratorFeeId: string
-}
-
-export interface UserData {
-  id: string
-  address: string
-  supports: SupporterData[]
-}
-
-export interface SupporterData {
-  id: string
-  user: UserData
-  organization: OrganizationData
-  representative: string
-  casts: CastData[]
-  stakes: StakeData[]
-  stakesHistory: StakeHistoryData[]
 }
 
 export interface CollateralRequirementData {

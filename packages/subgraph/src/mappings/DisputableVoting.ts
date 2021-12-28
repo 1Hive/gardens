@@ -25,10 +25,11 @@ import {
   isAccepted,
   loadOrCreateCastVote,
   loadOrCreateConfig,
-  loadOrCreateOrg,
   loadOrCreateSupporter,
+  loadOrCreateUser,
   loadTokenData,
   populateVoteCollateralData,
+  ZERO_ADDRESS,
 } from '../helpers/index'
 
 import { PROPOSAL_TYPE_DECISION, PROPOSAL_TYPE_DECISION_NUM } from '../types'
@@ -75,6 +76,7 @@ export function handleStartVote(event: StartVoteEvent): void {
   proposal.organization = organization.toHexString()
   proposal.type = PROPOSAL_TYPE_DECISION
   proposal.typeInt = PROPOSAL_TYPE_DECISION_NUM
+  proposal.txHash = event.transaction.hash.toHexString()
   proposal.creator = event.params.creator
   proposal.metadata = event.params.context.toString()
   proposal.yeas = voteData.value0
@@ -172,8 +174,15 @@ export function handleChangeRepresentative(event: ChangeRepresentativeEvent): vo
   const votingApp = VotingContract.bind(event.address)
   const organization = votingApp.kernel()
 
+  const user = loadOrCreateUser(event.params.representative)
   const supporter = loadOrCreateSupporter(event.params.voter, organization)
-  supporter.representative = event.params.representative
+
+  if (event.params.representative.equals(ZERO_ADDRESS)) {
+    // Removing representative
+    supporter.representative = null
+  } else {
+    supporter.representative = user.id
+  }
   supporter.save()
 }
 

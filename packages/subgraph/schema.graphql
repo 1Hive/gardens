@@ -63,6 +63,7 @@ type Proposal @entity {
   weight: BigInt!
   metadata: String
   executedAt: BigInt
+  txHash: String!
 
   # Proposal data
   link: String
@@ -139,13 +140,14 @@ type User @entity {
   address: Bytes!
   gardensSigned: [String!]
   supports: [Supporter!]! @derivedFrom(field: "user")
+  representativeFor: [Supporter!]! @derivedFrom(field: "representative")
 }
 
 type Supporter @entity {
   id: ID!
   user: User!
   organization: Organization!
-  representative: Bytes
+  representative: User
   casts: [Cast!] @derivedFrom(field: "supporter")
   stakes: [Stake!] @derivedFrom(field: "supporter")
   stakesHistory: [StakeHistory!] @derivedFrom(field: "supporter")

@@ -19,19 +19,19 @@ export const Config = {
       StakingFactory: '0x2C3ac82981979af1611F6Efb17a4a3a04d1F9245',
     },
     [eEthereumNetwork.polygon]: {
-      AragonID: '',
-      DAOFactory: '',
-      ENS: '',
+      AragonID: '0x7b9cd2d5eCFE44C8b64E01B93973491BBDAe879B',
+      DAOFactory: '0xEe261Cf86cFf35d8657a4B5D4d1546B4d72c5314',
+      ENS: '0x7EdE100965B1E870d726cD480dD41F2af1Ca0130',
       MiniMeFactory: '0xcFed1594A5b1B612dC8199962461ceC148F14E68',
-      HoneyswapRouter: '',
-      HoneyToken: '',
-      StableToken: '',
-      HoneyPriceOracle: '',
-      PriceOracleFactory: '', // Requires updating hex before deployment
+      HoneyswapRouter: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506',
+      HoneyToken: '0xb371248dd0f9e4061ccf8850e9223ca48aa7ca4b',
+      StableToken: '0x8f3cf7ad23cd3cadbd9735aff958023239c6a063',
+      HoneyPriceOracle: '0x15f627b9c47bbfbbc2194c9a8db2e722e090a690',
+      PriceOracleFactory: '0x01D464be5866Dc2bCA4dC30269D08406d2f6dC46', // Requires updating hex before deployment
       CollateralRequirementUpdaterFactory: '0xD608eC04f748c9E1982A6965E422722e9506E061',
-      UniswapV2Factory: '',
+      UniswapV2Factory: '0xc35DADB65012eC5796536bD9864eD8773aBc74C4',
       UnipoolFactory: '0x022eD1710Cd17193C9eD05D516E8Ea64b036a44F',
-      Arbitrator: '0x124C3Ae1EfBf30c61966989D150738978D16849A', // Mock Celeste
+      Arbitrator: '0xf0C8376065fadfACB706caFbaaC96B321069C015', // Mock Celeste 0x124C3Ae1EfBf30c61966989D150738978D16849A
       StakingFactory: '0xe4FDEff6633E5d4408C94E6736795b8cd6EEB4Ac',
     },
     [eEthereumNetwork.arbitrum]: {
@@ -100,6 +100,23 @@ export const Config = {
     },
     //Using xdai data to use the fork functionality on localhost
     [eLocalHostNetwork.localhost]: {
+      AragonID: '0x0b3b17f9705783bb51ae8272f3245d6414229b36',
+      DAOFactory: '0x4037f97fcc94287257e50bd14c7da9cb4df18250',
+      ENS: '0xaafca6b0c89521752e559650206d7c925fd0e530',
+      MiniMeFactory: '0x3e436327F27131405860EC9478B4e26071D9A83a',
+      HoneyswapRouter: '0x1C232F01118CB8B424793ae03F870aa7D0ac7f77',
+      HoneyToken: '0x71850b7e9ee3f13ab46d67167341e4bdc905eef9',
+      StableToken: '0xe91D153E0b41518A2Ce8Dd3D7944Fa863463a97d',
+      HoneyPriceOracle: '0x6f38D112b13eda1E3abAFC61E296Be2E27F15071',
+      PriceOracleFactory: '0x058fAd765f4B33e3Fb9e16B37973EFC00249CbBF',
+      CollateralRequirementUpdaterFactory: '0x186F0bF13D2C1D06eBB296aaE0eaB9A5008f776D',
+      UniswapV2Factory: '0xA818b4F111Ccac7AA31D0BCc0806d64F2E0737D7',
+      UnipoolFactory: '0xD38EB36B7E8b126Ff1E9fDD007bC4050B6C6aB7c',
+      Arbitrator: '0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85',
+      StakingFactory: '0xe71331AEf803BaeC606423B105e4d1C85f012C00',
+    },
+    //Using xdai data to use the fork functionality on hardhat
+    [eLocalHostNetwork.hardhat]: {
       AragonID: '0x0b3b17f9705783bb51ae8272f3245d6414229b36',
       DAOFactory: '0x4037f97fcc94287257e50bd14c7da9cb4df18250',
       ENS: '0xaafca6b0c89521752e559650206d7c925fd0e530',

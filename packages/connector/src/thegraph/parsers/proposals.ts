@@ -1,4 +1,4 @@
-import { QueryResult } from '@aragon/connect-thegraph'
+import { QueryResult } from '@1hive/connect-thegraph'
 import Proposal from '../../models/Proposal'
 import VotingConfig from '../../models/VotingConfig'
 import { CastData, IGardenConnector, ProposalData, StakeData, StakeHistoryData, VotingConfigData } from '../../types'

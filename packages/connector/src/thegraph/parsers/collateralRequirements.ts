@@ -1,4 +1,4 @@
-import { QueryResult } from '@aragon/connect-thegraph'
+import { QueryResult } from '@1hive/connect-thegraph'
 import { IGardenConnector } from 'src/types'
 import CollateralRequirement from '../../models/CollateralRequirement'
 

@@ -1,4 +1,5 @@
 import gql from 'graphql-tag'
+import { DocumentNode } from 'graphql'
 
 export const ORGANIZATIONS = gql`
   query Organizations($first: Int!, $skip: Int!, $orderBy: String!, $orderDirection: String!) {
@@ -33,10 +34,37 @@ export const ORGANIZATIONS = gql`
   }
 `
 
+export const ORGANIZATION = gql`
+  query Organization($id: String!) {
+    organization(id: $id) {
+      id
+      active
+      createdAt
+      proposalCount
+      token {
+        id
+        symbol
+        name
+        decimals
+      }
+      wrappableToken {
+        id
+        symbol
+        name
+        decimals
+      }
+      honeyLiquidity
+      supporterCount
+      incentivisedPriceOracle
+      unipool
+    }
+  }
+`
+
 // TODO: Filters
-export const CONFIG = (type: string) => gql`
-  ${type} Config($id: ID!) {
-    config(id: $id) {
+export const CONFIG = (type: string): DocumentNode => gql`
+  ${type} Config($address: ID!) {
+    config(id: $address) {
       id
 
       # conviction voting config
@@ -95,9 +123,9 @@ export const CONFIG = (type: string) => gql`
   }
 `
 
-export const ALL_PROPOSALS = (type: string) => gql`
-  ${type} Proposals($orgAddress: String!, $first: Int!, $skip: Int!, $proposalTypes: [Int]!, $statuses: [Int]!, $metadata: String! $orderBy: String!, $orderDirection: String!) {
-    proposals(where: { organization: $orgAddress, typeInt_in: $proposalTypes, statusInt_in: $statuses, metadata_contains: $metadata },  first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
+export const ALL_PROPOSALS = (type: string): DocumentNode => gql`
+  ${type} Proposals($garden: String!, $first: Int!, $skip: Int!, $proposalTypes: [Int]!, $statuses: [Int]!, $metadata: String! $orderBy: String!, $orderDirection: String!) {
+    proposals(where: { organization: $garden, typeInt_in: $proposalTypes, statusInt_in: $statuses, metadata_contains: $metadata },  first: $first, skip: $skip, orderBy: $orderBy, orderDirection: $orderDirection) {
       id
       organization {
         id
@@ -109,6 +137,7 @@ export const ALL_PROPOSALS = (type: string) => gql`
       createdAt
       metadata
       executedAt
+      txHash
 
       # Proposal / Suggestion data (signaling proposals and proposals requesting funds)
       link
@@ -215,7 +244,7 @@ export const ALL_PROPOSALS = (type: string) => gql`
   }
 `
 
-export const PROPOSAL = (type: string) => gql`
+export const PROPOSAL = (type: string): DocumentNode => gql`
   ${type} Proposal($id: ID!) {
     proposal(id: $id) {
       id
@@ -229,6 +258,7 @@ export const PROPOSAL = (type: string) => gql`
       createdAt
       metadata
       executedAt
+      txHash
 
       # Proposal / Suggestion data (signaling proposals and proposals requesting funds)
       link
@@ -347,6 +377,15 @@ export const USER = gql`
       id
       address
       gardensSigned
+      representativeFor {
+        organization {
+          id
+        }
+        user {
+          id
+          address
+        }
+      }
       supports {
         id
         user {
@@ -356,7 +395,10 @@ export const USER = gql`
         organization {
           id
         }
-        representative
+        representative {
+          id
+          address
+        }
         # vote casts
         casts {
           id
@@ -416,7 +458,7 @@ export const USER = gql`
   }
 `
 
-export const SUPPORTER = (type: string) => gql`
+export const SUPPORTER = (type: string): DocumentNode => gql`
   ${type} Supporter($id: ID!) {
     supporter(id: $id) {
       id
@@ -427,7 +469,10 @@ export const SUPPORTER = (type: string) => gql`
       organization {
         id
       }
-      representative
+      representative {
+        id
+        address
+      }
       # vote casts
       casts {
         id
@@ -476,7 +521,7 @@ export const SUPPORTER = (type: string) => gql`
     }
   }
 `
-export const COLLATERAL_REQUIREMENT = (type: string) => gql`
+export const COLLATERAL_REQUIREMENT = (type: string): DocumentNode => gql`
   ${type} CollateralRequirement($proposalId: String!) {
     proposal(id: $proposalId) {
       collateralRequirement {
@@ -497,7 +542,7 @@ export const COLLATERAL_REQUIREMENT = (type: string) => gql`
   }
 `
 
-export const ARBITRATOR_FEE = (type: string) => gql`
+export const ARBITRATOR_FEE = (type: string): DocumentNode => gql`
   ${type} ArbitratorFee($arbitratorFeeId: String!) {
     arbitratorFee(id: $arbitratorFeeId) {
       id

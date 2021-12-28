@@ -5,8 +5,6 @@ import '@nomiclabs/hardhat-ethers'
 import '@tenderly/hardhat-tenderly'
 import '@typechain/hardhat'
 import 'hardhat-deploy'
-import 'hardhat-gas-reporter'
-import 'solidity-coverage'
 
 import { node_url, accounts, account } from './helpers/network'
 
@@ -50,16 +48,14 @@ const config: HardhatUserConfig = {
     rinkeby: {
       url: node_url('rinkeby'),
       accounts: account('rinkeby'),
-      gasPrice: 1000000000,
     },
     xdai: {
       url: node_url('xdai'),
       accounts: account('xdai'),
-      gasPrice: 1000000000,
     },
     polygon: {
       url: node_url('polygon'),
-      accounts: accounts('polygon'),
+      accounts: account('polygon')
     },
     mumbai: {
       url: node_url('mumbai'),
@@ -79,13 +75,6 @@ const config: HardhatUserConfig = {
       url: 'http://localhost:1248',
       httpHeaders: { origin: 'hardhat' },
     },
-  },
-  gasReporter: {
-    currency: 'USD',
-    gasPrice: 100,
-    enabled: process.env.REPORT_GAS ? true : false,
-    coinmarketcap: process.env.COINMARKETCAP_API_KEY,
-    maxMethodDiff: 10,
   },
   etherscan: {
     // Your API key for Etherscan

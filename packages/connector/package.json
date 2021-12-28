@@ -1,6 +1,6 @@
 {
   "name": "@1hive/connect-gardens",
-  "version": "0.1.7",
+  "version": "0.1.12",
   "license": "AGPL-3.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
@@ -12,6 +12,7 @@
     "build:cjs": "tsc --build ./tsconfig.cjs.json",
     "dev:esm": "yarn build:esm --watch",
     "dev:cjs": "yarn build:cjs --watch",
+    "docs": "rm -fr ./docs && typedoc --out docs/ src/index.ts",
     "clean": "node ../../node_modules/rimraf/bin.js dist tsconfig.tsbuildinfo",
     "lint": "eslint --ext .ts,.json,.md ./src",
     "lint:fix": "eslint --ext .ts,.json,.md ./src --fix"
@@ -20,11 +21,13 @@
     "dist"
   ],
   "devDependencies": {
-    "@types/react": "^16.9.34"
+    "@types/react": "^16.9.34",
+    "typedoc": "^0.22.6"
   },
   "dependencies": {
-    "@aragon/connect-core": "0.7.0",
-    "@aragon/connect-thegraph": "0.7.0",
+    "@1hive/connect-core": "^0.9.4",
+    "@1hive/connect-thegraph": "^0.9.4",
+    "ethers": "^5.5.1",
     "graphql-tag": "^2.10.3"
   },
   "description": "Access gardens data.",

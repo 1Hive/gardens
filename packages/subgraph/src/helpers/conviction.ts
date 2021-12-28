@@ -136,4 +136,5 @@ export function populateProposalDataFromEvent(proposal: ProposalEntity | null, e
   proposal.beneficiary = event.params.beneficiary
   proposal.actionId = event.params.actionId
   proposal.stable = event.params.stable
+  proposal.txHash = event.transaction.hash.toHexString()
 }

@@ -2,6 +2,7 @@ import {
   CastData,
   IGardenConnector,
   OrganizationData,
+  RepresentativeData,
   StakeData,
   StakeHistoryData,
   SupporterData,
@@ -14,7 +15,7 @@ export default class Supporter implements SupporterData {
   readonly id: string
   readonly user: UserData
   readonly organization: OrganizationData
-  readonly representative: string
+  readonly representative: RepresentativeData
   readonly casts: CastData[]
   readonly stakes: StakeData[]
   readonly stakesHistory: StakeHistoryData[]

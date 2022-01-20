@@ -53,7 +53,7 @@ const config: HardhatUserConfig = {
       url: node_url('xdai'),
       accounts: account('xdai'),
     },
-    polygon2: {
+    polygon: {
       url: node_url('polygon'),
       accounts: account('polygon'),
     },
@@ -71,7 +71,7 @@ const config: HardhatUserConfig = {
       accounts: accounts('arbtest'),
       gasPrice: 0,
     },
-    polygon: {
+    frame: {
       url: 'http://localhost:1248',
       httpHeaders: { origin: 'hardhat' },
     },

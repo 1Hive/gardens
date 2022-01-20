@@ -18,7 +18,7 @@ fi
 
 if [ "$STAGING" ]
 then
-  SUBGRAPH_EXT=$NETWORK'-staging'
+  SUBGRAPH_EXT='-'$NETWORK'-staging'
 fi
 
 echo Deploying subgraph 1hive/gardens${SUBGRAPH_EXT}

@@ -1,0 +1,33 @@
+{
+    "network": "matic",
+    "dataSources": {
+      "Organizations": [],
+      "OrganizationTemplates": [
+        {
+          "address": "0xA0E390917991c3D41332a0485510DcfbF502c5e5",
+          "name": "GardensTemplate",
+          "startBlock": 23934752
+        }
+      ]
+    },
+    "agreementAppIds": [
+      {
+        "id": "0x34c62f3aec3073826f39c2c35e9a1297d9dbf3cc77472283106f09eee9cf47bf", "name": "agreement.open.aragonpm.eth"
+      }
+    ],
+    "convictionVotingAppIds": [
+      {
+        "id": "0xca60629a22f03bcad7738fee1a6f0c5863eb89463621b40566a6799b82cbe184", "name": "disputable-conviction-voting.open.aragonpm.eth"
+      }
+    ],
+    "votingAppIds": [
+      { 
+        "id": "0x705b5084c67966bb8e4640b28bab7a1e51e03d209d84e3a04d2a4f7415f93b34", "name": "disputable-voting.open.aragonpm.eth"
+      }
+    ],
+    "tokensAppIds": [
+      { 
+        "id": "0x3ccad1fc11d5b14e58c1c53a5138a51f4da8d509831bc505e60bb74d88f8bef5", "name": "wrappable-hooked-token-manager.open.aragonpm.eth"
+      }
+    ]
+  }

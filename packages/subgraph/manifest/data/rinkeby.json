@@ -38,6 +38,11 @@
         "address": "0xF8A030177865356E2Be8fb5F95a19962E6b57E3e",
         "name": "GardensTemplateWithWrappedRole",
         "startBlock": 9668429
+      },
+      {
+        "address": "0x832a29b1d6c1dfca7075c62d222b40c05183aaae",
+        "name": "GardensTemplateWithWrappedRoleFixedApproved",
+        "startBlock": 10007376
       }
     ]
   },

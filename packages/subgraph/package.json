@@ -16,11 +16,13 @@
     "deploy:xdai": "NETWORK=xdai yarn deploy",
     "deploy:xdai:staging": "STAGING=true NETWORK=xdai yarn deploy",
     "deploy:polygon": "NETWORK=polygon yarn deploy",
+    "deploy:polygon:staging": "STAGING=true NETWORK=polygon yarn deploy",
     "manifest": "./scripts/build-manifest.sh",
     "manifest:rinkeby": "NETWORK=rinkeby yarn manifest",
     "manifest:xdai": "NETWORK=xdai yarn manifest",
     "manifest:xdai:staging": "STAGING=true NETWORK=xdai yarn manifest",
     "manifest:polygon": "NETWORK=polygon yarn manifest",
+    "manifest:polygon:staging": "STAGING=true NETWORK=polygon yarn manifest",
     "clean": "node ../../node_modules/rimraf/bin.js build generated subgraph.yaml src/constants.ts",
     "lint": "eslint --ext .ts,.json,.md,.yaml,.graphql",
     "lint:fix": "eslint --ext ts,.json,.md,.yaml,.graphql --fix"

@@ -4,12 +4,19 @@
       "Organizations": [],
       "OrganizationTemplates": [
         {
-          "address": "0xA0E390917991c3D41332a0485510DcfbF502c5e5",
+          "address": "0x64A35Cafb5FE1f70F4DF29A9bC550e93a11369F9",
           "name": "GardensTemplate",
-          "startBlock": 23934752
+          "startBlock": 21939075
+        },
+        {
+          "address": "0x9e18a165995a69e45bc4adff7795c6ca032048a7",
+          "name": "GardensTemplateWithModVotingFixedApproved",
+          "startBlock": 23936517
         }
       ]
     },
+    "1HiveGarden": "0x0000000000000000000000000000000000000000",
+    "1HivePriceOracle": "0x0000000000000000000000000000000000000000",
     "agreementAppIds": [
       {
         "id": "0x34c62f3aec3073826f39c2c35e9a1297d9dbf3cc77472283106f09eee9cf47bf", "name": "agreement.open.aragonpm.eth"

@@ -4,9 +4,9 @@
     "Organizations": [],
     "OrganizationTemplates": [
       {
-        "address": "0x64A35Cafb5FE1f70F4DF29A9bC550e93a11369F9",
+        "address": "0x060539E05eBCaA92af533Ad9Cb2121df23426BF3",
         "name": "GardensTemplate",
-        "startBlock": 21939075
+        "startBlock": 23830600
       }
     ]
   },

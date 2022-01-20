@@ -23,15 +23,11 @@ import "./external/IUniswapV2Factory.sol";
 import "./external/IVotingAggregator.sol";
 import "./appIds/AppIdsXDai.sol";
 import "./appIds/AppIdsRinkeby.sol";
-import "./appIds/AppIdsMumbai.sol";
+import "./appIds/AppIdsMumbaiPolygon.sol";
 
 contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
     using SafeERC20 for ERC20;
-
-    string private constant ERROR_BAD_VOTE_SETTINGS = "VOTE_SETTINGS";
-    string private constant ERROR_HONEY_DEPOSIT_TOO_LOW = "DEPOSIT_TOO_LOW";
-    string private constant ERROR_NO_CACHE = "NO_CACHE";
 
     bool private constant TOKEN_TRANSFERABLE = true;
     uint8 private constant TOKEN_DECIMALS = uint8(18);
@@ -130,8 +126,8 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         uint256[4] _initialAmountAndLiquidity,
         uint64[7] _disputableVotingSettings
     ) public {
-        require(_disputableVotingSettings.length == 7, ERROR_BAD_VOTE_SETTINGS);
-        require(_initialAmountAndLiquidity[1] >= MIN_XDAI_IN_HNY_REQUIRED_FOR_NEW_GARDEN, ERROR_HONEY_DEPOSIT_TOO_LOW);
+        require(_disputableVotingSettings.length == 7, "VOTE_SETTINGS");
+        require(_initialAmountAndLiquidity[1] >= MIN_XDAI_IN_HNY_REQUIRED_FOR_NEW_GARDEN, "DEPOSIT_TOO_LOW");
 
         (Kernel dao, ACL acl) = _createDAO();
 
@@ -160,6 +156,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         if (_creatingGardenWithExistingToken(hookedTokenManager)) {
             acl.createPermission(ANY_ENTITY, hookedTokenManager, keccak256("WRAP_TOKEN_ROLE"), disputableVoting);
             existingToken.safeTransferFrom(msg.sender, address(this), _initialAmountAndLiquidity[3]);
+            existingToken.approve(address(honeyswapRouter), 0);
             existingToken.approve(address(honeyswapRouter), _initialAmountAndLiquidity[3]);
 
             honeyswapRouter.addLiquidity(honeyToken, existingToken, honeyLiquidityToAdd, _initialAmountAndLiquidity[3], 0, 0, BURN_ADDRESS, now);
@@ -201,7 +198,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         uint64[4] _convictionSettings,
         address _convictionVotingRequestToken
     ) public {
-        require(senderDeployedContracts[msg.sender].dao != address(0), ERROR_NO_CACHE);
+        require(senderDeployedContracts[msg.sender].dao != address(0), "NO_CACHE");
 
         (
             Kernel dao,,,
@@ -273,7 +270,7 @@ contract GardensTemplate is BaseTemplate, AppIdsXDai {
         uint256[] _actionAmountsStable,
         uint256[] _challengeAmountsStable
     ) public {
-        require(senderDeployedContracts[msg.sender].hookedTokenManager.hasInitialized(), ERROR_NO_CACHE);
+        require(senderDeployedContracts[msg.sender].hookedTokenManager.hasInitialized(), "NO_CACHE");
 
         (Kernel dao, ACL acl, DisputableVoting disputableVoting,, IHookedTokenManager hookedTokenManager) = _getDeployedContractsTxOne();
         IConvictionVoting convictionVoting = _getDeployedContractsTxTwo();

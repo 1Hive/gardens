@@ -34,7 +34,7 @@ jobs:
       run: yarn install --frozen-lockfile
 
     - name: Run hardhat chain
-      run: yarn chain --fork secrets.XDAI_NODE --no-deploy
+      run: yarn chain --fork ${{ secrets.XDAI_NODE }} --no-deploy
 
     - name: Deploy veneto garden
       run: HARDHAT_FORK=xdai HNY_HOLDER=0xc447384681aDfBb6AF5BB2D4a0e4DE05135ebFED yarn new:garden:veneto --network localhost
@@ -73,7 +73,7 @@ jobs:
       run: yarn install --frozen-lockfile
 
     - name: Run hardhat chain
-      run: yarn chain --fork secrets.POLYGON_NODE --no-deploy
+      run: yarn chain --fork ${{ secrets.POLYGON_NODE }} --no-deploy
 
     - name: Deploy veneto garden
       run: HARDHAT_FORK=xdai HNY_HOLDER=0x625236038836CecC532664915BD0399647E7826b yarn new:garden:veneto --network localhost
@@ -106,9 +106,12 @@ jobs:
           packages/*/typechain
           ~/.cache/hardhat-nodejs/
         key: contracts-${{ hashFiles('packages/*/contracts/**/*.sol') }}
+    
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
 
     - name: Run hardhat chain
-      run: yarn chain --fork secrets.RINKEBY_NODE --no-deploy
+      run: yarn chain --fork ${{ secrets.RINKEBY_NODE }} --no-deploy
 
     - name: Build contracts
       run: yarn compile

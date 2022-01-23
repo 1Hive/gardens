@@ -23,14 +23,10 @@ export const duration = {
 }
 
 export const impersonateAddress = async (address: string) => {
-  await hre.network.provider.request({
-    method: 'hardhat_impersonateAccount',
-    params: [address],
-  })
+  const provider = new ethers.providers.JsonRpcProvider('http://localhost:8545')
+  await provider.send('hardhat_impersonateAccount', [address])
 
-  const signer = await ethers.provider.getSigner(address)
-
-  return signer
+  return provider.getSigner(address)
 }
 
 export const takeSnapshot = async () => {

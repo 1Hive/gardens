@@ -1,98 +1,37 @@
 import hre, { ethers } from 'hardhat'
-import { Contract } from '@ethersproject/contracts'
-import { Signer } from '@ethersproject/abstract-signer'
-import { GardensTemplate, ERC20, Kernel, IUnipoolFactory } from '../typechain'
-import { BigNumber } from 'ethers'
+import { BigNumber, Signer } from 'ethers'
 
-const { deployments } = hre
+import {
+  getApps,
+  getEventArgFromReceipt,
+  getEventArgument,
+  getGardensTemplate,
+  getHoneyToken,
+  getOriginalToken,
+  getUnipoolFactory,
+  toTokens,
+} from '../helpers'
+import { impersonateAddress } from '../helpers/rpc'
+import { GardensTemplate } from '../typechain'
 
-const network = hre.network.name === 'localhost' ? 'xdai' : hre.network.name
-const blockTime = network === 'rinkeby' ? 15 : network === 'mainnet' ? 13 : 5 // 15 rinkeby, 13 mainnet, 5 xdai
+const network = process.env.HARDHAT_FORK
+  ? process.env.HARDHAT_FORK
+  : hre.network.name === 'localhost'
+  ? 'xdai'
+  : hre.network.name
+const blockTime = network === 'rinkeby' ? 15 : network === 'mainnet' ? 13 : network === 'xdai' ? 5 : 2 // 15 rinkeby, 13 mainnet, 5 xdai, 2 polygon
 
 console.log(`Every ${blockTime}s a new block is mined in ${network}.`)
 
 // EXISTING_TOKEN_RINKEBY = "0x31c952C47EE29058C0558475bb9E77604C52fE5f" // Not for use here, put in the config.
 // EXISTING_TOKEN_XDAI = "0xa09e33C8dCb1f95f7B79d7fC75a72aaDf69eB319" // Not for use here, put in the config.
+// EXISTING_TOKEN_ARBTEST = "0xEa9508cE6DCd45365d636D9730cFFA839A4A8121" // Not for use here, put in the config.
 
 const ONE_HUNDRED_PERCENT = 1e18
 const CONVICTION_VOTING_ONE_HUNDRED_PERCENT = 1e7
 const ONE_MINUTE = 60
 const ONE_HOUR = 60 * ONE_MINUTE
 const ONE_DAY = 24 * ONE_HOUR
-
-/**
- * Get proxies from a deployed DAO
- * @param daoAddress Address of the DAO
- * @param appIds List of appIds
- * @returns Returns an object of the form { [appId]: proxy | proxy[] }
- */
-const getApps = async (daoAddress: string, appIds: string[]): Promise<string[]> => {
-  const dao = (await ethers.getContractAt('Kernel', daoAddress)) as Kernel
-  const currentBlockNumber = await ethers.provider.getBlockNumber()
-  const apps = await dao.queryFilter(dao.filters.NewAppProxy(null, null, null), currentBlockNumber - 100, 'latest').then((events) =>
-    events
-      .filter(({ args }) => appIds.includes(args.appId))
-      .map(({ args }) => ({
-        appId: args.appId,
-        proxy: args.proxy,
-      }))
-      .reduce(
-        (apps, { appId, proxy }) => ({
-          ...apps,
-          [appId]: !apps[appId] ? proxy : [...apps[appId], proxy],
-        }),
-        {}
-      )
-  )
-  return appIds.map((appId) => apps[appId])
-}
-
-const getGardensTemplate = async (signer: Signer): Promise<GardensTemplate> => {
-  const gardensTemplateAddress = (await deployments.get('GardensTemplate')).address
-  return (await ethers.getContractAt('GardensTemplate', gardensTemplateAddress, signer)) as GardensTemplate
-}
-
-const getUnipoolFactory = async (signer: Signer, gardensTemplate: GardensTemplate): Promise<IUnipoolFactory> => {
-  const unipoolFactoryAddress = await gardensTemplate.unipoolFactory()
-  return (await ethers.getContractAt('IUnipoolFactory', unipoolFactoryAddress, signer)) as IUnipoolFactory
-}
-
-const getHoneyToken = async (signer: Signer, gardensTemplate: GardensTemplate) => {
-  const honeyTokenAddress = await gardensTemplate.honeyToken()
-  return (await ethers.getContractAt('ERC20', honeyTokenAddress, signer)) as ERC20
-}
-
-const getOriginalToken = async (signer: Signer, address: string) => {
-  return (await ethers.getContractAt('ERC20', address, signer)) as ERC20
-}
-
-const getEventArgument = async (
-  selectedFilter: string,
-  arg: number | string,
-  contract: Contract,
-  transactionHash: string
-): Promise<string> => {
-  return new Promise((resolve, reject) => {
-    const filter = contract.filters[selectedFilter]()
-
-    contract.on(filter, (...args) => {
-      const event = args.pop()
-      if (event.transactionHash === transactionHash) {
-        contract.removeAllListeners(filter)
-        resolve(event.args[arg])
-      }
-    })
-  })
-}
-
-const getEventArgFromReceipt = (receipt, event, arg) => {
-  return receipt.events.filter((receiptEvent) => receiptEvent.event == event)[0].args[arg]
-}
-
-const toTokens = (amount, decimals = 18) => {
-  const [integer, decimal] = String(amount).split('.')
-  return BigNumber.from((integer != '0' ? integer : '') + (decimal || '').padEnd(decimals, '0'))
-}
 
 const transform = (params) => ({
   gnosisSafe: params.gnosisSafe,
@@ -153,12 +92,17 @@ export default async function main(log = console.log): Promise<any> {
     challengeAmount,
     actionAmountStable,
     challengeAmountStable,
-  } = transform(await import(`../params-boboli-rinkeby.json`))
-  const [mainAccount] = await ethers.getSigners()
-
+  } = transform(await import(`../params-boboli.json`))
+  let mainAccount: Signer
+  if (process.env.HNY_HOLDER) {
+    // When we fork a network to test the template deployment we would like to impersonate an address with HNY
+    mainAccount = await impersonateAddress(process.env.HNY_HOLDER)
+  } else {
+    mainAccount = (await ethers.getSigners())[0]
+  }
   const approveHnyPayment = async (gardensTemplate: GardensTemplate, log: Function) => {
     const honeyToken = await getHoneyToken(mainAccount, gardensTemplate)
-    const currentAllowance = await honeyToken.allowance(mainAccount.address, gardensTemplate.address)
+    const currentAllowance = await honeyToken.allowance(await mainAccount.getAddress(), gardensTemplate.address)
     if (currentAllowance.gt(BigNumber.from(0))) {
       const approveHoneyPaymentTx = await honeyToken.approve(gardensTemplate.address, BigNumber.from(0), {
         gasLimit: 1000000,

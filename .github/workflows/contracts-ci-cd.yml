@@ -36,12 +36,12 @@ jobs:
     - name: Deploy veneto garden
       env:
         XDAI_NODE: ${{ secrets.XDAI_NODE }}
-      run: HARDHAT_FORK=xdai HARDHAT_FORK_URL="$XDAI_NODE" HNY_HOLDER=0xc447384681aDfBb6AF5BB2D4a0e4DE05135ebFED yarn new:garden:veneto --network localhost
+      run: HARDHAT_FORK=xdai HARDHAT_FORK_URL="$XDAI_NODE" HNY_HOLDER=0xc447384681aDfBb6AF5BB2D4a0e4DE05135ebFED yarn new:garden:veneto
 
     - name: Deploy boboli garden
       env:
         XDAI_NODE: ${{ secrets.XDAI_NODE }}
-      run: HARDHAT_FORK=xdai HARDHAT_FORK_URL="$XDAI_NODE" HNY_HOLDER=0xc447384681aDfBb6AF5BB2D4a0e4DE05135ebFED yarn new:garden:boboli --network localhost
+      run: HARDHAT_FORK=xdai HARDHAT_FORK_URL="$XDAI_NODE" HNY_HOLDER=0xc447384681aDfBb6AF5BB2D4a0e4DE05135ebFED yarn new:garden:boboli
 
   
   polygon:
@@ -76,10 +76,10 @@ jobs:
     - name: Deploy veneto garden
       env:
         POLYGON_NODE: ${{ secrets.POLYGON_NODE }}
-      run: HARDHAT_FORK=polygon HARDHAT_FORK_URL="$POLYGON_NODE" HNY_HOLDER=0x625236038836CecC532664915BD0399647E7826b yarn new:garden:veneto --network localhost
+      run: HARDHAT_FORK=polygon HARDHAT_FORK_URL="$POLYGON_NODE" HNY_HOLDER=0x625236038836CecC532664915BD0399647E7826b yarn new:garden:veneto
 
     - name: Deploy boboli garden
-      run: HARDHAT_FORK=polygon HARDHAT_FORK_URL="$POLYGON_NODE" HNY_HOLDER=0x625236038836CecC532664915BD0399647E7826b yarn new:garden:boboli --network localhost
+      run: HARDHAT_FORK=polygon HARDHAT_FORK_URL="$POLYGON_NODE" HNY_HOLDER=0x625236038836CecC532664915BD0399647E7826b yarn new:garden:boboli
   
   rinkeby:
     runs-on: ubuntu-latest
@@ -116,9 +116,9 @@ jobs:
     - name: Deploy veneto garden
       env:
         RINKEBY_NODE: ${{ secrets.RINKEBY_NODE }}
-      run: HARDHAT_FORK=polygon HARDHAT_FORK_URL="$RINKEBY_NODE" HNY_HOLDER=0x4355a2cdec902C372F404007114bbCf2C65A3eb0 yarn new:garden:veneto --network localhost
+      run: HARDHAT_FORK=polygon HARDHAT_FORK_URL="$RINKEBY_NODE" HNY_HOLDER=0x4355a2cdec902C372F404007114bbCf2C65A3eb0 yarn new:garden:veneto
 
     - name: Deploy boboli garden
       env:
         RINKEBY_NODE: ${{ secrets.RINKEBY_NODE }}
-      run: HARDHAT_FORK=polygon HARDHAT_FORK_URL="$RINKEBY_NODE" HNY_HOLDER=0x4355a2cdec902C372F404007114bbCf2C65A3eb0 yarn new:garden:boboli --network localhost
+      run: HARDHAT_FORK=polygon HARDHAT_FORK_URL="$RINKEBY_NODE" HNY_HOLDER=0x4355a2cdec902C372F404007114bbCf2C65A3eb0 yarn new:garden:boboli

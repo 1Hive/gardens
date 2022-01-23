@@ -4,15 +4,15 @@ on:
     paths:
       - packages/hardhat/contracts/**/*.sol
 jobs:
-  coverage:
+  xdai:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
 
     - name: Install node
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
-        node-version: 12
+        node-version: 14
 
     - name: Cache yarn modules
       uses: actions/cache@v2
@@ -26,19 +26,95 @@ jobs:
         path: |
           packages/*/cache
           packages/*/artifacts
+          packages/*/typechain
           ~/.cache/hardhat-nodejs/
         key: contracts-${{ hashFiles('packages/*/contracts/**/*.sol') }}
 
     - name: Install dependencies
       run: yarn install --frozen-lockfile
 
+    - name: Run hardhat chain
+      run: yarn chain --fork secrets.XDAI_NODE --no-deploy
+
+    - name: Deploy veneto garden
+      run: HARDHAT_FORK=xdai HNY_HOLDER=0xc447384681aDfBb6AF5BB2D4a0e4DE05135ebFED yarn new:garden:veneto --network localhost
+
+    - name: Deploy boboli garden
+      run: HARDHAT_FORK=xdai HNY_HOLDER=0xc447384681aDfBb6AF5BB2D4a0e4DE05135ebFED yarn new:garden:boboli --network localhost
+
+  
+  polygon:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install node
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+
+    - name: Cache yarn modules
+      uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: yarn-${{ hashFiles('yarn.lock') }}
+
+    - name: Cache contracts
+      uses: actions/cache@v2
+      with:
+        path: |
+          packages/*/cache
+          packages/*/artifacts
+          packages/*/typechain
+          ~/.cache/hardhat-nodejs/
+        key: contracts-${{ hashFiles('packages/*/contracts/**/*.sol') }}
+
+    - name: Install dependencies
+      run: yarn install --frozen-lockfile
+
+    - name: Run hardhat chain
+      run: yarn chain --fork secrets.POLYGON_NODE --no-deploy
+
+    - name: Deploy veneto garden
+      run: HARDHAT_FORK=xdai HNY_HOLDER=0x625236038836CecC532664915BD0399647E7826b yarn new:garden:veneto --network localhost
+
+    - name: Deploy boboli garden
+      run: HARDHAT_FORK=xdai HNY_HOLDER=0x625236038836CecC532664915BD0399647E7826b yarn new:garden:boboli --network localhost
+  
+  rinkeby:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install node
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+
+    - name: Cache yarn modules
+      uses: actions/cache@v2
+      with:
+        path: '**/node_modules'
+        key: yarn-${{ hashFiles('yarn.lock') }}
+
+    - name: Cache contracts
+      uses: actions/cache@v2
+      with:
+        path: |
+          packages/*/cache
+          packages/*/artifacts
+          packages/*/typechain
+          ~/.cache/hardhat-nodejs/
+        key: contracts-${{ hashFiles('packages/*/contracts/**/*.sol') }}
+
+    - name: Run hardhat chain
+      run: yarn chain --fork secrets.RINKEBY_NODE --no-deploy
+
     - name: Build contracts
       run: yarn compile
 
-    - name: Run coverage
-      run: yarn coverage
+    - name: Deploy veneto garden
+      run: HARDHAT_FORK=rinkeby HNY_HOLDER=0x4355a2cdec902C372F404007114bbCf2C65A3eb0 yarn new:garden:veneto --network localhost
 
-    - name: Upload report
-      run: bash <(curl -s https://codecov.io/bash)
-      env:
-        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+    - name: Deploy boboli garden
+      run: HARDHAT_FORK=rinkeby HNY_HOLDER=0x4355a2cdec902C372F404007114bbCf2C65A3eb0 yarn new:garden:boboli --network localhost

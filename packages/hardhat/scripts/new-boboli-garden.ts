@@ -23,8 +23,9 @@ const blockTime = network === 'rinkeby' ? 15 : network === 'mainnet' ? 13 : netw
 
 console.log(`Every ${blockTime}s a new block is mined in ${network}.`)
 
-// EXISTING_TOKEN_RINKEBY = "0x31c952C47EE29058C0558475bb9E77604C52fE5f" // Not for use here, put in the config.
-// EXISTING_TOKEN_XDAI = "0xa09e33C8dCb1f95f7B79d7fC75a72aaDf69eB319" // Not for use here, put in the config.
+// EXISTING_TOKEN_RINKEBY = "0xecf20ddfac09253c0f1768d270ad2536e97b605d" // Not for use here, put in the config.
+// EXISTING_TOKEN_XDAI = "0xB156cfbB83ec91e56A25cA0E59ADf5a223164A3f" // Not for use here, put in the config.
+// EXISTING_TOKEN_POLYGON = "0x8fe27b8172ef063de5548ac1177c63605256355a" // Not for use here, put in the config.
 // EXISTING_TOKEN_ARBTEST = "0xEa9508cE6DCd45365d636D9730cFFA839A4A8121" // Not for use here, put in the config.
 
 const ONE_HUNDRED_PERCENT = 1e18
@@ -37,7 +38,7 @@ const transform = (params) => ({
   gnosisSafe: params.gnosisSafe,
   gardenTokenName: params.gardenTokenName,
   gardenTokenSymbol: params.gardenTokenSymbol,
-  existingToken: params.existingToken,
+  existingToken: process.env.EXISTING_TOKEN ? process.env.EXISTING_TOKEN : params.existingToken,
   honeyTokenLiquidityInXdai: toTokens(params.honeyTokenLiquidityInXdai).toString(),
   existingTokenLiquidity: toTokens(params.existingTokenLiquidity).toString(),
   voteSupportRequired: Math.floor(params.voteSupportRequired * ONE_HUNDRED_PERCENT).toString(),
@@ -144,7 +145,7 @@ export default async function main(log = console.log): Promise<any> {
         voteQuietEndingExtension,
         voteExecutionDelay,
       ],
-      { gasLimit: 12000000 }
+      { gasLimit: 12500000 }
     )
     log(`submitted: ${createGardenTxOneTx.hash}`)
     const createGardenTxOneReceipt = await createGardenTxOneTx.wait(1)

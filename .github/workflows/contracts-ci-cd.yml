@@ -41,7 +41,7 @@ jobs:
     - name: Deploy boboli garden
       env:
         XDAI_NODE: ${{ secrets.XDAI_NODE }}
-      run: HARDHAT_FORK=xdai HARDHAT_FORK_URL="$XDAI_NODE" HNY_HOLDER=0xc447384681aDfBb6AF5BB2D4a0e4DE05135ebFED yarn new:garden:boboli
+      run: HARDHAT_FORK=xdai HARDHAT_FORK_URL="$XDAI_NODE" HNY_HOLDER=0xc447384681aDfBb6AF5BB2D4a0e4DE05135ebFED EXISTING_TOKEN=0xB156cfbB83ec91e56A25cA0E59ADf5a223164A3f yarn new:garden:boboli
 
   
   polygon:
@@ -79,7 +79,9 @@ jobs:
       run: HARDHAT_FORK=polygon HARDHAT_FORK_URL="$POLYGON_NODE" HNY_HOLDER=0x625236038836CecC532664915BD0399647E7826b yarn new:garden:veneto
 
     - name: Deploy boboli garden
-      run: HARDHAT_FORK=polygon HARDHAT_FORK_URL="$POLYGON_NODE" HNY_HOLDER=0x625236038836CecC532664915BD0399647E7826b yarn new:garden:boboli
+      env:
+        POLYGON_NODE: ${{ secrets.POLYGON_NODE }}
+      run: HARDHAT_FORK=polygon HARDHAT_FORK_URL="$POLYGON_NODE" HNY_HOLDER=0x625236038836CecC532664915BD0399647E7826b EXISTING_TOKEN=0x8fe27b8172ef063de5548ac1177c63605256355a yarn new:garden:boboli
   
   rinkeby:
     runs-on: ubuntu-latest
@@ -116,9 +118,9 @@ jobs:
     - name: Deploy veneto garden
       env:
         RINKEBY_NODE: ${{ secrets.RINKEBY_NODE }}
-      run: HARDHAT_FORK=polygon HARDHAT_FORK_URL="$RINKEBY_NODE" HNY_HOLDER=0x4355a2cdec902C372F404007114bbCf2C65A3eb0 yarn new:garden:veneto
+      run: HARDHAT_FORK=rinkeby HARDHAT_FORK_URL="$RINKEBY_NODE" HNY_HOLDER=0x4355a2cdec902C372F404007114bbCf2C65A3eb0 yarn new:garden:veneto
 
     - name: Deploy boboli garden
       env:
         RINKEBY_NODE: ${{ secrets.RINKEBY_NODE }}
-      run: HARDHAT_FORK=polygon HARDHAT_FORK_URL="$RINKEBY_NODE" HNY_HOLDER=0x4355a2cdec902C372F404007114bbCf2C65A3eb0 yarn new:garden:boboli
+      run: HARDHAT_FORK=rinkeby HARDHAT_FORK_URL="$RINKEBY_NODE" HNY_HOLDER=0x4355a2cdec902C372F404007114bbCf2C65A3eb0 EXISTING_TOKEN=0xecf20ddfac09253c0f1768d270ad2536e97b605d yarn new:garden:boboli

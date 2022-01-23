@@ -26,9 +26,9 @@
     "@aragon/templates-shared": "1.0.0"
   },
   "scripts": {
-    "chain": "hardhat node",
+    "chain": "hardhat node --fork https://xdai-archive.blockscout.com",
     "compile": "hardhat compile",
-    "deploy": "hardhat deploy",
+    "deploy": "hardhat deploy --network localhost",
     "etherscan": "hardhat etherscan-verify --license GPL-3.0",
     "new:garden:boboli": "hardhat run scripts/new-boboli-garden.ts",
     "new:garden:veneto": "hardhat run scripts/new-veneto-garden.ts"

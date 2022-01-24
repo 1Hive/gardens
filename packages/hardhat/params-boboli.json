@@ -2,7 +2,7 @@
   "gnosisSafe": "0x0000000000000000000000000000000000000000",
   "gardenTokenName": "Garden",
   "gardenTokenSymbol": "GDN",
-  "existingToken": "0xa09e33C8dCb1f95f7B79d7fC75a72aaDf69eB319",
+  "existingToken": "0xB156cfbB83ec91e56A25cA0E59ADf5a223164A3f",
   "honeyTokenLiquidityInXdai": 100,
   "existingTokenLiquidity": 100,
   "convictionGrowthHours": 48,

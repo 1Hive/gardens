@@ -196,7 +196,7 @@ export default async function main(log = console.log): Promise<any> {
       [actionAmount, challengeAmount],
       [actionAmountStable, actionAmountStable],
       [challengeAmountStable, challengeAmountStable],
-      { gasLimit: 7000000 }
+      { gasLimit: 8000000 }
     )
     const createGardenTxThreeReceipt = await createGardenTxThreeTx.wait(1)
     log(`Tx three completed. Gas used: ${createGardenTxThreeReceipt.gasUsed}`)

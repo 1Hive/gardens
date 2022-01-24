@@ -20,7 +20,21 @@
       "env": {
         "HARDHAT_FORK":"xdai",
         "HARDHAT_FORK_URL": "https://xdai-archive.blockscout.com", 
-        "HNY_HOLDER": "0x5b0F8D8f47E3fDF7eE1c337AbCA19dBba98524e6" 
+        "HNY_HOLDER": "0xc447384681aDfBb6AF5BB2D4a0e4DE05135ebFED" 
+      },
+      "cwd": "${workspaceFolder}/packages/hardhat"
+    },
+        {
+      "type": "node",
+      "request": "launch",
+      "name": "hardhat new boboli garden",
+      "skipFiles": ["<node_internals>/**"],
+      "runtimeExecutable": "${workspaceFolder}/packages/hardhat/node_modules/.bin/hardhat",
+      "args": ["run", "./scripts/new-boboli-garden.ts"],
+      "env": {
+        "HARDHAT_FORK":"xdai",
+        "HARDHAT_FORK_URL": "https://xdai-archive.blockscout.com", 
+        "HNY_HOLDER": "0xc447384681aDfBb6AF5BB2D4a0e4DE05135ebFED" 
       },
       "cwd": "${workspaceFolder}/packages/hardhat"
     }

@@ -43,7 +43,6 @@ jobs:
         XDAI_NODE: ${{ secrets.XDAI_NODE }}
       run: HARDHAT_FORK=xdai HARDHAT_FORK_URL="$XDAI_NODE" HNY_HOLDER=0xc447384681aDfBb6AF5BB2D4a0e4DE05135ebFED EXISTING_TOKEN=0xB156cfbB83ec91e56A25cA0E59ADf5a223164A3f yarn new:garden:boboli
 
-  
   polygon:
     runs-on: ubuntu-latest
     steps:

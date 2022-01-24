@@ -24,7 +24,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     UnipoolFactory,
     Arbitrator,
     StakingFactory,
-  } = Config.Bases[hre.network.name]
+  } = Config.Bases[process.env.HARDHAT_FORK ? process.env.HARDHAT_FORK : hre.network.name]
 
   const GardensTemplate = await deploy('GardensTemplate', {
     from: deployer,

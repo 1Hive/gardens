@@ -40,6 +40,7 @@ const config: HardhatUserConfig = {
     localhost: {
       url: node_url('localhost'),
       accounts: accounts(),
+      timeout: 0,
     },
     mainnet: {
       url: node_url('mainnet'),

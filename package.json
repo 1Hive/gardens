@@ -19,6 +19,8 @@
     "react-app:test": "yarn workspace @gardens/react-app test",
     "build": "yarn workspace @gardens/react-app build --max-old-space-size=12288",
     "chain": "yarn workspace @gardens/hardhat chain",
+    "new:garden:boboli": "yarn workspace @gardens/hardhat new:garden:boboli",
+    "new:garden:veneto": "yarn workspace @gardens/hardhat new:garden:veneto",
     "test": "yarn workspace @gardens/hardhat test",
     "start": "yarn workspace @gardens/react-app start",
     "compile": "yarn workspace @gardens/hardhat compile",

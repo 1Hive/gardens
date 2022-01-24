@@ -26,7 +26,7 @@ import "./appIds/AppIdsRinkeby.sol";
 import "./appIds/AppIdsMumbai.sol";
 import "./appIds/AppIdsPolygon.sol";
 
-contract GardensTemplate is BaseTemplate, AppIdsPolygon {
+contract GardensTemplate is BaseTemplate, AppIdsXDai {
 
     using SafeERC20 for ERC20;
 

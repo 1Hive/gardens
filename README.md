@@ -1,6 +1,6 @@
 # Gardens <a href="https://gardens.1hive.org/"><img align="right" src=".github/assets/gardens.svg" height="80px" /></a>
 
-Based on the 1hive model, Gardens is a framework for a new kind of DAO - a composable, sufficiently decentralized, and self-improving system, limited only by your community's collective imagination.
+Based on 1Hive model, Gardens is a framework for a new kind of DAO - a composable, sufficiently decentralized, and self-improving system, limited only by your community's collective imagination.
 
 ## Documentation
 

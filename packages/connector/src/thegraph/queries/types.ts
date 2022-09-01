@@ -39,6 +39,7 @@ export type Organization = {
   honeyLiquidity?: Maybe<Scalars['BigInt']>
   incentivisedPriceOracle?: Maybe<Scalars['Bytes']>
   unipool?: Maybe<Scalars['Bytes']>
+  fluidProposals?: Maybe<Scalars['Bytes']>
   active: Scalars['Boolean']
 }
 

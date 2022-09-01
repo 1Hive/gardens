@@ -69,6 +69,7 @@ export interface OrganizationData {
   supporterCount: number
   incentivisedPriceOracle: string
   unipool: string
+  fluidProposals: string
   active: boolean
 }
 

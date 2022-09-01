@@ -10,6 +10,7 @@ type Organization @entity {
   honeyLiquidity: BigInt
   incentivisedPriceOracle: Bytes
   unipool: Bytes
+  fluidProposals: Bytes
   active: Boolean!
 }
 
@@ -184,6 +185,7 @@ enum ProposalType {
   Suggestion # Signaling proposal
   Proposal # Proposal requesting funds
   Decision # Vote
+  Stream # Proposal streaming funds
 }
 
 enum StakeType {

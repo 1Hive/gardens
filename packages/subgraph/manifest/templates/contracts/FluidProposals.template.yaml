@@ -1,0 +1,20 @@
+- kind: ethereum/contract
+  name: FluidProposals
+  network: {{network}}
+  source:
+    abi: FluidProposals
+  mapping:
+    kind: ethereum/events
+    apiVersion: 0.0.1
+    language: wasm/assemblyscript
+    entities:
+      - Proposal
+    abis:
+      - name: FluidProposals
+        file: ./abis/FluidProposals.json
+    eventHandlers:
+      - event: ProposalActivated(indexed uint256,address)
+        handler: handleProposalActivated
+      - event: ProposalDeactivated(indexed uint256)
+        handler: handleProposalDeactivated
+    file: ./src/mappings/FluidProposals.ts

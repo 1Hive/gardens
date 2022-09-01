@@ -1,5 +1,4 @@
 build
-config/config.json
 generated
 subgraph.yaml
 src/constants.ts

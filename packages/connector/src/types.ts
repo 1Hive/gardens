@@ -4,7 +4,7 @@ import CollateralRequirement from './models/CollateralRequirement'
 import Proposal from './models/Proposal'
 import Supporter from './models/Supporter'
 
-export const ALL_PROPOSAL_TYPES = [0, 1, 2] // [Suggestion, Proposal, Decision]
+export const ALL_PROPOSAL_TYPES = [0, 1, 2, 3] // [Suggestion, Proposal, Decision, Stream]
 export const ALL_PROPOSAL_STATUSES = [0, 1, 2] // [Active, Cancelled, Executed]
 
 export type FunctionCallback = <T = unknown, R = unknown>(args?: T) => R

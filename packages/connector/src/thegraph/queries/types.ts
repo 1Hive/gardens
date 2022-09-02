@@ -217,6 +217,7 @@ export enum ProposalType {
   Suggestion = 'Suggestion',
   Proposal = 'Proposal',
   Decision = 'Decision',
+  Stream = 'Stream',
 }
 
 export enum StakeType {

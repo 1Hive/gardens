@@ -18,7 +18,7 @@
     },
     "1HiveGarden": "0x8ccbeab14b5ac4a431fffc39f4bec4089020a155",
     "1HivePriceOracle": "0x6f38D112b13eda1E3abAFC61E296Be2E27F15071",
-    "1HiveFluidProposals": "0xe0cEf081baB0Db3C20397073Fb4131ee313cbE85",
+    "1HiveFluidProposals": "0xFb5Ff528E295a39b1ba0b053FF7cA410396932c0",
     "agreementAppIds": [
         {
         "id": "0x34c62f3aec3073826f39c2c35e9a1297d9dbf3cc77472283106f09eee9cf47bf", "name": "agreement.open.aragonpm.eth"

@@ -30,6 +30,7 @@ export const ORGANIZATIONS = gql`
       supporterCount
       incentivisedPriceOracle
       unipool
+      fluidProposals
     }
   }
 `
@@ -57,6 +58,7 @@ export const ORGANIZATION = gql`
       supporterCount
       incentivisedPriceOracle
       unipool
+      fluidProposals
     }
   }
 `

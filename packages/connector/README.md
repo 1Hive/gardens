@@ -105,7 +105,7 @@ Below there is an example of how to fetch 100 proposals, sorted in ascending ord
 
 ```js
 const ALL_PROPOSAL_TYPES = [0, 1, 2] // [Suggestion, Proposal, Decision]
-const ALL_PROPOSAL_STATUSES = [0, 1, 2] // [Active, Cancelled, Executed]
+const ALL_PROPOSAL_TYPES = [0, 1, 2, 3] // [Suggestion, Proposal, Decision, Stream]
 
 const proposals = await gardenConnector.proposals({
     first: 100,

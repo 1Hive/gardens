@@ -17,6 +17,7 @@ mustache \
   -p manifest/templates/sources/GardensTemplates.yaml \
   -p manifest/templates/contracts/Agreement.template.yaml \
   -p manifest/templates/contracts/ConvictionVoting.template.yaml \
+  -p manifest/templates/contracts/FluidProposals.template.yaml \
   -p manifest/templates/contracts/DisputableVoting.template.yaml \
   -p manifest/templates/contracts/HookedTokenManager.template.yaml \
   -p manifest/templates/contracts/Pair.template.yaml \

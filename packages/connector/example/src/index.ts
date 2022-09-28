@@ -20,6 +20,7 @@ type Garden = {
   honeyLiquidity?: string
   incentivisedPriceOracle?: string
   unipool?: string
+  fluidProposals?: string
   active: boolean
 }
 

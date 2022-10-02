@@ -45,13 +45,13 @@ export function processOrg(orgAddress: Address, timestamp: BigInt): void {
 
       FluidProposals.create(ONE_HIVE_FLUID_PROPOSALS_ADDRESS)
     }
-
-    if (TEST_GARDEN.equals(orgAddress)) {
-      org.fluidProposals = TEST_FLUID_PROPOSALS_ADDRESS
-
-      FluidProposals.create(TEST_FLUID_PROPOSALS_ADDRESS)
-    }
-
-    org.save()
   }
+
+  if (TEST_GARDEN.equals(orgAddress)) {
+    org.fluidProposals = TEST_FLUID_PROPOSALS_ADDRESS
+
+    FluidProposals.create(TEST_FLUID_PROPOSALS_ADDRESS)
+  }
+
+  org.save()
 }

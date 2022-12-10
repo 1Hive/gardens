@@ -13,7 +13,7 @@ import {
 import { FluidProposals } from '../generated/templates'
 
 export function processApp(orgAddress: Address, appAddress: Address, appId: string): void {
-  let template: string
+  let template: string | null = null
 
   if (VOTING_APPIDS.includes(appId)) {
     template = 'DisputableVoting'

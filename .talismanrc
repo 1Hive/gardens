@@ -1,0 +1,4 @@
+fileignoreconfig:
+- filename: yarn.lock
+  checksum: 011530baf5339c71907a95ad78fadef5148e2536d6b0f700426a726d56c27245
+version: ""

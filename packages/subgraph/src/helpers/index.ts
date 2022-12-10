@@ -30,7 +30,7 @@ export function saveOrgToken(tokenId: string, orgAddress: Address): void {
 }
 
 /// /// Token Entity //////
-export function loadTokenData(address: Address): string {
+export function loadTokenData(address: Address): string | null {
   const id = address.toHexString()
   const token = TokenEntity.load(id)
 
@@ -62,7 +62,7 @@ export function loadOrCreateConfig(orgAddress: Address): ConfigEntity {
     config = new ConfigEntity(id)
   }
 
-  return config!
+  return config
 }
 
 /// /// Organization entity //////
@@ -83,7 +83,7 @@ export function loadOrCreateOrg(orgAddress: Address): OrganizationEntity {
     config.save()
   }
 
-  return organization!
+  return organization
 }
 
 export function loadOrCreateUser(address: Address): UserEntity {
@@ -97,7 +97,7 @@ export function loadOrCreateUser(address: Address): UserEntity {
     user.save()
   }
 
-  return user!
+  return user
 }
 
 /// /// Organization Support Entity //////
@@ -113,7 +113,7 @@ export function loadOrCreateSupporter(address: Address, orgAddress: Address): Su
     supporter.organization = orgAddress.toHexString()
     incrementSupporterCount(orgAddress)
   }
-  return supporter!
+  return supporter
 }
 
 export function getSupporterEntityId(address: Address, orgAddress: Address): string {
@@ -146,7 +146,7 @@ export function getProposalEntity(appAddress: Address, proposalId: BigInt): Prop
     proposal.pauseDuration = BigInt.fromI32(0)
   }
 
-  return proposal!
+  return proposal
 }
 
 export function incrementProposalCount(orgAddress: Address): void {

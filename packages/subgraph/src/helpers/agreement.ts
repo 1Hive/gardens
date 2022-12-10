@@ -15,7 +15,7 @@ import { loadTokenData } from './'
 const ABSTAIN_PROPOSAL_ID = BigInt.fromI32(1)
 
 export function populateCollateralData(proposal: ProposalEntity | null, event: ProposalAddedEvent): void {
-  if (event.params.id != ABSTAIN_PROPOSAL_ID) {
+  if (event.params.id != ABSTAIN_PROPOSAL_ID && proposal) {
     const convictionVotingApp = ConvictionVotingContract.bind(event.address)
     const agreementAppAddress = convictionVotingApp.getAgreement()
     const agreementApp = AgreementContract.bind(agreementAppAddress)
@@ -35,19 +35,21 @@ export function populateCollateralData(proposal: ProposalEntity | null, event: P
 }
 
 export function populateVoteCollateralData(proposal: ProposalEntity | null, event: StartVoteEvent): void {
-  const convictionVotingApp = ConvictionVotingContract.bind(event.address)
-  const agreementAppAddress = convictionVotingApp.getAgreement()
-  const agreementApp = AgreementContract.bind(agreementAppAddress)
-  const actionData = agreementApp.getAction(proposal.actionId)
-  const collateralRequirementData = agreementApp.getCollateralRequirement(event.address, actionData.value2)
-  const collateralRequirement = new CollateralRequirementEntity(proposal.id)
+  if (proposal) {
+    const convictionVotingApp = ConvictionVotingContract.bind(event.address)
+    const agreementAppAddress = convictionVotingApp.getAgreement()
+    const agreementApp = AgreementContract.bind(agreementAppAddress)
+    const actionData = agreementApp.getAction(proposal.actionId)
+    const collateralRequirementData = agreementApp.getCollateralRequirement(event.address, actionData.value2)
+    const collateralRequirement = new CollateralRequirementEntity(proposal.id)
 
-  collateralRequirement.proposal = proposal.id
-  const tokenId = loadTokenData(collateralRequirementData.value0)
+    collateralRequirement.proposal = proposal.id
+    const tokenId = loadTokenData(collateralRequirementData.value0)
 
-  collateralRequirement.token = tokenId
-  collateralRequirement.challengeDuration = collateralRequirementData.value1
-  collateralRequirement.actionAmount = collateralRequirementData.value2
-  collateralRequirement.challengeAmount = collateralRequirementData.value3
-  collateralRequirement.save()
+    collateralRequirement.token = tokenId
+    collateralRequirement.challengeDuration = collateralRequirementData.value1
+    collateralRequirement.actionAmount = collateralRequirementData.value2
+    collateralRequirement.challengeAmount = collateralRequirementData.value3
+    collateralRequirement.save()
+  }
 }

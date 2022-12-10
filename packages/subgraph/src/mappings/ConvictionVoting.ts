@@ -226,14 +226,18 @@ function _updateProposalStakes(
   tokensStaked: BigInt,
   timestamp: BigInt
 ): void {
-  const supporter = loadOrCreateSupporter(entity, Address.fromString(proposal.organization))
-  supporter.save()
+  if (proposal) {
+    const supporter = loadOrCreateSupporter(entity, Address.fromString(proposal.organization))
+    supporter.save()
 
-  const stake = getStakeEntity(proposal, supporter.id)
-  stake.amount = tokensStaked
-  stake.createdAt = timestamp
-  stake.type = type
-  stake.save()
+    const stake = getStakeEntity(proposal, supporter.id)
+    if (stake) {
+      stake.amount = tokensStaked
+      stake.createdAt = timestamp
+      stake.type = type
+      stake.save()
+    }
+  }
 }
 
 function _updateStakeHistory(
@@ -246,12 +250,16 @@ function _updateStakeHistory(
   blockNumber: BigInt,
   timestamp: BigInt
 ): void {
-  const supporterId = getSupporterEntityId(entity, Address.fromString(proposal.organization))
-  const stakeHistory = getStakeHistoryEntity(proposal, supporterId, blockNumber)
-  stakeHistory.type = type
-  stakeHistory.tokensStaked = tokensStaked
-  stakeHistory.totalTokensStaked = totalTokensStaked
-  stakeHistory.conviction = conviction
-  stakeHistory.createdAt = timestamp
-  stakeHistory.save()
+  if (proposal) {
+    const supporterId = getSupporterEntityId(entity, Address.fromString(proposal.organization))
+    const stakeHistory = getStakeHistoryEntity(proposal, supporterId, blockNumber)
+    if (stakeHistory) {
+      stakeHistory.type = type
+      stakeHistory.tokensStaked = tokensStaked
+      stakeHistory.totalTokensStaked = totalTokensStaked
+      stakeHistory.conviction = conviction
+      stakeHistory.createdAt = timestamp
+      stakeHistory.save()
+    }
+  }
 }

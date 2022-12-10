@@ -1,4 +1,4 @@
-import { Address } from '@graphprotocol/graph-ts'
+import { Address, log } from '@graphprotocol/graph-ts'
 import { GardensTemplate as GardensTemplateContract } from '../../generated/GardensTemplate/GardensTemplate'
 import { HoneyswapFactory as HoneyswapFactoryContract } from '../../generated/GardensTemplate/HoneyswapFactory'
 import { HoneyswapRouter as HoneyswapRouterContract } from '../../generated/GardensTemplate/HoneyswapRouter'
@@ -24,15 +24,22 @@ export function populateLiquidityFromContract(pairAddress: Address): void {
    * Note we assume the pair contract has one org token.
    */
   const orgToken = getOrgTokenFromPair(pair) as TokenEntity
-  const org = OrganizationEntity.load(orgToken.organization)
+  if (orgToken.organization) {
+    const org = OrganizationEntity.load(orgToken.organization!)
+    if (org) {
+      if (Address.fromString(orgToken.id).equals(pair.token0())) {
+        org.honeyLiquidity = reserves.value1
+      } else {
+        org.honeyLiquidity = reserves.value0
+      }
 
-  if (Address.fromString(orgToken.id).equals(pair.token0())) {
-    org.honeyLiquidity = reserves.value1
+      org.save()
+    } else {
+      log.error('populateLiquidityFromContract::org its not defined', [])
+    }
   } else {
-    org.honeyLiquidity = reserves.value0
+    log.error('populateLiquidityFromContract::orgToken.organization its not defined', [])
   }
-
-  org.save()
 }
 
 export function setUpHoneyLiquidity(templateAddress: Address, orgAddress: Address): void {
@@ -41,20 +48,31 @@ export function setUpHoneyLiquidity(templateAddress: Address, orgAddress: Addres
   const honeyswapFactory = HoneyswapFactoryContract.bind(honeyswapRouter.factory())
   const org = loadOrCreateOrg(orgAddress)
   // Use BYOT token if it's available
-  const orgToken = TokenEntity.load(org.wrappableToken ? org.wrappableToken : org.token)
-  // We assume org entity has token field set
-  const honeyDaoTokenPairAddress = honeyswapFactory.getPair(
-    gardensTemplate.honeyToken(),
-    Address.fromString(orgToken.id)
-  )
+  const useBYOT = org.wrappableToken ? true : false
 
-  if (honeyDaoTokenPairAddress.equals(ZERO_ADDRESS)) {
-    return
+  if (useBYOT || (!useBYOT && org.token)) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    const orgToken = TokenEntity.load(useBYOT ? org.wrappableToken! : org.token!)
+    if (orgToken) {
+      // We assume org entity has token field set
+      const honeyDaoTokenPairAddress = honeyswapFactory.getPair(
+        gardensTemplate.honeyToken(),
+        Address.fromString(orgToken.id)
+      )
+
+      if (honeyDaoTokenPairAddress.equals(ZERO_ADDRESS)) {
+        return
+      }
+
+      orgToken.organization = org.id
+      orgToken.save()
+
+      PairTemplate.create(honeyDaoTokenPairAddress)
+      populateLiquidityFromContract(honeyDaoTokenPairAddress)
+    } else {
+      log.error('orgToken its not defined', [])
+    }
+  } else {
+    log.error('useBYOT || (!useBYOT && org.token)', [])
   }
-
-  orgToken.organization = org.id
-  orgToken.save()
-
-  PairTemplate.create(honeyDaoTokenPairAddress)
-  populateLiquidityFromContract(honeyDaoTokenPairAddress)
 }

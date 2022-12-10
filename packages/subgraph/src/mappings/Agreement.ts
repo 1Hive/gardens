@@ -62,11 +62,13 @@ export function handleActionChallenged(event: ActionChallengedEvent): void {
   )
 
   const proposal = ProposalEntity.load(proposalId)
-  const challengeData = agreementApp.getChallenge(event.params.challengeId)
-  proposal.challengerArbitratorFee = challengerArbitratorFeeId
-  proposal.settlementOffer = challengeData.value4
-  proposal.pausedAt = event.block.timestamp
-  proposal.save()
+  if (proposal) {
+    const challengeData = agreementApp.getChallenge(event.params.challengeId)
+    proposal.challengerArbitratorFee = challengerArbitratorFeeId
+    proposal.settlementOffer = challengeData.value4
+    proposal.pausedAt = event.block.timestamp
+    proposal.save()
+  }
 }
 
 export function handleSigned(event: SignedEvent): void {
@@ -76,7 +78,9 @@ export function handleSigned(event: SignedEvent): void {
   const user = loadOrCreateUser(event.params.signer)
 
   const currentGardensSigned = user.gardensSigned
-  currentGardensSigned.push(gardenAddress.toHexString())
+  if (currentGardensSigned) {
+    currentGardensSigned.push(gardenAddress.toHexString())
+  }
   user.gardensSigned = currentGardensSigned
 
   user.save()
@@ -86,6 +90,10 @@ function createArbitratorFee(proposalId: string, id: string, feeToken: Address, 
   const arbitratorFee = new ArbitratorFeeEntity(id)
   arbitratorFee.proposal = proposalId
   arbitratorFee.amount = feeAmount
-  arbitratorFee.token = loadTokenData(feeToken)
+
+  const tokenId = loadTokenData(feeToken)
+  if (tokenId) {
+    arbitratorFee.token = tokenId
+  }
   arbitratorFee.save()
 }

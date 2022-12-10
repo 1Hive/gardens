@@ -11,12 +11,14 @@ import {
 } from '../../generated/templates/ConvictionVoting/ConvictionVoting'
 import { loadOrCreateConfig, loadTokenData, saveOrgToken } from '.'
 
+import { log } from '@graphprotocol/graph-ts'
+
 /// /// Conviction config entity //////
 function getConvictionConfigEntityId(appAddress: Address): string {
   return appAddress.toHexString()
 }
 
-export function getConvictionConfigEntity(appAddress: Address): ConvictionConfigEntity | null {
+export function getConvictionConfigEntity(appAddress: Address): ConvictionConfigEntity {
   const configEntityId = getConvictionConfigEntityId(appAddress)
 
   let config = ConvictionConfigEntity.load(configEntityId)
@@ -40,8 +42,12 @@ export function loadConvictionConfig(orgAddress: Address, appAddress: Address): 
   const stakeTokenId = loadTokenData(stakeToken)
   convictionConfig.stakeToken = stakeTokenId
 
-  // Save organization token if not exists (1Hive edge case)
-  saveOrgToken(stakeTokenId, orgAddress)
+  if (stakeTokenId) {
+    // Save organization token if not exists (1Hive edge case)
+    saveOrgToken(stakeTokenId, orgAddress)
+  } else {
+    log.error('loadConvictionConfig::stakeTokenId its not defined', [])
+  }
 
   const stableToken = convictionVoting.stableToken()
   const stableTokenId = loadTokenData(stableToken)
@@ -63,7 +69,7 @@ export function loadConvictionConfig(orgAddress: Address, appAddress: Address): 
   convictionConfig.contractPaused = false
 
   // Get funds owner
-  let fundsManager: Address
+  let fundsManager: Address | null = null
   const vault = convictionVoting.try_vault()
   if (!vault.reverted) {
     fundsManager = vault.value
@@ -89,6 +95,9 @@ export function getStakeEntityId(proposalId: string, supporterId: string): strin
 }
 
 export function getStakeEntity(proposal: ProposalEntity | null, supporterId: string): StakeEntity | null {
+  if (!proposal) {
+    return null
+  }
   const stakeId = getStakeEntityId(proposal.id, supporterId)
 
   let stake = StakeEntity.load(stakeId)
@@ -111,6 +120,9 @@ export function getStakeHistoryEntity(
   supporterId: string,
   blockNumber: BigInt
 ): StakeHistoryEntity | null {
+  if (!proposal) {
+    return null
+  }
   const stakeHistoryId = getStakeHistoryEntityId(proposal.id, supporterId, blockNumber)
 
   const stakeHistory = new StakeHistoryEntity(stakeHistoryId)
@@ -128,13 +140,15 @@ export function getOrgAddress(appAddress: Address): Address {
 
 /// /// Proposal entity //////
 export function populateProposalDataFromEvent(proposal: ProposalEntity | null, event: ProposalAddedEvent): void {
-  proposal.metadata = event.params.title
-  proposal.link = event.params.link.toString()
-  proposal.requestedAmount = event.params.amount
-  proposal.creator = event.params.entity
-  proposal.createdAt = event.block.timestamp
-  proposal.beneficiary = event.params.beneficiary
-  proposal.actionId = event.params.actionId
-  proposal.stable = event.params.stable
-  proposal.txHash = event.transaction.hash.toHexString()
+  if (proposal) {
+    proposal.metadata = event.params.title
+    proposal.link = event.params.link.toString()
+    proposal.requestedAmount = event.params.amount
+    proposal.creator = event.params.entity
+    proposal.createdAt = event.block.timestamp
+    proposal.beneficiary = event.params.beneficiary
+    proposal.actionId = event.params.actionId
+    proposal.stable = event.params.stable
+    proposal.txHash = event.transaction.hash.toHexString()
+  }
 }

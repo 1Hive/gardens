@@ -46,20 +46,22 @@ export function handleNewSetting(event: NewSettingEvent): void {
 
   const orgAddress = votingApp.kernel()
 
-  votingConfig.settingId = event.params.settingId
-  votingConfig.voteTime = settingData.value0
-  votingConfig.supportRequiredPct = settingData.value1
-  votingConfig.minimumAcceptanceQuorumPct = settingData.value2
-  votingConfig.delegatedVotingPeriod = settingData.value3
-  votingConfig.quietEndingPeriod = settingData.value4
-  votingConfig.quietEndingExtension = settingData.value5
-  votingConfig.executionDelay = settingData.value6
-  votingConfig.createdAt = event.block.timestamp
+  if (votingConfig) {
+    votingConfig.settingId = event.params.settingId
+    votingConfig.voteTime = settingData.value0
+    votingConfig.supportRequiredPct = settingData.value1
+    votingConfig.minimumAcceptanceQuorumPct = settingData.value2
+    votingConfig.delegatedVotingPeriod = settingData.value3
+    votingConfig.quietEndingPeriod = settingData.value4
+    votingConfig.quietEndingExtension = settingData.value5
+    votingConfig.executionDelay = settingData.value6
+    votingConfig.createdAt = event.block.timestamp
 
-  const token = votingApp.token()
-  votingConfig.token = loadTokenData(token)
+    const token = votingApp.token()
+    votingConfig.token = loadTokenData(token)
 
-  votingConfig.save()
+    votingConfig.save()
+  }
 
   const config = loadOrCreateConfig(orgAddress)
   config.voting = currentSettingId
@@ -130,12 +132,14 @@ export function handleCastVote(event: CastVoteEvent): void {
   const stake = miniMeToken.balanceOfAt(event.params.voter, proposal.snapshotBlock)
 
   const castVote = loadOrCreateCastVote(event.address, event.params.voteId, event.params.voter)
-  castVote.supporter = supporter.id
-  castVote.stake = stake
-  castVote.supports = event.params.supports
-  castVote.createdAt = event.block.timestamp
-  castVote.caster = event.params.caster
-  castVote.save()
+  if (castVote) {
+    castVote.supporter = supporter.id
+    castVote.stake = stake
+    castVote.supports = event.params.supports
+    castVote.createdAt = event.block.timestamp
+    castVote.caster = event.params.caster
+    castVote.save()
+  }
 }
 
 export function handlePauseVote(event: PauseVoteEvent): void {

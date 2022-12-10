@@ -5,7 +5,7 @@
     abi: Agreement
   mapping:
     kind: ethereum/events
-    apiVersion: 0.0.3
+    apiVersion: 0.0.6
     language: wasm/assemblyscript
     entities:
       - DisputableVoting

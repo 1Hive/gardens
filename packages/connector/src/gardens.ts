@@ -1,11 +1,12 @@
 import { GraphQLWrapper } from '@1hive/connect-thegraph'
 import { subgraphUrlFromChainId } from './thegraph/connector'
-import { ORGANIZATION, ORGANIZATIONS, USER } from './thegraph/queries'
+import { OLD_ORGANIZATION, OLD_ORGANIZATIONS, ORGANIZATION, ORGANIZATIONS, USER } from './thegraph/queries'
 import { Organization, User } from './thegraph/queries/types'
 
 type Config = {
   network: number
   subgraphUrl?: string
+  hasFluidProposal?: boolean
 }
 
 type GardenParams = {
@@ -45,7 +46,11 @@ export async function getGardens(
   { first = 1000, skip = 0, orderBy = 'createdAt', orderDirection = 'desc' }: GardenParams
 ): Promise<Organization[]> {
   const client = getSubgraphClient(config)
-  const result = await client.performQuery(ORGANIZATIONS, { first, skip, orderBy, orderDirection })
+  let queryOrgs = OLD_ORGANIZATIONS
+  if (config.hasFluidProposal === true) {
+    queryOrgs = ORGANIZATIONS
+  }
+  const result = await client.performQuery(queryOrgs, { first, skip, orderBy, orderDirection })
 
   if (!result.data.organizations) {
     throw new Error('Unable to find gardens.')
@@ -63,7 +68,11 @@ export async function getGardens(
  */
 export async function getGarden(config: Config, id: string): Promise<Organization> {
   const client = getSubgraphClient(config)
-  const result = await client.performQuery(ORGANIZATION, { id })
+  let queryOrg = OLD_ORGANIZATION
+  if (config.hasFluidProposal === true) {
+    queryOrg = ORGANIZATION
+  }
+  const result = await client.performQuery(queryOrg, { id })
 
   if (!result.data.organization) {
     throw new Error(' Unable to find garden.')

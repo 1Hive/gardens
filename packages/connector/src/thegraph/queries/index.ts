@@ -1,6 +1,66 @@
 import gql from 'graphql-tag'
 import { DocumentNode } from 'graphql'
 
+export const OLD_ORGANIZATIONS = gql`
+  query Organizations($first: Int!, $skip: Int!, $orderBy: String!, $orderDirection: String!) {
+    organizations(
+      first: $first
+      where: { active: true }
+      skip: $skip
+      orderBy: $orderBy
+      orderDirection: $orderDirection
+    ) {
+      id
+      active
+      createdAt
+      proposalCount
+      token {
+        id
+        symbol
+        name
+        decimals
+      }
+      wrappableToken {
+        id
+        symbol
+        name
+        decimals
+      }
+      honeyLiquidity
+      supporterCount
+      incentivisedPriceOracle
+      unipool
+    }
+  }
+`
+
+export const OLD_ORGANIZATION = gql`
+  query Organization($id: String!) {
+    organization(id: $id) {
+      id
+      active
+      createdAt
+      proposalCount
+      token {
+        id
+        symbol
+        name
+        decimals
+      }
+      wrappableToken {
+        id
+        symbol
+        name
+        decimals
+      }
+      honeyLiquidity
+      supporterCount
+      incentivisedPriceOracle
+      unipool
+    }
+  }
+`
+
 export const ORGANIZATIONS = gql`
   query Organizations($first: Int!, $skip: Int!, $orderBy: String!, $orderDirection: String!) {
     organizations(

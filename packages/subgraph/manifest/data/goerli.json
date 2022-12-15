@@ -1,0 +1,45 @@
+{
+  "network": "goerli",
+  "dataSources": {
+    "Organizations": [
+      {
+        "address": "",
+        "name": "Kernel",
+        "startBlock": 0
+      }
+    ],
+    "OrganizationTemplates": [
+      {
+        "address": "",
+        "name": "GardensTemplate",
+        "startBlock": 0
+      }
+    ]
+  },
+  "1HiveGarden": "",
+  "1HivePriceOracle": "",
+  "agreementAppIds": [
+    {
+      "id": "",
+      "name": ""
+    }
+  ],
+  "convictionVotingAppIds": [
+    {
+      "id": "",
+      "name": ""
+    }
+  ],
+  "votingAppIds": [
+    {
+      "id": "",
+      "name": ""
+    }
+  ],
+  "tokensAppIds": [
+    {
+      "id": "",
+      "name": ""
+    }
+  ]
+}

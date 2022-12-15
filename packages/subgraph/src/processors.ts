@@ -2,9 +2,11 @@ import { Address, BigInt, DataSourceTemplate } from '@graphprotocol/graph-ts'
 import { loadOrCreateOrg, MAX_UINT_256 } from './helpers'
 import { onAppTemplateCreated } from './hooks'
 import {
-  ONE_HIVE_FLUID_PROPOSAL_ADDRESS,
+  ONE_HIVE_FLUID_PROPOSALS_ADDRESS,
   ONE_HIVE_GARDEN_ADDRESS,
   ONE_HIVE_GARDEN_PRICE_ORACLE_ADDRESS,
+  TEST_GARDEN,
+  TEST_FLUID_PROPOSALS_ADDRESS,
   AGREEMENT_APPIDS,
   CONVICTION_VOTING_APPIDS,
   TOKENS_APPIDS,
@@ -39,11 +41,17 @@ export function processOrg(orgAddress: Address, timestamp: BigInt): void {
     if (ONE_HIVE_GARDEN_ADDRESS.equals(orgAddress)) {
       org.honeyLiquidity = MAX_UINT_256
       org.incentivisedPriceOracle = ONE_HIVE_GARDEN_PRICE_ORACLE_ADDRESS
-      org.fluidProposals = ONE_HIVE_FLUID_PROPOSAL_ADDRESS
+      org.fluidProposals = ONE_HIVE_FLUID_PROPOSALS_ADDRESS
 
-      FluidProposals.create(ONE_HIVE_FLUID_PROPOSAL_ADDRESS)
+      FluidProposals.create(ONE_HIVE_FLUID_PROPOSALS_ADDRESS)
     }
-
-    org.save()
   }
+
+  if (TEST_GARDEN.equals(orgAddress)) {
+    org.fluidProposals = TEST_FLUID_PROPOSALS_ADDRESS
+
+    FluidProposals.create(TEST_FLUID_PROPOSALS_ADDRESS)
+  }
+
+  org.save()
 }

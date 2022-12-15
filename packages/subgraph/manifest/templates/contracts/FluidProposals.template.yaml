@@ -13,8 +13,6 @@
       - name: FluidProposals
         file: ./abis/FluidProposals.json
     eventHandlers:
-      - event: ProposalActivated(indexed uint256,address)
-        handler: handleProposalActivated
-      - event: ProposalDeactivated(indexed uint256)
-        handler: handleProposalDeactivated
+      - event: ProposalRegistered(indexed uint256,address)
+        handler: handleProposalRegistered
     file: ./src/mappings/FluidProposals.ts

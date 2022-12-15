@@ -18,7 +18,9 @@
   },
   "1HiveGarden": "0x8ccbeab14b5ac4a431fffc39f4bec4089020a155",
   "1HivePriceOracle": "0x6f38D112b13eda1E3abAFC61E296Be2E27F15071",
-  "1HiveFluidProposals": "0x5c9c90d4928b730ba411b80556b59d0a6698f464",
+  "1HiveFluidProposals": "0x6705B54dC554c781B834FCc5Ae18402127DD88ba",
+  "TestGarden": "0x90a6a5006137177bbf020ad048bd3469f758db2a",
+  "TestFluidProposals": "0x224d0051f814b568d2088ba388121ee003bbaeb7",
   "agreementAppIds": [
     {
       "id": "0x34c62f3aec3073826f39c2c35e9a1297d9dbf3cc77472283106f09eee9cf47bf",

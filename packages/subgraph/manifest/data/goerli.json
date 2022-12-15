@@ -3,43 +3,43 @@
   "dataSources": {
     "Organizations": [
       {
-        "address": "",
+        "address": "0x64E379e1Fded620a200101F5F221998AfAc7F4A6",
         "name": "Kernel",
-        "startBlock": 0
+        "startBlock": 7929343
       }
     ],
     "OrganizationTemplates": [
       {
-        "address": "",
+        "address": "TBD",
         "name": "GardensTemplate",
         "startBlock": 0
       }
     ]
   },
-  "1HiveGarden": "",
-  "1HivePriceOracle": "",
+  "1HiveGarden": "TBD",
+  "1HivePriceOracle": "TBD",
   "agreementAppIds": [
     {
-      "id": "",
-      "name": ""
+      "id": "0x34c62f3aec3073826f39c2c35e9a1297d9dbf3cc77472283106f09eee9cf47bf",
+      "name": "agreement.open.aragonpm.eth"
     }
   ],
   "convictionVotingAppIds": [
     {
-      "id": "",
-      "name": ""
+      "id": "0xca60629a22f03bcad7738fee1a6f0c5863eb89463621b40566a6799b82cbe184",
+      "name": "disputable-conviction-voting.open.aragonpm.eth"
     }
   ],
   "votingAppIds": [
     {
-      "id": "",
-      "name": ""
+      "id": "0x705b5084c67966bb8e4640b28bab7a1e51e03d209d84e3a04d2a4f7415f93b34",
+      "name": "disputable-voting.open.aragonpm.eth"
     }
   ],
   "tokensAppIds": [
     {
-      "id": "",
-      "name": ""
+      "id": "0x3ccad1fc11d5b14e58c1c53a5138a51f4da8d509831bc505e60bb74d88f8bef5",
+      "name": "wrappable-hooked-token-manager.open.aragonpm.eth"
     }
   ]
 }

@@ -98,6 +98,22 @@ export const Config = {
       Arbitrator: '0x35e7433141D5f7f2EB7081186f5284dCDD2ccacE',
       StakingFactory: '0xE376a7bbD20Ba75616D6a9d0A8468195a5d695FC',
     },
+    [eEthereumNetwork.goerli]: {
+      AragonID: '0x7749e4b09ab585d3e9db4c461943e994b809168f',
+      DAOFactory: '0x0c514a00401666780fca29d4cd6943085818f049',
+      ENS: '0x8cf5a255ed61f403837f040b8d9f052857469273',
+      MiniMeFactory: '0x61bce7f119a438eb85b7e78fe980a258adc87291',
+      HoneyswapRouter: '0x7a250d5630b4cf539739df2c5dacb4c659f2488d', //UNISWAP_V2_ROUTER_02
+      HoneyToken: '0x2d467a24095b262787f58ce97d9b130ce7232b57',
+      StableToken: '0xdc31ee1784292379fbb2964b3b9c4124d8f89c60', //DAI
+      HoneyPriceOracle: '0x93b2a170ef8c62613985528703bbe410c249a18d', // IncentivisedSlidingWindowOracle contract
+      PriceOracleFactory: '0xe88f50c33ed28f6124b90b21afcdeb17fc01116e', // IncentivisedPriceOracleFactory
+      CollateralRequirementUpdaterFactory: '0x03ba12e20494b9bf1805be207272de459d034b1b',
+      UniswapV2Factory: '0x5c69bee701ef814a2b6a3edd4b1652cb9cc5aa6f',
+      UnipoolFactory: '0x67e278df46fce316aae1c67007d89c65c4257b7b',
+      Arbitrator: '0x15ea6e0ab085b8d7d899672f10f213d53ce02150', // MockedCeleste
+      StakingFactory: '0x76adfd1da857249a82cba01469b42ee9813ad0f3',
+    },
     //Using xdai data to use the fork functionality on localhost
     [eLocalHostNetwork.localhost]: {
       AragonID: '0x0b3b17f9705783bb51ae8272f3245d6414229b36',

@@ -9,7 +9,7 @@ export function node_url(networkName: string): string {
 
   if (networkName === 'localhost') {
     // do not use ETH_NODE_URI
-    return 'http://localhost:8545'
+    return 'http://localhost:7545' //8545 hardhat-node, 7545 ganache
   }
 
   let uri = process.env.ETH_NODE_URI

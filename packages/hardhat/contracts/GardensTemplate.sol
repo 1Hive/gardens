@@ -21,12 +21,13 @@ import "./external/ICollateralRequirementUpdater.sol"; // This lives in the agre
 import "./external/IUnipoolFactory.sol"; // This lives in the unipool repo
 import "./external/IUniswapV2Factory.sol";
 import "./external/IVotingAggregator.sol";
-import "./appIds/AppIdsXDai.sol";
-import "./appIds/AppIdsRinkeby.sol";
-import "./appIds/AppIdsMumbai.sol";
-import "./appIds/AppIdsPolygon.sol";
+// import "./appIds/AppIdsXDai.sol";
+// import "./appIds/AppIdsRinkeby.sol";
+// import "./appIds/AppIdsMumbai.sol";
+// import "./appIds/AppIdsPolygon.sol";
+import "./appIds/AppIdsGoerli.sol";
 
-contract GardensTemplate is BaseTemplate, AppIdsPolygon {
+contract GardensTemplate is BaseTemplate, AppIdsGoerli {
 
     using SafeERC20 for ERC20;
 

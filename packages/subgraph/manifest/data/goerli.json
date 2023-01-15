@@ -17,7 +17,10 @@
     ]
   },
   "1HiveGarden": "",
-  "1HivePriceOracle": "",
+  "1HivePriceOracle": "0x93b2a170ef8c62613985528703bbe410c249a18d",
+  "1HiveFluidProposals": "0x6705B54dC554c781B834FCc5Ae18402127DD88ba",
+  "TestGarden": "0x0000000000000000000000000000000000000000",
+  "TestFluidProposals": "0x0000000000000000000000000000000000000000",
   "agreementAppIds": [
     {
       "id": "",

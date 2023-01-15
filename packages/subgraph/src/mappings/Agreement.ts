@@ -52,21 +52,23 @@ export function handleActionChallenged(event: ActionChallengedEvent): void {
   const actionData = agreementApp.getAction(event.params.actionId)
   const proposalId = getProposalEntityId(actionData.value0, actionData.value1)
 
-  const challengerArbitratorFeeId = proposalId + '-challenger'
-  const challengeArbitratorFeesData = agreementApp.getChallengeArbitratorFees(event.params.challengeId)
-  createArbitratorFee(
-    proposalId,
-    challengerArbitratorFeeId,
-    challengeArbitratorFeesData.value2,
-    challengeArbitratorFeesData.value3
-  )
-
   const proposal = ProposalEntity.load(proposalId)
-  const challengeData = agreementApp.getChallenge(event.params.challengeId)
-  proposal.challengerArbitratorFee = challengerArbitratorFeeId
-  proposal.settlementOffer = challengeData.value4
-  proposal.pausedAt = event.block.timestamp
-  proposal.save()
+  if (proposal) {
+    const challengerArbitratorFeeId = proposalId + '-challenger'
+    const challengeArbitratorFeesData = agreementApp.getChallengeArbitratorFees(event.params.challengeId)
+    createArbitratorFee(
+      proposalId,
+      challengerArbitratorFeeId,
+      challengeArbitratorFeesData.value2,
+      challengeArbitratorFeesData.value3
+    )
+
+    const challengeData = agreementApp.getChallenge(event.params.challengeId)
+    proposal.challengerArbitratorFee = challengerArbitratorFeeId
+    proposal.settlementOffer = challengeData.value4
+    proposal.pausedAt = event.block.timestamp
+    proposal.save()
+  }
 }
 
 export function handleSigned(event: SignedEvent): void {
@@ -75,8 +77,8 @@ export function handleSigned(event: SignedEvent): void {
 
   const user = loadOrCreateUser(event.params.signer)
 
-  const currentGardensSigned = user.gardensSigned
-  currentGardensSigned.push(gardenAddress.toHexString())
+  const currentGardensSigned = user.gardensSigned ? user.gardensSigned : []
+  currentGardensSigned!.push(gardenAddress.toHexString())
   user.gardensSigned = currentGardensSigned
 
   user.save()
@@ -86,6 +88,9 @@ function createArbitratorFee(proposalId: string, id: string, feeToken: Address, 
   const arbitratorFee = new ArbitratorFeeEntity(id)
   arbitratorFee.proposal = proposalId
   arbitratorFee.amount = feeAmount
-  arbitratorFee.token = loadTokenData(feeToken)
+  const token = loadTokenData(feeToken)
+  if (token) {
+    arbitratorFee.token = token
+  }
   arbitratorFee.save()
 }

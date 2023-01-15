@@ -24,15 +24,20 @@ export function populateLiquidityFromContract(pairAddress: Address): void {
    * Note we assume the pair contract has one org token.
    */
   const orgToken = getOrgTokenFromPair(pair) as TokenEntity
-  const org = OrganizationEntity.load(orgToken.organization)
+  if (orgToken.organization) {
+    // FIX Maybe add console.log for debugging when that its null
+    const org = OrganizationEntity.load(orgToken.organization!)
+    if (org) {
+      // FIXMaybe add console.log for debugging when that its null
+      if (Address.fromString(orgToken.id).equals(pair.token0())) {
+        org.honeyLiquidity = reserves.value1
+      } else {
+        org.honeyLiquidity = reserves.value0
+      }
 
-  if (Address.fromString(orgToken.id).equals(pair.token0())) {
-    org.honeyLiquidity = reserves.value1
-  } else {
-    org.honeyLiquidity = reserves.value0
+      org.save()
+    }
   }
-
-  org.save()
 }
 
 export function setUpHoneyLiquidity(templateAddress: Address, orgAddress: Address): void {
@@ -40,8 +45,19 @@ export function setUpHoneyLiquidity(templateAddress: Address, orgAddress: Addres
   const honeyswapRouter = HoneyswapRouterContract.bind(gardensTemplate.honeyswapRouter())
   const honeyswapFactory = HoneyswapFactoryContract.bind(honeyswapRouter.factory())
   const org = loadOrCreateOrg(orgAddress)
+
+  const token = org.wrappableToken ? org.wrappableToken : org.token
+  if (!token) {
+    console.log('setUpHoneyLiquidity->org.token is null')
+    return
+  }
   // Use BYOT token if it's available
-  const orgToken = TokenEntity.load(org.wrappableToken ? org.wrappableToken : org.token)
+  const orgToken = TokenEntity.load(token!)
+
+  if (!orgToken) {
+    console.log('setUpHoneyLiquidity->orgToken TokenEntity is null')
+    return
+  }
   // We assume org entity has token field set
   const honeyDaoTokenPairAddress = honeyswapFactory.getPair(
     gardensTemplate.honeyToken(),

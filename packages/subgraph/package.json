@@ -28,8 +28,8 @@
     "lint:fix": "eslint --ext ts,.json,.md,.yaml,.graphql --fix"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.20.0",
-    "@graphprotocol/graph-ts": "^0.20.0"
+    "@graphprotocol/graph-cli": "^0.37.2",
+    "@graphprotocol/graph-ts": "^0.29.1"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",

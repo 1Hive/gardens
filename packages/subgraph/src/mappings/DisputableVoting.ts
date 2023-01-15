@@ -38,32 +38,34 @@ import { STATUS_SETTLED, STATUS_SETTLED_NUM } from '../statuses'
 /* eslint-disable @typescript-eslint/no-use-before-define */
 
 export function handleNewSetting(event: NewSettingEvent): void {
-  const votingApp = VotingContract.bind(event.address)
-  const settingData = votingApp.getSetting(event.params.settingId)
-
-  const currentSettingId = getVotingConfigEntityId(event.address, event.params.settingId)
   const votingConfig = getVotingConfigEntity(event.address, event.params.settingId)
+  if (votingConfig) {
+    const votingApp = VotingContract.bind(event.address)
+    const settingData = votingApp.getSetting(event.params.settingId)
 
-  const orgAddress = votingApp.kernel()
+    const currentSettingId = getVotingConfigEntityId(event.address, event.params.settingId)
 
-  votingConfig.settingId = event.params.settingId
-  votingConfig.voteTime = settingData.value0
-  votingConfig.supportRequiredPct = settingData.value1
-  votingConfig.minimumAcceptanceQuorumPct = settingData.value2
-  votingConfig.delegatedVotingPeriod = settingData.value3
-  votingConfig.quietEndingPeriod = settingData.value4
-  votingConfig.quietEndingExtension = settingData.value5
-  votingConfig.executionDelay = settingData.value6
-  votingConfig.createdAt = event.block.timestamp
+    const orgAddress = votingApp.kernel()
 
-  const token = votingApp.token()
-  votingConfig.token = loadTokenData(token)
+    votingConfig.settingId = event.params.settingId
+    votingConfig.voteTime = settingData.value0
+    votingConfig.supportRequiredPct = settingData.value1
+    votingConfig.minimumAcceptanceQuorumPct = settingData.value2
+    votingConfig.delegatedVotingPeriod = settingData.value3
+    votingConfig.quietEndingPeriod = settingData.value4
+    votingConfig.quietEndingExtension = settingData.value5
+    votingConfig.executionDelay = settingData.value6
+    votingConfig.createdAt = event.block.timestamp
 
-  votingConfig.save()
+    const token = votingApp.token()
+    votingConfig.token = loadTokenData(token)
 
-  const config = loadOrCreateConfig(orgAddress)
-  config.voting = currentSettingId
-  config.save()
+    votingConfig.save()
+
+    const config = loadOrCreateConfig(orgAddress)
+    config.voting = currentSettingId
+    config.save()
+  }
 }
 
 export function handleStartVote(event: StartVoteEvent): void {
@@ -130,12 +132,15 @@ export function handleCastVote(event: CastVoteEvent): void {
   const stake = miniMeToken.balanceOfAt(event.params.voter, proposal.snapshotBlock)
 
   const castVote = loadOrCreateCastVote(event.address, event.params.voteId, event.params.voter)
-  castVote.supporter = supporter.id
-  castVote.stake = stake
-  castVote.supports = event.params.supports
-  castVote.createdAt = event.block.timestamp
-  castVote.caster = event.params.caster
-  castVote.save()
+  if (castVote) {
+    // FIX Check here if its possible put that IF in the beginning
+    castVote.supporter = supporter.id
+    castVote.stake = stake
+    castVote.supports = event.params.supports
+    castVote.createdAt = event.block.timestamp
+    castVote.caster = event.params.caster
+    castVote.save()
+  }
 }
 
 export function handlePauseVote(event: PauseVoteEvent): void {

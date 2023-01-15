@@ -34,53 +34,61 @@ export function loadConvictionConfig(orgAddress: Address, appAddress: Address): 
 
   // Conviction voting config
   const convictionConfig = getConvictionConfigEntity(appAddress)
-  const convictionVoting = ConvictionVotingContract.bind(appAddress)
-  // Load tokens data
-  const stakeToken = convictionVoting.stakeToken()
-  const stakeTokenId = loadTokenData(stakeToken)
-  convictionConfig.stakeToken = stakeTokenId
 
-  // Save organization token if not exists (1Hive edge case)
-  saveOrgToken(stakeTokenId, orgAddress)
-
-  const stableToken = convictionVoting.stableToken()
-  const stableTokenId = loadTokenData(stableToken)
-  convictionConfig.stableToken = stableTokenId
-
-  const requestToken = convictionVoting.requestToken()
-  // App could be instantiated without a vault
-  const requestTokenId = loadTokenData(requestToken)
-  convictionConfig.requestToken = requestTokenId
-
-  // Load conviction params
-  convictionConfig.decay = convictionVoting.decay()
-  convictionConfig.weight = convictionVoting.weight()
-  convictionConfig.maxRatio = convictionVoting.maxRatio()
-  convictionConfig.pctBase = convictionVoting.D()
-  convictionConfig.totalStaked = convictionVoting.totalStaked()
-  convictionConfig.maxStakedProposals = convictionVoting.MAX_STAKED_PROPOSALS().toI32()
-  convictionConfig.minThresholdStakePercentage = convictionVoting.minThresholdStakePercentage()
-  convictionConfig.contractPaused = false
-
-  // Get funds owner
-  let fundsManager: Address
-  const vault = convictionVoting.try_vault()
-  if (!vault.reverted) {
-    fundsManager = vault.value
-  } else {
-    const fundsManagerResult = convictionVoting.try_fundsManager()
-    if (!fundsManagerResult.reverted) {
-      fundsManager = fundsManagerResult.value
+  if (convictionConfig) {
+    const convictionVoting = ConvictionVotingContract.bind(appAddress)
+    // Load tokens data
+    const stakeToken = convictionVoting.stakeToken()
+    const stakeTokenId = loadTokenData(stakeToken)
+    if (stakeTokenId) {
+      convictionConfig.stakeToken = stakeTokenId
+      // Save organization token if not exists (1Hive edge case)
+      saveOrgToken(stakeTokenId, orgAddress)
     }
+
+    const stableToken = convictionVoting.stableToken()
+    const stableTokenId = loadTokenData(stableToken)
+    if (stableTokenId) {
+      convictionConfig.stableToken = stableTokenId
+    }
+
+    const requestToken = convictionVoting.requestToken()
+    // App could be instantiated without a vault
+    const requestTokenId = loadTokenData(requestToken)
+    if (requestTokenId) {
+      convictionConfig.requestToken = requestTokenId
+    }
+
+    // Load conviction params
+    convictionConfig.decay = convictionVoting.decay()
+    convictionConfig.weight = convictionVoting.weight()
+    convictionConfig.maxRatio = convictionVoting.maxRatio()
+    convictionConfig.pctBase = convictionVoting.D()
+    convictionConfig.totalStaked = convictionVoting.totalStaked()
+    convictionConfig.maxStakedProposals = convictionVoting.MAX_STAKED_PROPOSALS().toI32()
+    convictionConfig.minThresholdStakePercentage = convictionVoting.minThresholdStakePercentage()
+    convictionConfig.contractPaused = false
+
+    // Get funds owner
+    let fundsManager: Address | null = null
+    const vault = convictionVoting.try_vault()
+    if (!vault.reverted) {
+      fundsManager = vault.value
+    } else {
+      const fundsManagerResult = convictionVoting.try_fundsManager()
+      if (!fundsManagerResult.reverted) {
+        fundsManager = fundsManagerResult.value
+      }
+    }
+
+    convictionConfig.fundsManager = fundsManager
+    convictionConfig.stableTokenOracle = convictionVoting.stableTokenOracle()
+
+    convictionConfig.save()
+
+    config.conviction = convictionConfig.id
+    config.save()
   }
-
-  convictionConfig.fundsManager = fundsManager
-  convictionConfig.stableTokenOracle = convictionVoting.stableTokenOracle()
-
-  convictionConfig.save()
-
-  config.conviction = convictionConfig.id
-  config.save()
 }
 
 /// /// Stake entity //////
@@ -89,16 +97,19 @@ export function getStakeEntityId(proposalId: string, supporterId: string): strin
 }
 
 export function getStakeEntity(proposal: ProposalEntity | null, supporterId: string): StakeEntity | null {
-  const stakeId = getStakeEntityId(proposal.id, supporterId)
+  if (proposal) {
+    const stakeId = getStakeEntityId(proposal.id, supporterId)
 
-  let stake = StakeEntity.load(stakeId)
-  if (!stake) {
-    stake = new StakeEntity(stakeId)
-    stake.supporter = supporterId
-    stake.proposal = proposal.id
+    let stake = StakeEntity.load(stakeId)
+    if (!stake) {
+      stake = new StakeEntity(stakeId)
+      stake.supporter = supporterId
+      stake.proposal = proposal.id
+    }
+
+    return stake
   }
-
-  return stake
+  return null
 }
 
 /// /// Stake History entity //////
@@ -111,14 +122,17 @@ export function getStakeHistoryEntity(
   supporterId: string,
   blockNumber: BigInt
 ): StakeHistoryEntity | null {
-  const stakeHistoryId = getStakeHistoryEntityId(proposal.id, supporterId, blockNumber)
+  if (proposal) {
+    const stakeHistoryId = getStakeHistoryEntityId(proposal.id, supporterId, blockNumber)
 
-  const stakeHistory = new StakeHistoryEntity(stakeHistoryId)
-  stakeHistory.proposal = proposal.id
-  stakeHistory.supporter = supporterId
-  stakeHistory.time = blockNumber
+    const stakeHistory = new StakeHistoryEntity(stakeHistoryId)
+    stakeHistory.proposal = proposal.id
+    stakeHistory.supporter = supporterId
+    stakeHistory.time = blockNumber
 
-  return stakeHistory
+    return stakeHistory
+  }
+  return null
 }
 
 export function getOrgAddress(appAddress: Address): Address {
@@ -128,13 +142,15 @@ export function getOrgAddress(appAddress: Address): Address {
 
 /// /// Proposal entity //////
 export function populateProposalDataFromEvent(proposal: ProposalEntity | null, event: ProposalAddedEvent): void {
-  proposal.metadata = event.params.title
-  proposal.link = event.params.link.toString()
-  proposal.requestedAmount = event.params.amount
-  proposal.creator = event.params.entity
-  proposal.createdAt = event.block.timestamp
-  proposal.beneficiary = event.params.beneficiary
-  proposal.actionId = event.params.actionId
-  proposal.stable = event.params.stable
-  proposal.txHash = event.transaction.hash.toHexString()
+  if (proposal) {
+    proposal.metadata = event.params.title
+    proposal.link = event.params.link.toString()
+    proposal.requestedAmount = event.params.amount
+    proposal.creator = event.params.entity
+    proposal.createdAt = event.block.timestamp
+    proposal.beneficiary = event.params.beneficiary
+    proposal.actionId = event.params.actionId
+    proposal.stable = event.params.stable
+    proposal.txHash = event.transaction.hash.toHexString()
+  }
 }

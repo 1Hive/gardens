@@ -104,14 +104,14 @@ export const Config = {
       ENS: '0x8cf5a255ed61f403837f040b8d9f052857469273',
       MiniMeFactory: '0x61bce7f119a438eb85b7e78fe980a258adc87291',
       HoneyswapRouter: '0x7a250d5630b4cf539739df2c5dacb4c659f2488d', //UNISWAP_V2_ROUTER_02
-      HoneyToken: '0x2d467a24095b262787f58ce97d9b130ce7232b57',
+      HoneyToken: '0x2d467a24095b262787f58ce97d9b130ce7232b57', //HNYT
       StableToken: '0xdc31ee1784292379fbb2964b3b9c4124d8f89c60', //DAI
-      HoneyPriceOracle: '0x93b2a170ef8c62613985528703bbe410c249a18d', // IncentivisedSlidingWindowOracle contract
-      PriceOracleFactory: '0xe88f50c33ed28f6124b90b21afcdeb17fc01116e', // IncentivisedPriceOracleFactory
+      HoneyPriceOracle: '0x732cf7ff8a3df9daedc283587be2051dc67ac6c3', // IncentivisedSlidingWindowOracle contract
+      PriceOracleFactory: '0x5c0cecb41148e1528e7ec8d8a6a04cc2b3e0592c', // IncentivisedPriceOracleFactory
       CollateralRequirementUpdaterFactory: '0x03ba12e20494b9bf1805be207272de459d034b1b',
       UniswapV2Factory: '0x5c69bee701ef814a2b6a3edd4b1652cb9cc5aa6f',
       UnipoolFactory: '0x67e278df46fce316aae1c67007d89c65c4257b7b',
-      Arbitrator: '0x15ea6e0ab085b8d7d899672f10f213d53ce02150', // MockedCeleste
+      Arbitrator: '0x15ea6e0ab085b8d7d899672f10f213d53ce02150',
       StakingFactory: '0x76adfd1da857249a82cba01469b42ee9813ad0f3',
     },
     //Using xdai data to use the fork functionality on localhost

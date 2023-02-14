@@ -18,8 +18,8 @@
       "runtimeExecutable": "${workspaceFolder}/packages/hardhat/node_modules/.bin/hardhat",
       "args": ["run", "./scripts/new-veneto-garden.ts"],
       "env": {
-        "HARDHAT_FORK":"xdai",
-        "HARDHAT_FORK_URL": "https://xdai-archive.blockscout.com", 
+        "HARDHAT_FORK":"gnosis",
+        "HARDHAT_FORK_URL": "https://gnosis-archive.blockscout.com", 
         "HNY_HOLDER": "0xc447384681aDfBb6AF5BB2D4a0e4DE05135ebFED" 
       },
       "cwd": "${workspaceFolder}/packages/hardhat"
@@ -32,8 +32,8 @@
       "runtimeExecutable": "${workspaceFolder}/packages/hardhat/node_modules/.bin/hardhat",
       "args": ["run", "./scripts/new-boboli-garden.ts"],
       "env": {
-        "HARDHAT_FORK":"xdai",
-        "HARDHAT_FORK_URL": "https://xdai-archive.blockscout.com", 
+        "HARDHAT_FORK":"gnosis",
+        "HARDHAT_FORK_URL": "https://gnosis-archive.blockscout.com", 
         "HNY_HOLDER": "0xc447384681aDfBb6AF5BB2D4a0e4DE05135ebFED" 
       },
       "cwd": "${workspaceFolder}/packages/hardhat"

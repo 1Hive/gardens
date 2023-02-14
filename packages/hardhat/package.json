@@ -26,7 +26,7 @@
     "@aragon/templates-shared": "1.0.0"
   },
   "scripts": {
-    "chain": "hardhat node --fork https://xdai-archive.blockscout.com",
+    "chain": "hardhat node --fork https://gnosis-archive.blockscout.com",
     "compile": "hardhat compile",
     "deploy": "hardhat deploy --network localhost",
     "etherscan": "hardhat etherscan-verify --license GPL-3.0",

@@ -66,7 +66,7 @@ export const Config = {
       Arbitrator: '0x41A67fc74983353A4a443A9D80500F7655A40DfA',
       StakingFactory: '0x2038976E96cDe0187820Bd84e6b36D595e979bD9',
     },
-    [eXDaiNetwork.xdai]: {
+    [eXDaiNetwork.gnosis]: {
       AragonID: '0x0b3b17f9705783bb51ae8272f3245d6414229b36',
       DAOFactory: '0x4037f97fcc94287257e50bd14c7da9cb4df18250',
       ENS: '0xaafca6b0c89521752e559650206d7c925fd0e530',
@@ -114,7 +114,7 @@ export const Config = {
       Arbitrator: '0x15ea6e0ab085b8d7d899672f10f213d53ce02150', // MockCeleste
       StakingFactory: '0x76adfd1da857249a82cba01469b42ee9813ad0f3', // https://github.com/1Hive/staking
     },
-    //Using xdai data to use the fork functionality on localhost
+    //Using gnosis data to use the fork functionality on localhost
     [eLocalHostNetwork.localhost]: {
       AragonID: '0x0b3b17f9705783bb51ae8272f3245d6414229b36',
       DAOFactory: '0x4037f97fcc94287257e50bd14c7da9cb4df18250',
@@ -131,7 +131,7 @@ export const Config = {
       Arbitrator: '0x44E4fCFed14E1285c9e0F6eae77D5fDd0F196f85',
       StakingFactory: '0xe71331AEf803BaeC606423B105e4d1C85f012C00',
     },
-    //Using xdai data to use the fork functionality on hardhat
+    //Using gnosis data to use the fork functionality on hardhat
     [eLocalHostNetwork.hardhat]: {
       AragonID: '0x0b3b17f9705783bb51ae8272f3245d6414229b36',
       DAOFactory: '0x4037f97fcc94287257e50bd14c7da9cb4df18250',

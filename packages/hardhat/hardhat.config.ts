@@ -54,9 +54,9 @@ const config: HardhatUserConfig = {
       url: node_url('goerli'),
       accounts: account('goerli'),
     },
-    xdai: {
-      url: node_url('xdai'),
-      accounts: account('xdai'),
+    gnosis: {
+      url: node_url('gnosis'),
+      accounts: account('gnosis'),
     },
     polygon: {
       url: node_url('polygon'),

@@ -17,14 +17,14 @@ import { GardensTemplate } from '../typechain'
 const network = process.env.HARDHAT_FORK
   ? process.env.HARDHAT_FORK
   : hre.network.name === 'localhost'
-  ? 'xdai'
+  ? 'gnosis'
   : hre.network.name
-const blockTime = network === 'rinkeby' ? 15 : network === 'mainnet' ? 13 : network === 'xdai' ? 5 : 2 // 15 rinkeby, 13 mainnet, 5 xdai, 2 polygon
+const blockTime = network === 'rinkeby' ? 15 : network === 'mainnet' ? 13 : network === 'gnosis' ? 5 : 2 // 15 rinkeby, 13 mainnet, 5 gnosis, 2 polygon
 
 console.log(`Every ${blockTime}s a new block is mined in ${network}.`)
 
 // EXISTING_TOKEN_RINKEBY = "0xecf20ddfac09253c0f1768d270ad2536e97b605d" // Not for use here, put in the config.
-// EXISTING_TOKEN_XDAI = "0xB156cfbB83ec91e56A25cA0E59ADf5a223164A3f" // Not for use here, put in the config.
+// EXISTING_TOKEN_GNOSIS = "0xB156cfbB83ec91e56A25cA0E59ADf5a223164A3f" // Not for use here, put in the config.
 // EXISTING_TOKEN_POLYGON = "0x8fe27b8172ef063de5548ac1177c63605256355a" // Not for use here, put in the config.
 // EXISTING_TOKEN_ARBTEST = "0xEa9508cE6DCd45365d636D9730cFFA839A4A8121" // Not for use here, put in the config.
 

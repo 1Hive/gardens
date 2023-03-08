@@ -23,6 +23,7 @@ fi
 
 echo Deploying subgraph gardens${SUBGRAPH_EXT}
 
+# echo "$@"
 # Deploy subgraph
 # graph deploy 1hive/gardens${SUBGRAPH_EXT} --ipfs ${IPFS_NODE} --node ${GRAPH_NODE} --access-token ${GRAPHKEY}
-graph deploy --studio gardens${SUBGRAPH_EXT}
+graph deploy --studio gardens${SUBGRAPH_EXT} "$@"

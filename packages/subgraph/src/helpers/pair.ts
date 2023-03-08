@@ -1,4 +1,4 @@
-import { Address } from '@graphprotocol/graph-ts'
+import { Address, log } from '@graphprotocol/graph-ts'
 import { GardensTemplate as GardensTemplateContract } from '../../generated/GardensTemplate/GardensTemplate'
 import { HoneyswapFactory as HoneyswapFactoryContract } from '../../generated/GardensTemplate/HoneyswapFactory'
 import { HoneyswapRouter as HoneyswapRouterContract } from '../../generated/GardensTemplate/HoneyswapRouter'
@@ -48,14 +48,14 @@ export function setUpHoneyLiquidity(templateAddress: Address, orgAddress: Addres
 
   const token = org.wrappableToken ? org.wrappableToken : org.token
   if (!token) {
-    console.log('setUpHoneyLiquidity->org.token is null')
+    log.warning('setUpHoneyLiquidity->org.token is null', [])
     return
   }
   // Use BYOT token if it's available
   const orgToken = TokenEntity.load(token!)
 
   if (!orgToken) {
-    console.log('setUpHoneyLiquidity->orgToken TokenEntity is null')
+    log.warning('setUpHoneyLiquidity->orgToken TokenEntity is null', [])
     return
   }
   // We assume org entity has token field set

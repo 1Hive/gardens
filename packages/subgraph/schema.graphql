@@ -1,126 +1,126 @@
 type Organization @entity {
-  # The unique identifier of the organization
+  "The unique identifier of the organization"
   id: ID!
-  # The timestamp of when the organization was created
+  "The timestamp of when the organization was created"
   createdAt: BigInt!
-  # The configuration settings for the organization
+  "The configuration settings for the organization"
   config: Config!
-  # The token associated with the organization
+  "The token associated with the organization"
   token: Token
-  # The wrappable version of the organization's token
+  "The wrappable version of the organization's token"
   wrappableToken: Token
-  # The number of proposals associated with the organization
+  "The number of proposals associated with the organization"
   proposalCount: Int!
-  # The list of proposals associated with the organization
+  "The list of proposals associated with the organization"
   proposals: [Proposal!] @derivedFrom(field: "organization")
-  # The number of supporters associated with the organization
+  "The number of supporters associated with the organization"
   supporterCount: Int!
-  # The amount of Honey liquidity associated with the organization
+  "The amount of Honey liquidity associated with the organization"
   honeyLiquidity: BigInt
-  # The incentivized price oracle associated with the organization
+  "The incentivized price oracle associated with the organization"
   incentivisedPriceOracle: Bytes
-  # The unipool associated with the organization
+  "The unipool associated with the organization"
   unipool: Bytes
-  # The fluid proposals associated with the organization
+  "The fluid proposals associated with the organization"
   fluidProposals: Bytes
-  # Whether the organization is active or not
+  "Whether the organization is active or not"
   active: Boolean!
 }
 
 type Config @entity {
-  # The unique identifier of the config
+  "The unique identifier of the config"
   id: ID!
-  # Configuration for conviction voting
+  "Configuration for conviction voting"
   conviction: ConvictionConfig
-  # Configuration for token-weighted voting
+  "Configuration for token-weighted voting"
   voting: VotingConfig
 }
 
 type ConvictionConfig @entity {
-  # The unique identifier of the conviction configuration
+  "The unique identifier of the conviction configuration"
   id: ID!
-  # The decay factor for the conviction calculation
+  "The decay factor for the conviction calculation"
   decay: BigInt!
-  # The weight factor for the conviction calculation
+  "The weight factor for the conviction calculation"
   weight: BigInt!
-  # The maximum ratio of conviction to stake
+  "The maximum ratio of conviction to stake"
   maxRatio: BigInt!
-  # The base percentage for calculations (usually 10^18)
+  "The base percentage for calculations (usually 10^18)"
   pctBase: BigInt!
-  # The token used to stake in the conviction voting system
+  "The token used to stake in the conviction voting system"
   stakeToken: Token
-  # The total amount of stake currently in the system
+  "The total amount of stake currently in the system"
   totalStaked: BigInt!
-  # The maximum number of proposals a user can stake on at any one time
+  "The maximum number of proposals a user can stake on at any one time"
   maxStakedProposals: Int!
-  # The minimum threshold stake percentage required to participate in the conviction voting system
+  "The minimum threshold stake percentage required to participate in the conviction voting system"
   minThresholdStakePercentage: BigInt!
-  # The contract responsible for managing funds
+  "The contract responsible for managing funds"
   fundsManager: Bytes
-  # The token used to make funding requests
+  "The token used to make funding requests"
   requestToken: Token
-  # The stable token used for calculations (e.g. DAI)
+  "The stable token used for calculations (e.g. DAI)"
   stableToken: Token
-  # The oracle responsible for providing the stable token price
+  "The oracle responsible for providing the stable token price"
   stableTokenOracle: Bytes
-  # Whether the conviction voting contract is currently paused
+  "Whether the conviction voting contract is currently paused"
   contractPaused: Boolean
 }
 
 type VotingConfig @entity {
-  # The unique identifier of the configuration
+  "The unique identifier of the configuration"
   id: ID!
-  # The token used for voting
+  "The token used for voting"
   token: Token
-  # The unique identifier of the configuration setting
+  "The unique identifier of the configuration setting"
   settingId: BigInt!
-  # The time allowed for voting
+  "The time allowed for voting"
   voteTime: BigInt!
-  # The percentage of support required for a proposal to pass
+  "The percentage of support required for a proposal to pass"
   supportRequiredPct: BigInt!
-  # The minimum percentage of total votes required for a proposal to pass
+  "The minimum percentage of total votes required for a proposal to pass"
   minimumAcceptanceQuorumPct: BigInt!
-  # The time period for delegated voting
+  "The time period for delegated voting"
   delegatedVotingPeriod: BigInt!
-  # The time period for quiet ending
+  "The time period for quiet ending"
   quietEndingPeriod: BigInt!
-  # The time extension for quiet ending
+  "The time extension for quiet ending"
   quietEndingExtension: BigInt!
-  # The delay between proposal passing and execution
+  "The delay between proposal passing and execution"
   executionDelay: BigInt!
-  # The time the configuration was created
+  "The time the configuration was created"
   createdAt: BigInt!
 }
 
 type Proposal @entity {
-  # The unique identifier of the proposal
+  "The unique identifier of the proposal"
   id: ID!
-  # The organization that this proposal belongs to
+  "The organization that this proposal belongs to"
   organization: Organization!
-  # The proposal number within the organization
+  "The proposal number within the organization"
   number: BigInt!
-  # The creator of the proposal
+  "The creator of the proposal"
   creator: Bytes!
-  # The status of the proposal
+  "The status of the proposal"
   status: ProposalStatus!
-  # The integer representation of the proposal status
+  "The integer representation of the proposal status"
   statusInt: Int!
-  # The type of the proposal
+  "The type of the proposal"
   type: ProposalType!
-  # The integer representation of the proposal type
+  "The integer representation of the proposal type"
   typeInt: Int!
-  # The timestamp when the proposal was created
+  "The timestamp when the proposal was created"
   createdAt: BigInt!
-  # The weight of the proposal, which determines its voting power
+  "The weight of the proposal, which determines its voting power"
   weight: BigInt!
-  # Additional metadata about the proposal
+  "Additional metadata about the proposal"
   metadata: String
-  # The timestamp when the proposal was executed
+  "The timestamp when the proposal was executed"
   executedAt: BigInt
-  # The hash of the transaction that executed the proposal
+  "The hash of the transaction that executed the proposal"
   txHash: String!
 
-  # Proposal data
+  "Proposal data"
   link: String
   stakes: [Stake!] @derivedFrom(field: "proposal")
   stakesHistory: [StakeHistory!] @derivedFrom(field: "proposal")
@@ -130,7 +130,7 @@ type Proposal @entity {
   totalTokensStaked: BigInt
   stable: Boolean
 
-  # Voting data
+  "Voting data"
   setting: VotingConfig
   startDate: BigInt
   totalPower: BigInt
@@ -143,7 +143,7 @@ type Proposal @entity {
   isAccepted: Boolean
   castVotes: [Cast!] @derivedFrom(field: "proposal")
 
-  # Dispute data
+  "Dispute data"
   actionId: BigInt!
   disputeId: BigInt
   challengeId: BigInt!
@@ -160,113 +160,113 @@ type Proposal @entity {
 }
 
 type Cast @entity {
-  # Unique identifier for the cast
+  "Unique identifier for the cast"
   id: ID!
-  # Supporter casting the vote
+  "Supporter casting the vote"
   supporter: Supporter!
-  # Ethereum address of the caster
+  "Ethereum address of the caster"
   caster: Bytes!
-  # Proposal being voted on
+  "Proposal being voted on"
   proposal: Proposal!
-  # Whether the vote supports or opposes the proposal
+  "Whether the vote supports or opposes the proposal"
   supports: Boolean!
-  # Amount of tokens staked with the vote
+  "Amount of tokens staked with the vote"
   stake: BigInt!
-  # Timestamp at which the cast was created
+  "Timestamp at which the cast was created"
   createdAt: BigInt!
 }
 
 type Stake @entity {
-  # Unique identifier for the stake
+  "Unique identifier for the stake"
   id: ID!
-  # Type of the stake
+  "Type of the stake"
   type: StakeType!
-  # Supporter who made the stake
+  "Supporter who made the stake"
   supporter: Supporter!
-  # Proposal to which the stake is made
+  "Proposal to which the stake is made"
   proposal: Proposal!
-  # Amount staked
+  "Amount staked"
   amount: BigInt!
-  # Timestamp at which the stake was created
+  "Timestamp at which the stake was created"
   createdAt: BigInt!
 }
 
 type StakeHistory @entity {
-  # Unique identifier for the stake history
+  "Unique identifier for the stake history"
   id: ID!
-  # The type of stake (for or against)
+  "The type of stake (for or against)"
   type: StakeType!
-  # The supporter who made the stake
+  "The supporter who made the stake"
   supporter: Supporter!
-  # The proposal the stake was made on
+  "The proposal the stake was made on"
   proposal: Proposal!
-  # The number of tokens staked
+  "The number of tokens staked"
   tokensStaked: BigInt!
-  # The total number of tokens staked at the time of the stake
+  "The total number of tokens staked at the time of the stake"
   totalTokensStaked: BigInt!
-  # The conviction of the stake at the time of the stake
+  "The conviction of the stake at the time of the stake"
   conviction: BigInt!
-  # The block at which the stake was created
+  "The block at which the stake was created"
   time: BigInt!
-  # The timestamp at which the stake was created
+  "The timestamp at which the stake was created"
   createdAt: BigInt!
 }
 
 type User @entity {
-  # Unique identifier for the user
+  "Unique identifier for the user"
   id: ID!
-  # Ethereum address of the user
+  "Ethereum address of the user"
   address: Bytes!
-  # List of gardens signed by the user
+  "List of gardens signed by the user"
   gardensSigned: [String!]
-  # List of supporters associated with the user
+  "List of supporters associated with the user"
   supports: [Supporter!]! @derivedFrom(field: "user")
-  # List of supporters where the user is the representative
+  "List of supporters where the user is the representative"
   representativeFor: [Supporter!]! @derivedFrom(field: "representative")
 }
 
 type Supporter @entity {
-  # The unique identifier of the supporter
+  "The unique identifier of the supporter"
   id: ID!
-  # The user associated with this supporter
+  "The user associated with this supporter"
   user: User!
-  # The organization this supporter is supporting
+  "The organization this supporter is supporting"
   organization: Organization!
-  # The representative of this supporter, if any
+  "The representative of this supporter, if any"
   representative: User
-  # The casts made by this supporter
+  "The casts made by this supporter"
   casts: [Cast!] @derivedFrom(field: "supporter")
-  # The stakes made by this supporter
+  "The stakes made by this supporter"
   stakes: [Stake!] @derivedFrom(field: "supporter")
-  # The history of stakes made by this supporter
+  "The history of stakes made by this supporter"
   stakesHistory: [StakeHistory!] @derivedFrom(field: "supporter")
 }
 
 type Token @entity {
-  # The unique identifier of the token
+  "The unique identifier of the token"
   id: ID!
-  # The name of the token
+  "The name of the token"
   name: String!
-  # The symbol of the token
+  "The symbol of the token"
   symbol: String!
-  # The number of decimal places for the token
+  "The number of decimal places for the token"
   decimals: Int!
-  # The organization that issued the token. Needed for setting honey liquidity.
+  "The organization that issued the token. Needed for setting honey liquidity."
   organization: Organization
 }
 
 type CollateralRequirement @entity {
-  # The unique identifier of the collateral requirement.
+  "The unique identifier of the collateral requirement."
   id: ID!
-  # The proposal this collateral requirement belongs to.
+  "The proposal this collateral requirement belongs to."
   proposal: Proposal
-  # The token that represents the collateral.
+  "The token that represents the collateral."
   token: Token
-  # The amount of collateral required for an action.
+  "The amount of collateral required for an action."
   actionAmount: BigInt
-  # The amount of collateral required for a challenge action.
+  "The amount of collateral required for a challenge action."
   challengeAmount: BigInt
-  # The duration for which the challenge is active.
+  "The duration for which the challenge is active."
   challengeDuration: BigInt
 }
 
@@ -299,12 +299,12 @@ enum VoterState {
 }
 
 type ArbitratorFee @entity {
-  # The unique identifier of the arbitrator fee
+  "The unique identifier of the arbitrator fee"
   id: ID!
-  # The proposal that the arbitrator fee is associated with
+  "The proposal that the arbitrator fee is associated with"
   proposal: Proposal!
-  # The token used to pay the arbitrator fee
+  "The token used to pay the arbitrator fee"
   token: Token!
-  # The amount of the arbitrator fee
+  "The amount of the arbitrator fee"
   amount: BigInt!
 }

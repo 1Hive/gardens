@@ -37,16 +37,19 @@ export function getVotingConfigEntity(appAddress: Address, settingId: BigInt): V
 
 /// /// Cast Entity //////
 function getCastEntityId(proposal: ProposalEntity | null, voter: Address): string {
-  return proposal.id + '-entity:' + voter.toHexString()
+  return (proposal ? proposal.id : '') + '-entity:' + voter.toHexString()
 }
 
 export function getCastEntity(proposal: ProposalEntity | null, voter: Address): CastVoteEntity | null {
-  const castId = getCastEntityId(proposal, voter)
+  if (proposal) {
+    const castId = getCastEntityId(proposal, voter)
 
-  const cast = new CastVoteEntity(castId)
-  cast.proposal = proposal.id
+    const cast = new CastVoteEntity(castId)
+    cast.proposal = proposal.id
 
-  return cast
+    return cast
+  }
+  return null
 }
 
 export function castVoteStatus(state: i32): string {
@@ -122,8 +125,11 @@ export function isAccepted(
   pctBase: BigInt
 ): boolean {
   const setting = VotingConfigEntity.load(settingId)
-  return (
-    hasReachedValuePct(yeas, yeas.plus(nays), setting.supportRequiredPct, pctBase) &&
-    hasReachedValuePct(yeas, totalPower, setting.minimumAcceptanceQuorumPct, pctBase)
-  )
+  if (setting) {
+    return (
+      hasReachedValuePct(yeas, yeas.plus(nays), setting.supportRequiredPct, pctBase) &&
+      hasReachedValuePct(yeas, totalPower, setting.minimumAcceptanceQuorumPct, pctBase)
+    )
+  }
+  return false // FIX Need return NULL
 }

@@ -4,7 +4,7 @@ on:
     paths:
       - packages/hardhat/contracts/**/*.sol
 jobs:
-  xdai:
+  gnosis:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
@@ -35,13 +35,13 @@ jobs:
 
     - name: Deploy veneto garden
       env:
-        ETH_NODE_URI_XDAI: ${{ secrets.ETH_NODE_URI_XDAI }}
-      run: HARDHAT_FORK=xdai HNY_HOLDER=0xc447384681aDfBb6AF5BB2D4a0e4DE05135ebFED yarn new:garden:veneto
+        ETH_NODE_URI_gnosis: ${{ secrets.ETH_NODE_URI_GNOSIS }}
+      run: HARDHAT_FORK=gnosis HNY_HOLDER=0xc447384681aDfBb6AF5BB2D4a0e4DE05135ebFED yarn new:garden:veneto
 
     - name: Deploy boboli garden
       env:
-        ETH_NODE_URI_XDAI: ${{ secrets.ETH_NODE_URI_XDAI }}
-      run: HARDHAT_FORK=xdai HNY_HOLDER=0xc447384681aDfBb6AF5BB2D4a0e4DE05135ebFED EXISTING_TOKEN=0xB156cfbB83ec91e56A25cA0E59ADf5a223164A3f yarn new:garden:boboli
+        ETH_NODE_URI_GNOSIS: ${{ secrets.ETH_NODE_URI_GNOSIS }}
+      run: HARDHAT_FORK=gnosis HNY_HOLDER=0xc447384681aDfBb6AF5BB2D4a0e4DE05135ebFED EXISTING_TOKEN=0xB156cfbB83ec91e56A25cA0E59ADf5a223164A3f yarn new:garden:boboli
 
   polygon:
     runs-on: ubuntu-latest

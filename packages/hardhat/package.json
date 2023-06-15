@@ -5,7 +5,7 @@
   "license": "MIT",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
-    "@tenderly/hardhat-tenderly": "^1.0.13",
+    "@tenderly/hardhat-tenderly": "^1.5.13",
     "@typechain/ethers-v5": "^7.2.0",
     "@typechain/hardhat": "^2.3.1",
     "@types/chai": "^4.3.0",
@@ -26,7 +26,7 @@
     "@aragon/templates-shared": "1.0.0"
   },
   "scripts": {
-    "chain": "hardhat node --fork https://xdai-archive.blockscout.com",
+    "chain": "hardhat node --fork https://gnosis-archive.blockscout.com",
     "compile": "hardhat compile",
     "deploy": "hardhat deploy --network localhost",
     "etherscan": "hardhat etherscan-verify --license GPL-3.0",

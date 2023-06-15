@@ -4,23 +4,23 @@
   "scripts": {
     "build": "./scripts/build-graph.sh",
     "build:goerli": "NETWORK=goerli yarn build",
-    "build:xdai": "NETWORK=xdai yarn build",
+    "build:gnosis": "NETWORK=gnosis yarn build",
     "build:polygon": "NETWORK=polygon yarn build",
     "codegen": "./scripts/codegen.sh",
     "codegen:goerli": "NETWORK=goerli yarn codegen",
-    "codegen:xdai": "NETWORK=xdai yarn codegen",
+    "codegen:gnosis": "NETWORK=gnosis yarn codegen",
     "codegen:polygon": "NETWORK=polygon yarn codegen",
     "draw-schema": "./scripts/draw-schema.sh",
     "deploy": "./scripts/deploy.sh",
     "deploy:goerli": "NETWORK=goerli yarn deploy",
-    "deploy:xdai": "NETWORK=xdai yarn deploy",
-    "deploy:xdai:staging": "STAGING=true NETWORK=xdai yarn deploy",
+    "deploy:gnosis": "NETWORK=gnosis yarn deploy",
+    "deploy:gnosis:staging": "STAGING=true NETWORK=gnosis yarn deploy",
     "deploy:polygon": "NETWORK=polygon yarn deploy",
     "deploy:polygon:staging": "STAGING=true NETWORK=polygon yarn deploy",
     "manifest": "./scripts/build-manifest.sh",
     "manifest:goerli": "NETWORK=goerli yarn manifest",
-    "manifest:xdai": "NETWORK=xdai yarn manifest",
-    "manifest:xdai:staging": "STAGING=true NETWORK=xdai yarn manifest",
+    "manifest:gnosis": "NETWORK=gnosis yarn manifest",
+    "manifest:gnosis:staging": "STAGING=true NETWORK=gnosis yarn manifest",
     "manifest:polygon": "NETWORK=polygon yarn manifest",
     "manifest:polygon:staging": "STAGING=true NETWORK=polygon yarn manifest",
     "clean": "node ../../node_modules/rimraf/bin.js build generated subgraph.yaml src/constants.ts",
@@ -28,8 +28,8 @@
     "lint:fix": "eslint --ext ts,.json,.md,.yaml,.graphql --fix"
   },
   "devDependencies": {
-    "@graphprotocol/graph-cli": "^0.20.0",
-    "@graphprotocol/graph-ts": "^0.20.0"
+    "@graphprotocol/graph-cli": "^0.37.2",
+    "@graphprotocol/graph-ts": "^0.29.1"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",

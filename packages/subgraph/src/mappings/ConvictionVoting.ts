@@ -48,19 +48,22 @@ import {
 
 export function handleConfigChanged(event: ConvictionSettingsChangedEvent): void {
   const convictionConfig = getConvictionConfigEntity(event.address)
-  convictionConfig.decay = event.params.decay
-  convictionConfig.maxRatio = event.params.maxRatio
-  convictionConfig.weight = event.params.weight
-  convictionConfig.minThresholdStakePercentage = event.params.minThresholdStakePercentage
+  if (convictionConfig) {
+    convictionConfig.decay = event.params.decay
+    convictionConfig.maxRatio = event.params.maxRatio
+    convictionConfig.weight = event.params.weight
+    convictionConfig.minThresholdStakePercentage = event.params.minThresholdStakePercentage
 
-  convictionConfig.save()
+    convictionConfig.save()
+  }
 }
 
 export function handleFundsManagerChanged(event: FundsManagerChangedEvent): void {
   const convictionConfig = getConvictionConfigEntity(event.address)
-
-  convictionConfig.fundsManager = event.params.fundsManager
-  convictionConfig.save()
+  if (convictionConfig) {
+    convictionConfig.fundsManager = event.params.fundsManager
+    convictionConfig.save()
+  }
 }
 
 export function handleProposalAdded(event: ProposalAddedEvent): void {
@@ -146,10 +149,11 @@ export function handleProposalRejected(event: ProposalRejectedEvent): void {
 
 export function handleContractPaused(event: ContractPausedEvent): void {
   const convictionConfig = getConvictionConfigEntity(event.address)
+  if (convictionConfig) {
+    convictionConfig.contractPaused = event.params.pauseEnabled
 
-  convictionConfig.contractPaused = event.params.pauseEnabled
-
-  convictionConfig.save()
+    convictionConfig.save()
+  }
 }
 
 function _onProposalPaused(appAddress: Address, challengeId: BigInt, proposalId: BigInt): void {
@@ -202,21 +206,23 @@ function _onNewStake(
 
   // Update totalStaked
   const convictionConfig = getConvictionConfigEntity(appAddress)
-  if (type === STAKE_TYPE_ADD) {
-    convictionConfig.totalStaked = convictionConfig.totalStaked.plus(amount)
-  } else {
-    convictionConfig.totalStaked = convictionConfig.totalStaked.minus(amount)
+  if (convictionConfig) {
+    if (type === STAKE_TYPE_ADD) {
+      convictionConfig.totalStaked = convictionConfig.totalStaked.plus(amount)
+    } else {
+      convictionConfig.totalStaked = convictionConfig.totalStaked.minus(amount)
+    }
+    convictionConfig.save()
+
+    proposal.totalTokensStaked = totalTokensStaked
+    proposal.convictionLast = conviction
+    proposal.weight = conviction
+
+    _updateProposalStakes(proposal, type, entity, tokensStaked, timestamp)
+    _updateStakeHistory(proposal, type, entity, tokensStaked, totalTokensStaked, conviction, blockNumber, timestamp)
+
+    proposal.save()
   }
-  convictionConfig.save()
-
-  proposal.totalTokensStaked = totalTokensStaked
-  proposal.convictionLast = conviction
-  proposal.weight = conviction
-
-  _updateProposalStakes(proposal, type, entity, tokensStaked, timestamp)
-  _updateStakeHistory(proposal, type, entity, tokensStaked, totalTokensStaked, conviction, blockNumber, timestamp)
-
-  proposal.save()
 }
 
 function _updateProposalStakes(
@@ -226,14 +232,18 @@ function _updateProposalStakes(
   tokensStaked: BigInt,
   timestamp: BigInt
 ): void {
-  const supporter = loadOrCreateSupporter(entity, Address.fromString(proposal.organization))
-  supporter.save()
+  if (proposal) {
+    const supporter = loadOrCreateSupporter(entity, Address.fromString(proposal.organization))
+    supporter.save()
 
-  const stake = getStakeEntity(proposal, supporter.id)
-  stake.amount = tokensStaked
-  stake.createdAt = timestamp
-  stake.type = type
-  stake.save()
+    const stake = getStakeEntity(proposal, supporter.id)
+    if (stake) {
+      stake.amount = tokensStaked
+      stake.createdAt = timestamp
+      stake.type = type
+      stake.save()
+    }
+  }
 }
 
 function _updateStakeHistory(
@@ -246,12 +256,16 @@ function _updateStakeHistory(
   blockNumber: BigInt,
   timestamp: BigInt
 ): void {
-  const supporterId = getSupporterEntityId(entity, Address.fromString(proposal.organization))
-  const stakeHistory = getStakeHistoryEntity(proposal, supporterId, blockNumber)
-  stakeHistory.type = type
-  stakeHistory.tokensStaked = tokensStaked
-  stakeHistory.totalTokensStaked = totalTokensStaked
-  stakeHistory.conviction = conviction
-  stakeHistory.createdAt = timestamp
-  stakeHistory.save()
+  if (proposal) {
+    const supporterId = getSupporterEntityId(entity, Address.fromString(proposal.organization))
+    const stakeHistory = getStakeHistoryEntity(proposal, supporterId, blockNumber)
+    if (stakeHistory) {
+      stakeHistory.type = type
+      stakeHistory.tokensStaked = tokensStaked
+      stakeHistory.totalTokensStaked = totalTokensStaked
+      stakeHistory.conviction = conviction
+      stakeHistory.createdAt = timestamp
+      stakeHistory.save()
+    }
+  }
 }

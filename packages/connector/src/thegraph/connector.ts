@@ -25,7 +25,8 @@ type GardenConnectorConfig = {
 const BLOCK_TIMES = new Map([
   [1, 13], // mainnet
   [4, 14], // rinkeby
-  [100, 5], // xdai
+  [5, 14], // goerli
+  [100, 5], // gnosis
   [137, 2], // polygon
   [80001, 2], // mumbai
 ])
@@ -37,8 +38,11 @@ export function subgraphUrlFromChainId(chainId: number): string | null {
   if (chainId === 4) {
     return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-rinkeby'
   }
+  if (chainId === 5) {
+    return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-goerli'
+  }
   if (chainId === 100) {
-    return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai'
+    return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-gnosis'
   }
   if (chainId === 137) {
     return 'https://api.thegraph.com/subgraphs/name/1hive/gardens-polygon'

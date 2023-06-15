@@ -1,3 +1,222 @@
 {
-  "abi": [{"type":"constructor","inputs":[{"type":"address","name":"_cv","internalType":"address"},{"type":"address","name":"_superfluid","internalType":"address"},{"type":"address","name":"_token","internalType":"address"},{"type":"uint256","name":"_decay","internalType":"uint256"},{"type":"uint256","name":"_maxRatio","internalType":"uint256"},{"type":"uint256","name":"_minStakeRatio","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"activateProposal","inputs":[{"type":"uint256","name":"_proposalId","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"calculateRate","inputs":[{"type":"uint256","name":"_timePassed","internalType":"uint256"},{"type":"uint256","name":"_lastRate","internalType":"uint256"},{"type":"uint256","name":"_targetRate","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"_targetRate","internalType":"uint256"}],"name":"calculateTargetRate","inputs":[{"type":"uint256","name":"_stake","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"canActivateProposal","inputs":[{"type":"uint256","name":"_proposalId","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract ConvictionVoting"}],"name":"cv","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"int128","name":"","internalType":"int128"}],"name":"decay","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"_rate","internalType":"uint256"}],"name":"getCurrentRate","inputs":[{"type":"uint256","name":"_proposalId","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"getTargetRate","inputs":[{"type":"uint256","name":"_proposalId","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"isActive","inputs":[{"type":"uint256","name":"_proposalId","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"int128","name":"","internalType":"int128"}],"name":"maxRatio","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"minStake","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"int128","name":"","internalType":"int128"}],"name":"minStakeRatio","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"owner","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"registerProposal","inputs":[{"type":"uint256","name":"_proposalId","internalType":"uint256"},{"type":"address","name":"_beneficiary","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"removeProposal","inputs":[{"type":"uint256","name":"_proposalId","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setFlowSettings","inputs":[{"type":"uint256","name":"_decay","internalType":"uint256"},{"type":"uint256","name":"_maxRatio","internalType":"uint256"},{"type":"uint256","name":"_minStakeRatio","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setOwner","inputs":[{"type":"address","name":"newOwner","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract Superfluid"}],"name":"superfluid","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"sync","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract SuperToken"}],"name":"token","inputs":[]},{"type":"event","name":"FlowSettingsChanged","inputs":[{"type":"uint256","name":"decay","indexed":false},{"type":"uint256","name":"maxRatio","indexed":false},{"type":"uint256","name":"minStakeRatio","indexed":false}],"anonymous":false},{"type":"event","name":"FlowUpdated","inputs":[{"type":"uint256","name":"id","indexed":true},{"type":"address","name":"beneficiary","indexed":true},{"type":"uint256","name":"rate","indexed":false}],"anonymous":false},{"type":"event","name":"OwnerUpdated","inputs":[{"type":"address","name":"user","indexed":true},{"type":"address","name":"newOwner","indexed":true}],"anonymous":false},{"type":"event","name":"ProposalActivated","inputs":[{"type":"uint256","name":"id","indexed":true}],"anonymous":false},{"type":"event","name":"ProposalRegistered","inputs":[{"type":"uint256","name":"id","indexed":true},{"type":"address","name":"beneficiary","indexed":false}],"anonymous":false},{"type":"event","name":"ProposalRemoved","inputs":[{"type":"uint256","name":"id","indexed":true}],"anonymous":false},{"type":"event","name":"ProposalReplaced","inputs":[{"type":"uint256","name":"id","indexed":true}],"anonymous":false},{"type":"error","name":"ProposalAlreadyActive","inputs":[]},{"type":"error","name":"ProposalAlreadyRemoved","inputs":[]},{"type":"error","name":"ProposalNeedsMoreStake","inputs":[]},{"type":"error","name":"ProposalOnlyActive","inputs":[]},{"type":"error","name":"ProposalOnlySignaling","inputs":[]},{"type":"error","name":"ProposalOnlySubmmiter","inputs":[]}]
+  "abi": [
+    {
+      "type": "constructor",
+      "inputs": [
+        { "type": "address", "name": "_cv", "internalType": "address" },
+        { "type": "address", "name": "_superfluid", "internalType": "address" },
+        { "type": "address", "name": "_token", "internalType": "address" },
+        { "type": "uint256", "name": "_decay", "internalType": "uint256" },
+        { "type": "uint256", "name": "_maxRatio", "internalType": "uint256" },
+        { "type": "uint256", "name": "_minStakeRatio", "internalType": "uint256" }
+      ]
+    },
+    {
+      "type": "function",
+      "stateMutability": "nonpayable",
+      "outputs": [],
+      "name": "activateProposal",
+      "inputs": [{ "type": "uint256", "name": "_proposalId", "internalType": "uint256" }]
+    },
+    {
+      "type": "function",
+      "stateMutability": "view",
+      "outputs": [{ "type": "uint256", "name": "", "internalType": "uint256" }],
+      "name": "calculateRate",
+      "inputs": [
+        { "type": "uint256", "name": "_timePassed", "internalType": "uint256" },
+        { "type": "uint256", "name": "_lastRate", "internalType": "uint256" },
+        { "type": "uint256", "name": "_targetRate", "internalType": "uint256" }
+      ]
+    },
+    {
+      "type": "function",
+      "stateMutability": "view",
+      "outputs": [{ "type": "uint256", "name": "_targetRate", "internalType": "uint256" }],
+      "name": "calculateTargetRate",
+      "inputs": [{ "type": "uint256", "name": "_stake", "internalType": "uint256" }]
+    },
+    {
+      "type": "function",
+      "stateMutability": "view",
+      "outputs": [{ "type": "bool", "name": "", "internalType": "bool" }],
+      "name": "canActivateProposal",
+      "inputs": [{ "type": "uint256", "name": "_proposalId", "internalType": "uint256" }]
+    },
+    {
+      "type": "function",
+      "stateMutability": "view",
+      "outputs": [{ "type": "address", "name": "", "internalType": "contract ConvictionVoting" }],
+      "name": "cv",
+      "inputs": []
+    },
+    {
+      "type": "function",
+      "stateMutability": "view",
+      "outputs": [{ "type": "int128", "name": "", "internalType": "int128" }],
+      "name": "decay",
+      "inputs": []
+    },
+    {
+      "type": "function",
+      "stateMutability": "view",
+      "outputs": [{ "type": "uint256", "name": "_rate", "internalType": "uint256" }],
+      "name": "getCurrentRate",
+      "inputs": [{ "type": "uint256", "name": "_proposalId", "internalType": "uint256" }]
+    },
+    {
+      "type": "function",
+      "stateMutability": "view",
+      "outputs": [{ "type": "uint256", "name": "", "internalType": "uint256" }],
+      "name": "getTargetRate",
+      "inputs": [{ "type": "uint256", "name": "_proposalId", "internalType": "uint256" }]
+    },
+    {
+      "type": "function",
+      "stateMutability": "view",
+      "outputs": [{ "type": "bool", "name": "", "internalType": "bool" }],
+      "name": "isActive",
+      "inputs": [{ "type": "uint256", "name": "_proposalId", "internalType": "uint256" }]
+    },
+    {
+      "type": "function",
+      "stateMutability": "view",
+      "outputs": [{ "type": "int128", "name": "", "internalType": "int128" }],
+      "name": "maxRatio",
+      "inputs": []
+    },
+    {
+      "type": "function",
+      "stateMutability": "view",
+      "outputs": [{ "type": "uint256", "name": "", "internalType": "uint256" }],
+      "name": "minStake",
+      "inputs": []
+    },
+    {
+      "type": "function",
+      "stateMutability": "view",
+      "outputs": [{ "type": "int128", "name": "", "internalType": "int128" }],
+      "name": "minStakeRatio",
+      "inputs": []
+    },
+    {
+      "type": "function",
+      "stateMutability": "view",
+      "outputs": [{ "type": "address", "name": "", "internalType": "address" }],
+      "name": "owner",
+      "inputs": []
+    },
+    {
+      "type": "function",
+      "stateMutability": "nonpayable",
+      "outputs": [],
+      "name": "registerProposal",
+      "inputs": [
+        { "type": "uint256", "name": "_proposalId", "internalType": "uint256" },
+        { "type": "address", "name": "_beneficiary", "internalType": "address" }
+      ]
+    },
+    {
+      "type": "function",
+      "stateMutability": "nonpayable",
+      "outputs": [],
+      "name": "removeProposal",
+      "inputs": [{ "type": "uint256", "name": "_proposalId", "internalType": "uint256" }]
+    },
+    {
+      "type": "function",
+      "stateMutability": "nonpayable",
+      "outputs": [],
+      "name": "setFlowSettings",
+      "inputs": [
+        { "type": "uint256", "name": "_decay", "internalType": "uint256" },
+        { "type": "uint256", "name": "_maxRatio", "internalType": "uint256" },
+        { "type": "uint256", "name": "_minStakeRatio", "internalType": "uint256" }
+      ]
+    },
+    {
+      "type": "function",
+      "stateMutability": "nonpayable",
+      "outputs": [],
+      "name": "setOwner",
+      "inputs": [{ "type": "address", "name": "newOwner", "internalType": "address" }]
+    },
+    {
+      "type": "function",
+      "stateMutability": "view",
+      "outputs": [{ "type": "address", "name": "", "internalType": "contract Superfluid" }],
+      "name": "superfluid",
+      "inputs": []
+    },
+    { "type": "function", "stateMutability": "nonpayable", "outputs": [], "name": "sync", "inputs": [] },
+    {
+      "type": "function",
+      "stateMutability": "view",
+      "outputs": [{ "type": "address", "name": "", "internalType": "contract SuperToken" }],
+      "name": "token",
+      "inputs": []
+    },
+    {
+      "type": "event",
+      "name": "FlowSettingsChanged",
+      "inputs": [
+        { "type": "uint256", "name": "decay", "indexed": false },
+        { "type": "uint256", "name": "maxRatio", "indexed": false },
+        { "type": "uint256", "name": "minStakeRatio", "indexed": false }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "FlowUpdated",
+      "inputs": [
+        { "type": "uint256", "name": "id", "indexed": true },
+        { "type": "address", "name": "beneficiary", "indexed": true },
+        { "type": "uint256", "name": "rate", "indexed": false }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "OwnerUpdated",
+      "inputs": [
+        { "type": "address", "name": "user", "indexed": true },
+        { "type": "address", "name": "newOwner", "indexed": true }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "ProposalActivated",
+      "inputs": [{ "type": "uint256", "name": "id", "indexed": true }],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "ProposalRegistered",
+      "inputs": [
+        { "type": "uint256", "name": "id", "indexed": true },
+        { "type": "address", "name": "beneficiary", "indexed": false }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "ProposalRemoved",
+      "inputs": [{ "type": "uint256", "name": "id", "indexed": true }],
+      "anonymous": false
+    },
+    {
+      "type": "event",
+      "name": "ProposalReplaced",
+      "inputs": [{ "type": "uint256", "name": "id", "indexed": true }],
+      "anonymous": false
+    },
+    { "type": "error", "name": "ProposalAlreadyActive", "inputs": [] },
+    { "type": "error", "name": "ProposalAlreadyRemoved", "inputs": [] },
+    { "type": "error", "name": "ProposalNeedsMoreStake", "inputs": [] },
+    { "type": "error", "name": "ProposalOnlyActive", "inputs": [] },
+    { "type": "error", "name": "ProposalOnlySignaling", "inputs": [] },
+    { "type": "error", "name": "ProposalOnlySubmmiter", "inputs": [] }
+  ]
 }

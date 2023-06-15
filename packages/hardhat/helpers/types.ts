@@ -1,6 +1,7 @@
 export type eNetwork = eEthereumNetwork | eXDaiNetwork
 
 export enum eEthereumNetwork {
+  goerli = 'goerli',
   rinkeby = 'rinkeby',
   main = 'main',
   coverage = 'coverage',
@@ -12,13 +13,14 @@ export enum eEthereumNetwork {
 }
 
 export enum eXDaiNetwork {
-  xdai = 'xdai',
+  gnosis = 'gnosis',
 }
 
 export enum EthereumNetworkNames {
+  goerli = 'goerli',
   rinkeby = 'rinkeby',
   main = 'main',
-  xdai = 'xdai',
+  gnosis = 'gnosis',
   arbtest = 'arbtest',
   arbitrum = 'arbitrum',
   mumbai = 'mumbai',

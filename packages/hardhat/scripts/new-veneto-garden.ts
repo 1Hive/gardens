@@ -8,9 +8,9 @@ import { impersonateAddress } from '../helpers/rpc'
 const network = process.env.HARDHAT_FORK
   ? process.env.HARDHAT_FORK
   : hre.network.name === 'localhost'
-  ? 'xdai'
+  ? 'gnosis'
   : hre.network.name
-const blockTime = network === 'rinkeby' ? 15 : network === 'mainnet' ? 13 : network === 'xdai' ? 5 : 2 // 15 rinkeby, 13 mainnet, 5 xdai, 2 polygon
+const blockTime = network === 'rinkeby' ? 15 : network === 'mainnet' ? 13 : network === 'gnosis' ? 5 : 2 // 15 rinkeby, 13 mainnet, 5 gnosis, 2 polygon
 
 console.log(`Every ${blockTime}s a new block is mined in ${network}.`)
 

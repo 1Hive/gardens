@@ -1,6 +1,6 @@
 # Gardens Subgraph 🛰
 
-Subgraph for [Gardens frontend](https://gardens-xdai.1hive.org/#/home).
+Subgraph for [Gardens frontend](https://gardens-gnosis.1hive.org/#/home).
 
 Indexed data from DAOs created through the [GardensTemplate](https://github.com/1Hive/gardens/blob/master/packages/hardhat/contracts/GardensTemplate.sol).
 
@@ -8,7 +8,7 @@ Indexed data from DAOs created through the [GardensTemplate](https://github.com/
 
 | Network | TheGraph                                                                             | HTTP endpoint                                                 |
 | ------- | ------------------------------------------------------------------------------------ | ------------------------------------------------------------- |
-| xDai    | [Hosted Service](https://thegraph.com/hosted-service/subgraph/1hive/gardens-xdai)    | https://api.thegraph.com/subgraphs/name/1hive/gardens-xdai    |
+| xDai    | [Hosted Service](https://thegraph.com/hosted-service/subgraph/1hive/gardens-gnosis)    | https://api.thegraph.com/subgraphs/name/1hive/gardens-gnosis    |
 | Polygon | [Hosted Service](https://thegraph.com/hosted-service/subgraph/1hive/gardens-polygon) | https://api.thegraph.com/subgraphs/name/1hive/gardens-polygon |
 | Goerli  | [Hosted Service](https://thegraph.com/hosted-service/subgraph/1hive/gardens-goerli)  | https://api.thegraph.com/subgraphs/name/1hive/gardens-goerli  |
 

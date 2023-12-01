@@ -9,6 +9,11 @@ yarn build
 GRAPH_NODE="https://api.thegraph.com/deploy/"
 IPFS_NODE="https://api.thegraph.com/ipfs/"
 
+# Keep compatibility with subgraph name on the hosted service
+if [[ "$NETWORK" == "gnosis" && ! -n "$STUDIO" ]]; then
+  NETWORK="xdai"
+fi
+
 # Use custom subgraph name based on target network
 if [[ "$NETWORK" != "arbitrum" ]]; then
   SUBGRAPH_EXT="-${NETWORK}"
@@ -23,7 +28,9 @@ fi
 
 echo Deploying subgraph gardens${SUBGRAPH_EXT}
 
-# echo "$@"
 # Deploy subgraph
-# graph deploy 1hive/gardens${SUBGRAPH_EXT} --ipfs ${IPFS_NODE} --node ${GRAPH_NODE} --access-token ${GRAPHKEY}
-graph deploy --studio gardens${SUBGRAPH_EXT} "$@"
+if [ "$STUDIO" ]; then
+  graph deploy --studio gardens${SUBGRAPH_EXT} --deploy-key ${GRAPHKEY}
+else
+  graph deploy 1hive/gardens${SUBGRAPH_EXT} --ipfs ${IPFS_NODE} --node ${GRAPH_NODE} --deploy-key ${GRAPHKEY}
+fi

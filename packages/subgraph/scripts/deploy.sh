@@ -30,7 +30,7 @@ echo Deploying subgraph gardens${SUBGRAPH_EXT}
 
 # Deploy subgraph
 if [ "$STUDIO" ]; then
-  graph deploy --studio gardens${SUBGRAPH_EXT} --deploy-key ${GRAPHKEY}
+  graph deploy --studio gardens${SUBGRAPH_EXT}
 else
   graph deploy 1hive/gardens${SUBGRAPH_EXT} --ipfs ${IPFS_NODE} --node ${GRAPH_NODE} --deploy-key ${GRAPHKEY}
 fi
